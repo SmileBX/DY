@@ -1,0 +1,232 @@
+//首页
+.index_nav{
+	background: #ff3333;color:#ffffff;
+	padding:20upx;box-sizing: border-box;
+	height:190upx;
+	.search{
+		background:#ffffff;border-radius:50upx;
+		input{
+			font-size:26upx;
+		}
+	}
+}
+.uni-swiper-tab{
+	.swiper-tab-list{
+		display: inline-block;
+	}
+}
+.swiper-item,.swiper-item .img{ width: 100%; height: 100%;}
+.swiper .swiper{ height: 340upx;}
+.uni-index-wrap{
+	height: calc(100% - 44px);
+	/* #ifdef MP-WEIXIN */
+	height: 100%;
+	/* #endif */
+	overflow-y: auto;
+}
+/*品牌馆*/
+.index_pin{
+	background: #ffffff;
+	.pin_title{
+		padding:20upx 0;text-align:center;background:#ffffff;
+	}
+	.pin_list{
+		flex-wrap:wrap;
+		padding:0 20upx;
+		padding-bottom:20upx;
+		.pin_item{
+			background: #e1daf4;border-radius:15upx;
+			margin-top:20upx;
+			padding:20upx;
+			width:49%;
+			.item_info_title{
+				font-weight:600;
+			}
+			.item_logo{
+				height:30upx;width:50upx;
+				image{
+					width:100%;height:100%;
+				}
+			}
+			.right_img{
+				width:30%;
+				image{
+					width:100%;height:100%;
+				}
+			}
+			.item_sige{
+				font-size:22upx;margin-top:5upx;
+			}
+			.item_info{
+				margin-top:30upx
+			}
+		}
+		.bg1{
+			background: #e1daf4;
+		}
+		.bg2{
+			background: #fbdee0;
+		}
+		.bg3{
+			background: #fcdee0;
+		}
+		.bg4{
+			background: #f8ddeb;
+		}
+		.color1{
+			color:#aa97e1
+		}
+		.color2{
+			color:#f1a8aa
+		}
+		.color3{
+			color:#e57172
+		}
+		.color4{
+			color:#e36b9e
+		}
+	}
+}
+.home{
+	.tab_list{
+		background: #ffffff;padding:20upx 0;
+		height:360upx;white-space: nowrap;
+		width: 100%;
+		.tab_item{
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			width:20%;height:360upx;
+		}
+		.tab_img{
+			width:100upx;height:100upx;border-radius:50%;
+		}
+	}
+	.hui{
+		.hui_bg{
+			height:86upx;width:100%;vertical-align: middle;
+		}
+		.hui_title{
+			padding:10upx;font-weight: bold;
+			justify-content: center;
+			background: #ffffff;
+		}
+		.tile_time{
+			align-items: center;
+		}
+		.time_span{
+			color:#ffffff;font-size:24upx;text-align: center;
+			width:40upx;height:40upx;background: #000000;
+		}
+		.list{
+			padding:20upx;background: #ffffff;
+		}
+		.item_img{
+			width:220upx;height:300upx ;
+			image{
+				width:100%;height:100%;
+			}
+		}
+	}
+	.jian{
+		.jian_bg{
+			width:100%;height:102upx;vertical-align: middle;
+		}
+		.jian_sign{
+			font-weight:bold;background: #ffffff;text-align: center;
+		}
+	}
+	/* 热销榜单 */
+	.scroll-view_H {
+		white-space: nowrap;
+		width: 100%;
+	}
+	.scroll-view-item_H {
+		display: inline-block;
+	}
+	.HotsellList .uni-bd {
+		margin-right: -20upx;
+	}
+	
+	.Hotsell-list .itembox {
+		width: 200upx;
+		margin-right: 20upx;
+		overflow: hidden;
+	}
+	
+	.Hotsell-list .image-view {
+		width: 200upx;
+		height: 200upx;
+		margin: 0;
+	}
+	
+	.Hotsell-list .image-view .img {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.Hotsell-list .uni-product-price {
+		margin-top: 0;
+	}
+	
+	.Hotsell-list .uni-product-price .uni-product-price-favour {
+		font-size: 24upx;
+	}
+	.menu{
+		padding-bottom:20upx;
+		.menu_nav{
+			.menu_item{
+				width:20%;
+				position: relative;
+				&:last-child{
+					&:after{
+						background: #f5f5f5;
+					}
+				}
+				&:after{
+					position: absolute;right:0;content: '';top:50%;transform: translateY(-50%);
+					width:2upx;height:30upx;background: #999;
+				}
+				&.active{
+					.title,.subtitle{
+						color:#f00000;
+					}
+				}
+				.title{
+					font-weight: 600;font-size:30upx;
+				}
+				.subtitle{
+					font-size:24upx;color:#999
+				}
+			}
+		}
+		.list{
+			padding:0 20upx;
+			.item{
+				width:49%;margin-top:20upx;
+				background: #ffffff;
+				.item_info{
+					padding:20upx 10upx;
+				}
+				.item_total{
+					width:100%;
+				}
+				.item_img{
+					width:100%;height:335upx;
+				}
+				.item_title{
+					font-size:31upx;font-weight:600;
+				}
+				.item_price{
+					color:#f00000;font-size:35upx;
+				}
+				.item_market{
+					color:#999;font-size:24upx;
+				}
+			}
+			
+		}
+	}
+	
+}

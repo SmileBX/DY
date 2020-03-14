@@ -1,0 +1,36 @@
+
+@font-face {
+	font-family: iconfont;
+	font-weight: normal;
+	font-style: normal;
+	src: url('static/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-leimupinleifenleileibie:before {
+  content: "\e7f9";
+}
+
+.icon-iconfontzhizuobiaozhun17:before {
+  content: "\e610";
+}
+
+.icon-camera:before {
+  content: "\e60f";color: #999!important;
+}
+
+.icon-sousuo:before {
+  content: "\e60e";color: #999!important;
+}
+
+.icon-jiantouxia:before {
+  content: "\e61a";
+}
+
