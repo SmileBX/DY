@@ -1,6 +1,6 @@
 
 
-* {
+*,view,text {
   box-sizing: border-box;
   margin:0;padding:0;
 }
@@ -20,7 +20,7 @@ textarea {
   font-family: inherit;
   -webkit-appearance: none;
 }
-
+.uni-input-placeholder{ color: #C0C0C0;}
 a {
   text-decoration: none;
   &:hover {
@@ -353,9 +353,11 @@ a {
 .font18{
   font-size:18upx;
 }
+.font12{ font-size: 24upx;}
 .line5{
   line-height: 1.5
 }
+
 .border_no{
   border:none!important;
 }

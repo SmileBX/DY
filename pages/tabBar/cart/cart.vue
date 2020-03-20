@@ -1,0 +1,857 @@
+<template>
+	<view class="content">
+		<!--  #ifndef  MP-WEIXIN -->
+		<view class="carthead"  :style="{'padding-top':barHeight+'px'}">
+			<text>购物车</text>
+			<text @click="ManageCart">{{isEdittxt}}</text>
+		</view>
+		<!--  #endif -->
+		<!--  #ifdef  MP-WEIXIN -->
+		<view class="wxcarthead" v-if="hascartlist">
+			<text @click="ManageCart">{{isEdittxt}}</text>
+		</view>
+		<!--  #endif -->
+		<view  :style="{'height':barHeight+44+'px'}"></view>
+		<view class="hasContentPage" v-if="hascartlist">
+			<view class="cartGroupList">
+				<view :class="['item',isMultipleStore>0?'':'mb10']" v-for="(item,index) in cartlist" :key="index">
+					<block v-if="false">
+					<view class="item__hd flex" v-if="index===0 || cartlist[index-1].ShopId!=item.ShopId">
+						<view class="flexItem flex1">
+							<view @click="golink('/pages/store/storeIndex/storeIndex?shopId='+item.ShopId)" class="aLink"><text class="shopName">{{item.ShopName}}</text>
+								<view class="uni-icon uni-icon-arrowright"></view>
+							</view>
+						</view>
+						<view class="flexItem btn_receive" @click="showCoupon(item.ShopId)">领券</view>
+					</view>
+					</block>
+					<view class="column levelPanel" :style="{borderBottom:false?'':'none'}">
+						<view class="item">
+							<view class="outside">
+								<view class="IconsCK IconsCK-radio" @click="selectStyle(item,index,item.select,item.disBuy,$event)" :class="{'disabled':item.disBuy,'checked':item.select}"></view>
+								<view class="pictrueAll" @click="gotoDetail(item.ProductId,item.TabFlashSale,item.disBuy)">
+									<view class="pictrue">
+										<text class="mark" v-if="item.TabFlashSale==1">限时</text>
+										<image :src="item.ProductImg" mode=""></image>
+									</view>
+								</view>
+								<view class="txtBox">
+									<view class="title text-line2" @click="gotoDetail(item.ProductId,item.TabFlashSale,item.disBuy)">{{item.ProductName}}</view>
+									<view class="flex skuBox">
+										<view class="flex-item flex1 left">
+											<view class="type" v-if="item.SpecText!=''" @click="showSku(item.ProductId,item.Id,item.Number,item.TabFlashSale)">{{item.SpecText}}<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
+											</view>
+										</view>
+										<view class="flex-item right">
+											<!-- <text class="buyNum">x1</text> -->
+										</view>
+									</view>
+									<view class="flex mt5 flexAlignCneter">
+										<view class="flex-item flex1 left">
+											
+											<text :class="['new-price',item.IsOkPlus==1&&item.TabFlashSale==0?'plusprice':'']">￥{{item.SalePrice}}</text>
+										</view>
+										<view class="flex-item right selNumRow">
+											<uni-number-box :disabled="false" :value="item.Number" :min="item.MinBuyNum" :max="item.MaxBuyNum" v-on:change="change" :index="index"></uni-number-box>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- <view style="width: 100%;height: 120upx;"></view> -->
+			<view class="cartFoot">
+				<view class="inner fixed flex flexAlignCneter">
+					<view class="left">
+						<view class="IconsCK IconsCK-radio" @click="Allcheck()" :class="{'checked':allSelect}"></view>全选
+					</view>
+					<view class="right flex1 text_r">
+						<view class="inner1" v-if="!isEdit">
+							<text class="hj"><text class="msg">不含运费</text>合计:<text class="allPrice">￥{{allPrice}}</text></text>
+							<button type="primary" size="middle" class="btnPay radius100" @click="settle">结算({{selectlen}})</button>
+						</view>
+						<view class="deletbox" v-else>
+							<button class="delet2" @click="goCollect">我的收藏</button>
+							<button class="delet" @click="DelCartBtn">删除</button>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 没有数据的时候 --> 
+		<view class="noConPage table bg_fff nodatalocal" v-if="noDataIsShow">
+			<view class="table-cell">
+				<view class="noDataImg">
+					<image src="http://www.sc-mall.net/static/noCart.png" mode="widthFix"></image>
+				</view>
+				<view class="tips">抱歉，您没有记录哦~</view>
+				<view class="btnBox">
+					<button plain="true" size="middle" class="btn btn-active radius100" style="padding:0 40upx;" @click="goCollect">我的收藏</button>
+				</view>
+			</view>
+		</view>
+		<!-- SKU弹框 --> 
+		<popupSku :proInfo="proInfo" v-if="isProData" :show="showPopupSku" :fromcart="fromcart" :h5Top="true" :isPlus="isPLUS" v-on:hidePopup="hidePopup" v-on:selectSku="selectSku" :isLimint="isLimint"></popupSku>
+		<!-- 弹出优惠券 -->
+		<uni-popup position="bottom" mode="fixed" :show="showPopupCoupon" :h5Top="true" @hidePopup="hidePopup">
+			<view class="uni-modal-Coupon">
+				<view class="bottom-title">优惠</view>
+				<view class="bottom-content">
+					<view class="couponlist">
+						<view class="coupon1" v-for="(item,index) in CouponList" :key="index">
+							<view class="topbox">
+								<view class="couponleft">
+									<view class="price" v-if="item.DiscountType=='1'"><text>￥</text><text class="num">{{item.Denomination}}</text></view>
+									<view class="price" v-if="item.DiscountType=='2'"><text class="num">{{item.Denomination}}</text><text>折</text></view>
+									<view class="lefttxt" v-if="item.MeetConditions!='0'">满{{item.MeetConditions}}元可用</view>
+									<view class="lefttxt" v-else>无门槛</view>
+								</view>
+								<view class="couponright">
+									<view class="couponname">{{item.Name}}</view>
+									<view class="coupontime">{{item.StartTime}}-{{item.EndTime}}</view>
+								</view>
+								<view class="couponbtn">
+									<view class="btn" v-if="item.IsMyAlready" @click="ReceiveCoupon(0,item.Id,index)">立即领取</view>
+									<view class="rightimg" v-else><image src="http://www.sc-mall.net/static/coupon5.png" mode=""></image></view>
+								</view>
+							</view>
+						</view>
+						
+					</view>
+				</view>
+				<view class="bottom-btn" @click="hidePopup">完成</view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script>
+	import {post,get,toLogin} from '@/common/util.js';
+	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	import noData from '@/components/noData.vue'; //暂无数据
+	import popupSku from '@/components/popupSku.vue';
+	import "@/common/dd_style.css";
+	export default {
+		components: {
+			uniNumberBox,uniPopup,popupSku,noData
+		},
+		data() {
+			return {
+				userId:"",
+				barHeight:0,
+				token:"",
+				isMultipleStore:0,
+				memberInfo:{},//会员信息
+				isPLUS:0,//会员是否是plus
+				proInfo:{},      //单个商品信息
+				isProData:false, //有商品信息
+				showPopupSku:false,//sku弹框显示
+				showPopupCoupon:false,//优惠券弹出
+				skunumber:1,//选sku的商品数量
+				skuCartId:"",//选sku的购物车id
+				SpecText:"",//选sku的商品规格
+				fromcart:true,//SKU显示确定不显示加入购物车
+				cartlist:[], //购物车列表
+				hascartlist:true, //购物车有商品
+				noDataIsShow: false,
+				isEdit:false,//是否编辑购物车
+				isEdittxt:"管理",//是否编辑购物车按钮文字
+				allSelect:true,//判断是否全选
+				checklen:0,//有效产品数量
+				selectlen:0,//累计选中的产品
+				allPrice:0,//累计选中产品的金额
+				CouponList:{},//弹出优惠券列表
+				isLimint:0//0非限时购产品，1限时购产品
+			}
+		},
+		onLoad() {
+			// #ifdef APP-PLUS
+			var height = plus.navigator.getStatusbarHeight();
+			this.barHeight = height;
+			// #endif
+			// #ifdef H5
+			this.barHeight = 0;
+			// #endif
+		},
+		onShow() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			// #ifdef H5
+			   SEOTitle('');
+			// #endif
+			//this.getMemberInfo();
+			this.cartlist=[];
+			this.getCartList();
+			this.Allcheck();
+			this.isEdit=false;
+			this.isEdittxt="管理";
+		},
+		methods: {
+			golink(url){
+				uni.navigateTo({
+					url:url
+				})
+			},
+			//加减商品的数量
+			change(msg){
+				console.log(msg)
+				console.log("msg")
+				let number=msg[0];
+				let index=msg[1];
+				if(this.cartlist[index].IsBuy==0){
+					let dataArr=[],json = {};
+					json["CartId"] = this.cartlist[index].Id;
+					json["Total"] = number;
+					json["SpecText"] = this.cartlist[index].SpecText;
+					dataArr.push(json);
+					this.eaditCart(dataArr,index,number);
+				}
+			},
+			//编辑商品规格数量
+			async eaditCart(Arr,index,number) {
+				let info = await post("Cart/EditCart", {
+					UserId: this.userId,
+					Token: this.token,
+					data: Arr
+				});
+				if (info.code === 0) {
+					if(number){
+						this.cartlist[index].Number = number;
+						this.cartlist[index].select = true;
+					}else{
+						this.checklen=0;
+						this.getCartList()
+					}
+				 //合计
+				this.AllPrice();
+				} else if (info.code === 2) {
+
+				}
+			},
+			//删除购物车
+			async DelCart(Arr){
+				let result = await post("Cart/DelCart",{
+					UserId: this.userId,
+					Token: this.token,
+					data: Arr
+				})
+				if (result.code === 0){
+					this.getCartList();
+				}
+			},
+			//删除按钮
+			DelCartBtn(){
+				let _this = this;
+				let dataArr=[];
+				_this.cartlist.forEach(function(item){
+					if(item.select==true){
+						let id = item.Id;
+						let json = {};
+						json["CartId"] = id;
+						dataArr.push(json);
+					}
+				})
+				if(dataArr.length){
+					let that = this;
+					uni.showModal({
+						content: "您确定要删除所选商品吗？",
+						confirmColor:"#ee9b11",
+						success: function(res) {
+							if (res.confirm) {
+								_this.DelCart(dataArr);
+							} else if (res.cancel) {
+							}
+						}
+					});
+				}else{
+					uni.showToast({
+						title: "请选择你要删除的数据！",
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+		//获取购物车列表
+			async getCartList(){
+				let result = await post("Cart/CartList", {
+				UserId: this.userId,
+				Token: this.token,
+				});
+				if(result.code==0){
+					this.cartlist=result.data;
+					if(result.data.length>0){
+						this.checklen=0;
+						this.hascartlist=true;
+						this.noDataIsShow=false;
+						let _this = this;
+						_this.$nextTick(function() {
+							_this.cartlist.forEach(function(item) {
+								_this.$set(item, "select", false);
+								if(item.IsBuy!=0){
+									_this.$set(item, "disBuy", true);
+									_this.$set(item, "select", false);
+								}else{
+									_this.checklen++;
+									_this.$set(item, "disBuy", false);
+								}
+							}); 
+							_this.selectlen=_this.checklen;
+							_this.AllPrice();// 合计
+						});
+					}else{
+						this.noDataIsShow=true;
+						this.hascartlist=false;
+					}
+				}else if(result.code==2){
+					this.noDataIsShow=true;
+				}
+			},
+			//合计 金额、数量
+			AllPrice(){
+				let _this = this;
+				let eaditallPrice =0;
+				let eaditnum =0;
+				let singelPrice=0;
+				_this.cartlist.forEach(function(item){
+					if(item.select==true){
+						singelPrice =Number(item.SalePrice)*parseInt(item.Number);
+						eaditallPrice += singelPrice;
+						eaditnum++;
+					}
+				});
+				if(eaditnum==this.checklen){
+						this.allSelect=true;
+				}else{
+					this.allSelect=false;
+				}
+				this.selectlen=eaditnum;
+				this.allPrice= parseFloat(eaditallPrice).toFixed(2);
+			},
+			//全选、反选
+			Allcheck() {
+				this.allSelect=!this.allSelect;
+				let _this = this;
+				if(!this.isEdit){//未打开编辑按钮的全选
+					if(this.allSelect){
+							this.selectlen = this.checklen;
+					}else{
+							this.selectlen = 0;
+					}
+					_this.cartlist.forEach(function(item) {
+						if(_this.allSelect && item.IsBuy==0){
+							_this.$set(item, "select", true); 
+						}else{
+							_this.$set(item, "select", false);
+						}
+					}); 
+					this.AllPrice();//合计   
+				}else{//打开编辑按钮的全选
+					_this.cartlist.forEach(function(item) {
+						if(_this.allSelect){
+							_this.selectlen = _this.cartlist.length;
+							_this.$set(item, "select", true);
+						}else{console.log("0")
+							_this.selectlen=0;
+							_this.$set(item, "select", false);
+						}
+					}); 
+				} 
+			},
+			//单选
+			selectStyle(item,index,select,disBuy,event) {
+				if(!this.isEdit){//未打开编辑按钮的单选
+					if(disBuy){
+						this.$set(item, "select", false);
+						event.preventDefault();
+					}else{       
+						if(select){
+							if(this.selectlen>0){
+								this.selectlen--;
+							}
+							this.$set(item, "select", false);
+						}else{
+							this.$set(item, "select", true);
+							this.selectlen++;      
+						}
+						if(this.selectlen==this.checklen){            
+								this.allSelect=true;
+						}else{
+								this.allSelect=false;
+						}
+						this.AllPrice();//合计
+					}
+				}else{
+					if(select){
+						if(this.selectlen>0){
+							this.selectlen--;
+						}
+						this.$set(item, "select", false);
+					}else{
+						this.selectlen++; 
+						this.$set(item, "select", true);
+					}
+					if(this.selectlen==this.cartlist.length){
+						this.allSelect=true;
+					}else{
+						this.allSelect=false;
+					}
+				}
+			},
+			//打开编辑购物车
+			ManageCart(){
+				this.isEdit=!this.isEdit;
+				let _this=this;
+				if(this.isEdit==false){
+					this.isEdittxt="管理";
+				 // this.allSelect=true;
+					_this.cartlist.forEach(function(item) {
+						if(item.IsBuy!=0){
+						 // _this.$set(item, "select", true); 
+						 _this.$set(item, "disBuy", true); 
+						 _this.$set(item, "select", false);
+						}
+					}); 
+				}else{
+					this.isEdittxt="完成";
+					//this.allSelect=false;
+					_this.cartlist.forEach(function(item) {
+					 // _this.$set(item, "select", false);
+						_this.$set(item, "disBuy", false);
+					}); 
+				}
+				this.AllPrice();//合计
+			},
+			//点击结算
+			settle(){
+				let _this = this;
+				let dataArr=[];
+				let prodatalist=[];
+				_this.cartlist.forEach(function(item){
+					if(item.select==true){
+						let id = item.Id;
+						dataArr.push(id);
+						prodatalist.push(item)
+					}
+				});
+				if(dataArr.length){
+					uni.navigateTo({ 
+						url: "/pages/submitOrder/submitOrder?cartItem=" + dataArr.join(",") +'&prolist='+JSON.stringify(prodatalist)+'&orderSType=1'
+					});
+					// _this.changeData();
+				}else{
+					uni.showToast({
+						title: "请选择你要购买的产品！",
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			goCollect(){
+				uni.navigateTo({
+					url: '/pages/member/myCollect/myCollect'
+				})
+			},
+			showSku(proId,skuCartId,skunumber,isflash){
+				this.isLimint=isflash;
+				this.isProData=false
+				this.showPopupSku=true;
+				this.skuCartId=skuCartId;
+				this.skunumber=skunumber;
+				this.getProductInfo(proId);
+			},
+			selectSku(msg){
+				this.SpecText=msg;
+				let dataArr=[],json = {};
+				json["CartId"] = this.skuCartId;
+				json["Total"] = this.skunumber;
+				json["SpecText"] = this.SpecText;
+				dataArr.push(json);
+				this.eaditCart(dataArr);
+			},
+			//商品详情信息
+			async getProductInfo(proId){
+				let result = await post("Goods/ProductInfo", {
+					proId: proId,
+					userId:this.userId,
+					token:this.token
+				});
+				if(result.code==0){
+					this.proInfo=result.data;
+					this.isProData = true;
+				}
+			},
+			//统一的关闭popup方法
+			hidePopup: function() {
+				this.showPopupSku=false;
+				this.showPopupCoupon=false;
+			},
+			//弹出优惠券
+			showCoupon:function(Shopid){
+				this.hidePopup();
+				this.CouponCenter(Shopid);
+			},
+			/*获取优惠券列表*/
+			async CouponCenter(Shopid){
+				let result = await post("Coupon/CouponCenter", {
+					"UserId": this.userId,
+					"Token": this.token,
+					"page": 1,
+					"pageSize": 100,
+					"ShopId": Shopid//
+				});
+				if (result.code === 0){
+					if(result.data.length>0){
+						this.showPopupCoupon=true;
+						this.CouponList=result.data;
+						this.CouponList.forEach(function(item){
+							if(item.DiscountType==2){
+								item.Denomination=item.Denomination*10;
+							}
+							item.StartTime=item.StartTime.split(" ")[0].replace(/\//g,".");
+							item.EndTime=item.EndTime.split(" ")[0].replace(/\//g,".");
+						})
+					}else{
+						uni.showToast({
+							title: "该店铺暂无优惠券！",
+							icon: "none",
+							duration: 2000
+						});
+					}
+				}else if (result.code === 2) {
+					let _this =this;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login?askUrl="+_this.curPage
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				} else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+
+			},
+			//领取优惠券
+			async ReceiveCoupon(utype,Couponid,index){
+				let result =await post("Coupon/ReceiveCoupon", {
+					"UserId": this.userId,
+					"Token": this.token,
+					"UseType": utype,
+					"CouponId": Couponid
+				});
+				if (result.code === 0){
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+					this.CouponList[index].Limit--;
+					if(this.CouponList[index].Limit==0){
+						this.CouponList[index].IsMyAlready=false;
+					}
+				}else if(result.code === 2){
+					let _this =this;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login?askUrl="+_this.curPage
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				}else{
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
+			
+			// 跳转商品详情页
+			gotoDetail(pid,type,disBuy){
+				if(!disBuy){
+					uni.navigateTo({
+						url:'/pages/productDetail/productDetail?proId='+pid+'&isLimint='+type
+					})
+				}else{
+					uni.showToast({
+						title: "该产品已失效！",
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
+			//获取会员信息
+			async getMemberInfo() {
+				let result = await post("User/GetMemberInfo", {
+					"UserId": this.userId,
+					"Token": this.token
+				})
+				if (result.code === 0) {
+					this.memberInfo = result.data;
+					this.isPLUS=this.memberInfo.IsPlus;
+				} else if (result.code === 2) {
+					this.userId=uni.setStorageSync("token", "");
+					this.token=uni.setStorageSync("userId", "");
+				}
+			}
+		},
+		onPullDownRefresh() {
+			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+			let _this=this;
+				_this.cartlist = [];
+			setTimeout(function () {
+				_this.getCartList();
+				uni.stopPullDownRefresh();  //停止下拉刷新动画
+			}, 1000);
+		}
+	}
+</script>
+
+<style>
+	.content {
+		height: 100%;
+	}
+
+	.hasContentPage {
+		/* height: 100%; */
+		overflow-y: auto;
+	}
+/* #ifdef MP-WEIXIN */
+.hasContentPage {
+		height: calc(100% - 90upx);
+		overflow-y: auto;
+	}
+/* #endif */
+	.cartGroupList .item .outside {
+		padding: 20upx;
+	}
+
+	.btn_receive {
+		color: #999;
+		font-size: 26upx;
+	}
+	.levelPanel{border-bottom: 1px dashed #f5f5f5;}
+	.levelPanel .item .outside .txtBox .skuBox .type {
+		display: inline-block;
+		background-color: #f6f6f6;
+		padding: 0 10upx;
+		position: relative;
+	}
+
+	.cartGroupList {
+		padding: 0 20upx 100upx;
+
+	}
+
+	.cartGroupList>.item {
+		overflow: hidden;
+	}
+	
+	.btnPay:after{
+		display: none;
+	}
+	.right .deletbox{
+  height: 74upx;
+		
+	}
+	.right .deletbox .delet{
+		padding: 0 20upx;
+		height: 60upx;
+		line-height: 60upx;
+		border-radius: 30upx;
+		border: #ff6666 1upx solid;
+		color: #ff6666;
+		font-size: 27upx;
+		display: inline-block;
+		margin-top: 8upx;
+		margin-left: 30upx;
+	}
+	.right .deletbox .delet2{
+		padding: 0 20upx;
+		height: 60upx;
+		line-height: 60upx;
+		border-radius: 30upx;
+		border: #fc8556 1upx solid;
+		color: #fc8556;
+		font-size: 27upx;
+		display: inline-block;
+		margin-top: 8upx;
+	}
+	.carthead{
+		background-color: #f5f5f5;
+		width: 750upx;
+		padding: 0 20upx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 88upx;
+		z-index: 8;
+		position: fixed;
+		top: 0;
+		box-sizing: border-box;
+	}
+	.wxcarthead{
+		background-color: #fff;
+		width: 100%;
+		padding: 0 20upx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		height: 88upx;
+		z-index: 8;
+		position: fixed;
+		top: 0;
+		/* left: 20upx; */
+	}
+	.carthead text:nth-child(1){
+		font-size: 32upx;
+		font-weight: bold;
+	}
+	.carthead text:nth-child(2){
+		position: absolute;
+		right: 20upx;
+	}
+	.nodatalocal{
+		position: fixed;
+		top: 0;
+	}
+	.pictrue .mark{ position: absolute; left: 0; top: 10upx; z-index: 3; background: #ff6666; color: #fff; font-size: 24upx; padding: 2upx 16upx; border-radius: 0 100px 100px 0;}
+	/* 弹出优惠券 */
+	.uni-popup .bottom-title {
+		line-height: 60upx;
+		font-size: 32upx;
+	}
+	.uni-popup .bottom-btn {
+		height: 80upx;
+		line-height: 80upx;
+		background: #ff9800;
+		font-size: 32upx;
+		color: #fff;
+		border-radius: 40upx;
+	}
+	.uni-modal-Coupon{ background: #fff; padding: 20upx; border-radius: 6px 6px 0 0;}
+	.uni-modal-Coupon .bottom-content{ margin-bottom: 20upx; max-height: 800upx; overflow-y: auto;}
+	.saleScore{ text-align: left; margin-bottom: 20upx;}
+	.saleScore .txtbox .ico{ font-size: 24upx; color: #FF5722; background: #facec0; border-radius: 4px; margin-right: 6upx; padding: 2upx 8upx;}
+	
+	.uni-modal-Coupon .lab{ text-align: left; color: #999; margin-bottom: 16upx;}
+	.coupon1{
+		margin-bottom: 20upx;
+		background-image: url("/static/coupon6.png");
+		background-repeat:no-repeat;
+	  background-size:100% ;
+	}
+	.topbox{
+		display: flex;
+		position: relative;
+		width: 100%;
+		height: 203upx;
+	}
+	.coupontxt{
+		height: 58upx;
+		padding-top: 20upx;
+		padding-left: 16upx;
+		line-height: 58upx;
+		font-size: 23upx;
+		color: #999;
+	}
+	.couponbtn{
+		height: 200upx;
+		width: 220upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.couponbtn .btn{
+		width: 120upx;
+		height: 64upx;
+		border-radius: 8upx;
+		background-color: #ff6666;
+		color: #fff;
+		font-size: 24upx;
+		text-align: center;
+		line-height: 64upx;
+	}
+	.couponleft{
+		width: 210upx;
+		align-items: center;
+		color: #fff;
+	}
+	.couponleft .price{
+		margin: 0 auto;
+		margin-top: 50upx;
+		text-align: center;
+	}
+	.couponleft .price text{
+		font-size: 30upx;
+	}
+	.couponleft .price .num{
+		font-size: 54upx;
+		line-height: 60upx;
+	}
+	.lefttxt{
+		width: 100%;
+		text-align: center;
+		font-size: 23upx;
+	}
+	.couponright{
+		width: 280upx;
+		margin-left: 18upx;
+		color: #333;
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.couponbtn .rightimg{
+		width: 120upx;
+		height: 120upx;
+	}
+	.couponbtn .rightimg image{
+		width: 100%;
+		height: 100%;
+	}
+	.couponname{
+		line-height: 44upx;
+		margin-bottom: 10upx;
+		word-break: break-all;
+	    display: -webkit-box;
+	    overflow: hidden;
+	    -o-text-overflow: ellipsis;
+	    text-overflow: ellipsis;
+	    -webkit-box-orient: vertical;
+	    -webkit-line-clamp: 2;
+	}
+	.coupontime{
+		font-size: 19upx;
+		color: #999;
+	}
+	.btnBox .btn{
+		color: #ee9b11;
+		border-color: #ee9b11 !important;
+	}
+	.cartFoot .flexAlignCneter{
+		box-sizing: border-box;
+	}
+	/* #ifdef APP-PLUS */
+	.cartFoot .inner{
+		bottom:0
+	}
+	/* #endif */
+</style>

@@ -158,7 +158,7 @@ image{ width: 100%; margin: 0 auto;}
 .uni-h6 {font-size: 24upx; color: #8f8f94;}
 .uni-bold{font-weight:bold;}
 .red{ color: #f0370b;}
-.c_theme{color: #89674c;}
+.c_theme{color: #FF3333;}
 .c_blue{color: #5e729a;}
 /* 文本溢出隐藏 */
 .uni-ellipsis {overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
@@ -236,11 +236,11 @@ radio-group label, checkbox-group label{
 }
 .uni-badge-primary {
 	color: #fff;
-	background-color: #007aff
+	background-color: #064eb1
 }
 .uni-badge-blue.uni-badge-inverted,
 .uni-badge-primary.uni-badge-inverted {
-	color: #007aff;
+	color: #064eb1;
 	background-color: transparent
 }
 .uni-badge-green,
@@ -887,6 +887,7 @@ radio-group label, checkbox-group label{
 	white-space: nowrap;
 	line-height: 74upx;
 	height: 74upx;
+	background: #fff;
 }
 
 .swiper-tab-list {
@@ -895,30 +896,24 @@ radio-group label, checkbox-group label{
 	display: inline-block;
 	text-align: center;	
 }
-.uni-tab-bar .s{
-	line-height: 64upx;
-	height: 64upx;
+.uni-swiper-tab .s{
+	line-height: 70upx;
+	height: 70upx;
 	font-size: 26upx;
-	color: #ffffff;
+	color: #555;
 }
-.uni-tab-bar .active{
-	background: #ffffff;
-	border-radius:10upx;
-	/* color: #89674c;
-	border-bottom: 4upx solid #89674c; */
-}
-.uni-tab-bar .active .s{
-	color:#ff3333;
-	/* color: #89674c;
-	border-bottom: 4upx solid #89674c; */
+.uni-swiper-tab .active .s{
+	color: #ff3333;
+	border-bottom: 4upx solid #ff3333;
+	box-sizing: content-box;
 }
 .uni-tab-bar .swiper-box {
 	flex: 1;
 	width: 100%;
-	height: calc(100% - 188upx);
+	height: 100%;
 }
 /* #ifdef MP-WEIXIN */
-.index .uni-tab-bar .swiper-box{
+/* .index .uni-tab-bar .swiper-box{
 	height: calc(100% - 100upx);
 }
 .index .uni-tab-bar{
@@ -926,7 +921,7 @@ radio-group label, checkbox-group label{
 }
 .index .uni-swiper-tab{
 	position: static;
-}
+} */
 /* #endif */
 .uni-tab-bar-loading{
 	padding:20upx 0;
@@ -963,7 +958,7 @@ radio-group label, checkbox-group label{
 .uni-swiper-msg swiper{width:100%; height:50upx;}
 .uni-swiper-msg swiper-item{line-height:50upx;}
 .swiper .uni-swiper-dot{ background: #fff;}
-.swiper .uni-swiper-dot-active{ background: #89664c;}
+.swiper .uni-swiper-dot-active{ background: #ff3333;}
 .uni-swiper-wrapper .swiper{ height: 400upx;}
 
 /* product */
@@ -1540,7 +1535,7 @@ radio-group label, checkbox-group label{
 .IconsCK.IconsCK-radio.checked:after{
 	top: 0;
 	content: '\E442';
-	color:#89674c;
+	color:#ff3333;
 }
 .IconsCK.IconsCK-radio.disabled:after{
 	top: 0;
@@ -1575,7 +1570,7 @@ radio-group label, checkbox-group label{
 	height: 76upx;
 }
 .filterMenu .menu .item.active{
-	color:#89674c;
+	color:#ff3333;
 }
 .filterMenu .menu .filterBtn{
 	display: inline-block;
@@ -1604,7 +1599,7 @@ radio-group label, checkbox-group label{
 }
 .filterMenu .menu .item.active .filterBtn.upBtn:before,
 .filterMenu .menu .item.active .filterBtn.downBtn:after{
-	color:#89674c;
+	color:#ff3333;
 }
 .filterMenu .menu .icon-filter {
 	display: inline-block;
@@ -1676,13 +1671,13 @@ radio-group label, checkbox-group label{
 	height: 240upx;
 }
 .level__product-list .uni-product .txtbox view{
-	display: inherit;
+	/* display: inherit; */
 }
 .level__product-list .uni-product .uni-product-title{
 	width: 100%;
 }
 .level__product-list .uni-product-price-favour{
-	display: none;
+	display: none !important;
 }
 .level__product-list .uni-product-sale {
 	margin-left:40upx;
@@ -1931,7 +1926,24 @@ radio-group label, checkbox-group label{
 	-o-align-items: flex-start;
 	align-items: flex-start;
 }
-
+.flex-between{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+.flex-center{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.flex-start{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
 .flex1 {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
@@ -1941,6 +1953,9 @@ radio-group label, checkbox-group label{
 	-o-flex: 1;
 	overflow: hidden;
 }
-
+.top0{
+	top:0;
+}
+.pd15{padding: 0 30upx;}
 /* 返回顶部 */
 .topbtn{ height: 100upx; width: 100upx; background: url(http://www.sc-mall.net/static/top.png) center center; background-size: cover; position: fixed; right: 10upx; bottom: 110upx; z-index: 99;}

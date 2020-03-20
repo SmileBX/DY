@@ -16,7 +16,6 @@
 	/*每个页面公共css */
 	@import './common/uni.css';
 	@import './common/iconfont.css';
-	@import './common/all.scss';
 	@import './common/common.scss';
 	page{
 		background: #f5f5f5;

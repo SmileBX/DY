@@ -1,4 +1,3 @@
-
 @font-face {
 	font-family: iconfont;
 	font-weight: normal;
@@ -8,29 +7,129 @@
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 16px;
+  font-size: 32upx;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-leimupinleifenleileibie:before {
-  content: "\e7f9";
+.icon-zan:before {
+  content: "\e61d";
 }
 
-.icon-iconfontzhizuobiaozhun17:before {
-  content: "\e610";
+.icon-collect:before {
+  content: "\e629";
 }
 
-.icon-camera:before {
-  content: "\e60f";color: #999!important;
+.icon-home:before {
+  content: "\e677";
+}
+
+.icon-anquan:before {
+  content: "\e640";
+}
+
+.icon-nan:before {
+  content: "\e628";
+}
+
+.icon-shouhuodizhi:before {
+  content: "\e625";
+}
+
+.icon-dizhi:before {
+  content: "\e63e";
+}
+
+.icon-close:before {
+  content: "\e600";
+}
+
+.icon-collect1:before {
+  content: "\e618";
+}
+
+.icon-pinglun1:before {
+  content: "\e671";
+}
+
+.icon-cha:before {
+  content: "\e601";
+}
+
+.icon-arrow:before {
+  content: "\e61c";
+}
+
+.icon-arrow_r:before {
+  content: "\e7dc";
+}
+
+.icon-arrow_down-copy:before {
+  content: "\e7dd";
+}
+
+.icon-aixin:before {
+  content: "\e641";
+}
+
+.icon-zan1:before {
+  content: "\e62e";
+}
+
+.icon-dianpu:before {
+  content: "\e642";
+}
+
+.icon-kefu:before {
+  content: "\e61f";
+}
+
+.icon-wushuju:before {
+  content: "\e627";
+}
+
+.icon-xiangji:before {
+  content: "\e6d3";
 }
 
 .icon-sousuo:before {
-  content: "\e60e";color: #999!important;
+  content: "\e633";
+}
+
+.icon-shuangjiantouxia:before {
+  content: "\e714";
+}
+
+.icon-fenxiang:before {
+  content: "\e72f";
+}
+
+.icon-fenxiang1:before {
+  content: "\e71a";
+}
+
+.icon-cart:before {
+  content: "\e66e";
+}
+
+.icon-caidan:before {
+  content: "\e607";
+}
+
+.icon-gou:before {
+  content: "\e634";
+}
+
+.icon-xiaoxi:before {
+  content: "\e638";
 }
 
 .icon-jiantouxia:before {
-  content: "\e61a";
+  content: "\e62a";
+}
+
+.icon-share:before {
+  content: "\e605";
 }
 

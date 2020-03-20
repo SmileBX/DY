@@ -1,27 +1,55 @@
 //首页
 .index_nav{
-	background: #ff3333;color:#ffffff;
+	background: #ff3333;
+	color: #fff;
 	padding:20upx;box-sizing: border-box;
-	height:190upx;
+	height:180upx;
+	.iconfont{ color: #fff;}
 	.search{
+		width: 100%;
+		margin: 0 10px;
 		background:#ffffff;border-radius:50upx;
+		.iconfont{ color: #999;}
 		input{
-			font-size:26upx;
+			font-size:26upx; padding: 0 20upx;width: 100%;
+		}
+		
+	}
+	.locale{ max-width: 120upx; margin-right: 4upx;}
+	.head_r{
+		.iconfont{ font-size: 44upx; line-height: 1;}
+		.icon-xiaoxi{ position: relative;
+			.num{
+				position: absolute;
+				right: -8upx;
+				top: -8upx;
+				min-width: 36upx;
+				padding: 4upx;
+				text-align: center;
+				background: #fff;
+				color: #FF3333;
+				font-size: 24upx;
+				line-height: 1;
+				border-radius: 100px;
+				transform: scale(.8);
+			}
 		}
 	}
 }
-.uni-swiper-tab{
-	.swiper-tab-list{
-		display: inline-block;
+.scroll-tab{
+	width: 100%;
+	white-space: nowrap;
+	.swiper-tab-list{ height: 56upx; padding: 0 16upx; margin: 0;
+	 .s{ height: 100%;}
+	 }
+	.swiper-tab-list.active{
+		background: #fff; border-radius: 8upx; color: #FF3333;
 	}
 }
 .swiper-item,.swiper-item .img{ width: 100%; height: 100%;}
 .swiper .swiper{ height: 340upx;}
-.uni-index-wrap{
-	height: calc(100% - 44px);
-	/* #ifdef MP-WEIXIN */
-	height: 100%;
-	/* #endif */
+.index_Content{
+	height: calc(100% - 180upx);
 	overflow-y: auto;
 }
 /*品牌馆*/
@@ -117,7 +145,7 @@
 		}
 		.time_span{
 			color:#ffffff;font-size:24upx;text-align: center;
-			width:40upx;height:40upx;background: #000000;
+			width:40upx;height:40upx;background: #000000; border-radius: 4upx; margin: 0 4upx;
 		}
 		.list{
 			padding:20upx;background: #ffffff;
