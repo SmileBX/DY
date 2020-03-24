@@ -94,7 +94,7 @@
 }
 
 .icon-sousuo:before {
-  content: "\e633";
+  content: "\e633";color:#999;
 }
 
 .icon-shuangjiantouxia:before {
@@ -114,7 +114,7 @@
 }
 
 .icon-caidan:before {
-  content: "\e607";
+  content: "\e607";color:#ffffff;
 }
 
 .icon-gou:before {

@@ -112,7 +112,6 @@
 									</view>
 								</view>
 							</view>
-							
 						</scroll-view>
 					</view>
 				</view>

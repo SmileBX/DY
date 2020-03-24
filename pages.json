@@ -1,6 +1,17 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path":"pages/other/hotBrand",
+			"style": {
+				"navigationBarTitleText": "热销榜",
+				"navigationBarBackgroundColor":"#94aebe",
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false //首页去除原生导航
+				// }
+			}
+		},
+		{
 			"path": "pages/tabBar/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -30,7 +41,7 @@
 		{
 			"path": "pages/tabBar/live/live",
 			"style": {
-				"navigationBarTitleText": "直播",
+				"navigationBarTitleText": "收藏",
 				"enablePullDownRefresh" : false,
 				"app-plus": {
 					"titleNView": false, //首页去除原生导航
@@ -67,10 +78,13 @@
 				}
 			}
 		}
+		
 	],
 	"subPackages":[{
 		"root":"pages/member",
-		"pages":[]
+		"pages":[
+			
+		]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -84,7 +98,7 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "",
+				"pagePath": "pages/tabBar/live/live",
 				"iconPath": "static/foot/live.png",
 				"selectedIconPath": "static/foot/live.png",
 				"text": ""

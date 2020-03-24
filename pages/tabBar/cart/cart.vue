@@ -11,7 +11,7 @@
 			<text @click="ManageCart">{{isEdittxt}}</text>
 		</view>
 		<!--  #endif -->
-		<view  :style="{'height':barHeight+44+'px'}"></view>
+		<!-- <view  :style="{'height':barHeight+44+'px'}"></view> -->
 		<view class="hasContentPage" v-if="hascartlist">
 			<view class="cartGroupList">
 				<view :class="['item',isMultipleStore>0?'':'mb10']" v-for="(item,index) in cartlist" :key="index">
