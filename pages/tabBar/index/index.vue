@@ -38,7 +38,7 @@
 				</view>
 			</view>
 			<!--菜单栏-->
-			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2">
+			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
 				<view v-for="(tab,index) in 8" :key="index" class="tab_item">
 					<view v-for="(item,ell) in 2" :class="[tabIndex==ell ? 'active' : '']" :id="'tabNum'+ell"
 					 :data-current="ell" :key="ell">
@@ -53,7 +53,7 @@
 			<view class="index_pin">
 				<image src="../../../static/of/f1.png" mode="widthFix"></image>
 				<view class="pin_list flex justifyContentBetween">
-					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}">
+					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tohouse('/pages/homePage/house')">
 						<view class="item_logo">
 							<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 						</view>
@@ -84,8 +84,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="list flex justifyContentBetween">
-					<view v-for="(item,index) in 3" :key="index" class="item_img">
+				<view class="list flex justifyContentBetween" >
+					<view v-for="(item,index) in 3" :key="index" class="item_img" @click="toautomobile('/pages/homePage/automobile')">
 						<image src="../../../static/of/1.png"></image>
 					</view>
 				</view>
@@ -161,6 +161,30 @@
 		methods:{
 			//跳转
 			tolink(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 车位 没跳
+			// @click="totruckspace('/pages/homePage/truckspace')"
+			totruckspace(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 家居
+			tohouse(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 近视
+			toshortsightedness(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			toautomobile(Url) {
 				uni.navigateTo({
 					url: Url
 				})
