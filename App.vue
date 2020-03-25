@@ -27,4 +27,8 @@
 		background-color: #cc9f68!important;
 		border-color: #cc9f68!important;
 	}
+	uni-switch .uni-switch-input.uni-switch-input-checked{
+		background-color: #FF3333!important;
+		border-color: #FF3333!important;
+	}
 </style>
