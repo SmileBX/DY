@@ -12,16 +12,31 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-xiaoxi1:before {
   content: "\e62b";
+}
+
+.icon-gou1:before {
+  content: "\e608";
+}
+
+.icon-xiaoxi1:before {
+  content: "\e62b";
+}
+
+.icon-bianji:before {
+  content: "\e621";
 }
 
 .icon-ziyuanxhdpi:before {
   content: "\e648";
 }
+
 .icon-iconset0418:before {
   content: "\e729";
 }
+
 .icon-zan:before {
   content: "\e61d";
 }
@@ -103,7 +118,7 @@
 }
 
 .icon-sousuo:before {
-  content: "\e633";color:#999;
+  content: "\e633";
 }
 
 .icon-shuangjiantouxia:before {
@@ -123,7 +138,7 @@
 }
 
 .icon-caidan:before {
-  content: "\e607";color:#ffffff;
+  content: "\e607";
 }
 
 .icon-gou:before {

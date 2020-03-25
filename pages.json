@@ -6,14 +6,14 @@
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh" : false,
 				"app-plus": {
-					"titleNView": false, //首页去除原生导航
-					"bounce": "none",
-					"scrollIndicator": "none" //不显示滚动条
-					// 			        "pullToRefresh" : {
-					// 			            "style" : "circle",
-					// 			            "offset" : "70px",
-					// 			            "color" : "#ee9b11"
-					// 			        }
+					"titleNView": false
+					//"bounce": "none",
+					// "scrollIndicator": "none" 
+					// "pullToRefresh" : {
+					// 	"style" : "circle",
+					// 	"offset" : "70px",
+					// 	"color" : "#ee9b11"
+					// }
 				}
 			}
 		},
@@ -66,8 +66,32 @@
 					"titleNView": false //首页去除原生导航
 				}
 			}
-		},
-		{
+		} 
+		,{
+            "path" : "pages/submitOrder/submitOrder",
+            "style" : {
+				"navigationBarTitleText": "确定订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {
+				"navigationBarTitleText": "支付订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/payresult/payresult",
+            "style" : {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+		,{
 			"path":"pages/other/hotBrand",
 			"style": {
 				"navigationBarTitleText": "热销榜",
@@ -78,8 +102,8 @@
 				// }
 			}
 		}
-		
 	],
+
 	"subPackages":[{
 		"root":"pages/member",
 		"pages":[
