@@ -1,17 +1,6 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path":"pages/other/hotBrand",
-			"style": {
-				"navigationBarTitleText": "热销榜",
-				"navigationBarBackgroundColor":"#94aebe",
-				"navigationBarTextStyle": "white"
-				// "app-plus": {
-				// 	"titleNView": false //首页去除原生导航
-				// }
-			}
-		},
-		{
 			"path": "pages/tabBar/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -77,13 +66,70 @@
 					"titleNView": false //首页去除原生导航
 				}
 			}
+		},
+		{
+			"path":"pages/other/hotBrand",
+			"style": {
+				"navigationBarTitleText": "热销榜",
+				"navigationBarBackgroundColor":"#94aebe",
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false //首页去除原生导航
+				// }
+			}
 		}
 		
 	],
 	"subPackages":[{
 		"root":"pages/member",
 		"pages":[
-			
+			{
+				"path":"question/question",
+				"style": {
+					"navigationBarTitleText": "常见问题",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"address/address",
+				"style": {
+					"navigationBarTitleText": "收货地址",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"addsite/addsite",
+				"style": {
+					"navigationBarTitleText": "新增地址",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"invoiceList/invoiceList",
+				"style": {
+					"navigationBarTitleText": "发票信息",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"addInvoice/addInvoice",
+				"style": {
+					"navigationBarTitleText": "新增发票",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"logistics/logistics",
+				"style": {
+					"navigationBarTitleText": "物流信息",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			}
 		]
 	}],
 	"globalStyle": {
