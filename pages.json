@@ -77,9 +77,32 @@
 					"titleNView": false //首页去除原生导航
 				}
 			}
-		}
-		
-	],
+		} 
+		,{
+            "path" : "pages/submitOrder/submitOrder",
+            "style" : {
+				"navigationBarTitleText": "确定订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {
+				"navigationBarTitleText": "支付订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/payresult/payresult",
+            "style" : {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+    ],
 	"subPackages":[{
 		"root":"pages/member",
 		"pages":[
