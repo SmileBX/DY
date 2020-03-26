@@ -249,6 +249,18 @@
             "path" : "pages/member/editNickName/editNickName",
             "style" : {}
         }
+        ,{
+            "path" : "pages/Wallet/bankCard/bankCard",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/Wallet/bankAdd/bankAdd",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/Wallet/bankChoose/bankChoose",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[
