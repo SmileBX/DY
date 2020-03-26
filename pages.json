@@ -59,6 +59,60 @@
 			}
 		},
 		{
+			"path": "pages/tabBar/my/anchor",
+			"style": {
+				"navigationBarTitleText": "关注主播",  //我的页面里
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/my/wallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包",  //我的页面里
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/my/withdrawal",
+			"style": {
+				"navigationBarTitleText": "余额提现",  //我的页面里
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/my/topup",
+			"style": {
+				"navigationBarTitleText": "余额充值",  //我的页面里
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/my/transaction",
+			"style": {
+				"navigationBarTitleText": "交易明细",  //我的页面里
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/my/browsing",
+			"style": {
+				"navigationBarTitleText": "我的足迹",  //我的页面里
+				"app-plus": {
+					"titleNView": false //首页去除原生导航
+				}
+			}
+		},
+		{
 			"path":"pages/classify/classify",
 			"style": {
 				"navigationBarTitleText": "分类",

@@ -32,7 +32,7 @@
 							<view class="num">0</view>
 						</view>
 						<view class="item">
-							<view class="title">关注主播</view>
+							<view class="title" @click="toanchor()">关注主播</view>
 							<view class="num">0</view>
 						</view>
 					</view>
@@ -104,7 +104,7 @@
 				<view class="dd-list col__list li_25 center clear">
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_qb.png" mode=""></image>
-						<view class="txt">我的钱包</view>
+						<view class="txt" @click="towallet()">我的钱包</view>
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_sy.png" mode=""></image>
@@ -116,7 +116,7 @@
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_zj.png" mode=""></image>
-						<view class="txt">浏览记录</view>
+						<view class="txt" @click="tobrowsing">浏览记录</view>
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_pj.png" mode=""></image>
@@ -214,6 +214,25 @@
 					url:'/pages/home/addAfter/addAfter'
 				})
 			},
+			// 我的主播
+			toanchor(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/anchor'
+				})
+			},
+			// 我的钱包
+			towallet(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/wallet'
+				})
+			},
+			// 浏览记录
+			tobrowsing(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/browsing'
+				})
+			},
+		
 			//是否开启分销
 			async SystemInfo(){
 				// let result = await get("System/GetWebConfiguration",{});
