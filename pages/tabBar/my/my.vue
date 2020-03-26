@@ -155,13 +155,12 @@
 </template>
 
 <script>
-	// import {
-	// 	host,
-	// 	post,
-	// 	get,
-	// 	toLogin,
-	// 	getCurrentPageUrlWithArgs
-	// } from '@/common/util.js';
+	import {
+		host,
+		post,
+		get,
+		toLogin
+	} from '@/common/util.js';
 	import "@/common/dd_style.css";
 	export default {
 		onLoad() {
@@ -181,7 +180,6 @@
 			    this.getMemberInfo();
 				this.GetMemInfo();
 			}
-			this.SystemInfo();
 		},
 		data() {
 			return {
@@ -213,13 +211,6 @@
 				uni.navigateTo({
 					url:'/pages/home/addAfter/addAfter'
 				})
-			},
-			//是否开启分销
-			async SystemInfo(){
-				// let result = await get("System/GetWebConfiguration",{});
-				// if (result.code === 0) {
-				// 	this.isfx = result.data.IsDistributionSystem;
-				// }
 			},
 			async GetMemInfo(){
 				let result = await post("User/GetMemInfo", {

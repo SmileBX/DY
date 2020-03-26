@@ -65,7 +65,7 @@ var dateUtils = {
 	}
 };
 
-const host = 'http://tuzhuangapi.wtvxin.com/api/';  //接口地址
+const host = 'http://ddypapi.wtvxin.com/api/';  //接口地址
 //请求封装
 function request(url, method, data, header = {}) {
   uni.showLoading({
