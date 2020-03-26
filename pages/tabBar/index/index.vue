@@ -38,7 +38,7 @@
 				</view>
 			</view>
 			<!--菜单栏-->
-			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2">
+			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
 				<view v-for="(tab,index) in 8" :key="index" class="tab_item">
 					<view v-for="(item,ell) in 2" :class="[tabIndex==ell ? 'active' : '']" :id="'tabNum'+ell"
 					 :data-current="ell" :key="ell">
@@ -160,6 +160,31 @@
 		methods:{
 			//跳转
 			tolink(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 车位 没跳
+			// @click="totruckspace('/pages/homePage/truckspace')"
+			totruckspace(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 家居
+			tohouse(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 近视
+			toshortsightedness(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 汽车
+			toautomobile(Url) {
 				uni.navigateTo({
 					url: Url
 				})
