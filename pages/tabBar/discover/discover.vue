@@ -124,7 +124,7 @@
 				navlist:[{id:1,title:'为您推荐'},{id:2,title:'精选推荐'}],
 				userId: "",
 				token: "",
-				curPage:"",
+				barHeight:0,
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				hasData: false,

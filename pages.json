@@ -102,7 +102,50 @@
 				// }
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/brand/brandIndex/brandIndex",
+            "style" : {
+				"navigationBarTitleText": "品牌馆",
+				"enablePullDownRefresh" : true,
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"text": "\ue71a",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							},
+							{
+								"text": "\ue641",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/brand/brandproLsit/brandproLsit",
+            "style" : {
+				"navigationBarTitleText": "品牌馆特惠",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "\ue605",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#000"
+							}
+						]
+					}
+				}
+			}
+        }
+    ],
 
 	"subPackages":[{
 		"root":"pages/member",
