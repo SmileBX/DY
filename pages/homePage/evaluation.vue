@@ -4,7 +4,7 @@
 		<view class="minute">
 			<view class="given">
 				<view class="screen">评分：</view>
-				<view class="stars">
+				<view class="stars" style="margin-right: 210rpx;">
 					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
 					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
 					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
@@ -52,9 +52,12 @@
 				<image class="carportimgs" src="" mode=""></image>
 				<image class="carportimgs" src="" mode=""></image>
 			</view>
-			<view class="">
-				<view class=""><image src="" mode=""></image>5786</view>
-				<view class=""><image src="" mode=""></image>4633</view>
+			<view class="figure">
+				<view class="" style="display: flex;">
+					<image style="width: 30rpx; height: 30rpx;" src="../../static/hpicons/news.svg" mode=""></image>5786
+					<view class="">12</view>
+				</view>
+				<view class=""><image src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
 			</view>
 		</view>
 	</view>
@@ -144,5 +147,10 @@
 		border-radius:50%;
 		background: #795548;
 	}
+	.figure{
+		display: flex;
+		justify-content: flex-end;
+	}
+	
 	
 </style>

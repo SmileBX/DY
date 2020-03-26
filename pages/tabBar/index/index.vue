@@ -184,6 +184,7 @@
 					url: Url
 				})
 			},
+			// 汽车
 			toautomobile(Url) {
 				uni.navigateTo({
 					url: Url
