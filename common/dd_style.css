@@ -75,7 +75,7 @@
 }
 
 .bg_89674c {
-	background-color: #ee9b11 !important;
+	background-color: #FF3333 !important;
 }
 .pt0{
 	padding-top:0 !important;
@@ -945,20 +945,7 @@ button.fill {
 	align-items: center;
 	position: relative;
 }
-.levelPanel .item .outside:after{
-	position: absolute;
-    right: 20upx;
-    bottom: 0;
-    left: 20upx;
-    content: '';
-    -webkit-transform: scaleY(.5);
-    -ms-transform: scaleY(.5);
-    transform: scaleY(.5);
-    border-bottom: 1px dashed #e6e6e6;
-}
-.levelPanel .item .outside:last-child:after{
-	display: none;
-}
+
 .levelPanel .item .outside .right {
 	margin-left: 20upx;
 }
@@ -1076,6 +1063,7 @@ button.fill {
 	font-size: 36upx;
 	font-family: arial;
 }
+.levelPanel .item .outside .txtBox .new-price .yuan{ font-size: 24upx;}
 .levelPanel .item .outside .txtBox .new-price.plusprice{
 	color: #333;
 }
@@ -1286,16 +1274,15 @@ button.fill {
 }
 
 .cartGroupList .item__hd {
-	background-color: #fff;
-	padding: 20upx 20upx 10upx;
+	background-color: #ffefef;
+	padding: 20upx;
 	margin-top: 20upx;
-	border-bottom: 1px solid #eee;
+	border-radius: 12upx 12upx 0 0;
 }
-
-.cartGroupList .item__hd .shopName {
-	background: url(http://www.sc-mall.net/static/shopico.png) left center no-repeat;
-	background-size: 50upx;
-	padding-left: 64upx;
+.cartGroupList .item__hd .shop{ width: 80%;}
+.cartGroupList .item__hd .shopName{ max-width: 400upx;}
+.cartGroupList .item__hd .icon-dianpu  {
+	font-size: 40upx; margin-right: 10upx; line-height: 1;
 }
 
 .selNumRow .uni-numbox{
@@ -1345,7 +1332,7 @@ button.fill {
 .cartFoot .inner .inner1 {
 	color: #333333;
 }
-
+.cartFoot .inner .inner1 .hj{ line-height: 1;}
 .cartFoot .inner .inner1 .msg {
 	font-size: 24upx;
 	color: #989898;
@@ -1466,11 +1453,6 @@ button.fill {
 	left: 0;
 	font-size: 48upx;
 }
-
-.goodsContent .levelPanel {
-	border-bottom: 1px solid #F2F2F2;
-}
-
 .priceDetail {
 	padding: 20upx 0;
 	margin-bottom: 20upx;
@@ -1697,7 +1679,7 @@ button.fill {
   left: 0;
   height: 100%;
   top: 30upx;
-  border-left: 1px dashed #1ec26b;
+  border-left: 1px dashed #FF3333;
 }
 /*  #endif  */
 .logistics .addr .inner:before {
@@ -1707,7 +1689,7 @@ button.fill {
   height: 100%;
   top: 30upx;
   width: 0;
-  border-left: 1px dashed #1ec26b;
+  border-left: 1px dashed #FF3333;
 }
 .logistics .addr .inner .dian {
   position: absolute;
@@ -1719,7 +1701,7 @@ button.fill {
   text-align: center;
   line-height: 52upx;
   color: #fff;
-  background: #1ec26b;
+  background: #FF3333;
   border-radius: 50%;
 }
 .logistics .addr .inner .addrInfo {
@@ -1831,7 +1813,7 @@ button.fill {
 	margin-right: 40upx;
 }
 .addInvoice__weui-cells .tag.active{
-	border-color:#ee9b11;
+	border-color:#FF3333;
 }
 .addInvoice__weui-cells .msg{
 	line-height: 1.2;

@@ -6,14 +6,14 @@
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh" : false,
 				"app-plus": {
-					"titleNView": false, //首页去除原生导航
-					"bounce": "none",
-					"scrollIndicator": "none" //不显示滚动条
-					// 			        "pullToRefresh" : {
-					// 			            "style" : "circle",
-					// 			            "offset" : "70px",
-					// 			            "color" : "#ee9b11"
-					// 			        }
+					"titleNView": false
+					//"bounce": "none",
+					// "scrollIndicator": "none" 
+					// "pullToRefresh" : {
+					// 	"style" : "circle",
+					// 	"offset" : "70px",
+					// 	"color" : "#ee9b11"
+					// }
 				}
 			}
 		},
@@ -30,7 +30,7 @@
 		{
 			"path": "pages/tabBar/live/live",
 			"style": {
-				"navigationBarTitleText": "直播",
+				"navigationBarTitleText": "收藏",
 				"enablePullDownRefresh" : false,
 				"app-plus": {
 					"titleNView": false, //首页去除原生导航
@@ -156,10 +156,164 @@
 				}
 			}
 		}
+		,{
+            "path" : "pages/submitOrder/submitOrder",
+            "style" : {
+				"navigationBarTitleText": "确定订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {
+				"navigationBarTitleText": "支付订单",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+        ,{
+            "path" : "pages/payresult/payresult",
+            "style" : {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#ff3333",
+				"navigationBarTextStyle": "white"
+			}
+        }
+		,{
+			"path":"pages/other/hotBrand",
+			"style": {
+				"navigationBarTitleText": "热销榜",
+				"navigationBarBackgroundColor":"#94aebe",
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false //首页去除原生导航
+				// }
+			}
+		}
+	    ,{
+            "path" : "pages/brand/brandIndex/brandIndex",
+            "style" : {
+				"navigationBarTitleText": "品牌馆",
+				"enablePullDownRefresh" : true,
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"text": "\ue71a",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							},
+							{
+								"text": "\ue641",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/brand/brandproLsit/brandproLsit",
+            "style" : {
+				"navigationBarTitleText": "品牌馆特惠",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "\ue605",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#000"
+							}
+						]
+					}
+				}
+			}
+        }
     ],
+
 	"subPackages":[{
 		"root":"pages/member",
-		"pages":[]
+		"pages":[
+			{
+				"path":"question/question",
+				"style": {
+					"navigationBarTitleText": "常见问题",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"address/address",
+				"style": {
+					"navigationBarTitleText": "收货地址",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"addsite/addsite",
+				"style": {
+					"navigationBarTitleText": "新增地址",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"invoiceList/invoiceList",
+				"style": {
+					"navigationBarTitleText": "发票信息",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"addInvoice/addInvoice",
+				"style": {
+					"navigationBarTitleText": "新增发票",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"logistics/logistics",
+				"style": {
+					"navigationBarTitleText": "物流信息",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"apply/apply",
+				"style": {
+					"navigationBarTitleText": "申请退款",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"order/order",
+				"style": {
+					"navigationBarTitleText": "我的订单",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"orderDetail/orderDetail",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"navigationBarBackgroundColor": "#ff3333",
+					"enablePullDownRefresh" : true,
+					"app-plus": {
+						"titleNView": false //首页去除原生导航
+					}
+				}
+			}
+		]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -173,7 +327,7 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "",
+				"pagePath": "pages/tabBar/live/live",
 				"iconPath": "static/foot/live.png",
 				"selectedIconPath": "static/foot/live.png",
 				"text": ""

@@ -1,6 +1,9 @@
 <template>
 	<view class="emptybox" v-if="isShow">
-		<view class="iconimg"><image class="img" src="http://www.sc-mall.net/static/noCart.png" mode="aspectFill"></image></view>
+		<view class="iconimg">
+			<view class="iconfont icon-wushuju"></view>
+			<!-- <image class="img" src="http://www.sc-mall.net/static/noCart.png" mode="aspectFill"></image> -->
+		</view>
 		<view class="tips uni-center">暂无数据 </view>
 	</view>
 </template>
@@ -26,5 +29,6 @@
     margin-top:0 !important;
   }
  .iconimg .img{ display: block; width: 200upx; height: 200upx; margin: 0 auto 20upx;}
+ .iconimg .iconfont{ display: block; font-size: 80upx; color: #999; margin: 0 auto 20upx;}
  .emptybox .tips{ color: #999;}
 </style>

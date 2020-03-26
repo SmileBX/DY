@@ -176,7 +176,6 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			if (toLogin()) {
 				this.NewsCount();
 			    this.getMemberInfo();
@@ -186,7 +185,6 @@
 		},
 		data() {
 			return {
-				curPage: "",
 				barHeight:0,
 				userId: "",
 				token: "",

@@ -45,7 +45,7 @@
 						 <view>
 							<image src="../../../static/of/4.png" class="tab_img"></image> 
 						 </view>
-						<view class="tab_name"> 近视 </view>
+						<view class="tab_name center"> 近视 </view>
 					</view>
 				</view>
 			</scroll-view>
@@ -53,7 +53,7 @@
 			<view class="index_pin">
 				<image src="../../../static/of/f1.png" mode="widthFix"></image>
 				<view class="pin_list flex justifyContentBetween">
-					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tohouse('/pages/homePage/house')">
+					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex')">
 						<view class="item_logo">
 							<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 						</view>
@@ -84,8 +84,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="list flex justifyContentBetween" >
-					<view v-for="(item,index) in 3" :key="index" class="item_img" @click="toautomobile('/pages/homePage/automobile')">
+				<view class="list flex justifyContentBetween">
+					<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
 						<image src="../../../static/of/1.png"></image>
 					</view>
 				</view>
@@ -112,7 +112,6 @@
 									</view>
 								</view>
 							</view>
-							
 						</scroll-view>
 					</view>
 				</view>

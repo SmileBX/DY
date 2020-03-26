@@ -14,32 +14,30 @@
 		<view  :style="{'height':barHeight+44+'px'}"></view>
 		<view class="hasContentPage" v-if="hascartlist">
 			<view class="cartGroupList">
-				<view :class="['item',isMultipleStore>0?'':'mb10']" v-for="(item,index) in cartlist" :key="index">
-					<block v-if="false">
-					<view class="item__hd flex" v-if="index===0 || cartlist[index-1].ShopId!=item.ShopId">
-						<view class="flexItem flex1">
-							<view @click="golink('/pages/store/storeIndex/storeIndex?shopId='+item.ShopId)" class="aLink"><text class="shopName">{{item.ShopName}}</text>
-								<view class="uni-icon uni-icon-arrowright"></view>
-							</view>
+				<view class="item" v-for="(item,index) in 2" :key="index">
+					<view class="item__hd flex flex-start">
+						<view class="IconsCK IconsCK-radio checked"></view>
+						<view class="shop flex flex-start" @click="golink('/pages/store/storeIndex/storeIndex?shopId='+item.ShopId)">
+							<view class="iconfont icon-dianpu"></view>
+							<view class="shopName uni-ellipsis">炫宝迪旗舰店</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
-						<view class="flexItem btn_receive" @click="showCoupon(item.ShopId)">领券</view>
+						<view class="btn_receive" @click="showCoupon(item.ShopId)">领券</view>
 					</view>
-					</block>
-					<view class="column levelPanel" :style="{borderBottom:false?'':'none'}">
+					<view class="column levelPanel">
 						<view class="item">
 							<view class="outside">
-								<view class="IconsCK IconsCK-radio" @click="selectStyle(item,index,item.select,item.disBuy,$event)" :class="{'disabled':item.disBuy,'checked':item.select}"></view>
-								<view class="pictrueAll" @click="gotoDetail(item.ProductId,item.TabFlashSale,item.disBuy)">
+								<view class="IconsCK IconsCK-radio checked"></view>
+								<view class="pictrueAll">
 									<view class="pictrue">
-										<text class="mark" v-if="item.TabFlashSale==1">限时</text>
-										<image :src="item.ProductImg" mode=""></image>
+										<image src="../../../static/of/2.png" mode=""></image>
 									</view>
 								</view>
 								<view class="txtBox">
-									<view class="title text-line2" @click="gotoDetail(item.ProductId,item.TabFlashSale,item.disBuy)">{{item.ProductName}}</view>
+									<view class="title text-line2">紫元大厦</view>
 									<view class="flex skuBox">
 										<view class="flex-item flex1 left">
-											<view class="type" v-if="item.SpecText!=''" @click="showSku(item.ProductId,item.Id,item.Number,item.TabFlashSale)">{{item.SpecText}}<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
+											<view class="type">07oo<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
 											</view>
 										</view>
 										<view class="flex-item right">
@@ -48,11 +46,40 @@
 									</view>
 									<view class="flex mt5 flexAlignCneter">
 										<view class="flex-item flex1 left">
-											
-											<text :class="['new-price',item.IsOkPlus==1&&item.TabFlashSale==0?'plusprice':'']">￥{{item.SalePrice}}</text>
+											<view class="new-price"><text class="yuan">￥</text>56万<text class="fz12">返两万</text></view>
 										</view>
 										<view class="flex-item right selNumRow">
-											<uni-number-box :disabled="false" :value="item.Number" :min="item.MinBuyNum" :max="item.MaxBuyNum" v-on:change="change" :index="index"></uni-number-box>
+											<uni-number-box :disabled="false" :value="1" :min="1" :max="5" v-on:change="change" :index="index"></uni-number-box>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="outside">
+								<view class="IconsCK IconsCK-radio checked"></view>
+								<view class="pictrueAll">
+									<view class="pictrue">
+										<image src="../../../static/of/2.png" mode=""></image>
+									</view>
+								</view>
+								<view class="txtBox">
+									<view class="title text-line2">紫元大厦</view>
+									<view class="flex skuBox">
+										<view class="flex-item flex1 left">
+											<view class="type">07oo<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
+											</view>
+										</view>
+										<view class="flex-item right">
+											<!-- <text class="buyNum">x1</text> -->
+										</view>
+									</view>
+									<view class="flex mt5 flexAlignCneter">
+										<view class="flex-item flex1 left">
+											<view class="new-price"><text class="yuan">￥</text>569</view>
+										</view>
+										<view class="flex-item right selNumRow">
+											<uni-number-box :disabled="false" :value="1" :min="1" :max="5" v-on:change="change" :index="index"></uni-number-box>
 										</view>
 									</view>
 								</view>
@@ -61,19 +88,21 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view style="width: 100%;height: 120upx;"></view> -->
 			<view class="cartFoot">
 				<view class="inner fixed flex flexAlignCneter">
 					<view class="left">
 						<view class="IconsCK IconsCK-radio" @click="Allcheck()" :class="{'checked':allSelect}"></view>全选
 					</view>
 					<view class="right flex1 text_r">
-						<view class="inner1" v-if="!isEdit">
-							<text class="hj"><text class="msg">不含运费</text>合计:<text class="allPrice">￥{{allPrice}}</text></text>
-							<button type="primary" size="middle" class="btnPay radius100" @click="settle">结算({{selectlen}})</button>
+						<view class="inner1 flex flex-end" v-if="!isEdit">
+							<view>
+								<view class="hj">总计:<text class="allPrice"><text class="fz12">￥</text>{{allPrice}}</text></view>
+								<view class="red fz12">返2万</view>
+							</view>
+							<button type="primary" size="middle" class="btnPay radius100" @click="golink('/pages/submitOrder/submitOrder')">结算({{selectlen}})</button>
 						</view>
 						<view class="deletbox" v-else>
-							<button class="delet2" @click="goCollect">我的收藏</button>
+							<button class="delet2" @click="golink('/pages/member/myCollect/myCollect')">我的收藏</button>
 							<button class="delet" @click="DelCartBtn">删除</button>
 						</view>
 					</view>
@@ -84,11 +113,11 @@
 		<view class="noConPage table bg_fff nodatalocal" v-if="noDataIsShow">
 			<view class="table-cell">
 				<view class="noDataImg">
-					<image src="http://www.sc-mall.net/static/noCart.png" mode="widthFix"></image>
+					<image src="../../../static/icons/nocart.png" mode="widthFix"></image>
 				</view>
-				<view class="tips">抱歉，您没有记录哦~</view>
+				<view class="tips">购物车空空如也~</view>
 				<view class="btnBox">
-					<button plain="true" size="middle" class="btn btn-active radius100" style="padding:0 40upx;" @click="goCollect">我的收藏</button>
+					<button plain="true" size="middle" class="btn btn-active" style="padding:0 40upx;" @click="goIndex">去购物</button>
 				</view>
 			</view>
 		</view>
@@ -143,7 +172,6 @@
 				userId:"",
 				barHeight:0,
 				token:"",
-				isMultipleStore:0,
 				memberInfo:{},//会员信息
 				isPLUS:0,//会员是否是plus
 				proInfo:{},      //单个商品信息
@@ -179,12 +207,9 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			// #ifdef H5
-			   SEOTitle('');
-			// #endif
 			//this.getMemberInfo();
 			this.cartlist=[];
-			this.getCartList();
+			//this.getCartList();
 			this.Allcheck();
 			this.isEdit=false;
 			this.isEdittxt="管理";
@@ -258,7 +283,7 @@
 					let that = this;
 					uni.showModal({
 						content: "您确定要删除所选商品吗？",
-						confirmColor:"#ee9b11",
+						confirmColor:"#ff3333",
 						success: function(res) {
 							if (res.confirm) {
 								_this.DelCart(dataArr);
@@ -438,9 +463,8 @@
 				});
 				if(dataArr.length){
 					uni.navigateTo({ 
-						url: "/pages/submitOrder/submitOrder?cartItem=" + dataArr.join(",") +'&prolist='+JSON.stringify(prodatalist)+'&orderSType=1'
+						url: "/pages/submitOrder/submitOrder?cartItem=" + dataArr.join(",") +'&orderSType=1'
 					});
-					// _this.changeData();
 				}else{
 					uni.showToast({
 						title: "请选择你要购买的产品！",
@@ -449,9 +473,9 @@
 					});
 				}
 			},
-			goCollect(){
-				uni.navigateTo({
-					url: '/pages/member/myCollect/myCollect'
+			goIndex(){
+				uni.switchTab({
+					url: '/pages/tabBar/index/index'
 				})
 			},
 			showSku(proId,skuCartId,skunumber,isflash){
@@ -627,9 +651,22 @@
 	.content {
 		height: 100%;
 	}
-
+	.content::before{
+		display: block;
+	    content: '';
+	    background: #ff3737;
+	    width: 150vw;
+	    height: 360px;
+	    position: absolute;
+	    top: 50px;
+	    left: 50%;
+	    -webkit-transform: translate(-50%,-50%);
+	    transform: translate(-50%,-50%);
+	    border-radius: 50%;
+	}
 	.hasContentPage {
 		/* height: 100%; */
+		position: relative;
 		overflow-y: auto;
 	}
 /* #ifdef MP-WEIXIN */
@@ -643,7 +680,7 @@
 	}
 
 	.btn_receive {
-		color: #999;
+		color: #FF3333;
 		font-size: 26upx;
 	}
 	.levelPanel{border-bottom: 1px dashed #f5f5f5;}
@@ -655,7 +692,7 @@
 	}
 
 	.cartGroupList {
-		padding: 0 20upx 100upx;
+		padding: 0 20upx 120upx;
 
 	}
 
@@ -675,8 +712,8 @@
 		height: 60upx;
 		line-height: 60upx;
 		border-radius: 30upx;
-		border: #ff6666 1upx solid;
-		color: #ff6666;
+		border: #999 1upx solid;
+		color: #999;
 		font-size: 27upx;
 		display: inline-block;
 		margin-top: 8upx;
@@ -687,14 +724,14 @@
 		height: 60upx;
 		line-height: 60upx;
 		border-radius: 30upx;
-		border: #fc8556 1upx solid;
-		color: #fc8556;
+		border: #FF3333 1upx solid;
+		color: #FF3333;
 		font-size: 27upx;
 		display: inline-block;
 		margin-top: 8upx;
 	}
 	.carthead{
-		background-color: #f5f5f5;
+		background-color: #ff3737;
 		width: 750upx;
 		padding: 0 20upx;
 		display: flex;
@@ -707,7 +744,7 @@
 		box-sizing: border-box;
 	}
 	.wxcarthead{
-		background-color: #fff;
+		background-color: #ff3737;
 		width: 100%;
 		padding: 0 20upx;
 		display: flex;
@@ -722,10 +759,12 @@
 	.carthead text:nth-child(1){
 		font-size: 32upx;
 		font-weight: bold;
+		color: #fff;
 	}
 	.carthead text:nth-child(2){
 		position: absolute;
 		right: 20upx;
+		color: #fff;
 	}
 	.nodatalocal{
 		position: fixed;
@@ -753,7 +792,7 @@
 	.uni-modal-Coupon .lab{ text-align: left; color: #999; margin-bottom: 16upx;}
 	.coupon1{
 		margin-bottom: 20upx;
-		background-image: url("/static/coupon6.png");
+		background-image: url("/static/coupon2.png");
 		background-repeat:no-repeat;
 	  background-size:100% ;
 	}
@@ -843,8 +882,8 @@
 		color: #999;
 	}
 	.btnBox .btn{
-		color: #ee9b11;
-		border-color: #ee9b11 !important;
+		color: #FF3333;
+		border-color: #FF3333 !important;
 	}
 	.cartFoot .flexAlignCneter{
 		box-sizing: border-box;

@@ -1,59 +1,130 @@
 <template>
 	<view class="content">
-		<!-- 固定在顶部的导航栏 -->
-		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true" left-icon="search"
-		 @click-left="search" right-icon="plus" @click-right="Issue">
-			<view class="uni-head-tab">
-				<view v-for="tab in tabBars" :key="tab.type" :class="['tab-item',tabIndex==tab.type ? 'active' : '']"
-				 @click="tapTab(tab.type)">
-					<view class="s"> {{tab.name}} </view>
+		<view class="head">
+			<view class="carthead"  :style="{'padding-top':barHeight+'px'}">
+				<text >大单易拼推荐</text>
+			</view>
+			<view class="flex justifyContentBetween serch_box">
+				<view class="flex search flexAlignCenter pw2 flex1">
+					<view class="iconfont icon-sousuo"></view>
+					<input type="text" placeholder="请输入关键字" class="flex1">
+				</view>
+				<view class="head_r flex flexAlignCenter">
+					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
-		</uni-nav-bar>
-		<view style="height:44px;"></view>
-		<!-- 使用非原生导航栏后需要在页面顶部占位 -->
-		<view class="list" v-if="hasData">
-			<block v-for="(item,index) in medialist" :key="index">
-				<block v-if="tabIndex!=6">
-				<media-list :data="item" Grid="2" @click="goDetail" @flow="flow(item.FindType,item.ShopId,item.MemberId,index)" @previewImg="previewImg"></media-list>	 
-				</block>
-				<block v-else>
-				<actiList :data="item"></actiList>
-				</block>
-			</block>
-			
-			<view class="uni-tab-bar-loading">
-				<uni-load-more :loadingType="loadingType"></uni-load-more>
+			<view class="flex b_tab_list">
+				<view class="flex flexAlignCenter b_tab_item">
+					<image src="../../../static/icons/t1.png"></image>
+					<view class="flex1">品牌授权</view>
+				</view>
+				<view class="flex flexAlignCenter b_tab_item">
+					<image src="../../../static/icons/t2.png"></image>
+					<view class="flex1">退货无忧</view>
+				</view>
+				<view class="flex flexAlignCenter b_tab_item">
+					<image src="../../../static/icons/t3.png"></image>
+					<view class="flex1">买手精选</view>
+				</view>
+				<view class="flex flexAlignCenter b_tab_item">
+					<image src="../../../static/icons/t4.png"></image>
+					<view class="flex1">天天平价</view>
+				</view>
 			</view>
 		</view>
-		<noData :isShow="noDataIsShow"></noData>
-		<!-- #ifndef MP -->
-		<view style="height:50px;"></view>
-		<!-- #endif -->
+		<view class="tui_bg">
+			<image src="../../../static/of/tui_bg.png"></image>
+		</view>
+		<view class="card">
+			<view class="pw3">
+				<view class="hot combox">
+					<view class="flex title justifyContentBetween">
+						<view class="flex flexAlignEnd">
+							<view class="name">热销榜</view>
+							<view class="subtitle">排序由销量、搜索、好评等综合得出</view>
+						</view>
+						<view class="flex flexAlignCenter">
+							<view class="color_gray">更多</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
+						</view>
+					</view>
+					<view class="list flex justifyContentBetween">
+						<view class="item" v-for="(item,index) in 3" :key="index">
+							<image src="../../../static/icons/hot_bg.png" class="bg"></image>
+							<image src="../../../static/of/4.png"></image>
+							<view class="item_title">奥迪A4 Avant 先锋派</view>
+							<view class="brand">1</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="pw3 mt2">
+				<view class="combox">
+					<view class="flex title justifyContentBetween pb0">
+						<view class="flex flexAlignEnd">
+							<view class="name">商家力推</view>
+						</view>
+					</view>
+					<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
+						<view class="uni-bd">
+							<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
+								<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="goDetail(item.Id)">
+									<view class="itembox">
+										<view class="image-view">
+											<image class="img" src="../../../static/of/3.png" mode="aspectFill"></image>
+										</view>
+										<view class="txtbox">
+											<view class="txt uni-ellipsis">珍视明眼药水</view>
+											<view class="uni-product-price">
+												<text class="uni-product-price-original">￥2万(补贴)</text>
+											</view>
+										</view>
+									</view>
+								</view>
+							</scroll-view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!--菜单列表-->
+			<view class="menu">
+				<view class="menu_nav flex justifyContentBetween">
+					<view class="menu_item flex flexAlignCenter flexColumn" v-for="(item,pll) in navlist" :key="pll" :class="{'active':pll==1}">
+						<view class="title">{{item.title}}</view>
+					</view>
+				</view>
+				<view class="list flex flexWrap justifyContentBetween">
+					<view class="item" v-for="(item,index) in 6" :key="index">
+						<image src="../../../static/of/4.png" class="item_img"></image>
+						<view class="item_info flex flexColumn flexAlignCenter">
+							<view class="item_title">超越极限音波拉皮-颈部</view>
+							<view class="flex flexAlignEnd justifyContentBetween item_total">
+								<view class="flex flexAlignEnd">
+									<span class="item_price">￥980</span>
+									<span class="item_market">￥2980</span>
+								</view>
+								<view class="item_market">68人付款</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		
 	</view>
 </template>
 
 <script>
-	// import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
-	// import uniNavBar from '@/components/uni-nav-bar.vue';
-	// import mediaList from '@/components/tab-nvue/mediaList.vue';//发现列表
-	// import actiList from '@/components/tab-nvue/actiList.vue';//活动（体验）
-	// import noData from '@/components/noData.vue'; //暂无数据
-	// import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
-	// import '@/common/head.css';
+	
 	export default {
-		components: {
-			uniNavBar,
-			mediaList,
-			actiList,
-			noData,
-			uniLoadMore
-		},
+		
 		data() {
 			return {
+				navlist:[{id:1,title:'为您推荐'},{id:2,title:'精选推荐'}],
 				userId: "",
 				token: "",
-				curPage:"",
+				barHeight:0,
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				hasData: false,
@@ -84,14 +155,14 @@
 			}
 		},
 		onLoad: function() {
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
+			
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			this.tapTab(2);
+			// this.tapTab(2);
 		},
 		methods: {
 			search() {
@@ -188,7 +259,7 @@
 				this.allPage = 0;
 				this.count = 0;
 				this.medialist = {};
-				this.FindList();
+				// this.FindList();
 			},
 			//链接详情页
 			goDetail(e) {
@@ -281,6 +352,9 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	@import "./style";
+	.uni-icon{
+		
+	}
 </style>
