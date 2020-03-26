@@ -239,6 +239,16 @@
             "path" : "pages/message/msgDetail/msgDetail",
             "style" : {}
         }
+        ,{
+            "path" : "pages/member/editinfo/editinfo",
+            "style": {
+            	"navigationBarTitleText": "个人资料"
+            }
+        }
+        ,{
+            "path" : "pages/member/editNickName/editNickName",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[

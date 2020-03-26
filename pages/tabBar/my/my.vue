@@ -7,8 +7,8 @@
 					<view @click="golink('/pages/message/messageClass/messageClass')" class="iconfont icon-xiaoxi iconBtn"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>
 				</view>
 				<view class="conBox">
-					<view class="tx_info">
-						<view @click="golink('/pages/Article/myCenter/myCenter?Memberid='+memberInfo.Id)">
+					<view class="tx_info" @click="golink('/pages/member/editinfo/editinfo?Memberid='+memberInfo.Id)">
+						<view>
 							<image class="tx" v-if="memberInfo.Avatar" :src="memberInfo.Avatar" mode="aspectFill"></image>
 							<image class="tx" v-else src="/static/default.png" mode="aspectFill"></image>
 						</view>
@@ -18,7 +18,7 @@
 									<text class="txt" style="max-width: 100%;">{{memberInfo.NickName||'您还未登录，请先登录！'}}</text>
 									<text class="plusicon" v-if="memberInfo.IsVip==1">VIP</text>
 								</view>
-								<view class="perId">ID:<text id="MemberID">{{memberInfo.Id}}</text></view>
+								<view class="perId">ID:<text id="MemberID">{{memberInfo.Id||"00000"}}</text></view>
 							</view>
 						</view>
 					</view>
