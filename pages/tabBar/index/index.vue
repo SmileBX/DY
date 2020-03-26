@@ -13,7 +13,7 @@
 					<view class="iconfont icon-xiangji"></view>
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-xiaoxi mr2"><view class="num">4</view></view>
+					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass')"><view class="num">4</view></view>
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>

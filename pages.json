@@ -102,6 +102,18 @@
 				// }
 			}
 		}
+		,{
+			"path":"pages/login/login",
+			"style":{
+				"navigationBarTitleText":"登录"
+			}
+		}
+		,{
+			"path":"pages/register/register",
+			"style":{
+				"navigationBarTitleText":"注册"
+			}
+		}
 	    ,{
             "path" : "pages/brand/brandIndex/brandIndex",
             "style" : {
@@ -144,6 +156,10 @@
 					}
 				}
 			}
+        }
+        ,{
+            "path" : "pages/message/msgDetail/msgDetail",
+            "style" : {}
         }
     ],
 
@@ -225,6 +241,25 @@
 				}
 			}
 		]
+	},{
+		"root":"pages/message",
+		"pages":[{
+                    "path" : "messageClass/messageClass",
+                    "style" : {
+						"navigationBarTitleText": "消息中心"
+					}
+                }
+                ,{
+                    "path" : "messageList/messageList",
+                    "style" : {}
+                }
+				,{
+				    "path" : "msgDetail/msgDetail",
+				    "style" : {
+						"navigationBarTitleText": "详情"
+					}
+				}
+            ]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
