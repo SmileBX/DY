@@ -196,6 +196,33 @@
 					"navigationBarBackgroundColor": "#ffffff",
 					"enablePullDownRefresh" : true
 				}
+			},
+			{
+				"path":"apply/apply",
+				"style": {
+					"navigationBarTitleText": "申请退款",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"order/order",
+				"style": {
+					"navigationBarTitleText": "我的订单",
+					"navigationBarBackgroundColor": "#ffffff",
+					"enablePullDownRefresh" : true
+				}
+			},
+			{
+				"path":"orderDetail/orderDetail",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"navigationBarBackgroundColor": "#ff3333",
+					"enablePullDownRefresh" : true,
+					"app-plus": {
+						"titleNView": false //首页去除原生导航
+					}
+				}
 			}
 		]
 	}],
