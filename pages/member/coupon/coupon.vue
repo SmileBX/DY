@@ -1,226 +1,242 @@
 <template>
-	<view class="wrap">
-		<view class="nav">
-			<view :class="{active:navindex==index}" v-for="(item,index) in navlist" :key="index" @click="navselect(index)">{{item}}</view>
-		</view>
-		<view class="couponbox" v-if="!noDataIsShow">
-			<view class="couponlist">
-				<view style="height: 96upx;"></view>
-				<view class="listtop" @click="getConpon">
-					<image class="couponimg" src="http://www.sc-mall.net/static/coupon.png"></image>
-					<text>领券中心</text>
-					<view class="uni-icon uni-icon-arrowright" style="margin: 0 10upx;"></view>
-				</view>
-				<view class="list1"> 
-					<view :class="[navindex==0?'coupon1':'',navindex==1?'coupon2':'',navindex==2?'coupon3':'']" v-for="(item,index) in 3" :key="index">
-						<view class="topbox">
-							<!-- <view class="couponleft">
-								<view class="price" v-if="item.DiscountType=='1'"><text>￥</text><text class="num">{{item.Denomination}}</text></view>
-								<view class="price" v-if="item.DiscountType=='2'"><text class="num">{{item.Denomination}}</text><text>折</text></view>
-								<view class="lefttxt" v-if="item.MeetConditions!='0'">满{{item.MeetConditions}}元可用</view>
-								<view class="lefttxt" >满300元可用</view>
-								<view class="lefttxt" v-else>无门槛</view>
-							</view> -->
-							<view class="couponright">
-								<view class="couponname">item.Title</view>
-								<view class="coupontime">item.AddTime-item.EndTime</view>
-							</view>
-							<block v-if="navindex==0">
-								<view class="bb_right">
-									20 <span class="font26">元</span>
-								</view>
-								<!-- <view class="couponbtn" @click="gotoUse(item.CouponId)">
-									<view>立即使用</view>
-								</view>
-								<view class="lookmore" @click="showtxt(index)">
-									<text :class="['uni-icon',item.hasshowtxt?'uni-icon-arrowup':'uni-icon-arrowdown']" style="color: #9b9b9b; font-size: 36upx;"></text>
-								</view> -->
-							</block>
-						</view>
-						<view class="coupontxt" v-if="item.hasshowtxt&&navindex==0">详细信息：{{item.ScopeOfUse}}</view>
-					</view>
-				</view>
-			</view>
-			<view class="uni-tab-bar-loading">
-				<uni-load-more :loadingType="loadingType"></uni-load-more>
-			</view>
-		</view>
-		<!-- 没数据页面 -->
-		<view class="nodata" v-if="noDataIsShow">
-			<view style="height: 323upx;"></view>
-			<view class="nocoupon"><image src="http://www.sc-mall.net/static/coupon1.png"></image></view>
-			<block v-if="navindex==0">
-				<view class="notxt1">暂无优惠券</view>
-				<view class="notxt2">去领券中心看看吧</view>
-				<view class="gotobtn" @click="getConpon">领券中心</view>
-			</block>
-			<block v-else>
-				<view class="notxt1">暂无数据</view>
-			</block>
-		</view>
-	</view>
+  <view class="ticket">
+      <view class="tab flex">
+        <view class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</view>
+        <span :style="'left:'+tabStyle+'upx'"></span>
+      </view>
+      <block v-if="hasData">
+        <view class="list jus-b" v-for="(item,index) in datalist" :key="index">
+          <view class="left">
+            <view>{{item.Title}}</view>
+            <span>有效期{{item.AddTime}}至{{item.EndTime}}</span>
+            <view class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</view>
+            <view class="flexc" :class="tabIndex==0?'back_col':'use'">减满券</view>
+          </view>
+          <view class="right flexc" :class="tabIndex==0?'back_col':''">
+            <view>
+              <view>{{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span></view>
+              <span>满{{item.MeetConditions}}元可使用</span>
+            </view>
+          </view>
+        </view>
+      </block>
+      <noData :isShow="noDataIsShow"></noData>
+      <view class="loading" v-if="hasData">
+        <load-more :loadingType="loadingType"></load-more>
+      </view>
+      <view class="btn_de" @click="goUrl('/pages/myson/couponCenter/main')">领券中心</view>
+  </view>
 </template>
 
 <script>
-	import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
-	import uniLoadMore from '@/components/uni-load-more.vue';
-	export default {
-		components:{
-			uniLoadMore
-		},
-		onLoad: function() {
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
-			this.userId = uni.getStorageSync("userId");
-			this.token = uni.getStorageSync("token");
-		},
-		onShow(){
-			this.navselect(0);
-		},
-		data() {
-			return {
-				userId: "",
-				token: "",
-				curPage:"",
-				loadingType: 0, //0加载前，1加载中，2没有更多了
-				isLoad: false,
-				hasData: false,
-				noDataIsShow: false,
-				page: 1,
-				pageSize: 20,
-				allPage: 0,
-				count: 0,
-				Status:0,//0全部，1已过期，2未使用，3已使用
-				couponlist:{},
-				navindex:0,
-				navlist:["未使用","已使用","已过期/失效"]
-			};
-		},
-		methods: {
-			//去领券
-			getConpon(){
-				uni.navigateTo({
-					url:'/pages/couponGet/couponGet'
-				})
-			},
-			//去使用
-			gotoUse(couponid){
-				uni.navigateTo({
-					url:'/pages/ProductList/ProductList?couponid='+couponid
-				})
-			},
-			navselect(index){
-				this.navindex=index;
-				if(index==0){
-					this.Status=2;
-				}else if(index==1){
-					this.Status=3;
-				}else if(index==2){
-					this.Status=1;
-				}
-				this.loadingType = 0;
-				this.hasData = false;
-				this.noDataIsShow = false;
-				this.isLoad = false;
-				this.page = 1;
-				this.allPage = 0;
-				this.count = 0;
-				this.couponlist = {};
-				this.CouponList();
-			},
-			/*获取优惠券列表*/
-			async CouponList() {
-				let result = await post("User/CouponList", {
-					"UserId": this.userId,
-					"Token": this.token,
-					"page": this.page,
-					"pageSize": this.pageSize,
-					"Status": this.Status
-				});
-				if (result.code === 0) {
-					let _this=this;
-					if (result.data.length > 0) {
-						this.hasData = true;
-						result.data.forEach(function(item){
-							if(item.DiscountType=="2"){
-								item.Denomination=item.Denomination*10
-							}
-							item.MeetConditions=parseInt(item.MeetConditions);
-							item.AddTime=item.AddTime.split(" ")[0].replace(/\//g,".");
-							item.EndTime=item.EndTime.split(" ")[0].replace(/\//g,".");
-							_this.$set(item,"hasshowtxt",false);
-						})
-					}
-					this.count = result.count;
-					if (this.count == 0) {
-						this.noDataIsShow = true;
-					}
-					if (parseInt(this.count) % this.pageSize === 0) {
-						this.allPage = this.count / this.pageSize;
-					} else {
-						this.allPage = parseInt(this.count / this.pageSize) + 1;
-					}
-					if (this.page === 1) {
-						this.couponlist = result.data;
-					}
-					if (this.page > 1) {
-						this.couponlist = this.couponlist.concat(
-							result.data
-						);
-					}
-					if (this.allPage <= this.page) {
-						this.isLoad = false;
-						this.loadingType = 2;
-					} else {
-						this.isLoad = true;
-						this.loadingType = 0
-					};
-				} else if (result.code === 2) {
-					let _this =this;
-					uni.showModal({
-						content: "您还没有登录，是否重新登录？",
-						success(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
-								});
-							} else if (res.cancel) {
-							}
-						}
-					});
-				} else {
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
-					});
-				}
-			},
-			showtxt(index){
-				this.couponlist[index].hasshowtxt=!this.couponlist[index].hasshowtxt
-			}
-		},
-		onReachBottom: function() {
-			if (this.isLoad) {
-				this.loadingType = 1;
-				this.page++;
-				this.CouponList();
-			} else {
-				this.loadingType = 2;
-			}
-		},
-		onPullDownRefresh() { //下拉刷新
-			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-			let _this=this;
-			_this.page = 1;
-			_this.loadingType = 1;
-			setTimeout(function () {
-				_this.CouponList();
-				uni.stopPullDownRefresh();  //停止下拉刷新动画
-			}, 1000);
-		},
-	}
+// import {post} from '@/utils'
+// import noData from "@/components/noData"; //没有数据的通用提示
+// import LoadMore from '@/components/load-more';
+export default {
+  data () {
+    return {
+      tabList:['未使用','已使用','已失效'],
+      tabIndex:0,
+      couponStatus:1,//0全部，1可用，2已使用，3已失效
+      userId:"",
+      token:"",
+      hasData:false,
+			noDataIsShow: false,//没有数据的提示是否显示
+			page: 1,
+      pageSize: 8,
+			isLoad: false,
+			isOved:false,       //显示已经到底了
+			loadingType: 0, //0加载前，1加载中，2没有更多了
+      datalist:{},
+    }
+  },
+  computed: {
+    tabStyle(){
+      return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
+    }
+  },
+  onShow(){
+    this.userId = wx.getStorageSync("userId")
+    this.token = wx.getStorageSync("token")
+    this.page=1;
+    // this.CouponList()
+  },
+  // components: {
+  //   noData,
+		// LoadMore
+  // },
+  methods: {
+    goUrl(url){
+      wx.navigateTo({
+        url:url
+      })
+    },
+    cliTab(index){
+      this.tabIndex = index;
+      this.couponStatus=index+1;
+      this.page=1;
+      this.noDataIsShow=false;
+      this.hasData=false;
+      this.CouponList();
+    },
+    //我的优惠券
+    CouponList(){
+      post('User/CouponList',{
+          UserId:this.userId,
+          Token:this.token,
+          Page:this.page,
+          PageSize:this.pageSize,
+          Status:this.couponStatus
+      }).then(res=>{
+        if(res.code==0){
+          let _this = this;
+          let len=res.data.length;
+          if (len > 0) {
+            this.hasData = true;
+            this.noDataIsShow = false;
+            res.data.map(item=>{
+              item.AddTime=item.AddTime.split("T")[0];
+              item.EndTime=item.EndTime.split("T")[0];
+            })
+          }
+          if (len == 0&&this.page==1) {
+            this.noDataIsShow = true;
+            this.hasData = false;
+          }
+          if (this.page === 1) {
+            this.datalist = res.data;
+          }
+          if (this.page > 1) {
+            this.datalist = this.datalist.concat(
+              res.data
+            );
+          }
+          if (len < this.pageSize) {
+            this.isLoad = false;
+            this.loadingType = 2;
+          } else {
+            this.isLoad = true;
+            this.loadingType = 0
+          }
+          
+        }
+      })
+    },
+
+  },
+  onReachBottom: function() {
+    if (this.isLoad) {
+      this.loadingType = 1;
+      this.isOved = false;
+      this.page++;
+      this.CouponList();
+    } else {
+      this.loadingType = 2;
+      if (this.page > 1) {
+        this.isOved = true;
+      } else {
+        this.isOved = false;
+      }
+    }
+  }
+}
 </script>
 
-<style scoped>
-@import "./style";
+<style scoped lang='scss'>
+	@import '../../../common/lz.css';
+.list::after{
+  content:'';
+  display: inline-block;
+  position: absolute;
+  top: -20upx;
+  left: 450upx;
+  width: 40upx;
+  height: 40upx;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+.list::before{
+  content:'';
+  display: inline-block;
+  position: absolute;
+  bottom: -20upx;
+  left: 450upx;
+  width: 40upx;
+  height: 40upx;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+.list{
+  width: 690upx;
+  height: 180upx;
+  border-radius: 15upx;
+  margin: 30upx;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  .use{
+    background-color: #d4d5d6!important
+  }
+  .left{
+    width: 460upx;
+    padding: 60upx 0 0 35upx;
+    position: relative;
+    span{
+      font-size: 20upx;
+      color: #999;
+    }
+    view{
+      width: 128upx;
+	    height: 40upx;
+      border-radius: 0 0 24px 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 24upx;
+      color: #fff
+    }
+  }
+  .right{
+    width: 230upx;
+    background-color: #d4d5d6;
+    text-align: center;
+    p{
+      color: #fff;
+      font-size: 56upx;
+      font-weight: 900;
+      span{
+        font-size: 20upx
+      }
+    }
+    span{
+      font-size: 20upx;
+      color: #fff;
+    }
+  }
+}
+.tab{
+  position: relative;
+  height: 92upx;
+  background-color: #fff;
+  position: relative;
+  .active{
+    color: #f00
+  }
+  span{
+    position: absolute;
+    bottom: 0;
+    transition: all .2s;
+    height: 5upx;
+    width: 50upx;
+    background-color: #f00
+  }
+}
+.back_col{
+  background-color: #f00!important;
+}
+.btn_de{
+  width:100%;position: fixed;bottom:0;
+  height:88upx;line-height: 88upx;background: #f00;
+  color:#ffffff;text-align: center;
+}
 </style>
