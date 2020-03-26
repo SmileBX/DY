@@ -1,0 +1,123 @@
+.brand_rec{
+	background: url(../../../static/icons/bg_325.jpg) top center no-repeat;
+	background-size: cover;
+	padding: 30upx 0 30upx 20upx;
+	.scroll-view_H {
+		white-space: nowrap;
+		width: 100%;
+	}
+	.scroll-view-item_H {
+		display: inline-block;
+	}
+	.HotsellList .uni-bd {
+		margin-right: -20upx;
+	}
+	
+	.Hotsell-list .itembox {
+		width: 280upx;
+		margin-right: 20upx;
+		overflow: hidden;
+		background: #fff;
+		border-radius: 12upx;
+		.txtbox{
+			padding: 20upx;
+			.brandlogo{
+				display: flex;
+				align-items: center;
+				margin-top: -20upx;
+				.img{ width: 80upx; height: 80upx; border-radius: 12upx; overflow: hidden; margin: -40upx 10upx 0 0;}
+				.name{ max-width: 160upx; font-size: 26upx;}
+			}
+			.txt_1{ font-size: 32upx;}
+			.txt_2{ font-size: 24upx; color: #666; line-height: 1.2;}
+		}
+	}
+	.Hotsell-list .image-view {
+		width: 280upx;
+		height: 280upx;
+		margin: 0;
+	}
+	
+	.Hotsell-list .image-view .img {
+		width: 100%;
+		height: 100%;
+	}
+}
+.combox{
+	background: #ffffff;border-radius:12upx;
+	.title{
+		padding:10upx 20upx;
+		.name{
+			font-size:32upx;margin-right:10upx;
+		}
+		.subtitle{
+			font-size:24upx;color:#999;
+		}
+	}
+	.list{padding-left: 20upx;}
+	.list .item{ width: 33.3%;}
+	.list .itembox {
+		width: 208upx;
+		margin-right: 20upx;
+		overflow: hidden;
+	}
+	
+	.list .image-view {
+		width: 208upx;
+		height: 208upx;
+		margin: 0;
+	}
+	
+	.list .image-view .img {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.list .uni-product-price {
+		margin-top: 0;
+	}
+	
+	.list .uni-product-price .uni-product-price-favour {
+		font-size: 24upx;
+	}
+}
+.levelPanel{
+	.list{
+		padding:0 20upx 0;
+		.item{
+			background: #ffffff;border-radius:12upx;
+			margin-bottom: 20upx;
+			padding:20upx;
+			.item_left{
+				width:200upx;height:200upx;position: relative;margin-right:10upx;
+				.img{width:100%;height:100%;}
+				.tip{
+					position: absolute;top:0;left:0;
+					width:70upx;height:96upx;
+				}
+			}
+			.item_content{
+				.line-thon{
+					color:#999!important;font-size:22upx;text-decoration: line-through;margin-left: 10upx;
+				}
+				.item_bt{
+					width:100%;
+					.qiang{
+						background: #f00000;color:#ffffff;border-radius:50upx;font-size:22upx;padding:0 20upx;
+					}
+				}
+			}
+		}
+	}
+	.flag{
+		font-size:20upx;height:40upx;box-sizing: border-box;
+		.flag_pill{
+			background: #f00000;color:#ffffff;line-height: 40upx;padding:0 15upx;height:40upx;
+			border-radius: 5upx 0 0 5upx;
+		}
+		.flag_mon{
+			line-height: 40upx;padding:0 10upx;height:40upx;border:1px solid red;
+			border-radius: 0 5upx 5upx 0;
+		}
+	}
+}

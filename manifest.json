@@ -1,6 +1,6 @@
 {
     "name" : "大单易",
-    "appid" : "",
+    "appid" : "__UNI__FE06CB9",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx7bb9deaee86105d6",
         "setting" : {
             "urlCheck" : false
         },
@@ -67,7 +67,8 @@
         "usingComponents" : true
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "appid" : "wx7bb9deaee86105d6"
     },
     "mp-toutiao" : {
         "usingComponents" : true

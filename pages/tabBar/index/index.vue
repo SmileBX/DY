@@ -13,7 +13,7 @@
 					<view class="iconfont icon-xiangji"></view>
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-xiaoxi mr2"><view class="num">4</view></view>
+					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass')"><view class="num">4</view></view>
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
@@ -38,14 +38,14 @@
 				</view>
 			</view>
 			<!--菜单栏-->
-			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2">
+			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
 				<view v-for="(tab,index) in 8" :key="index" class="tab_item">
 					<view v-for="(item,ell) in 2" :class="[tabIndex==ell ? 'active' : '']" :id="'tabNum'+ell"
 					 :data-current="ell" :key="ell">
 						 <view>
 							<image src="../../../static/of/4.png" class="tab_img"></image> 
 						 </view>
-						<view class="tab_name"> 近视 </view>
+						<view class="tab_name center"> 近视 </view>
 					</view>
 				</view>
 			</scroll-view>
@@ -53,7 +53,7 @@
 			<view class="index_pin">
 				<image src="../../../static/of/f1.png" mode="widthFix"></image>
 				<view class="pin_list flex justifyContentBetween">
-					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}">
+					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex')">
 						<view class="item_logo">
 							<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 						</view>
@@ -85,7 +85,7 @@
 					</view>
 				</view>
 				<view class="list flex justifyContentBetween">
-					<view v-for="(item,index) in 3" :key="index" class="item_img">
+					<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
 						<image src="../../../static/of/1.png"></image>
 					</view>
 				</view>
@@ -160,6 +160,31 @@
 		methods:{
 			//跳转
 			tolink(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 车位 没跳
+			// @click="totruckspace('/pages/homePage/truckspace')"
+			totruckspace(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 家居
+			tohouse(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 近视
+			toshortsightedness(Url) {
+				uni.navigateTo({
+					url: Url
+				})
+			},
+			// 汽车
+			toautomobile(Url) {
 				uni.navigateTo({
 					url: Url
 				})

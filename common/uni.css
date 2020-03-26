@@ -1607,7 +1607,7 @@ radio-group label, checkbox-group label{
 }
 .filterMenu{
 	width: 100%;
-	padding-right: 80upx;
+	padding: 0 20upx;
 	background: #fff;
 	position: relative;
 }
@@ -1619,9 +1619,11 @@ radio-group label, checkbox-group label{
 .filterProductBox{ padding-top: 0;}
 .filterProductBox.pd0{padding-top: 76upx;}
 .filterMenu .menu .item{
-	float: left;
-	line-height: 76upx;
 	height: 76upx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #666;
 }
 .filterMenu .menu .item.active{
 	color:#ff3333;
@@ -1637,24 +1639,29 @@ radio-group label, checkbox-group label{
 .filterMenu .menu .filterBtn:after{
 	position: absolute;
 	right:0;
-	line-height: 1;
-/* 	width: 40upx;
-	height: 40upx; */
-	font-family: uniicons;
-	color:#999;
+	display: block;
+	content: "";
 }
 .filterMenu .menu .filterBtn:before{
-	content: "\E580";
-	top:20upx;
+	top: 24upx;
+	border-left: 8upx solid transparent;
+	border-right: 8upx solid transparent;
+	border-bottom: 10upx solid #999;
 }
 .filterMenu .menu .filterBtn:after{
-	content: "\E581";
-	top:36upx;
+	bottom: 24upx;
+	border-left: 8upx solid transparent;
+	border-right: 8upx solid transparent;
+	border-top: 10upx solid #999;
 }
-.filterMenu .menu .item.active .filterBtn.upBtn:before,
+.filterMenu .menu .item.active .filterBtn.upBtn::before{
+  border-bottom-color: #ff3333
+}
+
 .filterMenu .menu .item.active .filterBtn.downBtn:after{
-	color:#ff3333;
+  border-top-color: #ff3333
 }
+
 .filterMenu .menu .icon-filter {
 	display: inline-block;
 	vertical-align: top;
