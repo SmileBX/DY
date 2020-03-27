@@ -9,13 +9,13 @@
       <picker-view  indicator-style="height: 40px;" class="mpvue-picker-view" :value="pickerValue" @change="provincesChange">
         <block>
           <picker-view-column>
-            <div class="picker-item" v-for="(item,index) in province.data" :key="index">{{item.name}}</div>
+            <div class="picker-item" v-for="(item,index) in province.data" :key="index">{{item.Name}}</div>
           </picker-view-column>
           <picker-view-column>
-            <div class="picker-item" v-for="(item,index) in citys.data" :key="index">{{item.name}}</div>
+            <div class="picker-item" v-for="(item,index) in citys.data" :key="index">{{item.Name}}</div>
           </picker-view-column>
           <picker-view-column>
-            <div class="picker-item" v-for="(item,index) in qus.data" :key="index">{{item.name}}</div>
+            <div class="picker-item" v-for="(item,index) in qus.data" :key="index">{{item.Name}}</div>
           </picker-view-column>
         </block>
       </picker-view>
@@ -25,9 +25,6 @@
 
 <script>
 import {host,post,get} from '@/common/util.js';
-// import provinceData from './city-data/province.js';
-// import cityData from './city-data/city.js';
-// import areaData from './city-data/area.js';
 export default {
   data() {
     return {
@@ -46,9 +43,10 @@ export default {
 			showPicker: false,
     };
   },
-  created() {
-    // this.init()
-		//console.log(this.province)
+  created: function(e) {console.log('*******************')
+	this.provincesCode=this.province.data[0].Code,
+	this.type1=this.province.data[0].Name,
+	this.getcitys();
   },
   props: {
     /* 默认值 */
@@ -58,30 +56,17 @@ export default {
 				return [0, 0, 0]
 			}
     },
-		province:{
-			type:Object
-		},
+	province:{
+		type:Object
+	},
     /* 主题色 */
     themeColor: String
   },
-	watch:{
-// 		pickerValueDefault(){
-// 			// this.init();
-// 		}
-	},
   methods: {
-// 		init() {
-// // 			this.handPickValueDefault(); // 对 pickerValueDefault 做兼容处理
-// // 			this.provinceDataList = provinceData;
-// // 			this.cityDataList = cityData[this.pickerValueDefault[0]];
-// // 			this.areaDataList = areaData[this.pickerValueDefault[0]][this.pickerValueDefault[1]];
-// // 			this.pickerValue = this.pickerValueDefault;
-// 		},
     show() {
       setTimeout(() => {
         this.showPicker = true;
       }, 0);
-			// this.getprovinces();console.log(this.provinces)
     },
     maskClick() {
       this.pickerCancel();
@@ -94,86 +79,50 @@ export default {
 			this.pickerText=this.type1+" "+this.type2+" "+this.type3;
       this.$emit('onconfirm', this.provincesCode,this.cityCode,this.quCode,this.pickerText);
     },
-//     showPickerView() {
-//       this.showPicker = true;
-//     },
-//     handPickValueDefault() {
-//       if (this.pickerValueDefault !== [0, 0, 0]) {
-//         if (this.pickerValueDefault[0] > provinceData.length - 1) {
-//           this.pickerValueDefault[0] = provinceData.length - 1;
-//         }
-//         if (this.pickerValueDefault[1] > cityData[this.pickerValueDefault[0]].length - 1) {
-//           this.pickerValueDefault[1] = cityData[this.pickerValueDefault[0]].length - 1;
-//         }
-//         if (this.pickerValueDefault[2] > areaData[this.pickerValueDefault[0]][this.pickerValueDefault[1]].length - 1) {
-//           this.pickerValueDefault[2] = areaData[this.pickerValueDefault[0]][this.pickerValueDefault[1]].length - 1;
-//         }
-//       }
-//     },
-//     pickerChange(e) {
-//       let changePickerValue = e.mp.detail.value;
-//       if (this.pickerValue[0] !== changePickerValue[0]) {
-//         // 第一级发生滚动
-//         this.cityDataList = cityData[changePickerValue[0]];
-//         this.areaDataList = areaData[changePickerValue[0]][0];
-//         changePickerValue[1] = 0;
-//         changePickerValue[2] = 0;
-//       } else if (this.pickerValue[1] !== changePickerValue[1]) {
-//         // 第二级滚动
-//         this.areaDataList =
-//           areaData[changePickerValue[0]][changePickerValue[1]];
-//         changePickerValue[2] = 0;
-//       }
-//       this.pickerValue = changePickerValue;
-//       this._$emit('onChange');
-//     },
-//     _$emit(emitName) {
-//       let pickObj = {
-//         label: this._getLabel(),
-//         value: this.pickerValue,
-//         cityCode: this._getCityCode()
-//       };
-//       this.$emit(emitName, pickObj);
-//     },
-//     _getLabel() {
-//       let pcikerLabel =
-//         this.provinceDataList[this.pickerValue[0]].label +
-//         '-' +
-//         this.cityDataList[this.pickerValue[1]].label +
-//         '-' +
-//         this.areaDataList[this.pickerValue[2]].label;
-//       return pcikerLabel;
-//     },
-//     _getCityCode() {
-//       return this.areaDataList[this.pickerValue[2]].value;
-//     },
     provincesChange(e) {
-			console.log(e)
-      const valIndex = e.mp.detail.value; //组件的下标索引数字例：[0,0,0,]
-      this.type1 = this.province.data[valIndex[0]].name;
-      this.provincesCode = this.province.data[valIndex[0]].id;
-      this.getcitys();
-      if (valIndex[1] != 0) {
-        this.cityCode = this.citys.data[valIndex[1]].id;
-        this.type2 = this.citys.data[valIndex[1]].name;
-        this.getQu();
-      }
-      if (valIndex[2] != 0) {
-        this.type3 = this.qus.data[valIndex[2]].name;
-        this.quCode = this.qus.data[valIndex[2]].id;
-      }
+		console.log(e)
+		const valIndex = e.mp.detail.value; //组件的下标索引数字例：[0,0,0,]
+		this.type1 = this.province.data[valIndex[0]].Name;
+		this.provincesCode = this.province.data[valIndex[0]].Code;
+		console.log(this.province,'shengcode')
+		if (valIndex[1] != 0) {
+			this.cityCode = this.citys.data[valIndex[1]].Code;
+			this.type2 = this.citys.data[valIndex[1]].Name;
+		}
+		this.getcitys(valIndex[1],valIndex[2]);
+		if (valIndex[2] != 0) {
+			this.type3 = this.qus.data[valIndex[2]].Name;
+			this.quCode = this.qus.data[valIndex[2]].Code;
+		}
     },
-    async getcitys() {
-      this.citys = await post("Address/GetArea", {
+    async getcitys(index1,index2) {
+      this.citys = await post("Area/GetArea", {
         Types: "City",
         Code: this.provincesCode
       });
+	  if(this.cityCode==""||index1==0){//console.log("222")
+	    this.cityCode=this.citys.data[0].Code;
+	    this.type2 = this.citys.data[0].Name;
+	  }
+	  if(index1>0){
+	    this.cityCode=this.citys.data[index1].Code;
+	    this.type2 = this.citys.data[index1].Name;
+	  }
+	  this.getQu(index2);
     },
-    async getQu() {
-      this.qus = await post("Address/GetArea", {
+    async getQu(index2) {
+      this.qus = await post("Area/GetArea", {
         Types: "District",
         Code: this.cityCode
       });
+	  if(this.quCode==""||index2==0){//console.log("222")
+	    this.quCode=this.qus.data[0].Code;
+	    this.type3 = this.qus.data[0].Name;
+	  }
+	  if(index2>0){
+	    this.quCode=this.qus.data[index2].Code;
+	    this.type3 = this.qus.data[index2].Name;
+	  }
     },
   }
 };
