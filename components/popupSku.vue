@@ -5,7 +5,7 @@
 			<view class="uni-close-btn" @click="hide">
 				<view class="iconfont icon-close"></view>
 			</view>
-			<view class="uni-pd10">
+			<view class="pd10">
 				<slot></slot>
 				<view class="pop-product">
 					<view class="itembox clear">
@@ -16,8 +16,7 @@
 							<!-- 普通产品 -->
 							<view class="uni-product-price">
 								<text class="saleprice">￥{{price}}</text>
-								<text class="plusprice" v-if="IsPlusPrice==1&&isLimint!=1">￥{{plusprice}}<text class="icon icon-plusprice"></text></text>
-								<text class="oprice" v-if="IsPlusPrice==0">￥{{oprice}}</text>
+								<text class="oprice" v-if="IsPlusPrice==0&&oprice>price">￥{{oprice}}</text>
 							</view>
 							<view class="product-stock">库存{{stock}}件</view>
 							<view class="product-selected" v-if="hasSKU">已选：“{{SpecText}}”</view>
@@ -37,18 +36,18 @@
 					</view>
 				</view>
 				<!-- 购买数量 -->
-				<view class="skuBox buyNum_skuBox clear" v-if="!fromcart||fromPinTuan">
+				<view class="skuBox buyNum_skuBox numbox" v-if="!fromcart">
 					<view class="skuTitle fl">购买数量</view>
 					<view class="flexItem fr">
-						<uni-number-box :disabled="false" class="selNumRow" :inputValue="number" :min="minBuyNum" :max="maxBuyNum"  v-on:change="change"></uni-number-box>
+						<uni-number-box :disabled="false" :inputValue="number" :min="minBuyNum" :max="maxBuyNum"  v-on:change="change"></uni-number-box>
 					</view>
 				</view>
 			</view>
 			<view style="height: 120upx;"></view>
-			<view class="popup-ft" style="margin-left:20upx;" v-if="fromcart||fromPinTuan">
+			<view class="popup-ft" style="margin-left:20upx;" v-if="showbtntype==1">
 				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
-			<view class="popup-ft" style="margin-left:20upx;" v-if="!(fromcart||fromPinTuan)">
+			<view class="popup-ft" v-if="showbtntype==0">
 				<view class="bottom-btns">
 					<view class="btn addcart" @click="toAddcart">
 						加入购物车
@@ -62,7 +61,7 @@
 	</view>
 </template>
 <script>
-	import {host,post,get,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
+	import {post,get,toLogin} from '@/common/util.js';
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 	export default {
 		props: {
@@ -78,13 +77,6 @@
 				type: Boolean,
 				default: false
 			},
-			/**
-			 * h5遮罩是否到顶
-			 */
-			h5Top: {
-				type: Boolean,
-				default: false
-			},
 			proInfo: {
 				type: Object,
 				default: null
@@ -93,20 +85,19 @@
 				type:Number,
 				default: 0
 			},
-			isPlus:{
-				type:Boolean,
-				default: false
-			},
 			ShareId:{
 				type:String,
 				default:""
+			},
+			showbtntype:{
+				type:Number,
+				default: 0
 			},
 			couponid: String,
 		},
 		created: function(option) {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			this.goodsDetail();
 			this.selectAllStock(); //筛选出所有没有库存的
 		},
@@ -117,11 +108,9 @@
 			return {
 				userId: "",
 				token: "",
-				curPage: "",
-				offsetTop: 0,
-				proId:this.proInfo.ProductId,
+				proId:this.proInfo.Id,
 				hasSKU: false, //产品是否含有sku
-				SpecList: this.proInfo.ProductSpecList, //数据中的ProductSpecList
+				SpecList: this.proInfo.Sku, //数据中的ProductSpecList
 				specificationValue: {},
 				specificationValue2: [],
 				specificationValue3: [], //从数据中拿到的并重新组合在一起，渲染的时候也是用这个
@@ -131,10 +120,10 @@
 				SpecText:"",  //选择的sku文本
 				selectedSkuLen: '',
 				stock: this.proInfo.Stock, //接收父组件传参，库存默认值
-				ProductImg: this.proInfo.ProductImgList[0].PicUrl,
-				price: this.proInfo.ProductPrice, //产品售价
+				ProductImg: this.proInfo.PicData[0].PicUrl,
+				price: this.proInfo.Price, //产品售价
 				IsPlusPrice:this.proInfo.IsPlusPrice,//是否开启plus
-				plusprice:this.proInfo.PlusPrice,//产品plus价格
+				// plusprice:this.proInfo.PlusPrice,//产品plus价格
 				oprice:this.proInfo.MarketPrice,//原价
 				minBuyNum: this.proInfo.MinBuyNum, //最少购买量
 				maxBuyNum: this.proInfo.MaxBuyNum, //最大购买量
@@ -145,22 +134,16 @@
 			}
 		},
 		watch: {
-			h5Top(newVal) {
-				if (newVal) {
-					this.offsetTop = 44;
-				} else {
-					this.offsetTop = 0;
-				}
-			},
+
 		},
 		methods: {
 			hide: function() {
 				var canaddcar=this.valSubmit();
 				this.$emit('hidePopup');
-				this.$emit('getsku',[this.number,this.SpecText,canaddcar,this.price,this.plusprice]);
+				this.$emit('getsku',this.number,this.SpecText,canaddcar,this.price,this.plusprice);
 			},
 			change: function(num) {
-				this.number=num[0];
+				this.number=num;
 			},
 			moveHandle() {},
 			selectAllStock() {
@@ -196,7 +179,7 @@
 							if(this.fromPinTuan){
 								this.price=this.proInfo.FightingPrice;
 							}else{
-								this.price = selectedSpeList.PunitPrice;
+								this.price = selectedSpeList.Price;
 								this.plusprice=selectedSpeList.PlusPrice;
 							}
 						}
@@ -318,9 +301,9 @@
 						this.price=this.proInfo.FightingPrice;
 						this.oprice=this.proInfo.OriginalPrice;
 					}else{
-						this.price=this.proInfo.ProductPrice;
+						this.price=this.proInfo.Price;
 						this.oprice=this.proInfo.MarketPrice;
-						this.plusprice=this.proInfo.PlusPrice;
+						// this.plusprice=this.proInfo.PlusPrice;
 					}
 				}
 				if (this.SpecList.length > 0) {
@@ -375,7 +358,7 @@
 						this.$emit('selectSku',this.SpecText);
 						this.$emit('hidePopup');
 					}
-					if(this.fromPinTuan){
+					else{
 						this.$emit('getsku',this.number,this.SpecText,this.price);
 						this.$emit('hidePopup');
 					}
@@ -388,7 +371,7 @@
 				}
 			},
 			toAddcart(){
-				if(toLogin(this.curPage)){
+				if(toLogin()){
 					if (this.valSubmit()) {
 						this.addcart();
 					}
@@ -401,14 +384,12 @@
 					ProId: this.proId,
 					Count: this.number,
 					SpecText: this.SpecText,
-					IsFlashSale: this.isLimint,
-					ShareMemberId: this.ShareId
+					// IsFlashSale: this.isLimint
 				});
 				if (result.code === 0) {
 					uni.showToast({
 						title: "加入购物车成功！",
-						duration: 2000,
-						icon: "none"
+						duration: 2000
 					});
 					this.$emit('hidePopup');
 				} else if (result.code === 2) {
@@ -418,7 +399,7 @@
 						success(res) {
 							if (res.confirm) {
 								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
+								  url: "/pages/login/login"
 								});
 							} else if (res.cancel) {
 							}
@@ -433,19 +414,15 @@
 				}
 			},
 			gouBuy(){
-				if (toLogin(this.curPage)){
+				if (toLogin()){
 					if(this.valSubmit()){
 						let money="";
-						if(this.isPlus&&this.IsPlusPrice==1&&this.isLimint!=1){
+						if(this.isPlus==1&&this.IsPlusPrice==1&&this.isLimint!=1){
 							money=this.plusprice;
 						}else{
 							money=this.price;
 						}
-						let objUrl = ''
-						objUrl = '/pages/submitOrder/submitOrder?proId='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&price='+money+'&orderSType=0'+'&isLimint='+this.isLimint+'&ShareMemberId='+this.ShareId
-						uni.navigateTo({
-							url: objUrl
-						})
+						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint;
 						uni.navigateTo({
 							url: objUrl
 						})
@@ -462,6 +439,16 @@
 	}
 </script>
 <style>
+.pd10{
+	padding: 20upx
+}
+.fl {
+    float: left;
+}
+.numbox{
+	display: flex;
+	justify-content: space-between
+}
 	.uni-mask {
 		position: fixed;
 		z-index: 999;
@@ -499,7 +486,7 @@
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		width: 710upx;
+		width: 100%;
 		padding: 20upx;
 		border-top: 1px solid #eee;
 	}
@@ -544,6 +531,7 @@
 		text-align: left;
 		margin-left: 210upx;
 		padding-top: 10upx;
+		height: 180upx;
 	}
 
 	.pop-product .saleprice {
@@ -563,9 +551,9 @@
 	.pop-product .plusprice .icon-plusprice {
 		display: inline-block;
 		vertical-align: middle;
-		height: 24upx;
-		width: 46upx;  
-		background: url(http://tuzhuang.wtvxin.com/static/plus/vip_icon.png) right center no-repeat;
+		height: 16px;
+		width: 33px;
+		background: url(http://www.sc-mall.net/static/plus/plus_icon.png) right center no-repeat;
 		background-size: 100%;
 	}
 	.pop-product .product-stock {

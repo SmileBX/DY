@@ -141,9 +141,9 @@
 			}
 		},
 		{
-			"path":"pages/homePage/house",
+			"path":"pages/homePage/proList",
 			"style": {
-				"navigationBarTitleText": "家居",
+				"navigationBarTitleText": "列表",
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 					// "scrollIndicator": "none" //不显示滚动条
@@ -151,12 +151,27 @@
 			}
 		},
 		{
-			"path":"pages/homePage/housedetails",
+			"path":"pages/homePage/details",
 			"style": {
-				// "navigationBarTitleText": "家居详情",
+				"navigationBarTitleText": "详情",
+				"enablePullDownRefresh" : true,
 				"app-plus": {
-					"titleNView": false //首页去除原生导航
-					// "scrollIndicator": "none" //不显示滚动条
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"text": "\ue605",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "22px",
+								"color": "#333"
+							},
+							{
+								"text": "\ue66e",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "22px",
+								"color": "#333"
+							}
+						]
+					}
 				}
 			}
 		},
@@ -313,6 +328,10 @@
         }
         ,{
             "path" : "pages/Wallet/bankChoose/bankChoose",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabBar/my/collect",
             "style" : {}
         }
     ],
