@@ -4,21 +4,21 @@
 		<view class="top-box">
 			<view class="memberTop">
 				<view class="iconBtnBox">
-					<view @click="golink('/pages/Message/MessageClass/MessageClass')" class="iconfont icon-xiaoxi iconBtn"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>
+					<view @click="golink('/pages/message/messageClass/messageClass')" class="iconfont icon-xiaoxi iconBtn"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>
 				</view>
 				<view class="conBox">
-					<view class="tx_info">
-						<view @click="golink('/pages/Article/myCenter/myCenter?Memberid='+memberInfo.Id)">
+					<view class="tx_info" @click="golink('/pages/member/editinfo/editinfo?Memberid='+memberInfo.Id)">
+						<view>
 							<image class="tx" v-if="memberInfo.Avatar" :src="memberInfo.Avatar" mode="aspectFill"></image>
 							<image class="tx" v-else src="/static/default.png" mode="aspectFill"></image>
 						</view>
 						<view class="info flex">
 							<view class="info-item" style="width: 100%;">
 								<view class="name">
-									<text class="txt" style="max-width: 100%;">小夏</text>
-									<text class="plusicon">VIP</text>
+									<text class="txt" style="max-width: 100%;">{{memberInfo.NickName||'您还未登录，请先登录！'}}</text>
+									<text class="plusicon" v-if="memberInfo.IsVip==1">VIP</text>
 								</view>
-								<view class="perId">ID:<text id="MemberID">456696</text></view>
+								<view class="perId">ID:<text id="MemberID">{{memberInfo.Id||"00000"}}</text></view>
 							</view>
 						</view>
 					</view>
@@ -32,7 +32,7 @@
 							<view class="num">0</view>
 						</view>
 						<view class="item">
-							<view class="title">关注主播</view>
+							<view class="title" @click="toanchor()">关注主播</view>
 							<view class="num">0</view>
 						</view>
 					</view>
@@ -56,7 +56,7 @@
 					<view class="item flex1" @click="golink('/pages/order/order?tabIndex=1')">
 						<view class="iconImg">
 							<image class="icon" src="../../../static/icons/u_order1.png" mode="widthFix"></image>
-							<view class="circleNum">2</view>
+							<view class="circleNum" v-if="memberInfo.num_dfk>0">{{memberInfo.num_dfk}}</view>
 						</view>
 						<view class="txt">待付款</view>
 					</view>
@@ -84,7 +84,6 @@
 					<view class="item" @click="golink('/pages/afterSale/afterSale')">
 						<view class="iconImg">
 							<image class="icon" src="../../../static/icons/u_order5.png" mode="widthFix"></image>
-							<!-- <view class="circleNum" v-if="OrderInfo.ReturnsAfterSale>0">{{OrderInfo.ReturnsAfterSale}}</view> -->
 						</view>
 						<view class="txt">退款/售后</view>
 					</view>
@@ -104,7 +103,7 @@
 				<view class="dd-list col__list li_25 center clear">
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_qb.png" mode=""></image>
-						<view class="txt">我的钱包</view>
+						<view class="txt" @click="towallet()">我的钱包</view>
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_sy.png" mode=""></image>
@@ -116,7 +115,7 @@
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_zj.png" mode=""></image>
-						<view class="txt">浏览记录</view>
+						<view class="txt" @click="tobrowsing">浏览记录</view>
 					</view>
 					<view class="item">
 						<image class="iconImg" src="../../../static/icons/u_pj.png" mode=""></image>
@@ -155,18 +154,23 @@
 </template>
 
 <script>
-	import {
-		host,
-		post,
-		get,
-		toLogin
-	} from '@/common/util.js';
+	import {host,post,get,toLogin} from '@/common/util.js';
 	import "@/common/dd_style.css";
 	export default {
+		data() {
+			return {
+				barHeight:0,//app端增加状态栏高度
+				userId: "",
+				token: "",
+				memberInfo:{},
+				OrderInfo:{},
+				newscount:0,
+			}
+		},
 		onLoad() {
 			// #ifdef APP-PLUS
 			var height = plus.navigator.getStatusbarHeight();
-			this.barHeight = height;console.log(this.barHeight)
+			this.barHeight = height;
 			// #endif
 			// #ifdef H5
 			this.barHeight = 0;
@@ -178,21 +182,6 @@
 			if (toLogin()) {
 				this.NewsCount();
 			    this.getMemberInfo();
-				this.GetMemInfo();
-			}
-		},
-		data() {
-			return {
-				barHeight:0,
-				userId: "",
-				token: "",
-				isfx:0,//是否开启分销
-				memberInfo:{},
-				OrderInfo:{},
-				newscount:0,
-				ggData:{},
-				ShowVipinfo:false,
-				IsVip:false,//是否是超级VIP
 			}
 		},
 		methods: {
@@ -211,6 +200,32 @@
 				uni.navigateTo({
 					url:'/pages/home/addAfter/addAfter'
 				})
+			},
+			// 我的主播
+			toanchor(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/anchor'
+				})
+			},
+			// 我的钱包
+			towallet(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/wallet'
+				})
+			},
+			// 浏览记录
+			tobrowsing(){
+				uni.navigateTo({
+					url:'/pages/tabBar/my/browsing'
+				})
+			},
+		
+			//是否开启分销
+			async SystemInfo(){
+				// let result = await get("System/GetWebConfiguration",{});
+				// if (result.code === 0) {
+				// 	this.isfx = result.data.IsDistributionSystem;
+				// }
 			},
 			async GetMemInfo(){
 				let result = await post("User/GetMemInfo", {
@@ -256,46 +271,6 @@
 				});
 				if (result.code === 0) {
 					this.newscount = result.count;
-				} 
-			},
-			//签到
-			async SignInOrShare(){
-				let result = await post("User/SignInOrShare",{
-					 UserId: this.userId,
-					 Token: this.token,
-					 type:1
-				})
-				if (result.code === 0) {
-					let _this=this;
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 1500,
-						// success:function(){
-						// 	setTimeout(function(){
-						// 		_this.getMemberInfo();
-						// 	},1500)
-						// }
-					});
-				} else if (result.code === 2) {
-					let _this = this;
-					uni.showModal({
-						content: "您还没有登录，是否重新登录？",
-						success(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
-								});
-							} else if (res.cancel) {
-							}
-						}
-					});//如果未登录则跳转到登陆页面
-				}else{
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
-					});
 				} 
 			},
 			// #ifndef MP

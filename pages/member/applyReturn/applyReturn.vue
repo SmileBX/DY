@@ -1,51 +1,157 @@
 <template>
-	<view>
-		<view class="flex justifyContentBetween flexAlignCenter mt2 order bg_fff">
-			<view class="img mr2">
-				<image src="../../../static/of/4.png"></image>
-			</view>
-			<view class="flex1">
-				<view>佳兆业新世界大厦</view>
-				<view class="font18 color_gray">B1703</view>
-			</view>
-		</view>
-		<view class="mt2 reason bg_fff">
-			<view class="flex justifyContentBetween item border_bottom">
-				<text>货物状态</text>
-				<view class="flex flexAlignCenter">
-					<input type="text" placeholder="请选择" class="font26 text_right mr1">
-					<text class="iconfont icon-arrow_r font26"></text>
-				</view>
-			</view>
-			<view class="flex justifyContentBetween item border_bottom">
-				<text>退款原因</text>
-				<view class="flex flexAlignCenter">
-					<input type="text" placeholder="请选择" class="font26 text_right mr1">
-					<text class="iconfont icon-arrow_r font26"></text>
-				</view>
-			</view>
-			<view class="flex justifyContentBetween item border_bottom">
-				<text>退款金额</text>
-				<text class="color_red">￥2.8万</text>
-			</view>
-			<view class="flex justifyContentBetween item flexAlignCenter">
-				<text>退款说明：</text>
-				<input type="text" placeholder="选填" class="flex1 text_left font26">
-			</view>
-		</view>
-		<view class="mt2 bg_fff pw3">
-			<view class="p2">上传凭证</view>
-			<view class="imglist">
-				<view class="img_item">
-					<image src="../../../static/icons/pz.png"></image>
-				</view>
-			</view>
-		</view>
-	</view>
+  <view class="sertype">
+      <view class="mt2 bg_fff pp3 flex justifyContentBetween">
+          <image :src="info.PicNo" alt="" class="shop"></image>
+         <view class="flex1 mr2">
+              <view>名称</view>
+              <view class="cg font24 mt1">{{info.SpecText}}</view>
+          </view>
+      </view>
+      <view class="pw3 mt2 bg_fff">
+          
+          <view class="menu_item flex justifyContentBetween flexAlignCenter" v-if="false">
+              <view>货物状态</view>
+              <view class="flex flex1 flexAlignCenter">
+                  <input type="text" placeholder="请选择" disabled class="flex1 text_right">
+                  <img src="http://jyy.wtvxin.com/static/images/icons/right.png" alt="" class="icon_right mr2">
+              </view>
+          </view>
+          
+          <view class="menu_item flex justifyContentBetween flexAlignCenter">
+              <view>退款原因</view>
+              <view class="flex flex1 flexAlignCenter"  @click="showEdit=true">
+                  <input type="text" placeholder="请选择" disabled class="flex1 text_right" v-model="typeTxt">
+                  <img src="http://jyy.wtvxin.com/static/images/icons/right.png" alt="" class="icon_right mr2">
+              </view>
+          </view>
+          <view class="menu_item flex justifyContentBetween flexAlignCenter">
+              <view>退款金额</view>
+              <view class="cr">¥{{info.ActualPay}}</view>
+          </view>
+          <view class="mt2">
+              <view>退款说明</view>
+              <textarea name="" id="" cols="30" rows="10" class="sign" placeholder="请输入说明详情" v-model="RefundContent"></textarea>
+          </view>
+      </view>
+      <view class="mt2 bg_fff pp3" v-if="false">
+        <view>上传凭证（不超过5张）</view>
+        <view class="fed_pic flex flexWrap">
+          <view v-for="(item,index) in 5" :key="index" class="picbox">
+            <image src="http://jyy.wtvxin.com/static/images/icons/add3.png" alt="" class="pic_itim"></image>
+          </view>
+          <view class="picbox upBtnImg">
+            <image src="http://jyy.wtvxin.com/static/images/icons/add3.png" alt="" class="pic_itim"></image>
+          </view>
+        </view>
+      </view>
+      <view class="sub_btn" @click="submitSerty()">提交</view>
+      <pickers v-if="showEdit" :arr="list" :show.sync="showEdit" @success="gettype"></pickers>
+  </view>
 </template>
-<srcipt>
-	
-</srcipt>
-<style lang="scss">
-	@import './style'
+
+<script>
+// import {switchPath,post,get} from '@/utils'
+import pickers from '@/components/pickers';
+export default {
+  components: {pickers},
+  data () {
+    return {
+      indexId:0,
+      type:1,//1:申请换货;2:申请退货退款;3:仅退款（无需退货）
+      OrderNumber:"",
+      info:{},
+      RefundContent:"",//退款说明
+      RefundReasonId:0,//退原因id
+      showEdit:false,
+      list:[],
+      // type:"",
+      typeTxt:"请选择",
+    }
+  },
+ 
+  onShow(){
+    this.indexId=this.$mp.query.indexId
+    this.OrderNumber=this.$mp.query.id
+    this.type=this.$mp.query.type
+    this.getDetail();
+    this.getCancelReason()
+  },
+  methods: {
+    gettype(e){
+      console.log(e)
+      this.RefundReasonId=e.code;
+      this.typeTxt=e.message
+    },
+    getCancelReason(){
+      get('Order/CancelReason',{}).then(res=>{
+        this.list=res.data
+      })
+    },
+    getDetail(){
+      post('Order/OrderDetails',{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        OrderNo:this.$mp.query.id
+      }).then(res=>{
+        this.info = res.data.OrderDetails[this.indexId];
+      })
+    },
+    submitSerty(){
+      if(this.type==1){
+        var url='Order/ApplicationBarter'
+      }else if(this.type==2){
+        var url='Order/ApplicationReturn'
+      }else{
+        var url='Order/ApplicationRefund'
+      }
+      post(url,{
+        UserId:wx.getStorageSync("userId"),
+        Token:wx.getStorageSync("token"),
+        OrderNo:this.$mp.query.id,
+        OrderItemId:this.info.Id,
+        RefundContent:this.RefundContent,
+        RefundReasonId: this.RefundReasonId,
+      }).then(res=>{
+        wx.showToast({
+          title:res.msg
+        })
+      })
+    },
+    goUrl(url){
+      wx.navigateTo({
+        url:url
+      })
+    },
+  },
+}
+</script>
+
+<style scoped lang='scss'>
+  .shop{
+    width:161rpx;height:161rpx;
+  }
+  .menu_item{
+    border-bottom:1rpx solid #f5f5f5;
+    padding:25rpx 0;
+  }
+  .sign{
+    height:150rpx;width:100%;margin-top:20rpx;
+  }
+  .picbox{
+    width:25%;
+    box-sizing: border-box;
+    display: flex;justify-content: center;
+    margin-top:20rpx;
+  }
+  .pic_itim{
+    width:144rpx;height:144rpx;
+  }
+  .sub_btn{
+    background: #ff3333;color:#ffffff;width:100%;
+    height:98rpx;line-height: 98rpx;text-align: center;
+    position: fixed;bottom:0;
+  }
+  .sertype{
+    padding-bottom:100rpx;
+  }
 </style>
