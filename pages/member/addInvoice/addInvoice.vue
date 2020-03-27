@@ -272,7 +272,7 @@
 				}
 			},
 			async getInvoiceInfo(){   //获取发票信息
-			  let result = await post("Invoice/GetInvoiceInfo",{
+			  let result = await post("Invoice/GetInfo",{
 				  Id:this.invoiceId,
 				  UserId: this.userId,
 				  Token: this.token,
