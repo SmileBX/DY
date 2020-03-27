@@ -4,7 +4,7 @@
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
 				<view class="flex flexAlignCenter">
-					<view class="locale uni-ellipsis">深圳</view>
+					<view class="locale uni-ellipsis" @click="typelist">深圳</view>
 					<view class="iconfont icon-arrow_down-copy font12"></view>
 				</view>
 				<view class="flex search flexAlignCenter pw2">
@@ -17,10 +17,10 @@
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
-			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :scroll-left="scrollLeft">
-				<view v-for="(tab,index) in datalist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
+			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :scroll-left="scrollLeft" style="display: flex;">
+				<view v-for="(tab,index) in Typelist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
 				 :data-current="index">
-					<view class="s"> {{tab.TypeName}} </view>
+					<view class="s"> {{tab.Name}} </view>
 				</view>
 			</scroll-view>
 		</view>
@@ -29,26 +29,29 @@
 			<view class="page-section swiper">
 				<view class="page-section-spacing">
 					<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
-						<swiper-item v-for="(banner,index) in 4" :key="index">
-							<view class="swiper-item" @click="toBannerlink(banner.Url)">
-								<image class="img" src="../../../static/of/banner.png" mode="aspectFill"></image>
+						<swiper-item v-for="(banner,key) in bannerlist" :key="key">
+							<view class="swiper-item">
+								<image class="img" :src="banner.Pic" mode="aspectFill"></image>
 							</view>
 						</swiper-item>
 					</swiper>
 				</view>
 			</view>
 			<!--菜单栏-->
-			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
-				<view v-for="(tab,index) in 8" :key="index" class="tab_item">
-					<view v-for="(item,ell) in 2" :class="[tabIndex==ell ? 'active' : '']" :id="'tabNum'+ell"
-					 :data-current="ell" :key="ell">
-						 <view>
-							<image src="../../../static/of/4.png" class="tab_img"></image> 
-						 </view>
-						<view class="tab_name center"> 近视 </view>
-					</view>
+			<view class="page-section swiper">
+				<view class="page-section-spacing">
+					<swiper class="swiper" style="height: 400rpx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+						<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
+							<view  class="tab_item" v-for="(tab, index) in val" :key="index">
+								<view>
+									<image src="../../../static/of/4.png" class="tab_img"></image> 
+								</view>
+								<view class="tab_name center"> {{tab.Name}} </view>
+							</view>
+						</swiper-item>
+					</swiper>
 				</view>
-			</scroll-view>
+			</view>
 			<!--拼品牌馆-->
 			<view class="index_pin">
 				<image src="../../../static/of/f1.png" mode="widthFix"></image>
@@ -149,12 +152,15 @@
 	export default{
 		data(){
 			return{
+				bannerlist:[{Pic:""}], // 轮播图
+				Typelist:[],           // 头部
+				menubarlist:[],         // 菜单
 				scrollLeft:0,
 				scrollLeft2:0,
 				tabIndex:0,
-				tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
+				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
 				navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
-				datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
+				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
 			}
 		},
 		methods:{
@@ -189,7 +195,50 @@
 					url: Url
 				})
 			},
-		}
+			// 轮播图
+			async banner() {
+				let result = await post("Banner/BannerList", {
+					Cid:1
+				});
+				if (result.code === 0) {
+					// console.log(result,"轮播图")
+					this.bannerlist = result.data
+					// console.log(this.bannerlist)
+				} else {
+					
+				}
+			},
+			// 获取类型(商品)
+			async typelist(){
+				let result = await post("Goods/TypeList", {
+					Type:1
+				});
+				if (result.code === 0) {
+					let unm = result.data
+					let list = []
+					let today = {}
+					today.Name = "今日推荐"
+					list = result.data.slice()
+					list.unshift(today)
+					this.Typelist = list
+					unm.forEach((val,index) => {
+						let page = Math.floor(index / 10)
+						if(!this.menubarlist[page]){
+							this.menubarlist[page] = []
+						}
+						this.menubarlist[page].push(val)
+					})
+				} else {
+					
+				}
+			},
+			
+		},
+		onLoad() {
+			this.banner();
+			this.typelist();
+		},
+		
 	}
 </script>
 
