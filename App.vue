@@ -17,6 +17,7 @@
 	@import './common/uni.css';
 	@import './common/iconfont.css';
 	@import './common/common.scss';
+	@import './common/lz.css';
 	page{
 		background: #f5f5f5;
 		height: 100%;
@@ -24,8 +25,8 @@
 		line-height: 1.8;
 	}
 	.uni-radio-input.uni-radio-input-checked{
-		background-color: #cc9f68!important;
-		border-color: #cc9f68!important;
+		background-color: #FF3333!important;
+		border-color: #FF3333!important;
 	}
 	uni-switch .uni-switch-input.uni-switch-input-checked{
 		background-color: #FF3333!important;

@@ -330,6 +330,10 @@
             "path" : "pages/Wallet/bankChoose/bankChoose",
             "style" : {}
         }
+        ,{
+            "path" : "pages/tabBar/my/collect",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[
