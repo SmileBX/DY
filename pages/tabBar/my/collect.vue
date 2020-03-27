@@ -19,8 +19,8 @@
 				<view>
 					<view class="collect_list">
 						<!--店铺收藏-->
-						<view class="list" style="display: none;">
-							<view class="item mt10" v-for="(item,key) in 4" :key="key">
+						<view class="list" v-if="tabIndex==1">
+							<view class="item mt10" v-for="(item,key) in 3" :key="key">
 								<view class="flex item_shop flexAlignCenter">
 									<image src="../../../static/of/shop.png" class="shop_logo"></image>
 									<view class="flex1 uni-bold">雅邦美妆旗舰店</view>
@@ -36,7 +36,7 @@
 							</view>
 						</view>
 						<!--商品收藏-->
-						<view class="list">
+						<view class="list" v-else>
 							<view class="pro_item_list" v-for="(item,index) in 3" :key="index">
 								<view class="pp2">1天前</view>
 								<view class="item_view">
@@ -118,13 +118,6 @@
 			uniLoadMore
 		},
 		methods: {
-			//是否开启多店铺
-			async SystemInfo(){
-				let result = await get("System/GetWebConfiguration",{});
-				if (result.code === 0) {
-					this.isMultipleStore = result.data.IsMultipleStores;
-				}
-			},
 			tapTab(index) { //点击tab-bar
 				this.tabIndex = index;
 				this.type = index;
@@ -185,7 +178,7 @@
 				}
 			},
 			async collectionsList() {
-				let result = await post("User/MemberCollectionsList", {
+				let result = await post("User/MemberCollections", {
 					UserId: this.userId,
 					Token: this.token,
 					Type: this.type,

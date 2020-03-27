@@ -10,7 +10,7 @@
 		<view class="walletbox">
 			<view class="drawing across">
 				<view class="folds">
-					<image class="fold" src="" mode=""></image>
+					<image class="fold" src="/static/icons/wallet1.png" mode=""></image>
 				</view>
 				<view class="detail" @click="totransaction">交易明细</view>
 				<view class="">
@@ -19,9 +19,9 @@
 			</view>
 			<view class="drawing" style="padding-top: 20rpx;">
 				<view class="folds">
-					<image class="fold" src="" mode=""></image>
+					<image class="fold" src="/static/icons/wallet3.png" mode=""></image>
 				</view>
-				<view class="detail" style="padding-right: 66%;" @click="tobankcard">银行卡管理</view>
+				<view class="detail" style="padding-right: 66%;" @click="golink('/pages/Wallet/bankCard/bankCard')">银行卡管理</view>
 				<view class="">
 					<image class="arrows" src="../../../static/hpicons/arrows.svg" mode=""></image>
 				</view>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	import {host,post,get,toLogin} from '@/common/util.js';
 	export default {
 		data(){
 			return{
@@ -47,6 +48,13 @@
 			this.wallet=Number(this.wallet).toFixed(2)
 		},
 		methods:{
+			golink(url){
+				if(toLogin()){
+					uni.navigateTo({
+						url:url
+					})
+				}
+			},
 			// 充值
 			totopup(){
 				uni.navigateTo({
@@ -74,7 +82,6 @@
 	.wallet{
 	}
 	.walletbox{
-		margin-top: 20rpx; 
 		background: #FFFFFF;
 		padding: 30rpx;
 	}
@@ -86,7 +93,7 @@
 		width: 100%;
 		height: 300rpx;
 		border-radius:30rpx;
-		background:rgba(255,51,51,1);
+		background:url(/static/icons/wallet2.png);
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(252,252,252,1);
@@ -108,7 +115,6 @@
 	.fold{
 		width:44rpx;
 		height:44rpx;
-		background: pink;
 	}
 	.detail{
 		font-size:28rpx;
