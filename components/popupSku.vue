@@ -3,7 +3,7 @@
 		<view class="uni-mask" v-show="show" @click="hide" @touchmove.stop.prevent="moveHandle"></view>
 		<view class="uni-popup" v-show="show">
 			<view class="uni-close-btn" @click="hide">
-				<view class="iconfont icon-close">X</view>
+				<view class="iconfont icon-close"></view>
 			</view>
 			<view class="pd10">
 				<slot></slot>
@@ -16,7 +16,7 @@
 							<!-- 普通产品 -->
 							<view class="uni-product-price">
 								<text class="saleprice">￥{{price}}</text>
-								<text class="oprice" v-if="IsPlusPrice==0">￥{{oprice}}</text>
+								<text class="oprice" v-if="IsPlusPrice==0&&oprice>price">￥{{oprice}}</text>
 							</view>
 							<view class="product-stock">库存{{stock}}件</view>
 							<view class="product-selected" v-if="hasSKU">已选：“{{SpecText}}”</view>
@@ -36,7 +36,7 @@
 					</view>
 				</view>
 				<!-- 购买数量 -->
-				<view class="skuBox buyNum_skuBox numbox" v-if="!fromcart||fromPinTuan">
+				<view class="skuBox buyNum_skuBox numbox" v-if="!fromcart">
 					<view class="skuTitle fl">购买数量</view>
 					<view class="flexItem fr">
 						<uni-number-box :disabled="false" :inputValue="number" :min="minBuyNum" :max="maxBuyNum"  v-on:change="change"></uni-number-box>
@@ -44,10 +44,10 @@
 				</view>
 			</view>
 			<view style="height: 120upx;"></view>
-			<view class="popup-ft" style="margin-left:20upx;" v-if="fromcart||fromPinTuan">
+			<view class="popup-ft" style="margin-left:20upx;" v-if="showbtntype==1">
 				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
-			<view class="popup-ft" v-if="!(fromcart||fromPinTuan)">
+			<view class="popup-ft" v-if="showbtntype==0">
 				<view class="bottom-btns">
 					<view class="btn addcart" @click="toAddcart">
 						加入购物车
@@ -89,11 +89,15 @@
 				type:String,
 				default:""
 			},
+			showbtntype:{
+				type:Number,
+				default: 0
+			},
 			couponid: String,
 		},
 		created: function(option) {
-			this.userId = wx.getStorageSync("userId");
-			this.token = wx.getStorageSync("token");
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
 			this.goodsDetail();
 			this.selectAllStock(); //筛选出所有没有库存的
 		},
@@ -354,12 +358,12 @@
 						this.$emit('selectSku',this.SpecText);
 						this.$emit('hidePopup');
 					}
-					if(this.fromPinTuan){
+					else{
 						this.$emit('getsku',this.number,this.SpecText,this.price);
 						this.$emit('hidePopup');
 					}
 				}else{
-					wx.showToast({
+					uni.showToast({
 						title: "请选择完整规格！",
 						icon: "none",
 						duration: 1500
@@ -383,18 +387,18 @@
 					// IsFlashSale: this.isLimint
 				});
 				if (result.code === 0) {
-					wx.showToast({
+					uni.showToast({
 						title: "加入购物车成功！",
 						duration: 2000
 					});
 					this.$emit('hidePopup');
 				} else if (result.code === 2) {
 					let _this =this;
-					wx.showModal({
+					uni.showModal({
 						content: "您还没有登录，是否重新登录？",
 						success(res) {
 							if (res.confirm) {
-								wx.navigateTo({
+								uni.navigateTo({
 								  url: "/pages/login/login"
 								});
 							} else if (res.cancel) {
@@ -402,7 +406,7 @@
 						}
 					});
 				} else {
-					wx.showToast({
+					uni.showToast({
 						title: result.msg,
 						icon: "none",
 						duration: 2000
@@ -410,7 +414,7 @@
 				}
 			},
 			gouBuy(){
-				if (judgeLogin()){
+				if (toLogin()){
 					if(this.valSubmit()){
 						let money="";
 						if(this.isPlus==1&&this.IsPlusPrice==1&&this.isLimint!=1){
@@ -418,16 +422,12 @@
 						}else{
 							money=this.price;
 						}
-						let objUrl = ''
-						objUrl = '/pages/storeSon/submit/main?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint
-						wx.navigateTo({
-							url: objUrl
-						})
-						wx.navigateTo({
+						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint;
+						uni.navigateTo({
 							url: objUrl
 						})
 					}else{
-						wx.showToast({
+						uni.showToast({
 							title: "请选择商品规格！",
 							icon:"none",
 							duration: 2000
@@ -486,7 +486,7 @@
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		width: 710upx;
+		width: 100%;
 		padding: 20upx;
 		border-top: 1px solid #eee;
 	}

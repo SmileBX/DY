@@ -81,41 +81,26 @@
 					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="../../static/hpicons/arrows.svg" mode=""></image> -->
 				</view>
 			</view>
-			<view class="pick" @click="showSku(1)">
+			<view class="pick" @click="showSku(0)">
 				<view class="shipmentsbox">
 					<view class="">规格</view>
-					<input class="province" type="text" placeholder="1件" disabled>
-					<!-- <view class="">包邮</view> -->
-					<image class="exemption" style="width: 20rpx; height: 20rpx;" src="../../static/hpicons/arrows.svg" mode=""></image>
+					<input class="province" type="text" placeholder="1件" disabled v-model="SpecText">
+					<view class="iconfont icon-arrow_r"></view>
 				</view>
 			</view>
-			<view class="pick">
+			<view class="pick" v-if="proInfo.ParameterJson!=='{}'&&proInfo.ParameterJson!==''" @click="showInfo">
 				<view class="shipmentsbox">
 					<view class="">参数</view>
-					<input class="province" type="text" placeholder="品牌" disabled>
-					<!-- <view class="">品牌</view> -->
-					<image class="exemption" style="width: 20rpx; height: 20rpx;" src="../../static/hpicons/arrows.svg" mode=""></image>
+					<input class="province" type="text" placeholder="产品参数" disabled>
+					<view class="iconfont icon-arrow_r"></view>
 				</view>
 			</view>
 		</view>
 		<!-- 品牌介绍 -->
-		<view class="needknow">
-			<!-- <view class="pole"></view> -->
-			<view class="" style="padding: 20rpx 0 30rpx 30rpx;">
-				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>大单易拼自营</view>
-					<view class="drawinfo"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>产权签约</view>
-				</view>
-				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>退货无忧</view>
-					<view class="drawinfo"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>品牌授权</view>
-				</view>
-				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>7天可退(签约后不可退)</view>
-				</view>
-			</view>
-			<view class="pole"></view>
+		<view class="needknow" v-if="isServiceInfo">
+			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
 		</view>
+		<view class="pole"></view>
 		<!-- 商品评价 -->
 		<view class="merchandise">
 			<view class="evaluate">
@@ -247,16 +232,16 @@
 					<!-- 实心 icon-collect-->
 				</view>
 				<view class="foot-item foot-item-btns">
-					<view class="btn btn_1 flex" @click="showSku(1)">
+					<view class="btn btn_1 flex" @click="showSku(0)">
 						<view class="num">¥{{proInfo.Price}}</view>
 						<view class="txt">单独购买</view>
 					</view>
-					<view class="btn btn_2 flex" @click="showSku(0)">
+					<view class="btn btn_2 flex" @click="showSku(1)">
 						<view>
 							<view class="num">¥126</view>
 							<view class="txt">我要拼团</view>
 						</view>
-						<view class="listm rt flex">
+						<view class="listm rt flex" v-if="proInfo.DistributionIncome>0">
 							<view class="cash fa" >返</view>
 							<view class="cashm fas">¥{{proInfo.DistributionIncome}}</view>
 						</view>
@@ -266,7 +251,24 @@
 		</view>
 		<!-- 详情底部 end -->
 		<view class="topbtn" @click="Top" v-if="isTop"></view>
-		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="0"></popupsku>
+		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="0"></popupsku>
+		<!-- 弹出产品参数 -->
+		<uni-popup position="bottom" mode="fixed" :show="showPopupinfo" :h5Top="true" @hidePopup="hidePopup">
+			<view class="uni-modal-Attr">
+				<view class="bottom-title">产品参数</view>
+				<view class="bottom-content">
+					<view class="uni-list attrlist">
+						<view class="uni-list-cell" v-for="(item,index) in attrArr" :key="index">
+							<view class="uni-list-cell-navigate">
+								{{index}}
+								<text class="list-cell-r">{{item}}</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="bottom-btn" @click="hidePopup">完成</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -295,6 +297,10 @@
 				bannerindex:0,//当前轮播图
 				hasBanner:false,
 				showPopupSku:false,
+				showPopupinfo:false,//参数
+				attrArr:{},//产品参数
+				isServiceInfo:false,//服务
+				showbtntype:0,
 				isProData:false,
 				number:1,
 				SpecText:'',
@@ -310,7 +316,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.proId=this.$root.$mp.query.id;
-			this.Goodsxq()
+			this.Goodsxq();
 		},
 		onNavigationBarButtonTap(e) {
 			if(e.index===0){
@@ -358,16 +364,29 @@
 						this.hasBanner=true;
 					}
 					this.IsCollect=result.data.IsCollection.Value;
+					if(this.proInfo.ServiceInfo.length){
+						this.isServiceInfo=true
+					}
+					if(this.proInfo.ParameterJson!=""&&this.proInfo.ParameterJson!="{}"){
+						this.attrArr=JSON.parse(this.proInfo.ParameterJson);
+					}
 				}
 			},
 			//展示底部 Sku
-			showSku: function() {
+			showSku: function(type) {
 				this.hidePopup();
+				this.showbtntype=type;
 				this.showPopupSku = true;
+			},
+			//展示底部 参数
+			showInfo: function() {
+				this.hidePopup();
+				this.showPopupinfo = true;
 			},
 			//统一的关闭popup方法
 			hidePopup: function() {
 				this.showPopupSku=false;
+				this.showPopupinfo = false;
 			},
 			 getsku:function(msg){
 			  this.number=msg[0];
@@ -376,6 +395,52 @@
 			  this.price=msg[3];
 			  this.plusprice=msg[4];
 			},
+			//添加取消收藏
+			async collect(){
+				let objUrl = ''
+				if(this.IsCollect){
+					objUrl = "User/ReCollections"
+				}else{
+					objUrl = "User/AddCollections"
+				}
+				let result = await post(objUrl, {
+					Id: this.proId,
+					userId:this.userId,
+					token:this.token,
+				  });
+				if(result.code==0){
+					if(this.IsCollect){
+						uni.showToast({
+							title: "已取消收藏！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=false;
+					}else{
+						uni.showToast({
+							title: "添加收藏成功！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=true;
+					}
+				};
+				if(result.code==2){
+					let _this =this;
+					uni.showModal({
+						content: "您当前未登录，无法收藏，是否登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login"
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				}
+			},
+			
 		},
 		onPageScroll(e){
 			if(e.scrollTop>300){

@@ -349,14 +349,13 @@
 		margin: 15rpx 0 0 15rpx;
 	}
 	.rt{
-		width:25%;
 		height:42rpx;
 		border:1rpx solid rgba(255,51,51,1);
 		border-radius:4rpx;
 	}
 	.cash{
 		width:38rpx;
-		height:38rpx;
+		height:100%;
 		background:rgba(255,51,51,1);
 		border-radius:4rpx 0rpx 0rpx 4rpx;
 		font-size:24rpx;
@@ -366,7 +365,6 @@
 		text-align: center;
 	}
 	.cashm{
-		width:54rpx;
 		height:21rpx;
 		font-size:24rpx;
 		font-family:PingFang;
