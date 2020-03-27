@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
 		<!-- 填写地址 -->
-		<view class="defaultPage eadit__defaultPage" v-if="showaddaddress">
+		<view class="defaultPage eadit__defaultPage">
 			<view class="addAddress__weui-cells weui-cells mt0">
 				<view class="weui-cell">
 					<view class="weui-cell__hd">
 						<label class="weui-label">收货人</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input type="text" class="weui-input" v-model="Consignee" placeholder="请输入收货人姓名"  />
+						<input type="text" class="weui-input" v-model="name" placeholder="请输入收货人姓名"  />
 					</view>
 				</view>
 				<view class="weui-cell">
@@ -16,7 +16,7 @@
 						<label class="weui-label">手机号码</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input type="text" class="weui-input" v-model="Mobile" placeholder="请输入收货人手机号" />
+						<input type="text" class="weui-input" v-model="tel" placeholder="请输入收货人手机号" />
 					</view>
 				</view>
 				<view class="weui-cell" @click="choseSite">
@@ -24,7 +24,7 @@
 						<label class="weui-label">所在地区</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input type="text" class="weui-input" disabled="true" placeholder="请选择所在地区" :value="address"  />
+						<input type="text" class="weui-input" disabled="true" placeholder="请选择所在地区" :value="pickerText"  />
 					</view>
 				</view>
 				<view class="weui-cell flexAlignStart">
@@ -45,9 +45,9 @@
 				</view>
 			</view>
 			<view class="btnBox" style="padding:100upx 20upx">
-				<button type="primary" class="btn_bb" @click="submit">保存</button>
+				<button type="primary" class="btn_bb" @click="submit">{{buttonText}}</button>
 			</view>
-			<mpvue-city-picker v-if="hasData" :province="province" :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
+			<mpvue-city-picker v-if="hasData" :province="province" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
 			 v-on:onconfirm="onconfirm(arguments)"></mpvue-city-picker>
 		</view>
 	</view>
@@ -59,14 +59,20 @@
 	import cityData from '@/common/city.data.js';
 	import "@/common/dd_style.css";
 	export default {
+		components: {
+			mpvueCityPicker
+		},
 	  data () {
 	    return {
 	      token: "",
 	      userId: "",
 	      buttonText:'保存',
-	      Consignee:"",//收货人姓名
-	      Mobile:"",
-	      isDefault:0,
+	      name: "", //收货人姓名
+	      tel: "", //收货人电话
+	      fullAddress: "", //详细地址
+	      isDefault: 0,   //设为默认地址 
+	      checked: false,
+		  province:{},
 	      ProvinceCode:0,
 	      ProvinceName:"",
 	      CityCode:0,
@@ -75,25 +81,31 @@
 	      DistrictName:"",
 	      FullAddress:"",
 	      address:"",
-	      areaList,
-	      showArea: false,
+	      areaList:[],
+		  cityPickerValueDefault: [0, 0, 1],  //默认选中
+		  pickerText: '',  //选择的地址值
+		  pickerTextArr:[],
+		  code:"",  //地址code
+		  id: "", //收货地址的id
+		  hasData:false,
 	    }
 	  },
 	  onShow(){
-	    this.userId = wx.getStorageSync("userId");
-	    this.token = wx.getStorageSync("token");
-	    const Id = this.$mp.query.id
-	    console.log(Id,"idiiiii")
-	    this.initData()
+	    this.userId = uni.getStorageSync("userId");
+	    this.token = uni.getStorageSync("token");
+	    this.id = this.$mp.query.id
+	    console.log(this.id,"idiiiii")
+	    // this.initData()
+		this.getprovinces();
 	    if(this.$mp.query.id){
-	        this.buttonText= '修改';
-	        this.getAddress(Id)
+	        this.buttonText= '确认修改';
+	        this.GetAddressInfo()
 	      }
 	    
 	  },
 	  methods:{
 	    initData(){
-	      this.Consignee = ''
+	      this.name = ''
 	      this.Mobile = ''
 	      this.isDefault = ''
 	      this.ProvinceCode = ''
@@ -106,40 +118,37 @@
 	      this.address = ''
 	    },
 	    choseSite(){
-	      this.showArea = true
+		  this.$refs.mpvueCityPicker.show();
 	    },
-	    jiaoyan(){
-	      if(!this.Consignee){
-	          return '请输入收货人'
-	      }if(!(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.Mobile))){
-	          return '请输入正确的手机号码'
-	      }
-	      if(!this.address){
-	         return '请选择地区'
-	      }if(!this.FullAddress){
-	        return '请输入详细地址'
-	      }
-	      // if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/ .test(this.FullAddress)){
-	      //    return "请输入详细地址"
-	      // }
-	      return false;
-	    },
-	    confirmArea(area){
-	      console.log(area)
-	        this.showArea = false
-	        let text = ''
-	        const areas = area.mp.detail.values
-	        for(let i=0;i<areas.length;i++){
-	          text+=areas[i].name
-	        }
-	        this.ProvinceCode=areas[0].code||'',
-	        this.CityCode=areas[1].code||'',
-	        this.DistrictCode=areas[2].code||'',
-	        this.ProvinceName=areas[0].name||'',
-	        this.CityName=areas[1].name||'',
-	        this.DistrictName=areas[2].name||'',
-	        this.address = text;
-	
+	    //提交验证
+	    yanzheng() {
+	    	if (this.name == "" || this.tel == "" || this.fullAddress == "") {
+	    		uni.showToast({
+	    			title: "姓名，电话，详细地址不能为空",
+	    			icon: "none",
+	    			duration: 1000
+	    		});
+	    		return false;
+	    	}
+	    	if (this.name.length) {
+	    		if (this.name.length > 6) {
+	    			uni.showToast({
+	    				title: "姓名的长度不能超过6位",
+	    				icon: "none",
+	    				duration: 1000
+	    			});
+	    			return false;
+	    		}
+	    	}
+	    	if (!/^1[345678]\d{9}$/.test(this.tel)) {
+	    		wx.showToast({
+	    			title: "手机号不合法",
+	    			icon: "none",
+	    			duration: 1000
+	    		});
+	    		return false;
+	    	}
+	    	return true;
 	    },
 	    change(){
 	      if(this.isDefault==0){
@@ -150,89 +159,115 @@
 	      
 	      // console.log(this.isDefault)
 	    },
-	    //编辑地址获取对应地址信息
-	     getAddress(id){
-	      let that = this;
-	      post('Address/GetInfo',{
-	          Id:id,
-	          userId:that.userId,
-	          Token: that.token
+		//获取选择的地址code
+		onconfirm(code) {
+			this.provincesCode=code[0];
+			this.cityCode=code[1];
+			this.quCode=code[2];
+			this.pickerText=code[3];
+			this.pickerTextArr = this.pickerText.split(' ')
+			console.log(this.pickerTextArr)
+		},
+		//获取省集合
+		async getprovinces() {
+			this.province = await post("Area/GetArea", {
+				Types: "Province"
+			});
+			this.hasData=true;
+		},
+	    async GetAddressInfo() {
+	      var info = await post("Address/GetInfo", {
+	        UserId: this.userId,
+	        Token: this.token,
+	        Id: this.id
+	      });
+	      if (info.code == 0) {
+	        this.name = info.data.Consignee;
+	        this.tel = info.data.Mobile;
+	        this.pickerText = info.data.ProvinceName+" "+info.data.CityName+" "+info.data.DistrictName;
+			this.pickerTextArr = this.pickerText.split(' ')
+	        this.fullAddress=info.data.FullAddress;
+	        this.isDefault=info.data.IsDefault;
+	        if (this.id != "") {
+	          this.provincesCode = info.data.ProvinceCode;
+	          this.cityCode = info.data.CityCode;
+	          this.quCode = info.data.DistrictCode;
+	        }
+	        if(info.data.IsDefault==1){
+	          this.checked=true
+	        }
+	        if(info.data.IsDefault==0){
+	          this.checked=false
+	        }
 	      }
-	      ).then(res=>{
-	          that.Consignee=res.data.Consignee;
-	          that.Mobile=res.data.Mobile;
-	          that.isDefault=res.data.IsDefault?true:false;
-	          that.ProvinceCode=res.data.ProvinceCode;
-	          that.CityCode=res.data.CityCode;
-	          that.DistrictCode =res.data.DistrictCode;
-	          that.FullAddress=res.data.FullAddress;
-	          that.ProvinceName = res.data.ProvinceName
-	          that.CityName = res.data.CityName
-	          that.DistrictName = res.data.DistrictName
-	          that.address=res.data.ProvinceName + res.data.CityName + res.data.DistrictName;
-	      })
-	          
-	     
 	    },
-	    submit(){
-	        console.log(this.provinceCode,"城市code")
-	        const toast = this.jiaoyan()
-	        console.log(toast)
-	        if(toast){
-	            wx.showToast({
-	              title:toast,
-	              icon: "none",
-	              duration: 2000
-	            });
-	            return false;
-	        }
-	        let objUrl = ''
-	        let params = {}
-	        if(this.$mp.query.id){ //编辑地址
-	          objUrl = 'Address/UpdateAddress'  
-	          params = {
-	            userId:this.userId,
-	            Token: this.token,
-	            Consignee: this.Consignee,
-	            Mobile: this.Mobile,
-	            IsDefault: this.isDefault?1:0,
-	            ProvinceCode: this.ProvinceCode,
-	            ProvinceName:this.ProvinceName,
-	            CityCode: this.CityCode,
-	            CityName:this.CityName,
-	            DistrictCode : this.DistrictCode,
-	            DistrictName:this.DistrictName,
-	            FullAddress:this.FullAddress,
-	            Id:this.$mp.query.id
-	          }
-	        }else{
-	          objUrl = 'Address/AddAddress'  
-	          params = {
-	            userId:this.userId,
-	            Token: this.token,
-	            Consignee: this.Consignee,
-	            Mobile: this.Mobile,
-	            IsDefault: this.isDefault?1:0,
-	            ProvinceCode: this.ProvinceCode,
-	            ProvinceName:this.ProvinceName,
-	            CityCode: this.CityCode,
-	            CityName:this.CityName,
-	            DistrictCode : this.DistrictCode,
-	            DistrictName:this.DistrictName,
-	            FullAddress:this.FullAddress,
-	          }
-	        }
-	        post(objUrl,params).then(res=>{
-	            wx.showToast({
-	              title: res.msg
-	            });
-	            setTimeout(()=> {
-	                wx.redirectTo({ url: "/pages/myson2/address/main"});
-	              },1500)
-	        })
-	    
-	      
+	    //保存地址
+	    submit() {
+	    	if (this.yanzheng()) {
+	    		if (this.id) {
+	    			this.setAddressInfo();
+	    		} else {
+	    			this.AddAddress();
+	    		}
+	    	}
 	    },
+		//添加
+		async AddAddress(){
+			let result = await post("Address/AddAddress", {
+			UserId: this.userId,
+			Token: this.token,
+			Consignee: this.name,
+			Mobile: this.tel,
+			IsDefault: this.isDefault,
+			ProvinceCode: this.provincesCode,
+			ProvinceName:this.pickerTextArr[0],
+			CityCode: this.cityCode,
+			CityName:this.pickerTextArr[1],
+			DistrictCode: this.quCode,
+			DistrictName:this.pickerTextArr[2],
+			FullAddress: this.fullAddress,
+			StreetCode: "",
+			});
+			if (result.code == 0) {
+				uni.showToast({
+					title: "添加成功",
+					icon: "none",
+					duration: 1000
+				});
+				let _this=this;
+				setTimeout(function() {
+					uni.navigateBack({})
+				},1000);
+			}
+		},
+		//修改收货地址
+		async setAddressInfo() {
+		  var info = await post("Address/UpdateAddress", {
+		    UserId: this.userId,
+		    Token: this.token,
+		    Id: this.id,
+		    Consignee: this.name,
+		    Mobile: this.tel,
+		    IsDefault: this.isDefault,
+		    ProvinceCode: this.provincesCode,
+		    CityCode: this.cityCode,
+		    DistrictCode: this.quCode,
+			ProvinceName:this.pickerTextArr[0],
+			CityName:this.pickerTextArr[1],
+			DistrictName:this.pickerTextArr[2],
+		    FullAddress: this.fullAddress
+		  });
+		  if (info.code == 0) {
+		    uni.showToast({
+		      title: "修改成功",
+		      icon: "none",
+		      duration: 1000
+		    });
+			setTimeout(function() {
+				uni.navigateBack({})
+			},1000)
+		  }
+		},
 	  },
 	}
 </script>

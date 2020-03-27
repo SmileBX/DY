@@ -28,7 +28,10 @@
     padding-top:180upx;
     margin-top:0 !important;
   }
+  .iconimg{
+	  display: flex;justify-content: center;align-items: center;
+  }
  .iconimg .img{ display: block; width: 200upx; height: 200upx; margin: 0 auto 20upx;}
- .iconimg .iconfont{ display: block; font-size: 80upx; color: #999; margin: 0 auto 20upx;}
+ .iconimg .iconfont{ display: block; font-size: 80upx; color: #999; margin: 0 auto 20upx; text-align:center;}
  .emptybox .tips{ color: #999;}
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="wallet">
       <div class="wa_bg">
-          <img src="http://jyy.wtvxin.com/static/images/icons/qiao.png" alt="" class="qiao">
+          <img src="../../../static/my/gao.png" alt="" class="qiao">
           <div class="wa_mon flex flexColumn flexAlignCenter">
               <p>当前可提收益（元）</p>
               <p class="total_wa">{{info.KTAmount}}</p>
           </div>
       </div>
-      <div class="mm_btn" @click="switchPath('/pages/myson2/withdraw/main',$event)">提现</div>
+      <div class="mm_btn" @click="switchPath('/pages/other/withdraw/withdraw/main',$event)">提现</div>
       <div class="wa_list pw3">
           <div class="flex justifyContentBetween  wa_item pp3 bg_fff">
               <div class="flex flexAlignCenter">
@@ -30,14 +30,14 @@
               </div>
               <span class="cr font30">{{info.LJAmount}}元</span>
           </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter mt2" @click="switchPath('/pages/myson2/getCome/main',$event)">
+          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter mt2" @click="switchPath('/pages/other/getCome/getCome',$event)">
               <div class="flex flexAlignCenter">
                   <img src="http://jyy.wtvxin.com/static/images/icons/w2.png" alt="" class="ww_wa">
                   <span class="mr2">收益明细</span>
               </div>
                <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
           </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/myson2/money/main',$event)">
+          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/other/money/money',$event)">
               <div class="flex flexAlignCenter">
                   <img src="http://jyy.wtvxin.com/static/images/icons/w3.png" alt="" class="ww_wa">
                   <span class="mr2">提现记录</span>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-// import {post} from '@/utils'
+import {post} from '@/common/util.js'
 export default {
   data () {
     return {
@@ -64,8 +64,8 @@ export default {
     }
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId")
-    this.token = wx.getStorageSync("token")
+    this.userId = uni.getStorageSync("userId")
+    this.token = uni.getStorageSync("token")
     this.IncomeDetailsTZ();
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
       setTimeout(() => {
         this.clientX = 0
         this.clientY = 0
-        wx.navigateTo({
+        uni.navigateTo({
           url:path
         })
       }, 0);

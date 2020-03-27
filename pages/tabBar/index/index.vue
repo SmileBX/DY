@@ -101,7 +101,7 @@
 				<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 					<view class="uni-bd uni-mt10">
 						<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="goDetail(item.Id)">
+							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="tolink('/pages/homePage/details?id=')">
 								<view class="itembox">
 									<view class="image-view">
 										<image class="img" src="../../../static/of/3.png" mode="aspectFill"></image>
@@ -238,6 +238,8 @@
 			this.banner();
 			this.typelist();
 		},
+
+			
 		
 	}
 </script>

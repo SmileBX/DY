@@ -26,8 +26,9 @@
           </div>
       </div>
 	  <div class="fb p3 flex justifyContentBetween bb_tab_list">
-		  <view class="bb_gu_tab active">一级好友</view>
-		  <view class="bb_gu_tab">二级好友</view>
+		  <!-- <view class="bb_gu_tab active">一级好友</view>
+		  <view class="bb_gu_tab">二级好友</view> -->
+		  <div class="pw3">我的下级</div>
 	  </div>
 	  <div class="slider"></div>
       <div class="mt2 bg_fff pw3">
@@ -49,8 +50,8 @@
 </template>
 
 <script>
-// import {post} from '@/utils'
-// import noData from "@/components/noData"; //没有数据的通用提示
+import {post} from '@/common/util.js'
+import noData from "@/components/noData"; //没有数据的通用提示
 // import LoadMore from '@/components/load-more';
 export default {
 
@@ -70,14 +71,14 @@ export default {
       isFather:false,
     }
   },
-  // components: {
-  //   noData,
+  components: {
+    noData,
 		// LoadMore
-  // },
+  },
   onShow(){
     this.userId = wx.getStorageSync("userId")
     this.token = wx.getStorageSync("token")
-    // this.MyCustom();
+    this.MyCustom();
   },
   methods: {
     //我的客户
