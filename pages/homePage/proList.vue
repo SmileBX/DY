@@ -35,173 +35,128 @@
 		</view>
 
 		<!-- 列表 -->
-		<view class="trucklist">
+		<view class="trucklist" v-if="hasData">
 			<view class="truckac"></view>
-			<view class="">
-				<view class="listbox">
-					<view class="listimg" @click="tohousedetails('/pages/homePage/housedetails')">
-						<!-- <image src="" mode=""></image> -->
+			<block v-for="(item,index) in datalist" :key="index">
+				<view class="listbox" @click="tolink('/pages/homePage/details?id='+item.Id)">
+					<view class="listimg">
+						<image :src="item.PicNo" mode="widthFix"></image>
 					</view>
 					<view class="listpt">
-						<view class="listtitle">男士春秋男款纯棉睡衣</view>
-						<view class="listtitles">让睡眠更简单，让居家更有型</view>
+						<view>
+							<view class="listtitle uni-ellipsis">{{item.Name}}</view>
+							<view class="listtitles uni-ellipsis" v-if="item.Synopsis">{{item.Synopsis}}</view>
+						</view>
+						
 						<!-- <view class="listplace">
 							<view class="">14m <span>2</span></view>
 							<view class="listpole"></view>
 							<view class="">民治</view>
 						</view> -->
-						<view class="listprice">
-							<view class="listm">
-								<view class="selling"><span>¥</span>138</view>
-								<view class="original">¥148</view>
+						<view>
+							<view class="listprice">
+								<view class="listm">
+									<view class="selling"><span>¥</span>{{item.Price}}</view>
+									<view class="original" v-if="item.MarketPrice>item.Price">¥{{item.MarketPrice}}</view>
+								</view>
+								<view class="listm rt" v-if="item.DistributionIncome>0">
+									<view class="cash">返</view>
+									<view class="cashm">¥{{item.DistributionIncome}}</view>
+								</view>
 							</view>
-							<view class="listm rt">
-								<view class="cash">返</view>
-								<view class="cashm">¥20</view>
+							<view class="listplace lp" v-if="item.ServiceKeys">
+								<view class="listkey" v-for="(e,i) in item.ServiceKeys.split(',')" :key="i">{{e}}</view>
 							</view>
-						</view>
-						<view class="listplace lp">
-							<view class="listbrief">七天无理由退换</view>
-							<view class="listbrieff">新品</view>
-							<view class="listbriefs">材质保真</view>
 						</view>
 					</view>
 				</view>
-				<view class="format"></view>
-			</view>
-			
-			<view class="">
-				<view class="listbox">
-					<view class="listimg">
-						<!-- <image src="" mode=""></image> -->
-					</view>
-					<view class="listpt">
-						<view class="listtitle">男士春秋男款纯棉睡衣</view>
-						<view class="listtitles">让睡眠更简单，让居家更有型</view>
-						<view class="listprice">
-							<view class="listm">
-								<view class="selling"><span>¥</span>138</view>
-								<view class="original">¥148</view>
-							</view>
-							<view class="listm rt">
-								<view class="cash">返</view>
-								<view class="cashm">¥20</view>
-							</view>
-						</view>
-						<view class="listplace lp">
-							<view class="listbrief">七天无理由退换</view>
-							<view class="listbrieff">新品</view>
-							<view class="listbriefs">材质保真</view>
-						</view>
-					</view>
-				</view>
-				<view class="format"></view>
-			</view>
-			
-			
-			<view class="">
-				<view class="listbox">
-					<view class="listimg">
-						<!-- <image src="" mode=""></image> -->
-					</view>
-					<view class="listpt">
-						<view class="listtitle">男士春秋男款纯棉睡衣</view>
-						<view class="listtitles">让睡眠更简单，让居家更有型</view>
-						
-						<view class="listprice">
-							<view class="listm">
-								<view class="selling"><span>¥</span>138</view>
-								<view class="original">¥148</view>
-							</view>
-							<view class="listm rt">
-								<view class="cash">返</view>
-								<view class="cashm">¥20</view>
-							</view>
-						</view>
-						<view class="listplace lp">
-							<view class="listbrief">七天无理由退换</view>
-							<view class="listbrieff">新品</view>
-							<view class="listbriefs">材质保真</view>
-						</view>
-					</view>
-				</view>
-				<view class="format"></view>
-			</view>
-			
-			<view class="">
-				<view class="listbox">
-					<view class="listimg">
-						<!-- <image src="" mode=""></image> -->
-					</view>
-					<view class="listpt">
-						<view class="listtitle">男士春秋男款纯棉睡衣</view>
-						<view class="listtitles">让睡眠更简单，让居家更有型</view>
-						<view class="listprice">
-							<view class="listm">
-								<view class="selling"><span>¥</span>138</view>
-								<view class="original">¥148</view>
-							</view>
-							<view class="listm rt">
-								<view class="cash">返</view>
-								<view class="cashm">¥20</view>
-							</view>
-						</view>
-						<view class="listplace lp">
-							<view class="listbrief">七天无理由退换</view>
-							<view class="listbrieff">新品</view>
-							<view class="listbriefs">材质保真</view>
-						</view>
-					</view>
-				</view>
-				<view class="format"></view>
-			</view>
-			
-			<view class="">
-				<view class="listbox">
-					<view class="listimg">
-						<!-- <image src="" mode=""></image> -->
-					</view>
-					<view class="listpt">
-						<view class="listtitle">创新科技小区车位出售</view>
-						<view class="listtitles">前进二路与流塘路交汇处</view>
-						<view class="listprice">
-							<view class="listm">
-								<view class="selling"><span>¥</span>138</view>
-								<view class="original">¥148</view>
-							</view>
-							<view class="listm rt">
-								<view class="cash">返</view>
-								<view class="cashm">¥20</view>
-							</view>
-						</view>
-						<view class="listplace lp">
-							<view class="listbrief">七天无理由退换</view>
-							<view class="listbrieff">新品</view>
-							<view class="listbriefs">材质保真</view>
-						</view>
-					</view>
-				</view>
-				<view class="format"></view>
-			</view>
+			</block>
 		</view>
-	
-		
+		<view class="uni-tab-bar-loading" v-if="hasData">
+			<uni-load-more :loadingType="loadingType"></uni-load-more>
+		</view>
+		<noData :isShow="noDataIsShow"></noData>
 	</view>
 </template>
 
 <script>
+	import {post,get} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
+	import uniLoadMore from '@/components/uni-load-more.vue';
 	export default {
+		components: {
+			noData,
+			uniLoadMore
+		},
 		data() {
 			return {
-				
+				userId: "",
+				token: "",
+				page: 1,
+				pageSize: 6,
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				isLoad: false,
+				hasData: false,
+				noDataIsShow: false,
+				datalist:[]
 			}
 		},
+		onLoad: function() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+		},
+		onShow(){
+			this.getprolist();
+		},
 		methods: {
-			tohousedetails(Url) {
+			tolink(Url) {
 				uni.navigateTo({
 					url: Url
 				})
 			},
+			//分类商品列表
+			async getprolist(){
+				let result = await post("Goods/GoodsList", {
+				Page: this.page,
+				PageSize: this.pageSize,
+				TypeId:this.tid,
+				ClassId:this.cid
+				});
+				if(result.code==0){
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+					}
+					if (this.page === 1) {
+						this.datalist = result.data;
+					}
+					if (this.page > 1) {
+						this.datalist = this.datalist.concat(
+							result.data
+						);
+					}
+					if (result.data.length <this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				}
+			},
+		},
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.getprolist();
+			} else {
+				this.loadingType = 2;
+			}
 		}
 	}
 </script>
@@ -215,6 +170,7 @@
 		position:fixed; 
 		width:100%;
 		background: #FFFFFF; 
+		z-index: 2;
 	}
 	.truck{
 		display: flex;
@@ -319,17 +275,22 @@
 		/* margin: 20rpx 0 20rpx 31rpx; */
 		display: flex;
 		padding: 20rpx 30rpx;
+		border-bottom: 1px solid #eee;
 	}
+	.listbox:last-child{ border-bottom: none;}
 	.listimg{
 		width:240rpx;
-		/* height:240rpx; */
-		/* background:rgba(245,245,245,1); */
-		background:#F48F18;
+		height:240rpx;
+		background:#eee;
 		border-radius:12rpx;
+		overflow: hidden;
 	}
 	.listpt{
 		padding-left:30rpx;
 		width: 65%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 	.listtitle{
 		font-size:32rpx;
@@ -413,47 +374,21 @@
 		color:rgba(255,51,51,1);
 		margin-left: 10rpx;
 	}
-	.format{
-		/* width:690px; */
-		height:1rpx;
-		border:1rpx solid rgba(236,236,236,1);
-		margin: 0 30rpx;
-	}
 	.lp{
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(255,51,51,1);
 		padding-top: 10rpx;
 	}
-	.listbrief{
-		font-size:15rpx;
+	.listkey{
+		font-size:24rpx;
 		line-height:30rpx;
-		width:180rpx;
+		padding: 0 10rpx;
 		height:32rpx;
 		border:1rpx solid rgba(247,192,192,1);
 		border-radius:16rpx;
 		text-align: center;
+		margin-right: 10rpx;
 	}
-	.listbrieff{
-		font-size:15rpx;
-		line-height:30rpx;
-		width:80rpx;
-		height:32rpx;
-		border:1rpx solid rgba(247,192,192,1);
-		border-radius:16rpx;
-		margin-left: 20rpx;
-		text-align: center;
-	}
-	.listbriefs{
-		font-size:15rpx;
-		width:120rpx;
-		line-height:30rpx;
-		height:32rpx;
-		border:1rpx solid rgba(247,192,192,1);
-		border-radius:16rpx;
-		margin-left: 20rpx;
-		text-align: center;
-	}
-		
-	
+
 </style>
