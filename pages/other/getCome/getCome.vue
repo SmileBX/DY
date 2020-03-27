@@ -31,28 +31,14 @@
         <load-more :loadingType="loadingType"></load-more>
       </view>
       <!--时间组件-->
-      <div class="shade bottom__shade" v-show="showDate" catchtouchmove="true" >
-      <div class="mask" @tap="showDate = false" catchtouchmove="true"></div>
-      <div class="shadeContent" catchtouchmove="true">
-          <div class="shade__bd">
-          <van-datetime-picker
-          type="year-month"
-          :value="currentDate"
-          @confirm="onInput($event)"
-          @cancel="showDate=false"
-          :min-date="minDate"
-          title="请选择时间"
-          style="z-index:888!important"
-          />
-              </div>
-          </div>
-      </div>
+      <pickerTime @success="success" :show.sync="showDate"></pickerTime>
   </div>
 </template>
 
 <script>
-// import {post} from '@/utils'
-// import noData from "@/components/noData"; //没有数据的通用提示
+import {post} from '@/common/util.js'
+import noData from "@/components/noData"; //没有数据的通用提示
+import pickerTime from '@/components/pickerTime.vue'
 // import LoadMore from '@/components/load-more';
 export default {
   data () {
@@ -81,8 +67,8 @@ export default {
     }
   },
   components: {
-    noData,
-		LoadMore
+    noData,pickerTime,
+	// LoadMore
   },
   onShow(){
     this.setBarTitle();
@@ -108,8 +94,14 @@ export default {
     },
     choseTime(){
         this.showDate = true
-        console.log("*****************")
     },
+	success(value){
+		this.setUpDate = value
+		this.datalist = []
+		this.page=1;
+		this.queryRecord()
+		console.log(value,"{{{{{{{{{{}}}}}}}}}}")
+	},
     setDate(){
         let year = new Date().getFullYear()
         let month = new Date().getMonth()+1;
@@ -162,21 +154,8 @@ export default {
             })
           }
         })
-    },
-    onInput(e){
-      let dd = new Date(e.mp.detail);
-      let year = dd.getFullYear();
-      let month = dd.getMonth()+1;
-      // let day = dd.getDate();
-      month = month < 10 ? '0'+month : month;
-      this.setUpDate = year+"-"+month
-      this.currentDate = dd.getTime();
-      this.showDate = false
-      this.datalist = []
-      this.page=1;
-      this.queryRecord()
-    },
-  },
+    }
+},
   onReachBottom: function() {
     if (this.isLoad) {
       this.loadingType = 1;
@@ -196,6 +175,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+	@import '../../../common/lz.css';
 .list{
   height: 120rpx;
   border-bottom: 1rpx solid #ededed;
