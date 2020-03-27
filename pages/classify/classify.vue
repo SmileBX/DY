@@ -28,7 +28,7 @@
 						<image class="img" :src="categoryList[bannerindex].Pic" mode="aspectFill"></image>
 					</view>
 					<view class="nav-rightList" v-if="hasData">
-						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index" @click="gotoProductList(1,item.Id)">
+						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
 							<image :src="item.PicUrl" v-if="item.PicUrl" mode="aspectFill" />
 							<image src="/static/noPicmin.png" v-else mode="widthFix"></image>
 							<view class="txt">{{item.ClassName}}</view>
@@ -94,8 +94,8 @@
 				barHeight:0,
 				userId: "",
 				token: "",
-				categoryList: [], //左边的数据
-				subCategoryList: [], //右边的数据
+				categoryList: [], //左边的类型数据
+				subCategoryList: [], //右边的分类数据
 				height: 0,
 				categoryActive: 0,
 				scrollTop: 0,
@@ -104,13 +104,13 @@
 				newscount:0,//未读消息
 				bannerindex:0,//类型banner
 				hasData: false,//是否有下级分类
+				hasProData: false,//是否有产品
 				noDataIsShow: false,
 				page: 1,
 				pageSize: 6,
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				prolist:[],
-				hasProData: false,//是否有产品
 			}
 		},
 		methods: {
@@ -120,6 +120,7 @@
 			scroll(e) {
 				this.scrollHeight = e.detail.scrollHeight;
 			},
+			// 点击分类
 			categoryClickMain(id, index) {
 				this.categoryActive = index;
 				this.typeId = id;
@@ -152,13 +153,14 @@
 				});
 				if (result.code === 0) {
 					if(result.data.length){
+						const data = result.data;
 						this.hasData=true;
 						this.hasProData=false;
 						this.noDataIsShow=false;
-						this.subCategoryList = result.data;
+						this.subCategoryList = data;
 					}else{
+						this.noDataIsShow=true;
 						this.hasData=false;
-						this.getprolist();
 					}
 					
 				}
@@ -180,7 +182,8 @@
 				let res = await post("Goods/GoodsList", {
 				Page: this.page,
 				PageSize: this.pageSize,
-				TypeId:this.typeId
+				TypeId:this.typeId,
+				
 				});
 				if(res.code==0){
 					let len=res.data.length;
