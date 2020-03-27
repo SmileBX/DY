@@ -9,7 +9,11 @@
                   <image :src="Avatar" alt="" class="ava"></image>
                   <view class="mr2">
                       <view>{{tel}}</view>
-                      <view class="font20 yy_ma mt1" @click="copy(info.ReferralCode)">邀请码：{{info.ReferralCode}}</view>
+					  <!-- #ifdef H5 -->
+					  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
+					   v-model="info.ReferralCode" style="opacity: 0;position: fixed;top: -10000px;">
+					  <!-- #endif -->
+                      <view class="font20 yy_ma mt1" @click="copybtn()">邀请码：{{info.ReferralCode}}</view>
                   </view>
               </view>
               <view class="yy_scan font30 mt2 " @click="showShare">点击分享</view>
@@ -19,10 +23,12 @@
       <!--分享-->
       <view class="mask" v-if="isShowShare" @click="cancelShare"></view>
       <view class="modal_mask flex justifyContentAround pp3" v-if="isShowShare">
+		  <!-- #ifdef MP-WEIXIN-->
           <button open-type="share" class="flex flexColumn flexAlignCenter">
               <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
-              <view class="mt1 flex1 font18">分享好友</view>
+              <view class="mt1 flex1 font18">分享微信好友</view>
           </button>
+		  <!-- #endif -->
           <view class="flex flexColumn flexAlignCenter" @click="saveImg">
               <image src="http://jyy.wtvxin.com/static/images/icons/quan.png" alt="" class="circle_img"></image>
               <view class="mt1 flex1 font18">分享到朋友圈</view>
@@ -34,12 +40,17 @@
         <canvas canvas-id="myCanvas" class="share-canvas" v-if="!hasimg"></canvas>
         <image :src="saveImgurl" alt="" v-else></image>
       </view>
-      <view class="saveBtn" v-if="showImg" @click="savebtn">保存</view>
+	   <!-- #ifdef H5-->
+	   <view class="saveBtn" v-if="showImg" @click="H5share">长按二维码保存</view>
+	   <!-- #endif -->
+	   <!-- #ifdef MP-WEIXIN-->
+	   <view class="saveBtn" v-if="showImg" @click="Wxshare">保存相册分享到朋友圈</view>
+	   <!-- #endif -->
   </view>
 </template>
 
 <script>
-// import {post} from '@/utils'
+import {post} from '@/common/util.js'
 import wxml2canvas from '../../../common/wxml2canvas.js'
 
 export default {
@@ -57,6 +68,7 @@ export default {
       avaurl:"",
       hasimg:false,
       saveImgurl:"",
+	  disabled: false
     }
   },
 
@@ -72,6 +84,7 @@ export default {
     this.InviteFriends();
     this.GetCenterInfo();
   },
+
   methods: {
     showShare(){
       this.isShowShare=true;
@@ -82,9 +95,127 @@ export default {
     saveImg(){
       this.showImg=true
       this.isShowShare=false
-      this.drawCanvas()
+	  let tempTimeOut = setTimeout(()=>{
+		  this.drawCanvas()
+		  clearTimeout(tempTimeOut)
+	  },100)
+      
     },
-    drawCanvas() {
+	blur() {
+		this.disabled = true;
+	},
+	copybtn() {
+		// #ifdef  H5
+		let url = document.getElementsByTagName("input")[0];
+		url.select(); // 选择对象
+		document.execCommand("Copy");
+		uni.showToast({
+			icon: "none",
+			title: "复制成功"
+		})
+		// #endif
+		// #ifdef  MP-WEIXIN
+		let _this = this;
+		uni.setClipboardData({
+			data: _this.info.ReferralCode,
+			success: function() {
+				uni.showToast({
+					icon: 'none',
+					title: "复制成功"
+				})
+			}
+		});
+		// #endif
+	},
+	H5share() {
+		let drawImage = wxml2canvas({
+			element: 'myCanvas',  // canvas节点的id,
+			obj: this,  // 在组件中使用时，需要传入当前组件的this
+			width: 300,   // 宽高
+			height: 600, 
+			background: '#161C3A', // 默认背景色
+			gradientBackground: { // 默认的渐变背景色，与background互斥
+				color: ['#17326b', '#340821'],
+				line: [0, 0, 0, 600]
+			},
+			progress (percent) {  // 绘制进度
+			},
+			finish (url) {
+				// 画完后返回url
+				console.log(url,"////////////")
+			},
+			error (res) {
+				console.log(res);
+				// 画失败的原因
+			}
+		});
+		uni.showToast({
+			icon: "none",
+			title: "请长按二维码保存图片"
+		})
+	},
+	Wxshare() {
+			let _this = this
+			let aa = wx.getFileSystemManager();
+			 aa.writeFile({
+			   filePath:wx.env.USER_DATA_PATH+'/test.png',
+			   data: _this.qrimg.slice(22),
+			   encoding:'base64',
+			   success: res => {
+			     wx.saveImageToPhotosAlbum({
+			       filePath: wx.env.USER_DATA_PATH + '/test.png',
+			       success: function (res) {
+			         wx.showToast({
+			           title: '保存成功',
+			         })
+			       },
+			       fail: function (err) {
+			         //需要用户授权设置
+					if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+						console.log('用户一开始拒绝了，我们想再次发起授权')
+						// 用户授权设置
+						wx.showModal({
+							title: '提示',
+							content: '需要您授权保存相册',
+							showCancel: false,
+							success:modalSuccess=>{
+							  wx.openSetting({
+								success(settingdata) {
+								  console.log("settingdata", settingdata)
+								  if (settingdata.authSetting['scope.writePhotosAlbum']) {
+									wx.showModal({
+									  title: '提示',
+									  content: '获取权限成功,再次点击图片即可保存',
+									  showCancel: false,
+									})
+								  } else {
+									wx.showModal({
+									  title: '提示',
+									  content: '获取权限失败，将无法保存到相册哦~',
+									  showCancel: false,
+									})
+								  }
+								},
+								fail(failData) {
+								  console.log("failData",failData)
+								},
+								complete(finishData) {
+								  console.log("finishData", finishData)
+								}
+							  })
+							}
+						  })
+			       }
+			     
+				    }
+				 })
+			     console.log(res)
+			   }, fail: err => {
+			     console.log(err)
+			   }
+			 })
+		},
+	drawCanvas() {
       if(!this.hasimg){
         const ctx = wx.createCanvasContext('myCanvas');
         //背景图片
@@ -93,24 +224,26 @@ export default {
         var avaurl = this.avaurl
         var tel=this.tel
         var code="邀请码："+this.info.ReferralCode
-        console.log(bgurl,"this.bgurl")
         //画布背景填色
-        ctx.setFillStyle('#fff')
-        ctx.fillRect(0, 0, 256, 403);
+        ctx.setFillStyle('#ffffff')
+        ctx.fillRect(0, 0, 300, 500);
         ctx.setFillStyle('#5A4ABA')
-        ctx.fillRect(0, 0, 256, 32);
+        ctx.fillRect(0, 0, 300, 32);
         //图片
-        ctx.drawImage(bgurl, 0, 32, 256,288);
-        ctx.drawImage(avaurl, 12, 332, 50,50);
-        ctx.drawImage(codeurl, 180, 332, 64,64);
-        this.drawRoundedRect(ctx,"#7364ca","#7364ca",74,362,76,18,9);
+        ctx.drawImage(bgurl, 0, 32, 300,348);
+        // ctx.drawImage(avaurl, 12, 410, 50,50); //头像没有路径
+		ctx.rect(200, 400, 64,64)
+		ctx.stroke()
+        ctx.drawImage(codeurl, 200, 400, 64,64);
         //说明文字
         ctx.setFontSize(12)
         ctx.setFillStyle('#333333')
-        ctx.fillText(tel, 74, 348)
+        ctx.fillText(tel, 80, 420)
         ctx.setFontSize(9)
+		ctx.setFillStyle('#5A4ABA')
+		this.drawRoundedRect(ctx,"#7364ca","#7364ca",74,435,90,18,9);
         ctx.setFillStyle('#ffffff')
-        ctx.fillText(code, 78, 375)
+        ctx.fillText(code, 84, 447.5)
         ctx.draw()
       }
     },
@@ -147,7 +280,6 @@ export default {
             ctx.arc(x,y,radius,0,Math.PI*2);
             return;
         }
-
         ctx.moveTo(x+radius,y);
         ctx.arcTo(x+width,y,x+width,y+height,radius);
         ctx.arcTo(x+width,y+height,x,y+height,radius);
@@ -231,7 +363,7 @@ export default {
   },
   onShareAppMessage: function() {
     return {
-      title: "家易云", //转发页面的标题
+      title: "大单易拼", //转发页面的标题
       path: '/pages/index/main?shareid='+this.info.ReferralCode
     }
   }
@@ -302,20 +434,20 @@ export default {
   bottom: 0;
   height: 88upx;
   line-height: 88upx;
-  background: #338afb;
+  background: #ff3333;
   color: #fff;
   text-align: center;
   z-index: 998;
 }
 .imgbox{
-  width: 80%;
-  height: 80%;
+  width: 600upx;
+  height:1000upx;
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 50%;border-radius: 15upx;
   transform: translate(-50%,-50%);
-  z-index: 999;
-  // background: #fff;
+  z-index: 1000;
+  background: #fff;
   .share-canvas{
     width: 100%;
     height: 100%;
