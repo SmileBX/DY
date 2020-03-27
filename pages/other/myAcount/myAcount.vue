@@ -64,8 +64,8 @@ export default {
     }
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId")
-    this.token = wx.getStorageSync("token")
+    this.userId = uni.getStorageSync("userId")
+    this.token = uni.getStorageSync("token")
     this.IncomeDetailsTZ();
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
       setTimeout(() => {
         this.clientX = 0
         this.clientY = 0
-        wx.navigateTo({
+        uni.navigateTo({
           url:path
         })
       }, 0);

@@ -3,7 +3,7 @@
 	<view class="wallet">
 		<view class="walletbox">
 			<view class="reveal">
-				<view class="symbol"><span>￥</span>8960.00</view>
+				<view class="symbol"><span>￥</span>{{wallet}}</view>
 				<view class="balance">账户余额(元)</view>
 			</view>
 		</view>
@@ -14,7 +14,7 @@
 				</view>
 				<view class="detail" @click="totransaction">交易明细</view>
 				<view class="">
-					<image class="arrows" src="../../../static/hpicons/arrows.svg"mode=""></image>
+					<image class="arrows" src="../../../static/hpicons/arrows.svg" mode=""></image>
 				</view>
 			</view>
 			<view class="drawing" style="padding-top: 20rpx;">
@@ -39,8 +39,12 @@
 	export default {
 		data(){
 			return{
-				
+				wallet:0,//余额
 			}
+		},
+		onShow() {
+			this.wallet=this.$root.$mp.query.id;
+			this.wallet=Number(this.wallet).toFixed(2)
 		},
 		methods:{
 			// 充值

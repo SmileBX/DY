@@ -23,7 +23,7 @@
         </view>    
       </view>
       </radio-group>
-      <p  class="nodata_log flex flexColumn flexAlignCenter" v-else>
+      <p class="nodata_log flex flexColumn flexAlignCenter" v-else>
           <image src="../../../static/my/site.png" alt="" class="site_log"></image>
           <span class="cg mt2">还没有收货地址哦~</span>
           <span class="add_new" @tap="toAddSite()">新建地址</span>
