@@ -53,11 +53,40 @@
 				<image class="carportimgs" src="" mode=""></image>
 			</view>
 			<view class="figure">
-				<view class="" style="display: flex;">
-					<image style="width: 30rpx; height: 30rpx;" src="../../static/hpicons/news.svg" mode=""></image>5786
-					<view class="">12</view>
+				<view class="figurebox">
+					<image class="news" src="../../static/hpicons/news.svg" mode=""></image>5786
 				</view>
-				<view class=""><image src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
+				<view class="figurebox"><image class="praise" src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
+			</view>
+		</view>
+		<view class="minute">
+			<view class="given">
+				<view class="picture" style="padding-right: 10px;">
+					<view class="portrait">
+						<image src="../../static/hpicons/back.svg" mode=""></image>
+					</view>
+				</view>
+				<view class="screen">筱风月忆</view>
+				<view class="stars" style="margin-right: 140rpx;">
+					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+					</view>
+				<view class="min">2019-09-08</view>
+			</view>
+			<view class="carport">医院的服务还不错，环境也很好，做完这个手术之后，看 什么东西都清晰了。术后恢复的挺好的。</view>
+			<view class="carportimg">
+				<image class="carportimgs" src="" mode=""></image>
+				<image class="carportimgs" src="" mode=""></image>
+				<image class="carportimgs" src="" mode=""></image>
+			</view>
+			<view class="figure">
+				<view class="figurebox">
+					<image class="news" src="../../static/hpicons/news.svg" mode=""></image>5786
+				</view>
+				<view class="figurebox"><image class="praise" src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
 			</view>
 		</view>
 	</view>
@@ -150,6 +179,22 @@
 	.figure{
 		display: flex;
 		justify-content: flex-end;
+		color:rgba(147,147,147,1);
+	}
+	.figurebox{
+		display: flex;
+		padding-left: 40rpx;
+		font-size:22rpx;
+		font-family:PingFang;
+		font-weight:500;
+	}
+	.news{
+		width: 61rpx;
+		height: 47rpx;
+	}
+	.praise{
+		width: 100rpx;
+		height: 40rpx;
 	}
 	
 	

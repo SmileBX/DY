@@ -38,7 +38,7 @@
 				</view>
 			</view>
 			<!--菜单栏-->
-			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
+			<scroll-view  class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="tolink('/pages/homePage/proList')">
 				<view v-for="(tab,index) in 8" :key="index" class="tab_item">
 					<view v-for="(item,ell) in 2" :class="[tabIndex==ell ? 'active' : '']" :id="'tabNum'+ell"
 					 :data-current="ell" :key="ell">
@@ -98,7 +98,7 @@
 				<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 					<view class="uni-bd uni-mt10">
 						<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="goDetail(item.Id)">
+							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="tolink('/pages/homePage/details?id=')">
 								<view class="itembox">
 									<view class="image-view">
 										<image class="img" src="../../../static/of/3.png" mode="aspectFill"></image>
@@ -164,31 +164,7 @@
 					url: Url
 				})
 			},
-			// 车位 没跳
-			// @click="totruckspace('/pages/homePage/truckspace')"
-			totruckspace(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 家居
-			tohouse(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 近视
-			toshortsightedness(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 汽车
-			toautomobile(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
+			
 		}
 	}
 </script>
