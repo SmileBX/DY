@@ -6,8 +6,8 @@
 					<label class="weui-label">发票类型</label>
 				</view>
 				<view class="weui-cell__bd">
-					<view class="tag" :class="{'active':invoiceType===0}" @click="shiftInvoiceType(0)">个人</view>
-					<view class="tag" :class="{'active':invoiceType===1}" @click="shiftInvoiceType(1)">公司</view>
+					<view class="tag" :class="{'active':invoiceType===1}" @click="shiftInvoiceType(1)">个人</view>
+					<view class="tag" :class="{'active':invoiceType===2}" @click="shiftInvoiceType(2)">公司</view>
 				</view>
 			</view>
 			<view class="weui-cell">
@@ -19,7 +19,7 @@
 				</view>
 			</view>
 			<!-- 这个是公司的 -->
-			<view class="weui-cell" v-if="invoiceType===1">
+			<view class="weui-cell" v-if="invoiceType===2">
 				<view class="weui-cell__hd">
 					<label class="weui-label">公司税号</label>
 				</view>
@@ -30,7 +30,7 @@
 		</view>
 		<view class="weui-cells addInvoice__weui-cells mb10">
 			<!-- 这个是个人的 -->
-			<view class="weui-cell" v-if="invoiceType===0">
+			<view class="weui-cell" v-if="invoiceType===1">
 				<view class="weui-cell__hd">
 					<label class="weui-label">电话号码</label>
 				</view>
@@ -47,7 +47,7 @@
 				</view>
 			</view> -->
 			<!-- 以下是公司的 -->
-			<view class="weui-cell" v-if="invoiceType===1">
+			<view class="weui-cell" v-if="invoiceType===2">
 				<view class="weui-cell__bd">
 					<view class="title">需要增值税专用发票</view>
 					<view class="msg">请先与公司财务确认需要开具的是专用发票</view>
@@ -57,7 +57,7 @@
 				</view>
 			</view>
 			<!-- 以下是公司的开具增值税专用发票的时候 -->
-			<view class="weui-cell" v-if="isOpen && invoiceType===1">
+			<view class="weui-cell" v-if="isOpen && invoiceType===2">
 				<view class="weui-cell__hd">
 					<label class="weui-label">注册地址</label>
 				</view>
@@ -65,7 +65,7 @@
 					<input type="text" class="weui-input" v-model="regAddress" placeholder="请输入公司注册地址" value="" />
 				</view>
 			</view>
-			<view class="weui-cell" v-if="isOpen && invoiceType===1">
+			<view class="weui-cell" v-if="isOpen && invoiceType===2">
 				<view class="weui-cell__hd">
 					<label class="weui-label">公司电话</label>
 				</view>
@@ -73,7 +73,7 @@
 					<input type="text" class="weui-input" v-model="regCall" placeholder="请输入公司电话" value="" />
 				</view>
 			</view>
-			<view class="weui-cell" v-if="isOpen && invoiceType===1">
+			<view class="weui-cell" v-if="isOpen && invoiceType===2">
 				<view class="weui-cell__hd">
 					<label class="weui-label">开户银行</label>
 				</view>
@@ -81,7 +81,7 @@
 					<input type="text" class="weui-input" v-model="bankName" placeholder="请输入公司开户行名称" value="" />
 				</view>
 			</view>
-			<view class="weui-cell" v-if="isOpen && invoiceType===1">
+			<view class="weui-cell" v-if="isOpen && invoiceType===2">
 				<view class="weui-cell__hd">
 					<label class="weui-label">银行账号</label>
 				</view>
@@ -138,7 +138,7 @@
 				hasSetText:"编辑常用发票信息",
 				checked:true,
 				isDefault:1,
-				invoiceType: 0, //0:个人；1：公司
+				invoiceType: 0, //1:个人；2：公司
 				isOpen: false, //是否打开需要增值税专用发票
 				isVATExclusive:0,  //0:不需要专用发票；1：需要
 				userId: "",
@@ -182,7 +182,7 @@
 					});
 					return false;
 				}
-				if(this.invoiceType===0){
+				if(this.invoiceType===1){
 					if (this.regCall != "") {
 						if (!((/^0\d{2,3}-\d{7,8}$/).test(this.regCall) || (/^[1][3,4,5,6,7,8][0-9]{9}$/).test(this.regCall))) {
 							uni.showToast({
@@ -194,7 +194,7 @@
 						}
 					}
 				}
-				if (this.invoiceType === 1) {
+				if (this.invoiceType === 2) {
 					if (this.taxNumber == "") {
 						uni.showToast({
 							title: "请输入税号！",

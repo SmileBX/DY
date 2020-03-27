@@ -20,7 +20,7 @@
 					<view class="collect_list">
 						<!--店铺收藏-->
 						<view class="list" v-if="tabIndex==1">
-							<view class="item mt10" v-for="(item,key) in 3" :key="key">
+							<view class="item mt10" v-for="(item,index) in list" :key="index">
 								<view class="flex item_shop flexAlignCenter">
 									<image src="../../../static/of/shop.png" class="shop_logo"></image>
 									<view class="flex1 uni-bold">雅邦美妆旗舰店</view>
@@ -37,7 +37,7 @@
 						</view>
 						<!--商品收藏-->
 						<view class="list" v-else>
-							<view class="pro_item_list" v-for="(item,index) in 3" :key="index">
+							<view class="pro_item_list" v-for="(item,index) in list" :key="index">
 								<view class="pp2">1天前</view>
 								<view class="item_view">
 									<view class="item_pro flex" v-for="(item,key) in 2" :key="key">
@@ -58,7 +58,7 @@
 						</view>
 					</view>
 					<!-- 没有更多数据了 -->
-					<view class="uni-tab-bar-loading">
+					<view class="uni-tab-bar-loading" v-if="!noDataIsShow">
 						<uni-load-more :loadingType="loadingType"></uni-load-more>
 					</view>
 				</view>			
@@ -83,12 +83,6 @@
 		  this.barHeight = 0;
 		  // #endif
           
-		},
-		onShow() {
-			this.initData();
-			this.userId = uni.getStorageSync("userId");
-			this.token = uni.getStorageSync("token");
-			this.tabIndex=this.$root.$mp.query.index
 		},
 		data() {
 			return {
@@ -116,6 +110,13 @@
 		components:{
 			noData,
 			uniLoadMore
+		},
+		onShow() {
+			this.initData();
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.tabIndex=this.$root.$mp.query.index
+			this.collectionsList();
 		},
 		methods: {
 			tapTab(index) { //点击tab-bar
@@ -210,20 +211,6 @@
 						this.loadingType = 2;
 					}
 					this.listLength = this.list.length;
-				}else if(result.code===2){
-					let _this = this;
-					uni.showToast({
-						title: "登录超时！",
-						icon: "none",
-						duration: 1500,
-						success:function(){
-							setTimeout(function(){
-								uni.navigateTo({
-									url:"/pages/login/login?askUrl?="+_this.curPage
-								})
-							},1500)
-						}
-					});
 				}else{
 					uni.showToast({
 						title: result.msg,
