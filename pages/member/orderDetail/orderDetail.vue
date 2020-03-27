@@ -101,13 +101,15 @@
 </template>
 
 <script>
+	import {host,post,get,toLogin} from '@/common/util.js';
 	export default{
 		data() {
 			return {
-				curPage: "",
+				info:{},
 				barHeight:0,
 				userId: "",
 				token: "",
+				idOrderNo:"",
 			}
 		},
 		onLoad() {
@@ -119,6 +121,25 @@
 			this.barHeight = 0;
 			// #endif
 		},
+		onShow() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.OrderNo = this.$mp.query.id
+			if (toLogin()) {
+			    this.getDetail();
+			}
+		},
+		methods:{
+			getDetail(){
+			  post('Order/OrderDetails',{
+				UserId:wx.getStorageSync("userId"),
+				Token:wx.getStorageSync("token"),
+				OrderNo:this.$mp.query.id
+			  }).then(res=>{
+				this.info = res.data;
+			  })
+			},
+		}
 	}
 </script>
 

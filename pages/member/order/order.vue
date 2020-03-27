@@ -1,7 +1,7 @@
 <template>
 	<view class="order">
 		<view class="bg_fff tabList flex">
-			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{'active':index==1}">{{item.name}}</view>
+			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{'active':index==tabIndex}"  @click="cliTab(index)">{{item.name}}</view>
 		</view>
 		<view class="list pw3">
 			<!--
@@ -42,11 +42,61 @@
 </template>
 
 <script>
+	import {host,post,get,toLogin} from '@/common/util.js';
 	export default{
 		data(){
 			return{
-				tabList:[{id:1,name:'全部'},{id:2,name:'待付款'},{id:3,name:'待发货'},{id:4,name:'待收货'},{id:5,name:'待评价'}]
+				tabList:[{id:0,name:'全部'},{id:1,name:'待付款'},{id:2,name:'待发货'},{id:3,name:'待收货'},{id:4,name:'待评价'}],
+				tabIndex:0,
+				page:1,
+				pagesize:3,
+				list:[],
+				isnNoData:false,
+				isOver:false,
 			}
+		},
+		onShow() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.tabIndex = this.$mp.query.tabIndex
+			if (toLogin()) {
+			    this.getList();
+			}
+		},
+		methods:{
+			goUrl(url){
+			  wx.navigateTo({
+				url:url
+			  })
+			},
+			cliTab(index){
+			  this.tabIndex = index
+			  this.page=1;
+			  this.list=[];
+			  this.isOver = false
+			  this.isnNoData = false
+			  this.getList()
+			},
+			getList(){
+			  post('Order/OrderList',{
+				UserId:wx.getStorageSync("userId"),
+				Token:wx.getStorageSync("token"),
+				Page:this.page,
+				PageSize:this.pagesize,
+				Status:this.tabIndex,
+				// Type:0,
+			  }).then(res=>{
+				if(res.code===0){
+				  this.list.push(...res.data)
+				  if(res.count == 0){
+					this.isnNoData = true
+				  }
+				  if(res.count<=this.isOver){
+					this.isOver = true;console.log(this.isOver)
+				  }
+				}
+			  })
+			},
 		}
 	}
 	

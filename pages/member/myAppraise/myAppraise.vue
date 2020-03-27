@@ -81,7 +81,7 @@
 </template>
 
 <script>
-	import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
+	import {host,post,get,dateUtils,toLogin,} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import "@/common/dd_style.css";
@@ -91,12 +91,11 @@
 			uniLoadMore
 		},
 		onLoad(){
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 		},
 		onShow(){
-			if (toLogin(this.curPage)) {
+			if (toLogin()) {
 				this.getMemberInfo();
 				this.CommentList();
 			}
@@ -137,7 +136,7 @@
 			},
 			//获取用户信息
 			async getMemberInfo() {
-				let result = await post("User/GetMemberInfo", {
+				let result = await post("User/GetCenterInfo", {
 					"UserId": this.userId,
 					"Token": this.token
 				})
