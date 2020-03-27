@@ -10,7 +10,7 @@
 					<input type="text" placeholder="请输入关键字" class="flex1">
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
+					<view class="iconfont icon-caidan" @click="navigates('/pages/classify/classify')"></view>
 				</view>
 			</view>
 			<view class="flex b_tab_list">
@@ -116,11 +116,12 @@
 </template>
 
 <script>
-	
+	import {navigates} from '@/common/util.js'
 	export default {
 		
 		data() {
 			return {
+				navigates,
 				navlist:[{id:1,title:'为您推荐'},{id:2,title:'精选推荐'}],
 				userId: "",
 				token: "",
