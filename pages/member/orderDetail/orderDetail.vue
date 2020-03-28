@@ -37,7 +37,7 @@
                     </div>
                     <div class="mr3 flex flexColumn flexAlignEnd">
                       <span>x{{item.Number}}</span>
-                      <span class="tui_pill mt2" v-if="item.IsRefund===0" @click="goUrl('/pages/myson/sertype/main?indexId='+index+'&id='+info.OrderNumber)">退款</span>
+                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click="goUrl('/pages/myson/sertype/main?indexId='+index+'&id='+info.OrderNumber)">退款</span>
                     </div>
                 </div>
             </div>
@@ -83,10 +83,10 @@
           <span>联系客服</span>
       </div>
       <div class="flex justifyContentEnd bg_fff mt2 bb_fix btnbox">
-          <p class="btn btn_gray" v-if="info.StatusName=='已发货'||info.StatusName=='已收货'" @click="goUrl('/pages/myson2/orderRoute/main?id='+info.OrderNumber)">查看物流</p>
+          <p class="btn btn_gray" v-if="info.StatusName=='已发货'||info.StatusName=='已收货'" @click="goUrl('/pages/member/logistics/logistics?orderNo='+info.OrderNumber)">查看物流</p>
           <p class="btn btn_gray" v-if="info.IsCancel==1" @click="chooseOrders(info.OrderNumber,1)">取消订单</p>
           <p class="btn btn_gray" v-if="info.IsDel==1" @click="chooseOrders(info.OrderNumber,2)">删除订单</p>
-          <p class="btn btn_red" v-if="info.Ispay==1" @click="ConfirmWeiXinSmallPay(info.OrderNumber)">立即支付</p>
+          <p class="btn btn_red" v-if="info.Ispay==1" @click="goUrl('/pages/pay/pay?orderNo='+item.OrderNumber)">立即支付</p>
           <p class="btn btn_red" v-if="info.IsConfirmReceipt==1" @click="chooseOrders(info.OrderNumber,3)">确认收货</p>
       </div>
   </div>
@@ -121,7 +121,7 @@ export default {
         UserId:uni.getStorageSync("userId"),
         Token:uni.getStorageSync("token"),
         WxCode:uni.getStorageSync("wxCode"),
-				WxOpenid:uni.getStorageSync("openId")
+		WxOpenid:uni.getStorageSync("openId")
       })
       let payData=JSON.parse(result.data.JsParam)
       if(result.code==0){
@@ -242,10 +242,10 @@ export default {
     color:#858585;
   }
   .btn_red{
-    color:#ffffff;background:#338afb; 
+    color:#ffffff;background:#ff3333; 
   }
   .btnbox .btn:nth-child(2){
-    color:#ffffff;background:#338afb;
+    color:#ffffff;background:#ff3333;
   }
   .order_title{
    border-left:4upx solid #f00;padding-left:20upx;
@@ -259,7 +259,7 @@ export default {
  }
 
  .bg_statu{
-   width:750upx;background: #338afb;
+   width:750upx;background: #ff3333;
    height:245upx;position: absolute;top:0;left:0;
    color:#ffffff;
  }

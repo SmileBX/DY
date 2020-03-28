@@ -11,11 +11,11 @@
 			交易成功：查看物流 评价
 			退款成功/退款中：退款详情
 			-->
-			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/myson2/orderdetail/main?id='+item.OrderNumber)">
+			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNumber)">
 				<view class="flex justifyContentBetween flexAlignCenter">
 					<view>
 						<image src="../../../static/my/shop.png" class="logo"></image>
-						<text class="uni-bold shop_name">炫宝迪旗舰店</text>
+						<text class="uni-bold shop_name">{{item.ShopName}}</text>
 						<text class="iconfont icon-arrow_r font18"></text>
 					</view>
 					<view class="color_red font18">{{item.StatusName}}</view>
@@ -35,7 +35,7 @@
 				<view class="btn flex justifyContentEnd">
 					<view class="btn_g" v-if="item.IsCancel==1" @click.stop="chooseOrders(item.OrderNumber,1)">取消订单</view>
 					<view class="btn_g" v-if="item.IsDel==1" @click.stop="chooseOrders(item.OrderNumber,2)">删除</view>
-					<view class="btn_r" v-if="item.Ispay==1" @click.stop="ConfirmWeiXinSmallPay(item.OrderNumber)">立即支付</view>
+					<view class="btn_r" v-if="item.Ispay==1" @click.stop="goUrl('/pages/pay/pay?orderNo='+item.OrderNumber)">立即支付</view>
 					<view class="btn_r" v-if="item.IsComment==1" @click.stop="goPinJia(item.OrderDetails,item.OrderNumber)">去评价</view>
 					<view class="btn_r" v-if="item.IsConfirmReceipt==1" @click.stop="chooseOrders(item.OrderNumber,3)">确认收货</view>
 				</view>
@@ -48,7 +48,7 @@
 			  <view class="tit">请选择要操作的商品</view>
 			  <view class="list ali-c jus-b" v-for="(item, index) in needChangeGoods" @click.stop="changeGoods(item.Id)" :key="index">
 				<image :src="item.PicNo" alt=""></image>
-				<view>{{item.ProductName}}</view>
+				<view class="flex1 uni-ellipsis">{{item.ProductName}}ert士大夫电风扇广泛受到广泛受到</view>
 			  </view>
 			</view>
 		  </view>
@@ -162,7 +162,7 @@
 			},
 			goPinJia(goods,id){console.log(goods.length==1)
 			  if(goods.length==1){
-				this.goUrl('/pages/member/addcomment/addcomment?id='+id+'&detailId='+goods[0].Id)
+				this.goUrl('/pages/member/addComment/addComment?id='+id+'&detailId='+goods[0].Id)
 			  }else{
 				this.showChange = true
 				this.needChangeGoods = goods
@@ -170,7 +170,7 @@
 			  }
 			},
 			changeGoods(detailId){
-			  this.goUrl('/pages/member/addcomment/addcomment?id='+this.changeNumId+'&detailId='+detailId)
+			  this.goUrl('/pages/member/addComment/addComment?id='+this.changeNumId+'&detailId='+detailId)
 			},
 		},
 		onReachBottom(){console.log(this.isOver,this.isnNoData)

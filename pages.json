@@ -211,18 +211,13 @@
 				// "navigationBarTitleText": "汽车详情",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
-					// "scrollIndicator": "none" //不显示滚动条
 				}
 			}
 		},
 		{
 			"path":"pages/homePage/evaluation",
 			"style": {
-				"navigationBarTitleText": "全部评价",
-				"app-plus": {
-					// "titleNView": false //首页去除原生导航
-					// "scrollIndicator": "none" //不显示滚动条
-				}
+				"navigationBarTitleText": "全部评价"
 			}
 		}
 		,{
@@ -306,7 +301,9 @@
         }
         ,{
             "path" : "pages/message/msgDetail/msgDetail",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "消息详情"
+			}
         }
         ,{
             "path" : "pages/member/editinfo/editinfo",
@@ -316,27 +313,39 @@
         }
         ,{
             "path" : "pages/member/editNickName/editNickName",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "编辑昵称"
+			}
         }
         ,{
             "path" : "pages/Wallet/bankCard/bankCard",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "我的银行卡"
+			}
         }
         ,{
             "path" : "pages/Wallet/bankAdd/bankAdd",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "添加银行卡"
+			}
         }
         ,{
             "path" : "pages/Wallet/bankChoose/bankChoose",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "选择银行"
+			}
         }
         ,{
             "path" : "pages/tabBar/my/collect",
-            "style" : {}
+            "style": {
+            	"navigationBarTitleText": "我的收藏"
+            }
         }
         ,{
             "path" : "pages/member/addComment/addComment",
-            "style" : {}
+            "style": {
+            	"navigationBarTitleText": "发布评价"
+            }
         }
     ],
 
@@ -348,78 +357,64 @@
 					"path":"hotBrand/hotBrand",
 					"style": {
 						"navigationBarTitleText": "热销榜",
-						"enablePullDownRefresh" : true
+						"navigationBarBackgroundColor": "#94aebe",
+						"navigationBarTextStyle": "white"
 					}
 				},
 				{
 					"path":"set/set",
 					"style": {
 						"navigationBarTitleText": "设置",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarBackgroundColor": "#ffffff"
 					}
 				},
 				{
 					"path":"setpwd/setpwd",
 					"style": {
 						"navigationBarTitleText": "设置支付密码",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarBackgroundColor": "#ffffff"
 					}
 				},
 				{
 					"path":"account/account",
 					"style": {
-						"navigationBarTitleText": "账户管理",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "账户管理"
 					}
 				},
 				{
 					"path":"verPhone/verPhone",
 					"style": {
-						"navigationBarTitleText": "验证手机号",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "验证手机号"
 					}
 				},
 				{
 					"path":"myAcount/myAcount",
 					"style": {
-						"navigationBarTitleText": "我的收益",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "我的收益"
 					}
 				},
 				{
 					"path":"withdraw/withdraw",
 					"style": {
-						"navigationBarTitleText": "提现",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "提现"
 					}
 				},
 				{
 					"path":"getCome/getCome",
 					"style": {
-						"navigationBarTitleText": "收益明细",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "收益明细"
 					}
 				},
 				{
 					"path":"money/money",
 					"style": {
-						"navigationBarTitleText": "提现记录",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarTitleText": "提现记录"
 					}
 				},
 				{
 					"path":"myguest/myguest",
 					"style": {
 						"navigationBarTitleText": "我的团队",
-						"navigationBarBackgroundColor": "#ffffff",
 						"enablePullDownRefresh" : true
 					}
 				},
@@ -427,8 +422,7 @@
 					"path":"addcomment/addcomment",
 					"style": {
 						"navigationBarTitleText": "发布评价",
-						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh" : true
+						"navigationBarBackgroundColor": "#ffffff"
 					}
 				}
 				
@@ -536,11 +530,9 @@
 					"path":"orderDetail/orderDetail",
 					"style": {
 						"navigationBarTitleText": "订单详情",
+						"navigationBarTextStyle": "white",
 						"navigationBarBackgroundColor": "#ff3333",
-						"enablePullDownRefresh" : true,
-						"app-plus": {
-							"titleNView": false //首页去除原生导航
-						}
+						"enablePullDownRefresh" : true
 					}
 				},
 				{
@@ -575,8 +567,8 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "大单易拼",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#F6F6F6"
 	},
 	"tabBar": {
 		"color": "#000",

@@ -71,7 +71,7 @@ export default {
   },
   onShow(){
     console.log(this.$mp.query) 
-    // this.getDetail()
+    this.getDetail()
   },
   watch: {
     imgList(e){
@@ -167,6 +167,7 @@ export default {
 .or_list{
   .shop{
     width:161upx;height:161upx;
+	margin-right: 20upx;
   }
   .or_item{
     margin-top:20upx;
