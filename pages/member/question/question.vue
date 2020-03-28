@@ -1,15 +1,15 @@
 <template>
 	<view class="question">
 		<view class="qu_list" v-if="hasData">
-			<view class="qu_item" v-for="(item,index) in 3" :key="index">
+			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item)">
 				<view class="flex flexAlignCenter item_head bg_fff">
 					<view class="title flex flexAlignCenter flex1">
 						<span class="spill">{{index+1}}</span>
-						<view>订单什么时候发货</view>
+						<view>{{item.Title}}</view>
 					</view>
 					<span class="iconfont icon-iconset0418" :class="index==2?'icon-arrow_r':''"></span>
 				</view>
-				<view class="content">这个是内容详情飞飞说法发生法发飞洒发顺丰飞洒发发发生发生发生法发撒噶沙司搞撒嘎嘎啊傻瓜</view>
+				<view class="content" v-if="item.isShow">{{item.content}}</view>
 			</view>
 			<view class="uni-tab-bar-loading">
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
@@ -41,7 +41,8 @@
 				pageSize: 10,
 				allPage: 0,
 				count: 0,
-				datalist:{}
+				datalist:{},
+				content:''
 			}
 		},
 		onShow(){
@@ -55,6 +56,28 @@
 			
 		},
 		methods:{
+			//展示详情
+			showDetail(item){
+				this.datalist.map(value=>{
+					if(item == value){
+						this.$set(value,"isShow",true)
+					}else{
+						this.$set(value,"isShow",false)
+					}
+				})
+				item.isShow = !item.isShow
+				// this.getDetail(item)
+			},
+			// //获取详情
+			// getDetail(item){
+			// 	post('Help/GetHelpInfo',{
+			// 		UserId:This.userId,
+			// 		Token:this.token,
+			// 		Id:item.Id
+			// 	}).then(res=>{
+					
+			// 	})
+			// },
 			async HelpList() {
 				let result = await post("Help/HelpList", {
 					UserId: this.userId,
@@ -86,6 +109,9 @@
 							result.data
 						);
 					}
+					this.datalist.map(item=>{
+						this.$set(item,"isShow",false)
+					})
 					if (this.allPage <= this.page) {
 						this.isLoad = false;
 						this.loadingType = 2;
