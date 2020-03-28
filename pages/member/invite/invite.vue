@@ -1,25 +1,27 @@
 <template>
   <view class="invite bg_fff" style="min-height:100vh">
-      <view class="inn_bg ">
-          <image src="http://jyy.wtvxin.com/static/images/icons/inn.png" alt="" class=" invite"></image>
-      </view>
-      <view class=" flex bg_fff pp3 flexAlignCenter">
-          <view class=" flex flexColumn flex1 justifyContentStart">
-              <view class=" flex flexAlignCenter">
-                  <image :src="Avatar" alt="" class="ava"></image>
-                  <view class="mr2">
-                      <view>{{tel}}</view>
-					  <!-- #ifdef H5 -->
-					  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
-					   v-model="info.ReferralCode" style="opacity: 0;position: fixed;top: -10000px;">
-					  <!-- #endif -->
-                      <view class="font20 yy_ma mt1" @click="copybtn()">邀请码：{{info.ReferralCode}}</view>
-                  </view>
-              </view>
-              <view class="yy_scan font30 mt2 " @click="showShare">点击分享</view>
-          </view>
-          <image :src="info.InviteQRcode" alt="" class="code_img"></image>
-      </view>
+	  <view id="bb_canvas">
+		  <view class="inn_bg ">
+			  <image src="http://jyy.wtvxin.com/static/images/icons/inn.png" alt="" class=" invite"></image>
+		  </view>
+		  <view class=" flex bg_fff pp3 flexAlignCenter">
+			  <view class=" flex flexColumn flex1 justifyContentStart">
+				  <view class=" flex flexAlignCenter">
+					  <image :src="Avatar" alt="" class="ava"></image>
+					  <view class="mr2">
+						  <view>{{tel}}</view>
+						  <!-- #ifdef H5 -->
+						  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
+						   v-model="info.ReferralCode" style="opacity: 0;position: fixed;top: -10000px;">
+						  <!-- #endif -->
+						  <view class="font20 yy_ma mt1" @click="copybtn()">邀请码：{{info.ReferralCode}}</view>
+					  </view>
+				  </view>
+			  </view>
+			  <image :src="info.InviteQRcode" alt="" class="code_img"></image>
+		  </view>
+	  </view>
+	  <view class="yy_scan font30 " @click="showShare">点击分享</view>
       <!--分享-->
       <view class="mask" v-if="isShowShare" @click="cancelShare"></view>
       <view class="modal_mask flex justifyContentAround pp3" v-if="isShowShare">
@@ -36,10 +38,18 @@
       </view>
       <!-- 保存海报 -->
       <view class="mask" v-if="showImg"></view>
+	  <!-- #ifdef MP-WEIXIN-->
       <view class="imgbox" v-if="showImg">
         <canvas canvas-id="myCanvas" class="share-canvas" v-if="!hasimg"></canvas>
         <image :src="saveImgurl" alt="" v-else></image>
       </view>
+	  <!-- #endif -->
+	 <!-- #ifdef H5-->
+	  <view class="imgbox" v-if="showImg">
+	    <image :src="shareImgUrl" alt=""></image>
+	  </view>
+	  <!-- #endif -->
+	  
 	   <!-- #ifdef H5-->
 	   <view class="saveBtn" v-if="showImg" @click="H5share">长按二维码保存</view>
 	   <!-- #endif -->
@@ -51,7 +61,7 @@
 
 <script>
 import {post} from '@/common/util.js'
-import wxml2canvas from '../../../common/wxml2canvas.js'
+import html2canvas from 'html2canvas';
 
 export default {
   data () {
@@ -68,6 +78,7 @@ export default {
       avaurl:"",
       hasimg:false,
       saveImgurl:"",
+	  shareImgUrl:'',//h5分享好友图片
 	  disabled: false
     }
   },
@@ -95,11 +106,22 @@ export default {
     saveImg(){
       this.showImg=true
       this.isShowShare=false
+	  //#ifdef MP-WEIXIN
 	  let tempTimeOut = setTimeout(()=>{
 		  this.drawCanvas()
 		  clearTimeout(tempTimeOut)
 	  },100)
-      
+      //#endif
+	  //#ifdef H5
+	  html2canvas(document.getElementById("bb_canvas"), {
+	  	allowTaint: true,
+	  	taintTest: false,
+	  	useCORS: true,
+	  }).then((canvas) => {
+	  		let shareImgUrl = canvas.toDataURL("image/png");//canvas画布导出图片地址
+	  		this.shareImgUrl = shareImgUrl;
+	  });
+	  //#endif
     },
 	blur() {
 		this.disabled = true;
@@ -128,30 +150,9 @@ export default {
 		// #endif
 	},
 	H5share() {
-		let drawImage = wxml2canvas({
-			element: 'myCanvas',  // canvas节点的id,
-			obj: this,  // 在组件中使用时，需要传入当前组件的this
-			width: 300,   // 宽高
-			height: 600, 
-			background: '#161C3A', // 默认背景色
-			gradientBackground: { // 默认的渐变背景色，与background互斥
-				color: ['#17326b', '#340821'],
-				line: [0, 0, 0, 600]
-			},
-			progress (percent) {  // 绘制进度
-			},
-			finish (url) {
-				// 画完后返回url
-				console.log(url,"////////////")
-			},
-			error (res) {
-				console.log(res);
-				// 画失败的原因
-			}
-		});
 		uni.showToast({
 			icon: "none",
-			title: "请长按二维码保存图片"
+			title: "请长按保存图片"
 		})
 	},
 	Wxshare() {
@@ -393,10 +394,16 @@ export default {
     color:#ffffff;
   }
   .yy_scan{
-    background: #7364ca;color:#ffffff;border-radius: 25upx;
-    width:280upx;
+    background: #7364ca;color:#ffffff;border-radius: 30upx;
+    width:280upx;margin-left:30upx;
     padding:5upx 0;text-align: center;
     display: inline-block;
+  }
+  .yy_scan_save{
+	  background: #7364ca;color:#ffffff;border-radius: 30upx;
+	  width:560upx;margin:50upx auto;
+	  padding:5upx 0;text-align: center;
+	  display:block;
   }
   .modal_mask{
     position: fixed;
@@ -446,7 +453,7 @@ export default {
   top: 50%;
   left: 50%;border-radius: 15upx;
   transform: translate(-50%,-50%);
-  z-index: 1000;
+  z-index: 10;
   background: #fff;
   .share-canvas{
     width: 100%;
