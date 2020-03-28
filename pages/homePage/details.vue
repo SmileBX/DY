@@ -42,9 +42,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="discount">
-				<view class="merging"><span>拼单折扣</span></view>
-				<view class="mergings"><span>专项补贴3%</span></view>
+			<view class="discount flex flex-between">
+				<view class="discount_l" v-if="proInfo.ServiceKeys">
+					<view class="merging" v-for="(e,i) in proInfo.ServiceKeys.split(',')" :key="i">{{e}}</view>
+				</view>
 				<view class="payment">{{proInfo.SalesVolume}}人付款</view>
 			</view>
 			<view class="site">

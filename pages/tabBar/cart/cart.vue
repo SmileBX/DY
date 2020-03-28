@@ -14,30 +14,30 @@
 		<view  :style="{'height':barHeight+44+'px'}"></view>
 		<view class="hasContentPage" v-if="hascartlist">
 			<view class="cartGroupList">
-				<view class="item" v-for="(item,index) in 2" :key="index">
+				<view class="item" v-for="(item,index) in cartlist" :key="index">
 					<view class="item__hd flex flex-start">
-						<view class="IconsCK IconsCK-radio checked"></view>
+						<view :class="['IconsCK IconsCK-radio',item.select?'checked':'']" @click="shopcheck(index)"></view>
 						<view class="shop flex flex-start" @click="golink('/pages/store/storeIndex/storeIndex?shopId='+item.ShopId)">
 							<view class="iconfont icon-dianpu"></view>
-							<view class="shopName uni-ellipsis">炫宝迪旗舰店</view>
+							<view class="shopName uni-ellipsis">{{item.ShopName}}</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 						<view class="btn_receive" @click="showCoupon(item.ShopId)">领券</view>
 					</view>
 					<view class="column levelPanel">
-						<view class="item">
+						<view class="item" v-for="(item2,index2) in item.ProData" :key="index2">
 							<view class="outside">
-								<view class="IconsCK IconsCK-radio checked"></view>
+								<view class="IconsCK IconsCK-radio" :class="{'disabled':item2.disBuy,'checked':item2.select}" @click="selectStyle(index,index2,item2.select,item2.disBuy,$event)"></view>
 								<view class="pictrueAll">
 									<view class="pictrue">
-										<image src="../../../static/of/2.png" mode=""></image>
+										<image :src="item2.PicNo" mode="widthFix"></image>
 									</view>
 								</view>
 								<view class="txtBox">
-									<view class="title text-line2">紫元大厦</view>
+									<view class="title text-line2">{{item2.Name}}</view>
 									<view class="flex skuBox">
-										<view class="flex-item flex1 left">
-											<view class="type">07oo<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
+										<view class="flex-item flex1 left" v-if="item2.SpecText">
+											<view class="type">{{item2.SpecText}}<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
 											</view>
 										</view>
 										<view class="flex-item right">
@@ -46,40 +46,12 @@
 									</view>
 									<view class="flex mt5 flexAlignCneter">
 										<view class="flex-item flex1 left">
-											<view class="new-price"><text class="yuan">￥</text>56万<text class="fz12">返两万</text></view>
+											<view class="new-price"><text class="yuan">￥</text>{{item2.Price}}
+											<!-- <text class="fz12">返两万</text> -->
+										</view>
 										</view>
 										<view class="flex-item right selNumRow">
-											<uni-number-box :disabled="false" :value="1" :min="1" :max="5" v-on:change="change" :index="index"></uni-number-box>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="outside">
-								<view class="IconsCK IconsCK-radio checked"></view>
-								<view class="pictrueAll">
-									<view class="pictrue">
-										<image src="../../../static/of/2.png" mode=""></image>
-									</view>
-								</view>
-								<view class="txtBox">
-									<view class="title text-line2">紫元大厦</view>
-									<view class="flex skuBox">
-										<view class="flex-item flex1 left">
-											<view class="type">07oo<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
-											</view>
-										</view>
-										<view class="flex-item right">
-											<!-- <text class="buyNum">x1</text> -->
-										</view>
-									</view>
-									<view class="flex mt5 flexAlignCneter">
-										<view class="flex-item flex1 left">
-											<view class="new-price"><text class="yuan">￥</text>569</view>
-										</view>
-										<view class="flex-item right selNumRow">
-											<uni-number-box :disabled="false" :value="1" :min="1" :max="5" v-on:change="change" :index="index"></uni-number-box>
+											<uni-number-box :disabled="false" :value="item2.Number" :min="item2.MinBuyNum" :max="item2.MaxBuyNum" v-on:change="change" :index="index2"></uni-number-box>
 										</view>
 									</view>
 								</view>
@@ -91,13 +63,13 @@
 			<view class="cartFoot">
 				<view class="inner fixed flex flexAlignCneter">
 					<view class="left">
-						<view class="IconsCK IconsCK-radio" @click="Allcheck()" :class="{'checked':allSelect}"></view>全选
+						<view :class="['IconsCK IconsCK-radio',allSelect?'checked':'']" @click="Allcheck"></view>全选
 					</view>
 					<view class="right flex1 text_r">
 						<view class="inner1 flex flex-end" v-if="!isEdit">
 							<view>
 								<view class="hj">总计:<text class="allPrice"><text class="fz12">￥</text>{{allPrice}}</text></view>
-								<view class="red fz12">返2万</view>
+								<!-- <view class="red fz12">返2万</view> -->
 							</view>
 							<button type="primary" size="middle" class="btnPay radius100" @click="golink('/pages/submitOrder/submitOrder')">结算({{selectlen}})</button>
 						</view>
@@ -122,7 +94,7 @@
 			</view>
 		</view>
 		<!-- SKU弹框 --> 
-		<popupSku :proInfo="proInfo" v-if="isProData" :show="showPopupSku" :fromcart="fromcart" :h5Top="true" :isPlus="isPLUS" v-on:hidePopup="hidePopup" v-on:selectSku="selectSku" :isLimint="isLimint"></popupSku>
+		<popupsku :proInfo="proInfo" v-if="isProData" :show="showPopupSku" :fromcart="fromcart" :h5Top="true" :isPlus="isPLUS" v-on:hidePopup="hidePopup" v-on:selectSku="selectSku" :isLimint="isLimint"></popupsku>
 		<!-- 弹出优惠券 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupCoupon" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Coupon">
@@ -161,11 +133,11 @@
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
-	import popupSku from '@/components/popupSku.vue';
+	import popupsku from '@/components/popupSku.vue';
 	import "@/common/dd_style.css";
 	export default {
 		components: {
-			uniNumberBox,uniPopup,popupSku,noData
+			uniNumberBox,uniPopup,popupsku,noData
 		},
 		data() {
 			return {
@@ -182,12 +154,13 @@
 				skuCartId:"",//选sku的购物车id
 				SpecText:"",//选sku的商品规格
 				fromcart:true,//SKU显示确定不显示加入购物车
+				cartinfo:{},//购物车信息
 				cartlist:[], //购物车列表
 				hascartlist:true, //购物车有商品
 				noDataIsShow: false,
 				isEdit:false,//是否编辑购物车
 				isEdittxt:"管理",//是否编辑购物车按钮文字
-				allSelect:true,//判断是否全选
+				allSelect:false,//判断是否全选
 				checklen:0,//有效产品数量
 				selectlen:0,//累计选中的产品
 				allPrice:0,//累计选中产品的金额
@@ -209,8 +182,7 @@
 			this.token = uni.getStorageSync("token");
 			//this.getMemberInfo();
 			this.cartlist=[];
-			//this.getCartList();
-			this.Allcheck();
+			this.getCartList();
 			this.isEdit=false;
 			this.isEdittxt="管理";
 		},
@@ -223,17 +195,17 @@
 			//加减商品的数量
 			change(msg){
 				console.log(msg)
-				console.log("msg")
+				console.log("msg");
 				let number=msg[0];
-				let index=msg[1];
-				if(this.cartlist[index].IsBuy==0){
-					let dataArr=[],json = {};
-					json["CartId"] = this.cartlist[index].Id;
-					json["Total"] = number;
-					json["SpecText"] = this.cartlist[index].SpecText;
-					dataArr.push(json);
-					this.eaditCart(dataArr,index,number);
-				}
+				let index2=msg[1];
+				// if(this.cartlist[index].IsBuy==0){
+				// 	let dataArr=[],json = {};
+				// 	json["CartId"] = this.cartlist[index].Id;
+				// 	json["Total"] = number;
+				// 	json["SpecText"] = this.cartlist[index].SpecText;
+				// 	dataArr.push(json);
+				// 	this.eaditCart(dataArr,index,number);
+				// }
 			},
 			//编辑商品规格数量
 			async eaditCart(Arr,index,number) {
@@ -244,8 +216,8 @@
 				});
 				if (info.code === 0) {
 					if(number){
-						this.cartlist[index].Number = number;
-						this.cartlist[index].select = true;
+						// this.cartlist[index].Number = number;
+						// this.cartlist[index].select = true;
 					}else{
 						this.checklen=0;
 						this.getCartList()
@@ -272,12 +244,15 @@
 				let _this = this;
 				let dataArr=[];
 				_this.cartlist.forEach(function(item){
-					if(item.select==true){
-						let id = item.Id;
-						let json = {};
-						json["CartId"] = id;
-						dataArr.push(json);
-					}
+					item.ProData.forEach(function(item2){
+						if(item2.select==true){
+							let id = item2.Id;
+							let json = {};
+							json["CartId"] = id;
+							dataArr.push(json);
+						}
+					})
+					
 				})
 				if(dataArr.length){
 					let that = this;
@@ -301,13 +276,16 @@
 			},
 		//获取购物车列表
 			async getCartList(){
-				let result = await post("Cart/CartList", {
+				let result = await post("Cart/ShopsCartList", {
 				UserId: this.userId,
 				Token: this.token,
 				});
 				if(result.code==0){
-					this.cartlist=result.data;
-					if(result.data.length>0){
+					this.cartinfo=result.data;
+					this.cartlist=result.data.CartList;
+					this.checklen=0;
+					this.selectlen=0;
+					if(result.data.CartData.length>0){
 						this.checklen=0;
 						this.hascartlist=true;
 						this.noDataIsShow=false;
@@ -315,16 +293,17 @@
 						_this.$nextTick(function() {
 							_this.cartlist.forEach(function(item) {
 								_this.$set(item, "select", false);
-								if(item.IsBuy!=0){
-									_this.$set(item, "disBuy", true);
-									_this.$set(item, "select", false);
-								}else{
-									_this.checklen++;
-									_this.$set(item, "disBuy", false);
-								}
+								item.ProData.forEach(function(item2){
+									_this.$set(item2, "select", false);
+									if(item2.Isinvalid!=0){//0-可以购买 1-售罄 2-下架 3-预售 4-库存不足 5-规格不存在
+										_this.$set(item2, "disBuy", true);
+										_this.$set(item2, "select", false);
+									}else{
+										_this.checklen++;
+										_this.$set(item2, "disBuy", false);
+									}
+								})
 							}); 
-							_this.selectlen=_this.checklen;
-							_this.AllPrice();// 合计
 						});
 					}else{
 						this.noDataIsShow=true;
@@ -341,19 +320,23 @@
 				let eaditnum =0;
 				let singelPrice=0;
 				_this.cartlist.forEach(function(item){
-					if(item.select==true){
-						singelPrice =Number(item.SalePrice)*parseInt(item.Number);
-						eaditallPrice += singelPrice;
-						eaditnum++;
-					}
+					item.ProData.forEach(function(item2){
+						if(item2.select==true){
+							singelPrice =Number(item2.Price)*parseInt(item2.Number);
+							eaditallPrice += singelPrice;
+							eaditnum++;
+						}
+					})
+					
 				});
+				this.selectlen=eaditnum;
 				if(eaditnum==this.checklen){
 						this.allSelect=true;
+						this.allPrice= this.cartinfo.PayAmount;
 				}else{
 					this.allSelect=false;
+					this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 				}
-				this.selectlen=eaditnum;
-				this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 			},
 			//全选、反选
 			Allcheck() {
@@ -361,90 +344,169 @@
 				let _this = this;
 				if(!this.isEdit){//未打开编辑按钮的全选
 					if(this.allSelect){
-							this.selectlen = this.checklen;
-					}else{
-							this.selectlen = 0;
-					}
-					_this.cartlist.forEach(function(item) {
-						if(_this.allSelect && item.IsBuy==0){
+						this.selectlen = this.checklen;
+						_this.cartlist.forEach(function(item) {
 							_this.$set(item, "select", true); 
-						}else{
-							_this.$set(item, "select", false);
-						}
-					}); 
+							item.ProData.forEach(function(item2){
+								if(item2.Isinvalid==0){
+									_this.$set(item2, "select", true); 
+								}
+							})
+						}); 
+					}else{
+						this.selectlen = 0;
+						_this.cartlist.forEach(function(item) {
+							_this.$set(item, "select", false); 
+							item.ProData.forEach(function(item2){
+								if(item2.Isinvalid==0){
+									_this.$set(item2, "select", false); 
+								}
+							})
+						}); 
+					}
 					this.AllPrice();//合计   
 				}else{//打开编辑按钮的全选
-					_this.cartlist.forEach(function(item) {
-						if(_this.allSelect){
-							_this.selectlen = _this.cartlist.length;
-							_this.$set(item, "select", true);
-						}else{console.log("0")
-							_this.selectlen=0;
-							_this.$set(item, "select", false);
-						}
-					}); 
+					if(this.allSelect){
+						_this.selectlen = _this.cartlist.length;
+						_this.cartlist.forEach(function(item) {
+							_this.$set(item, "select", true); 
+							item.ProData.forEach(function(item2){
+								_this.$set(item2, "select", true);
+							})
+						}); 
+					}else{
+						this.selectlen = 0;
+						_this.cartlist.forEach(function(item) {
+							_this.$set(item, "select", false); 
+							item.ProData.forEach(function(item2){
+								_this.$set(item2, "select", false); 
+							})
+						}); 
+					} 
 				} 
 			},
 			//单选
-			selectStyle(item,index,select,disBuy,event) {
+			selectStyle(index,index2,select,disBuy,event) {
+				let _this=this;
+				let item=_this.cartlist[index];
+				let item2=item.ProData[index2];
 				if(!this.isEdit){//未打开编辑按钮的单选
 					if(disBuy){
-						this.$set(item, "select", false);
+						this.$set(item2, "select", false);
 						event.preventDefault();
-					}else{       
+					}else{   
 						if(select){
-							if(this.selectlen>0){
-								this.selectlen--;
-							}
-							this.$set(item, "select", false);
+							this.$set(item2, "select", false);
 						}else{
-							this.$set(item, "select", true);
-							this.selectlen++;      
+							this.$set(item2, "select", true);
 						}
-						if(this.selectlen==this.checklen){            
-								this.allSelect=true;
-						}else{
-								this.allSelect=false;
-						}
+						this.allSelect=this.Cknum();
 						this.AllPrice();//合计
 					}
 				}else{
 					if(select){
-						if(this.selectlen>0){
-							this.selectlen--;
-						}
-						this.$set(item, "select", false);
+						this.$set(item2, "select", false);
 					}else{
-						this.selectlen++; 
-						this.$set(item, "select", true);
+						this.$set(item2, "select", true);
 					}
-					if(this.selectlen==this.cartlist.length){
-						this.allSelect=true;
-					}else{
-						this.allSelect=false;
-					}
+					this.allSelect=this.Cknum();
 				}
 			},
+			//店铺全选
+			shopcheck(index){
+				let _this=this;
+				let item=_this.cartlist[index];
+				_this.$set(item, "select", !item.select);
+				if(item.select){
+					item.ProData.forEach(function(e){
+						_this.$set(e, "select", true);
+					})
+				}else{
+					item.ProData.forEach(function(e){
+						_this.$set(e, "select", false);
+					})
+				}
+				_this.allSelect=_this.Cknum();
+				if(!_this.isEdit){//未打开编辑按钮的单选
+					_this.AllPrice();//合计
+				}
+			},
+			//累计选中
+			Cknum(){
+				let _this=this;
+				let cknum=0,cknumed=0,all=false;
+				if(_this.isEdit){
+					_this.cartlist.forEach(function(item){
+						let itemcknum=0,itemcknumed=0;
+						item.ProData.forEach(function(item2){
+							cknum++;
+							itemcknum++;
+							if(item2.select==true){
+								cknumed++;
+								itemcknumed++;
+							}
+						})
+						if(itemcknum==itemcknumed){
+							 _this.$set(item, "select", true);	
+						}else{
+							 _this.$set(item, "select", false);
+						}
+					})  
+					if(cknum==cknumed){
+						all=true;		   
+					}else{
+						  all=false;
+					}
+					return all
+				}else{
+					_this.cartlist.forEach(function(item){
+						let itemcknum=0,itemcknumed=0;
+						item.ProData.forEach(function(item2){
+							if(item2.Isinvalid==0){
+								cknum++;
+								itemcknum++;
+							}
+							if(item2.select==true){
+								cknumed++;
+								itemcknumed++;
+							}
+						})
+						if(itemcknum==itemcknumed){
+							 _this.$set(item, "select", true);	
+						}else{
+							 _this.$set(item, "select", false);
+						}
+					})  
+					if(cknum==cknumed){
+						all=true;		   
+					}else{
+						 all=false;
+					}
+					console.log(all)
+					return all
+				}
+			},
+			
 			//打开编辑购物车
 			ManageCart(){
 				this.isEdit=!this.isEdit;
 				let _this=this;
 				if(this.isEdit==false){
 					this.isEdittxt="管理";
-				 // this.allSelect=true;
 					_this.cartlist.forEach(function(item) {
-						if(item.IsBuy!=0){
-						 // _this.$set(item, "select", true); 
-						 _this.$set(item, "disBuy", true); 
-						 _this.$set(item, "select", false);
-						}
+						item.ProData.forEach(function(item2){
+							if(item2.Isinvalid!=0){
+								_this.$set(item2, "disBuy", true);
+								_this.$set(item2, "select", false);
+							}
+						})
 					}); 
 				}else{
 					this.isEdittxt="完成";
-					//this.allSelect=false;
 					_this.cartlist.forEach(function(item) {
-					 // _this.$set(item, "select", false);
-						_this.$set(item, "disBuy", false);
+						 item.ProData.forEach(function(item2){
+							_this.$set(item2, "disBuy", false);
+						 })
 					}); 
 				}
 				this.AllPrice();//合计
