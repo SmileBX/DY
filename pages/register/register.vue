@@ -4,7 +4,7 @@
 			<view class="logo">
 				<view class="img">
 					<image src="/static/logo.png" mode="widthFix"></image>
-					<view class="Title">茶世界</view>
+					<view class="Title">大单易拼</view>
 				</view>
 			</view>
 			<view class="from pd10">

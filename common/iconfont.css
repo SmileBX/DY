@@ -13,8 +13,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-xiaoxi1:before {
-  content: "\e62b";
+.icon-gou2:before {
+  content: "\e63b";
+}
+
+.icon-weixin1:before {
+  content: "\e62c";
+}
+
+.icon-shouji:before {
+  content: "\e672";
+}
+
+.icon-mima:before {
+  content: "\e62f";
+}
+
+.icon-zh1:before {
+  content: "\e60d";
 }
 
 .icon-gou1:before {

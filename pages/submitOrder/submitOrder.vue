@@ -26,13 +26,78 @@
 			</view>
 			
 			<!-- 购物车过来的产品列表 -->
-			<view class="procontent b_radius uni-mb10" v-for="(item,index) in info.CartList" :key="index">
+			<block v-if="orderSType==1">
+				<view class="procontent b_radius uni-mb10" v-for="(item,index) in info.CartList" :key="index">
+					<view class="shopbox">
+						<view class="iconfont icon-dianpu"></view>
+						<text class="shopName">{{item.ShopName}}</text>
+						<view class="uni-icon uni-icon-arrowright"></view>
+					</view>
+					<view class="outside" v-for="(item2,index2) in item.ProData" :key="index2">
+						<view class="pictrueAll">
+							<view class="pictrue">
+								<image :src="item2.PicNo" mode="aspectFill" ></image>
+							</view>
+						</view>
+						<view class="txtBox">
+							<view class="title">{{item2.Name}}</view>
+							<view class="protype" v-if="item2.SpecText">{{item2.SpecText}}</view>
+							<view class="pronumber">
+								<view class="number">x{{item2.Number}}</view><view class="price">￥{{item2.Price}}</view>
+							</view>
+						</view>
+					</view>
+					<view class="orderbox">
+						<view class="orderinfo">
+							<view class="orderleft">运费</view>
+							<view class="orderright">
+								{{item.Freight>0?'￥'+item.Freight:'免邮'}}
+							</view>
+						</view>
+						<view class="orderinfo">
+							<view class="orderleft">合计</view>
+							<view class="orderright">￥{{item.TotalPrice}}</view>
+						</view>
+						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon">
+							<view class="orderleft">优惠券</view>
+							<view class="orderright">
+								<view class="infotxt">不使用</view>
+								<view class="uni-icon uni-icon-arrowright"></view>
+							</view>
+						</view>
+						<view class="orderinfo" v-if="item.yhPrice>0">
+							<view class="orderleft">店铺优惠</view>
+							<view class="orderright">￥{{item.yhPrice}}</view>
+						</view>
+						<view class="orderinfo" v-if="item.zkPrice>0">
+							<view class="orderleft">折扣金额</view>
+							<view class="orderright">￥{{item.zkPrice}}</view>
+						</view>
+						<view class="orderinfo" style="border: none;">
+							<view class="orderleft">订单备注</view>
+							<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[index]"/>
+						</view>
+						<view class="orderinfo" v-if="item.IsInvoice==1" @click="ChooseInvoice(index)">
+							<view class="orderleft">开具发票</view>
+							<view class="orderright">
+								<view class="infotxt">可开票</view>
+								<view class="uni-icon uni-icon-arrowright"></view>
+							</view>
+						</view>
+						<view class="allprice">
+							<text>共计{{item.AllNumber}}件商品</text><text>小计：</text><text>￥{{item.AllPrice}}</text>
+						</view>
+					</view>			
+				</view>
+			</block>
+			<!-- 立即购买 -->
+			<view v-else class="procontent b_radius uni-mb10">
 				<view class="shopbox">
 					<view class="iconfont icon-dianpu"></view>
-					<text class="shopName">{{item.ShopName}}</text>
+					<text class="shopName">{{info.ShopName}}</text>
 					<view class="uni-icon uni-icon-arrowright"></view>
 				</view>
-				<view class="outside" v-for="(item2,index2) in item.ProData" :key="index2">
+				<view class="outside" v-for="(item2,index2) in info.ProData" :key="index2">
 					<view class="pictrueAll">
 						<view class="pictrue">
 							<image :src="item2.PicNo" mode="aspectFill" ></image>
@@ -50,113 +115,52 @@
 					<view class="orderinfo">
 						<view class="orderleft">运费</view>
 						<view class="orderright">
-							{{item.Freight>0?'￥'+item.Freight:'免邮'}}
+							{{info.Freight>0?'￥'+info.Freight:'免邮'}}
 						</view>
 					</view>
 					<view class="orderinfo">
 						<view class="orderleft">合计</view>
-						<view class="orderright">￥{{item.TotalPrice}}</view>
+						<view class="orderright">￥{{info.TotalPrice}}</view>
 					</view>
-					<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon">
+					<view class="orderinfo" v-if="info.UseCouponList.length" @click="openCoupon">
 						<view class="orderleft">优惠券</view>
 						<view class="orderright">
 							<view class="infotxt">不使用</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
-					<view class="orderinfo" v-if="item.yhPrice>0">
+					<view class="orderinfo" v-if="info.yhPrice>0">
 						<view class="orderleft">店铺优惠</view>
-						<view class="orderright">￥{{item.yhPrice}}</view>
+						<view class="orderright">￥{{info.yhPrice}}</view>
 					</view>
-					<view class="orderinfo" v-if="item.zkPrice>0">
+					<view class="orderinfo" v-if="info.zkPrice>0">
 						<view class="orderleft">折扣金额</view>
-						<view class="orderright">￥{{item.zkPrice}}</view>
+						<view class="orderright">￥{{info.zkPrice}}</view>
 					</view>
 					<view class="orderinfo" style="border: none;">
 						<view class="orderleft">订单备注</view>
-						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[index]"/>
+						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[0]"/>
 					</view>
-					<view class="orderinfo" v-if="item.IsInvoice==1">
+					<view class="orderinfo" v-if="info.IsInvoice==1" @click="ChooseInvoice">
 						<view class="orderleft">开具发票</view>
 						<view class="orderright">
-							<view class="infotxt">可开票</view>
+							<view class="infotxt flex flex-end">{{Invoicetxt||'可开票'}}
+								<span v-if="InvoiceIdArr[0]>0" @click.stop="delInvoicet" class="delinvoice">×</span>
+							</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
 					<view class="allprice">
-						<text>共计{{item.AllNumber}}件商品</text><text>小计：</text><text>￥{{item.AllPrice}}</text>
+						<text>共计{{info.AllNumber}}件商品</text><text>小计：</text><text>￥{{info.AllPrice}}</text>
 					</view>
-				</view>			
-			</view>
-			<!-- 立即购买 -->
-			<view class="procontent b_radius uni-mb10" style="display: none;">
-				<view class="shopbox">
-					<view class="iconfont icon-dianpu"></view>
-					<text class="shopName">炫宝迪旗舰店</text>
-					<view class="uni-icon uni-icon-arrowright"></view>
-				</view>
-				<view class="outside">
-					<view class="pictrueAll">
-						<view class="pictrue">
-							<image src="../../static/of/2.png" mode="" ></image>
-						</view>
-					</view>
-					<view class="txtBox">
-						<view class="title">紫元大厦</view>
-						<view class="protype">007oo</view>
-						<view class="pronumber">
-							<text class="number">x1</text><text class="price">￥13万</text>
-						</view>
-					</view>
-				</view>
-				<view class="orderbox">
-					<view class="orderinfo">
-						<view class="orderleft">运费</view>
-						<view class="orderright">
-							<block>免邮</block>
-						</view>
-					</view>
-					<view class="orderinfo">
-						<view class="orderleft">小计</view>
-						<view class="orderright">￥256</view>
-					</view>
-					<view class="orderinfo">
-						<view class="orderleft">券后价</view>
-						<view class="orderright">￥255</view>
-					</view>
-					<view class="orderinfo" style="border: none;">
-						<view class="orderleft">订单备注</view>
-						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text"/>
-					</view>
-				</view>			
-			</view>
-			
-			<view class="procontent b_radius" style="display: none;">
-				<view class="orderbox">
-					<view class="orderinfo">
-						<view class="orderleft">开具发票</view>
-						<view class="orderright">
-							<view class="infotxt">可开票</view>
-							<view class="uni-icon uni-icon-arrowright"></view>
-						</view>
-					</view>
-					<view class="orderinfo" @click="openCoupon">
-						<view class="orderleft">优惠券</view>
-						<view class="orderright">
-							<view class="infotxt">不使用</view>
-							<view class="uni-icon uni-icon-arrowright"></view>
-						</view>
-					</view>
-					<view class="allprice">
-						<text>共计4件商品</text><text>合计：</text><text>￥2566</text>
-					</view>
-				</view>
+				</view>				
 			</view>
 			
 		</view>
 		<view style="width: 100%;height: 160upx;"></view>
 		<view class="footer flex flex-between">
-			<view class="footleft"><text class="color_gray">(共{{info.countItem}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.PayAmount}}</text></view>
+			<view class="footleft" v-if="orderSType==1"><text class="color_gray fz12">(共{{info.countItem}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.PayAmount}}</text></view>
+			<view class="footleft" v-if="orderSType==0"><text class="color_gray fz12">(共{{info.AllNumber}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.AllPrice}}</text></view>
 			<view class="footright" @click="confirm">提交订单</view>
 		</view>
 		<!-- 优惠券弹窗 -->
@@ -199,6 +203,9 @@
 				orderSType:1,//0立即购买，1购物车
 				showCoupon:false,//优惠券弹框
 				CartIds: "", //购物车提交的item的id
+				ProId:"",//产品Id(立即购买)
+				Total:"",//购买总数量(立即购买)
+				SpecText:"",//产品规格文本(立即购买)
 				info:{},//产品信息
 				addrInfo:{},//地址信息
 				isAddress:false,
@@ -207,6 +214,7 @@
 				isPayWallet:0,//是否使用余额支付
 				isPayScore:0,//是否使用积分抵扣
 				InvoiceIdArr:[],
+				Invoicetxt:'',
 				remarkTxtArr:[]
 			};
 		},
@@ -218,6 +226,9 @@
 			this.token = uni.getStorageSync("token");
 			this.orderSType= this.$root.$mp.query.orderSType;
 			this.CartIds=this.$root.$mp.query.cartItem;
+			this.ProId=this.$root.$mp.query.id;
+			this.Total=this.$root.$mp.query.number;
+			this.SpecText=this.$root.$mp.query.SpecText;
 			if(uni.getStorageSync("addressinfo")){
 			  this.addrInfo=uni.getStorageSync("addressinfo");
 			  uni.setStorageSync("addressinfo",null)
@@ -226,10 +237,21 @@
 			}else{
 			  this.getAdress();
 			}
+			if(uni.getStorageSync("invoiceinfo")){
+			  this.InvoiceInfo=uni.getStorageSync("invoiceinfo");
+			  this.InvoiceIdArr[0]=this.InvoiceInfo.Id;//发票的id
+			  this.Invoicetxt=this.InvoiceInfo.InvoiceTitleStr+"："+this.InvoiceInfo.HeaderName;
+			  console.log(this.Invoicetxt);
+			}else{
+			  this.InvoiceId=0;//发票的id
+			  this.InvoiceType=0;//发票的类型
+			  this.Invoicetxt="不开发票";
+			  this.InvoiceEmail="";
+			}
 			if(this.orderSType==1){
 				this.GoodsCartList();
 			}else{
-				
+				this.BuyNowGoods();
 			}
 		},
 		methods: {
@@ -262,6 +284,23 @@
 			openCoupon(){
 				this.showCoupon=true;
 				
+			},
+			//选择发票
+			ChooseInvoice(index){
+				if(index){
+					uni.navigateTo({
+						url:'/pages/member/invoiceList/invoiceList?pagetype=confirm&shopIndex='+index
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages/member/invoiceList/invoiceList?pagetype=confirm'
+					})
+				}
+			},
+			delInvoicet(){
+			  uni.setStorageSync("invoiceinfo","");
+			  this.InvoiceIdArr[0]=0;//发票的id
+			  this.Invoicetxt="可开票";
 			},
 			//购物车下单获取
 			async GoodsCartList(){
@@ -318,11 +357,70 @@
 					});
 				}
 			},
+			//立即购买订单渲染
+			async BuyNowGoods(){
+				let dataArr=[{
+					ProId:this.ProId,//产品Id
+					Total:this.Total,//购买总数量
+					SpecText:this.SpecText//产品规格文本
+				}];
+			  let result=await post("Order/BuyNowGoods",{
+				UserId: this.userId,
+				Token: this.token,
+				AddressId:this.addressId,
+				CouponId:this.couponId,
+				data:dataArr,
+			  })
+			  if(result.code==0){
+				  let _this=this;
+				_this.info=result.data;
+				_this.$set(_this.info,"countItem",_this.infoAllNumber)
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
+			//立即购买提交
+			async BuyNowSubmitOrder(){
+			  let result=await post("Order/BuyNowSubmitOrder",{
+				UserId: this.userId,
+				Token: this.token,
+				ProId:this.ProId,//产品Id
+				Number:this.Total,
+				SpecText:this.SpecText,
+				AddressId:this.addressId,
+				CouponId:this.couponId,
+				InvoiceId:this.InvoiceIdArr[0],
+				Remark:this.remarkTxtArr[0]
+			  })
+			  if(result.code==0){
+				uni.showToast({
+				  title: '订单提交成功',
+				  success(){
+					setTimeout(res=>{
+						uni.redirectTo({
+							url: '/pages/pay/pay?orderNo='+result.data+'&source=1'
+						})
+					},1500)
+				  }
+				})
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
 			//提交订单
 			confirm(){
 				if(this.addrInfo){
 					if(this.orderSType==0){//立即购买
-					  //this.BuyNowSubmitOrder()
+					
+					  this.BuyNowSubmitOrder();
 					}else{
 					  let DataArr = [];
 					  for (let i = 0; i < this.info.CartList.length; i++) {
@@ -348,4 +446,5 @@
 
 <style scoped>
 	@import "./style";
+	
 </style>

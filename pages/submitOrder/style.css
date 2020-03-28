@@ -317,3 +317,4 @@
 .couponname{
 	font-size: 30upx;
 }
+.delinvoice{ display: block; height: 36upx; width: 36upx; text-align: center; line-height: 36upx; border-radius: 50%; background: #ccc; color: #fff; margin-left: 20upx;}

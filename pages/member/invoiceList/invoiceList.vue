@@ -3,7 +3,7 @@
 		<view class="defaultPage invoiceList__defaultPage">
 			<view class="addressList invoiceList" v-if="list.length>0">
 				<view class="item" v-for="(item,index) in list" :key="index">
-					<view class="item__bd"  @click="selectInv(item.Id)">
+					<view class="item__bd"  @click="choseInvoice(index)">
 						<view class="remarks">
 							<text class="name">抬头名称：{{item.HeaderName}}</text>
 						</view>
@@ -55,7 +55,7 @@
 		data() {
 			return {
 				InvoiceId:0,
-				addrInfo:{},
+				pagetype:"",//页面来源
 				userId: "",
 				token: "",
 				list: [],
@@ -65,11 +65,15 @@
 			this.list = [];
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.pagetype=this.$root.$mp.query.pagetype||'';
 			this.getInvoice();
 		},
 		methods: {
-			selectInv(id){
-				
+			choseInvoice(index){
+				if(this.pagetype == 'confirm'){
+					uni.setStorageSync("invoiceinfo",this.list[index]);
+					uni.navigateBack()
+				}
 			},
 			gotoAddInvoice(id) {
 				let goUrl = '';

@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<view class="payinfo">
-		  <view class="p1 flex flex-center"><view class="iconfont icon-gou1"></view>支付成功</view>
+		  <view class="p1 flex flex-center"><view class="iconfont icon-gou2"></view>支付成功</view>
 		  <view class="p2"></view>
 		  <view class="btns">
-			<view class="btn toindex">返回首页</view>
-			<view class="btn todetail">查看订单</view>
+			<view class="btn toindex" @click="tolink('/pages/tabBar/index/index',true)">返回首页</view>
+			<view class="btn todetail" @click="toOrder">查看订单</view>
 		  </view>
 		</view>
 		<view class="foryouCon">
@@ -34,19 +34,47 @@
 </template>
 
 <script>
+	import {post,get} from '@/common/util.js';
 	import "@/common/product.scss";
 	export default {
 		data() {
 			return {
-				
+				userId: "",
+				token: "",
+				orderNo:"",
+				Noarr:[],
 			}
+		},
+		onShow(){
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.orderNo=this.$root.$mp.query.orderNo;
+			this.Noarr=this.orderNo.split(",");
 		},
 		methods: {
 			//跳转
-			tolink(Url) {
-				uni.navigateTo({
-					url: Url
-				})
+			tolink(Url,tabBar) {
+				if(tabBar){
+					uni.switchTab({
+						url: Url
+					})
+				}else{
+					uni.navigateTo({
+						url: Url
+					})
+				}
+			},
+			//跳转订单详情
+			toOrder() {
+				if(this.Noarr.length>1){
+					uni.navigateTo({
+						url: '/pages/member/order/order'
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/member/orderDetail/orderDetail?id='+this.orderNo
+					})
+				}
 			},
 		}
 	}
@@ -56,7 +84,7 @@
   .payinfo{background: #ff3333; text-align: center; color: #fff; padding: 20upx 0 40upx;}
   .payinfo .p1{font-size: 44upx;}
   .payinfo .p1 .iconfont{ margin-right: 20upx;}
-  .payinfo .icon-gou1,.payinfo .icon-cha{ font-size: 56upx; line-height:1; }
+  .payinfo .icon-gou2,.payinfo .icon-cha{ font-size: 56upx; line-height:1; }
   .payinfo .p2{ font-size: 80upx; line-height: 1.5}
   .payinfo .p2 .yuan{ font-size: 40upx}
   .payinfo .btns{ display:flex;align-items:center;justify-content:center;}
