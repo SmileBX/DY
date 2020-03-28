@@ -46,3 +46,35 @@
 		
 	}
 }
+.change-goods{
+  background-color: rgba(0,0,0,0.4);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .main{
+    background-color: #fff;
+    width: 500rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+    .tit{
+      text-align: center;
+      line-height: 88rpx;
+      font-weight: 900;
+      border-bottom: 1rpx solid #ededed;
+    }
+    .list{
+      height: 120rpx;
+      padding: 0 30rpx;
+      border-bottom: 1rpx solid #ededed;
+      image{
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 10rpx;
+		margin: 0;
+		margin-right: 20upx;
+      }
+    }
+  }
+}
