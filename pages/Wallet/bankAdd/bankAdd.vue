@@ -129,10 +129,10 @@ export default {
     selectCardName() {
       //选择银行卡
       this.$store.commit("setSelectCard", {
-        url: "/pages/myson/addCard/main",
+        url: "/pages/Wallet/bankAdd/bankAdd",
         status: true
       });
-      uni.navigateTo({ url: "/pages/myson/chooseBank/main" });
+      uni.navigateTo({ url: "/pages/Wallet/bankChoose/bankChoose" });
     },
     valOther() {
       if (this.bankCardName == "") {
@@ -263,7 +263,7 @@ export default {
               setTimeout(function() {
                 that.initData();
                 uni.redirectTo({
-                  url: "/pages/myson/cardList/main"
+                  url: "/pages/Wallet/bankCard/bankCard"
                 });
               }, 1500);
             }
@@ -310,5 +310,11 @@ export default {
 .btn{
   color:#ffffff;background: #ff3333;
   margin:80upx auto 0upx;
+  width: 690upx;
+  height: 88upx;
+  line-height: 88upx;
+  border-radius: 12upx;
+  text-align: center;
+  
 }
 </style>

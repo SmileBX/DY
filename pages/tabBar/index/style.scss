@@ -118,14 +118,16 @@
 .home{
 	.tab_list{
 		background: #ffffff;padding:20upx 0;
-		height:360upx;white-space: nowrap;
+		height:360upx;
+		// white-space: nowrap;
 		width: 100%;
+		flex-wrap: wrap;
 		.tab_item{
 			display: inline-flex;
 			justify-content: center;
 			align-items: center;
 			flex-direction: column;
-			width:20%;height:360upx;
+			width:20%;height:180upx;
 		}
 		.tab_img{
 			width:100upx;height:100upx;border-radius:50%;

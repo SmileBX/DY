@@ -252,6 +252,21 @@ function getUrlParam(name) {
 	if(r != null) return unescape(r[2]);
 	return null;
 }
+// 普通跳转
+function navigate(url,params={}){
+	let p ='';
+	let arr = Object.keys(params);//键数组
+	arr.map(item=>{
+		p+=`${item}=${params[item]}`;
+		if(arr[arr.length-1]!==item){
+			p+='&';
+		}
+	})
+	uni.navigateTo({
+		url:'/pages/'+url+(p&&('?'+p))
+	})
+}
+
 module.exports = {
 	formatTime: formatTime,
 	formatLocation: formatLocation,
@@ -265,5 +280,6 @@ module.exports = {
 	valPhone:valPhone,
 	SEOTitle:SEOTitle,
 	getUrlParam:getUrlParam,
-	setRegular:setRegular
+	setRegular:setRegular,
+	navigate:navigate
 }

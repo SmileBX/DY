@@ -8,7 +8,6 @@
           :key="index"
           @click="selectCard(index)"
         >
-          <!-- <img src="http://jyy.wtvxin.com/static/images/card/cardBg.png" class="bg" alt> -->
           <div class="cardImg">
             <img :src="item.BankLogo" alt>
           </div>
@@ -24,19 +23,14 @@
         </div>
       </div>
       <div v-else class="no_cardList flex flexColumn flexAlignCenter">
-          <img src="http://jyy.wtvxin.com/static/images/icons/nocr.png" alt="" class="no_c">
+          <img src="/static/icons/nocr.png" alt="" class="no_c">
           <p class="mt2 cg">您还未添加过银行卡</p>
       </div>
-      <!-- <p
-        class="ovedMsg"
-        v-if="isOved && page>1"
-        style="text-align:center;padding:20upx;font-size:26upx;color:#666;"
-      >我也是有底线的</p> -->
       <div class="ftBtn" style="height:100upx" @click="addBankCard">
         <div class="inner fixed bm0">
           <div class="btns">
             <div class="btn center bg_ff952e color_fff">
-              <img src="http://jyy.wtvxin.com/static/images/icons/add.png" class="icon-add" alt>添加银行卡
+              <img src="/static/icons/add.png" class="icon-add" alt>添加银行卡
             </div>
           </div>
         </div>
@@ -101,7 +95,7 @@ export default {
     },
     addBankCard() {
       uni.navigateTo({
-        url: "/pages/myson/addCard/main"
+        url: "/pages/Wallet/bankAdd/bankAdd"
       });
     },
     getBankList() {
@@ -180,7 +174,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .pageContent {
-  height: calc(100vh - 20upx);
+  height: calc(100vh - 20upx - 44px);
   background: #fff;
   position: relative;
   top: 20upx;
@@ -286,5 +280,18 @@ export default {
 .bg_ff952e{
   background: #FF3333;
 }
-
+.btns{
+	width: 100%;
+	height: 88upx;
+	position: fixed;
+	bottom: 12upx;
+}
+.btns .btn{
+	width: 690upx;
+	margin: 0 auto;
+	height: 88upx;
+	border-radius: 12upx;
+	line-height: 88upx;
+	color: #fff;
+}
 </style>

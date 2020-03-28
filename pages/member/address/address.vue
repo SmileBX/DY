@@ -1,12 +1,12 @@
 <template>
-  <view style="padding-bottom:120rpx">
-    <radio-group class="radio-group" @tap="radioChange" >
-      <view class="list bpr-box" v-for="(item, index) in 6" :key="index" @click="choseAddress(index)">
-        <view class="jus-b" ><span class="name">item.Consignee</span><span>item.Mobile</span></view>
-        <view class="address">item.Address</view>
+  <view style="padding-bottom:120upx">
+    <radio-group class="radio-group" @tap="radioChange"  v-if="list.length>0">
+      <view class="list bpr-box" v-for="(item, index) in list" :key="index" @click="choseAddress(index)">
+        <view class="jus-b" ><span class="name">{{item.Consignee}}</span><span>{{item.Mobile}}</span></view>
+        <view class="address">{{item.Address}}</view>
         <view class="ali-c jus-b foot gou flex justifyContentBetween flexAlignCenter">
           <label @click.stop="changeDefault(index)">
-              <radio class="radio" color="#338afb" :checked="item.IsDefault==1" :value="item.Id" >
+              <radio class="radio" color="#FF3333" :checked="item.IsDefault==1">
                 <text>默认地址</text>
               </radio>
           </label>
@@ -23,7 +23,7 @@
         </view>    
       </view>
       </radio-group>
-      <p  class="nodata_log flex flexColumn flexAlignCenter" style="display: none;">
+      <p class="nodata_log flex flexColumn flexAlignCenter" v-else>
           <image src="../../../static/my/site.png" alt="" class="site_log"></image>
           <span class="cg mt2">还没有收货地址哦~</span>
           <span class="add_new" @tap="toAddSite()">新建地址</span>
@@ -31,14 +31,14 @@
       <p
         class="ovedMsg"
         v-if="isOved && page>1"
-        style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;"
+        style="text-align:center;padding:20upx;font-size:26upx;color:#666;"
       >我也是有底线的</p>
       <p class="btnl" @tap="toAddSite()" v-if="list.length>0">添加收货地址</p>
   </view>
 </template>
 
 <script>
-// import {post} from '@/utils'
+import {post} from '@/common/util.js'
 // import { formatTime } from '@/utils/index'
 
 export default {
@@ -57,10 +57,10 @@ export default {
     }
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
+    this.userId = uni.getStorageSync("userId");
+    this.token = uni.getStorageSync("token");
     this.pagetype=this.$root.$mp.query.pagetype||'';
-    wx.setStorageSync("addressinfo",'');
+    uni.setStorageSync("addressinfo",'');
     this.list = []
     this.page = 1
     this.geSiteList()
@@ -118,7 +118,7 @@ export default {
      Delete(id, index) {
       //删除地址
       const that = this;
-      wx.showModal({
+      uni.showModal({
         title: '您确定删除该收货地址吗？',
         content: '删除后无法恢复',
         showCancel: true,
@@ -145,7 +145,7 @@ export default {
             }
           ).then(res => {
             if (res.code === 0) {
-              wx.showToast({
+              uni.showToast({
                 title: "删除成功!",
                 success:()=>{
                   this.list.splice(index, 1)
@@ -155,19 +155,19 @@ export default {
           });
     },
     editSite(id){
-       wx.navigateTo({
-        url:'/pages/myson/addsite/main?id='+id
+       uni.navigateTo({
+        url:'/pages/member/addsite/addsite?id='+id
       })
     },
     toAddSite(){
-      wx.navigateTo({
-        url:'/pages/myson/addsite/main'
+      uni.navigateTo({
+        url:'/pages/member/addsite/addsite'
       })
     },
     choseAddress(i){
       if(this.pagetype == 'confirm'){
-        wx.setStorageSync("addressinfo",this.list[i]);
-        wx.navigateBack()
+        uni.setStorageSync("addressinfo",this.list[i]);
+        uni.navigateBack()
       }
     }
   },
@@ -191,70 +191,70 @@ export default {
 
 <style lang='scss' scoped>
 .nodata_log{
-  padding:200rpx 0;
+  padding:200upx 0;
 }
 .bpr-box{
 	border-radius: 15upx;
 	background: #ffffff;
 }
 .add_new{
-  margin-top:80rpx;
-  width:200rpx;
-  border:1rpx solid #ff3333;border-radius:8rpx;
+  margin-top:80upx;
+  width:200upx;
+  border:1upx solid #ff3333;border-radius:8upx;
   color:#ff3333;
-  height:60rpx;line-height: 60rpx;
+  height:60upx;line-height: 60upx;
   text-align: center;
 }
 .site_log{
-  width:273rpx;height:363rpx;
+  width:273upx;height:363upx;
 }
 .btnl{
   width: 100%;
-	height: 100rpx;
+	height: 100upx;
   background-color: #ff3333;
   text-align: center;
-  line-height: 100rpx;
+  line-height: 100upx;
   position: fixed;
   bottom: 0;
-  font-size: 30rpx;
+  font-size: 30upx;
   color: #fff;
   margin:auto;
 }
 .list{
-  margin: 20rpx 30rpx 0;
-  padding: 40rpx 20rpx 0;
+  margin: 20upx 30upx 0;
+  padding: 40upx 20upx 0;
   .btt{
-    margin-left: 50rpx
+    margin-left: 50upx
   }
   .foot{
-    height: 100rpx;
+    height: 100upx;
   }
   .address{
-    line-height: 80rpx;
-    border-bottom: 1rpx solid #ededed;
+    line-height: 80upx;
+    border-bottom: 1upx solid #ededed;
     color: #333
   }
   .name{
-    font-size: 28rpx;
+    font-size: 28upx;
     color: #3c3c3c;
   }
   .radio{
     transform: scale(0.7);
     position: relative;
-    left: -30rpx;
+    left: -30upx;
     text{  
-      font-size: 40rpx
+      font-size: 40upx
     }
   }
   .write{
-    width: 32rpx;
-    height: 31rpx;
-    margin-right: 10rpx
+    width: 32upx;
+    height: 31upx;
+    margin-right: 10upx
   }
   .delete{
-    width: 32rpx;
-    height: 32rpx;
-    margin-right: 10rpx
+    width: 32upx;
+    height: 32upx;
+    margin-right: 10upx
   }
 }
 </style>

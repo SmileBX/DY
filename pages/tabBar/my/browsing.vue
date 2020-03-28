@@ -11,7 +11,7 @@
 		</view>
 		<view class="">
 			<view class="minbox">
-				<view class="min">今天</view>
+				<view class="min" >今天</view>
 				<view class="arrowss"><image class="arrows" src="../../../static/hpicons/arrows2.svg" mode=""></image></view>
 			</view>
 			<view class="listbox">

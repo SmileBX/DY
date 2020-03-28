@@ -7,15 +7,15 @@
 						<view class="remarks">
 							<text class="name">抬头名称：{{item.HeaderName}}</text>
 						</view>
-						<view class="type">类型：{{item.InvoiceTitlestr}}</view>
-						<view class="type" v-if="item.InvoiceTitle===1">税号：{{item.TaxNumber}}</view>
+						<view class="type">类型：{{item.InvoiceTitleStr}}</view>
+						<view class="type" v-if="item.InvoiceTitle!=1">税号：{{item.TaxNumber}}</view>
 					</view>
 					<view class="item__ft flex">
 						<view class="flexItem checkedLabel flex flexAlignCneter" @click="setDefaultInvoice(index,item.Id)">
 							<view class="IconsCK IconsCK-radio" :class="{'checked':item.IsDefault===1}"></view><text v-if="item.IsDefault===1" style="color:#89674c;">已设为默认</text><text
 							 v-else>设为默认</text>
 						</view>
-						<view class="flexItem flex1 text_r" v-if="pagetype==0">
+						<view class="flexItem flex1 text_r">
 							<view class="iconText inline-block"  @click="gotoAddInvoice(item.Id)">
 								<view class="uni-icon uni-icon-compose"></view>编辑
 							</view>
@@ -23,12 +23,6 @@
 								<view class="iconfont icon-del"></view>删除
 							</view>
 						</view>
-					</view>
-				</view>
-				<view class="item" v-if="pagetype==1">
-					<view class="uni-list-cell-navigate uni-navigate-right" @click="selectInv('')">
-						<view class="list-cell-l">本次不开具发票</view>
-						<view class="list-cell-r" style="color: #999; padding-right: 30upx;">继续下单</view>	
 					</view>
 				</view>
 			</view>
@@ -55,109 +49,27 @@
 </template>
 
 <script>
-	import {host,post,get,getCurrentPageUrlWithArgs,toLogin} from '@/common/util.js';
+	import {host,post,get,toLogin} from '@/common/util.js';
 	import "@/common/dd_style.css";
 	export default {
-		onLoad:function(option) {
-			if(option.pagetype){
-				this.pagetype=option.pagetype;
-			}
-			this.orderSType = option.orderSType; //0：直接下单的，1：购物车过来的
-			this.ShareMemberId=option.ShareMemberId;
-			if (this.orderSType == 0) {
-				this.proId = option.proId;
-				this.price = option.price;
-				this.number = Number(option.number);
-				this.SpecText = option.SpecText;
-				if(option.mixInfo){
-					this.hasMixPro=true;
-					this.mixInfo=option.mixInfo;
-				}
-			} else if (this.orderSType == 1) {
-				this.prolist = JSON.parse(option.prolist); //购物车过来的商品列表
-				this.CartIds = option.cartItem;
-			}else if (this.orderSType == 2) {
-				this.groupId = option.groupId;
-				this.groupRecordId = option.groupRecordId;
-				this.price = option.price;
-				this.number = Number(option.number);
-				this.SpecText = option.SpecText;
-			}else if(this.orderSType == 3){//众筹
-				this.proId = option.proId;
-				this.price = option.price;
-				this.number = Number(option.number);
-				this.SpecText = option.SpecText;
-				this.Supppottype=option.Supppottype;
-			}
-			if(option.addrInfo){
-				this.addrInfo=JSON.parse(option.addrInfo);
-			}
+		data() {
+			return {
+				InvoiceId:0,
+				addrInfo:{},
+				userId: "",
+				token: "",
+				list: [],
+			};
 		},
 		onShow() {
 			this.list = [];
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.getInvoice();
 		},
-		data() {
-			return {
-				proId: "", //立即购买商品Id
-				SpecText: "", //商品sku
-				price: 0, //选择sku的价格
-				number: 1, //数量
-				CartIds: "", //购物车提交的item的id
-				prolist: [], //购物车过来的商品列表
-				Supppottype:"",//众筹方式
-				orderSType: "", //0：直接下单的，1：购物车过来的 2拼团，3众筹
-				InvoiceId:0,
-				addrInfo:{},
-				groupId:"",//拼团产品id
-				groupRecordId:0,//拼团记录id
-				mixInfo:"",//组合购商品信息
-				hasMixPro:false,
-				curPage: "",
-				userId: "",
-				token: "",
-				list: [],
-				pagetype:0,
-				ShareMemberId:""
-			};
-		},
 		methods: {
 			selectInv(id){
-				if(this.pagetype==1){//从订单页过来的
-					if(this.orderSType==0){
-						let addrInfo=this.addrInfo;
-						if(this.hasMixPro){
-							uni.redirectTo({
-								url:"/pages/submitOrder/submitOrder?addrInfo="+JSON.stringify(addrInfo)+'&SpecText='+this.SpecText+'&mixInfo='+this.mixInfo+'&InvoiceId='+id+'&number='+this.number+'&proId='+this.proId+'&price='+this.price+"&orderSType="+this.orderSType+'&ShareMemberId='+this.ShareMemberId,
-							})
-						}else{
-							uni.redirectTo({
-								url:"/pages/submitOrder/submitOrder?addrInfo="+JSON.stringify(addrInfo)+'&SpecText='+this.SpecText+'&InvoiceId='+id+'&number='+this.number+'&proId='+this.proId+'&price='+this.price+"&orderSType="+this.orderSType+'&ShareMemberId='+this.ShareMemberId,
-							})
-						}
-					}else if(this.orderSType==1){
-						let prolist=this.prolist;
-						let addrInfo=this.addrInfo;
-						uni.redirectTo({
-							url:"/pages/submitOrder/submitOrder?addrInfo="+JSON.stringify(addrInfo)+'&cartItem='+this.CartIds+'&InvoiceId='+id+'&prolist='+JSON.stringify(prolist)+"&orderSType="+this.orderSType,
-						})
-					}else if(this.orderSType==2){
-						let prolist=this.prolist;
-						let addrInfo=this.addrInfo;
-						uni.redirectTo({
-							url:"/pages/PinTuanBuy/pinTuanOrder/pinTuanOrder?addrInfo="+JSON.stringify(addrInfo)+'&SpecText='+this.SpecText+'&InvoiceId='+id+'&number='+this.number+'&groupRecordId='+this.groupRecordId+'&groupId='+this.groupId+'&price='+this.price+"&orderSType="+this.orderSType,
-						})
-					}else if(this.orderSType==3){
-						let prolist=this.prolist;
-						let addrInfo=this.addrInfo;
-						uni.redirectTo({
-							url:"/pages/Crowdfunding/zc_submitOrder/zc_submitOrder?addrInfo="+JSON.stringify(addrInfo)+'&SpecText='+this.SpecText+'&InvoiceId='+id+'&number='+this.number+'&proId='+this.proId+'&price='+this.price+'&Supppottype='+this.Supppottype
-						})
-					}
-				}
+				
 			},
 			gotoAddInvoice(id) {
 				let goUrl = '';
@@ -171,7 +83,7 @@
 				})
 			},
 			async getInvoice() { //获取发票列表
-				let result = await post("Invoice/GetAllInvoiceList", {  //发票列表最多只能有10个，不用做分页
+				let result = await post("Invoice/invoiceList", {  //发票列表最多只能有10个，不用做分页
 					userId: this.userId,
 					token: this.token
 				})

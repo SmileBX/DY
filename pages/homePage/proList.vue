@@ -5,8 +5,8 @@
 		<view class="head">
 			<view class="truck">
 				<view class="searchbox">
-					<view class="searchation">
-						<view class="searchboxl">家居</view>
+					<view class="searchation" @click="onClassify">
+						<view class="searchboxl">{{pickerDefault}}</view>
 						<view class="searchboxr"><image class="uta" src="../../static/hpicons/uta.svg" mode=""></image></view>
 					</view>
 					<view class="searchico">
@@ -19,26 +19,38 @@
 			</view>
 			<!-- 区域 -->
 			<view class="areabox">
+				<view class="area" @click="onSort(0)">
+					<view class="">默认</view>
+					<view class="areaimg">
+						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+					</view>
+				</view>
 				<view class="area">
 					<view class="">区域</view>
-					<view class="areaimg"><image class="utas" src="../../static/hpicons/uta.svg"></image></view>
+					<view class="areaimg">
+						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+					</view>
 				</view>
-				<view class="area">
-					<view class="">销量</view>
-					<view class="areaimg"><image class="utas" src="../../static/hpicons/uta.svg"></image></view>
+				<view class="area" @click="onSort(1)">
+					<view class="">人气</view>
+					<view class="areaimg">
+						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+					</view>
 				</view>
-				<view class="area">
+				<view class="area" @click="onSort(2)">
 					<view class="">价格</view>
-					<view class="areaimg"><image class="utas" src="../../static/hpicons/uta.svg"></image></view>
+					<view class="areaimg">
+						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+					</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 列表 -->
-		<view class="trucklist" v-if="hasData">
+		<view class="trucklist">
 			<view class="truckac"></view>
-			<block v-for="(item,index) in datalist" :key="index">
-				<view class="listbox" @click="tolink('/pages/homePage/details?id='+item.Id)">
+			<block v-for="(item,index) in datalist" :key="index" v-show="hasData">
+				<view class="listbox" @click="navigate('homePage/details',{id:item.Id})">
 					<view class="listimg">
 						<image :src="item.PicNo" mode="widthFix"></image>
 					</view>
@@ -71,56 +83,97 @@
 					</view>
 				</view>
 			</block>
+			<noData :isShow="noDataIsShow"></noData>
 		</view>
 		<view class="uni-tab-bar-loading" v-if="hasData">
 			<uni-load-more :loadingType="loadingType"></uni-load-more>
 		</view>
-		<noData :isShow="noDataIsShow"></noData>
+		<wpicker 
+			mode="selector"
+    		:level="2" 
+			:defaultVal="['浙江省','宁波市']"
+			@confirm="pickerOk"
+			ref="selector"
+			:selectList="pickerList"
+			themeColor="#f00"
+			>
+		</wpicker>
 	</view>
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,navigate} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
+	import wpicker from "@/components/w-picker/w-picker.vue";
 	export default {
 		components: {
 			noData,
-			uniLoadMore
+			uniLoadMore,wpicker
 		},
 		data() {
 			return {
+				navigate,
 				userId: "",
 				token: "",
 				page: 1,
-				pageSize: 6,
+				pageSize: 12,
+				typeId:'',
+				classId:'',
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				hasData: false,
 				noDataIsShow: false,
-				datalist:[]
+				datalist:[],
+				Sort:0,//0-默认1-人气2-价格
+				Order:0,//排序方式0-升序，1-降序
+				IsRecommend:0,//1推荐
+				IsHot:0,//1精选
+				IsNew:0,//1新品
+				IsUseCoupons:0,//1优惠券专区商品
+				CouponId:'',//优惠券Id
+				Keywords:'',//关键词
+				pickerDefault:'',
+				pickerList:[{label:"",value:""}],
+
 			}
 		},
-		onLoad: function() {
+		onLoad: function(options) {
+			this.typeId = options.typeId||'';
+			this.classId = options.classId||'';
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.getprolist();
+			this.getClassify();
 		},
 		onShow(){
-			this.getprolist();
 		},
 		methods: {
-			tolink(Url) {
-				uni.navigateTo({
-					url: Url
-				})
+			onSort(sort){
+				// 如果已经点击了筛选则更换排序
+				if(sort===this.Sort){
+					this.Order=this.Order===0?1:0;
+				}else{
+					this.Sort=sort;
+					this.Order=0;
+				}
+				this.getprolist();
 			},
 			//分类商品列表
 			async getprolist(){
 				let result = await post("Goods/GoodsList", {
-				Page: this.page,
-				PageSize: this.pageSize,
-				TypeId:this.tid,
-				ClassId:this.cid
+					Page: this.page,
+					PageSize: this.pageSize,
+					TypeId:this.typeId,
+					ClassId:this.classId,
+					Sort:this.Sort,//0-默认1-人气2-价格
+					Order:this.Order,//排序方式0-升序，1-降序
+					IsRecommend:this.IsRecommend,//1推荐
+					IsHot:this.IsHot,//1精选
+					IsNew:this.IsNew,//1新品
+					IsUseCoupons:this.IsUseCoupons,//1优惠券专区商品
+					CouponId:this.CouponId,//优惠券Id
+					Keywords:this.Keywords//关键词
 				});
 				if(result.code==0){
 					let _this=this;
@@ -148,6 +201,34 @@
 					}
 				}
 			},
+			// 获取分类
+			async getClassify(){
+				let result = await post("Goods/GetProductClass", {
+					TypeId: this.typeId
+				});
+				const data =  result.data;
+				this.pickerList=[];
+				data.map(item=>{
+					if(this.classId==item.Id){
+						this.pickerDefault=item.ClassName;
+					}
+					this.pickerList.push({
+						label:item.ClassName,
+						id:item.Id
+					});
+				})
+			},
+			// 选择分类
+			onClassify(){
+				this.$refs['selector'].show();
+			},
+			// 选择分类值
+			pickerOk(e){
+				this.pickerDefault=e.result;
+				this.classId=e.checkArr.id;
+				this.getprolist();
+				console.log(e)
+			}
 		},
 		onReachBottom: function() {
 			if (this.isLoad) {
@@ -389,5 +470,9 @@
 		margin-right: 10rpx;
 		box-sizing: content-box;
 	}
-
+	.rotate180{
+		    transform:rotate(180deg);
+			-ms-transform:rotate(180deg); /* IE 9 */
+			-webkit-transform:rotate(180deg); /* Safari and Chrome */
+	}
 </style>
