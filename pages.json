@@ -334,6 +334,10 @@
             "path" : "pages/tabBar/my/collect",
             "style" : {}
         }
+        ,{
+            "path" : "pages/member/addComment/addComment",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[
