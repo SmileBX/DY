@@ -468,6 +468,7 @@
 		border-radius:16rpx;
 		text-align: center;
 		margin-right: 10rpx;
+		box-sizing: content-box;
 	}
 	.rotate180{
 		    transform:rotate(180deg);
