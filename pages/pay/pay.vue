@@ -183,7 +183,7 @@
 							success: function (res) {
 								if (res.confirm) {
 									uni.navigateTo({
-										url:"/pages/member/pwdSet/pwdSet"
+										url:"/pages/other/setpwd/setpwd"
 									})
 								} else if (res.cancel) {
 									console.log('用户点击取消');
