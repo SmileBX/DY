@@ -6,39 +6,39 @@
 			<view class="truck">
 				<view class="searchbox">
 					<view class="searchation" @click="onClassify">
-						<view class="searchboxl">{{pickerDefault}}</view>
+						<view class="searchboxl">{{classifyDefault}}</view>
 						<view class="searchboxr"><image class="uta" src="../../static/hpicons/uta.svg" mode=""></image></view>
 					</view>
 					<view class="searchico">
 						<view class="searchpole"></view>
 						<view class="searchimg"><image class="saarch" src="../../static/hpicons/search.svg"></image></view>
-						<input class="input" type="text" value="" placeholder="输入名称"/>
+						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"/>
 					</view>
 				</view>
-				<view class="abrogate">取消</view>
+				<view class="abrogate" @click="init">搜索</view>
 			</view>
 			<!-- 区域 -->
 			<view class="areabox">
-				<view class="area" @click="onSort(0)">
-					<view class="">默认</view>
+				<view class="area" @click="showArea">
+					<view :class="{'sort_active':AreaCode}">区域</view>
 					<view class="areaimg">
 						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
 					</view>
 				</view>
-				<view class="area">
-					<view class="">区域</view>
+				<view class="area" @click="onSort(0)">
+					<view :class="{'sort_active':Sort===0}">默认</view>
 					<view class="areaimg">
 						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(1)">
-					<view class="">人气</view>
+					<view :class="{'sort_active':Sort===1}">人气</view>
 					<view class="areaimg">
 						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="../../static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(2)">
-					<view class="">价格</view>
+					<view :class="{'sort_active':Sort===2}">价格</view>
 					<view class="areaimg">
 						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="../../static/hpicons/uta.svg"></image>
 					</view>
@@ -91,10 +91,21 @@
 		<wpicker 
 			mode="selector"
     		:level="2" 
-			:defaultVal="['浙江省','宁波市']"
+			:defaultVal="classifyDefault"
 			@confirm="pickerOk"
 			ref="selector"
-			:selectList="pickerList"
+			:selectList="classifyList"
+			themeColor="#f00"
+			>
+		</wpicker>
+		<wpicker 
+			mode="linkage"
+    		:level="3" 
+			:defaultVal="areaDefault"
+			@confirm="areaOk"
+			@cancel="areaCancel"
+			ref="area"
+			:linkList="areaList"
 			themeColor="#f00"
 			>
 		</wpicker>
@@ -103,6 +114,7 @@
 
 <script>
 	import {post,get,navigate} from '@/common/util.js';
+	import areaList from '@/common/areaList.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import wpicker from "@/components/w-picker/w-picker.vue";
@@ -133,9 +145,12 @@
 				IsUseCoupons:0,//1优惠券专区商品
 				CouponId:'',//优惠券Id
 				Keywords:'',//关键词
-				pickerDefault:'',
-				pickerList:[{label:"",value:""}],
-
+				AreaCode:'',//地区代码
+				AreaType:0,//0--默认按地区码，1--省不限市，市不限区
+				classifyDefault:'',
+				classifyList:[{label:"",value:""}],
+				areaDefault:['广东省','深圳市'],
+				areaList,
 			}
 		},
 		onLoad: function(options) {
@@ -143,12 +158,18 @@
 			this.classId = options.classId||'';
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			this.getprolist();
 			this.getClassify();
+			this.init();
 		},
 		onShow(){
 		},
 		methods: {
+			// 每次 切换分类、切换区域，返回默认值
+			init(){
+				this.Sort=0;
+				this.Order=0;
+				this.getprolist();
+			},
 			onSort(sort){
 				// 如果已经点击了筛选则更换排序
 				if(sort===this.Sort){
@@ -173,7 +194,9 @@
 					IsNew:this.IsNew,//1新品
 					IsUseCoupons:this.IsUseCoupons,//1优惠券专区商品
 					CouponId:this.CouponId,//优惠券Id
-					Keywords:this.Keywords//关键词
+					Keywords:this.Keywords,//关键词
+					AreaCode:this.AreaCode,//地区代码
+					AreaType:this.AreaType,//0--默认按地区码，1--省不限市，市不限区
 				});
 				if(result.code==0){
 					let _this=this;
@@ -207,12 +230,12 @@
 					TypeId: this.typeId
 				});
 				const data =  result.data;
-				this.pickerList=[];
+				this.classifyList=[];
 				data.map(item=>{
 					if(this.classId==item.Id){
-						this.pickerDefault=item.ClassName;
+						this.classifyDefault=item.ClassName;
 					}
-					this.pickerList.push({
+					this.classifyList.push({
 						label:item.ClassName,
 						id:item.Id
 					});
@@ -224,10 +247,22 @@
 			},
 			// 选择分类值
 			pickerOk(e){
-				this.pickerDefault=e.result;
+				this.classifyDefault=e.result;
 				this.classId=e.checkArr.id;
-				this.getprolist();
-				console.log(e)
+				this.init();
+			},
+			// 地区
+			showArea(){
+				this.$refs['area'].show();
+			},
+			areaOk(e){
+				this.areaDefault=e.checkArr;
+				this.AreaCode=e.checkValue[e.checkValue.length-1];
+				this.init();
+			},
+			areaCancel(e){
+				this.AreaCode='';
+				this.init();
 			}
 		},
 		onReachBottom: function() {
@@ -307,7 +342,7 @@
 		font-size:26rpx;
 		font-family:PingFang;
 		font-weight:500;
-		color:rgba(204,204,204,1);
+		/* color:rgba(204,204,204,1); */
 		line-height:35rpx;
 		margin-left: 17rpx;
 		margin-top: 16rpx;
@@ -474,5 +509,8 @@
 		    transform:rotate(180deg);
 			-ms-transform:rotate(180deg); /* IE 9 */
 			-webkit-transform:rotate(180deg); /* Safari and Chrome */
+	}
+	.sort_active{
+		color:rgba(255,51,51,1);
 	}
 </style>

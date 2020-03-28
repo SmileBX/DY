@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="uni-list">
+		<view class="uni-list" v-if="hasData">
 			<block v-for="(item,index) in TypeList" :key="index">
 				<view class="uni-list-cell" @click="tolink('/pages/message/messageList/messageList')">
 					<view class="uni-media-list">
@@ -21,16 +21,25 @@
 				</view>
 			</block>
 		</view>
+		<noData :isShow="noDataIsShow"></noData>
 	</view>
 </template>
 
 <script>
-	import {host,post,get} from '@/common/util.js';
+	import {host,post,get,dateUtils,toLogin,SEOTitle,getCurrentPageUrlWithArgs} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
 	export default {
+		components: {
+			noData
+		},
 		data() {
 			return {
+				curPage: "",
 				userId: "",
 				token: "",
+				hasData:false,
+				noDataIsShow: false,
+				
 				TypeList:[{
 					TypeImg:'../../../static/icons/notice0.png',
 					MsgName:'收益通知',
@@ -49,11 +58,59 @@
 		onLoad() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 		},
 		onShow() {
-			
+			// #ifndef MP-WEIXIN
+			   SEOTitle('');
+			// #endif
+			if (toLogin(this.curPage)) {
+				this.NoticeTypeList();
+			}
 		},
 		methods:{
+			async NoticeTypeList() {
+				let result = await post("News/NoticeTypeList", {
+					"UserId": this.userId,
+					"Token": this.token
+				});
+				if (result.code === 0) {
+					this.TypeList=result.data;
+					if (result.data.length > 0){
+						this.hasData = true;
+						result.data.forEach(function(item){
+							item.PubTime=dateUtils.format(item.PubTime);
+						})
+					}else{
+						this.noDataIsShow = true;
+					}
+				} else if (result.code === 2) {
+					let _this = this;
+					uni.showToast({
+						title: "登录超时，请重新登录!",
+						icon: "none",
+						duration: 2000,
+						success: function() {
+							setTimeout(function() {
+								uni.redirectTo({
+									url: "/pages/login/login?askUrl=" + _this.curPage
+								});
+							}, 2000);
+						}
+					}); //如果未登录则跳转到登陆页面
+				} else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
+			MessageList(type,keyname,shopid){
+				uni.navigateTo({
+					url: '/pages/Message/MessageList/MessageList?type='+type+'&keyname='+keyname+'&shopId='+shopid
+				});
+			},
 			//跳转
 			tolink(Url) {
 				uni.navigateTo({

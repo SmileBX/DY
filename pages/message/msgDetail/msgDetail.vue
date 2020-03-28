@@ -13,7 +13,7 @@
 		</view>
 	</view>
 </template>
-
+  
 <script>
 	import {post,get,dateUtils} from '@/common/util.js';
 	import uParse from '@/components/uParse/src/wxParse.vue';

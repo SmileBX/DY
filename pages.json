@@ -356,6 +356,14 @@
 					}
 				},
 				{
+					"path":"setpwd/setpwd",
+					"style": {
+						"navigationBarTitleText": "设置支付密码",
+						"navigationBarBackgroundColor": "#ffffff",
+						"enablePullDownRefresh" : true
+					}
+				},
+				{
 					"path":"account/account",
 					"style": {
 						"navigationBarTitleText": "账户管理",
@@ -407,6 +415,14 @@
 					"path":"myguest/myguest",
 					"style": {
 						"navigationBarTitleText": "我的团队",
+						"navigationBarBackgroundColor": "#ffffff",
+						"enablePullDownRefresh" : true
+					}
+				},
+				{
+					"path":"addcomment/addcomment",
+					"style": {
+						"navigationBarTitleText": "发布评价",
 						"navigationBarBackgroundColor": "#ffffff",
 						"enablePullDownRefresh" : true
 					}

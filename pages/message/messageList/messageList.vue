@@ -67,12 +67,19 @@
 			return {
 				userId: "",
 				token: "",
-				keyname:'系统消息',
-				Msgtype:0,
-				loadingType: 2, //0加载前，1加载中，2没有更多了
-				hasData: true,
-				noDataIsShow: false,
+				curPage:"",
+				Msgtype:"",
+				keyname:"",
+				shopId:"",
+				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
+				hasData: false,
+				noDataIsShow: false,
+				page: 1,
+				pageSize: 10,
+				allPage: 0,
+				count: 0,
+				
 				datalist:[{
 					title:'测试消息',
 					PubTime:'2019-07-02 18:07:56',
@@ -86,15 +93,104 @@
 			}
 		},
 		onLoad: function(e) {
+			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.Msgtype=e.type;
+			this.keyname=e.keyname;
+			this.shopId=e.shopId;
 		},
 		onShow(){
-			uni.setNavigationBarTitle({
-				title: this.keyname
-			})
+			if (toLogin(this.curPage)) {
+				this.NoticeList();
+				uni.setNavigationBarTitle({
+					title: this.keyname
+				})
+			}
 		},
 		methods: {
+			/*获取消息列表*/
+			async NoticeList() {
+				let result = await post("News/MyNoticeList", {
+					UserId: this.userId,
+					Token: this.token,
+					page: this.page,
+					pageSize: this.pageSize,
+					MsgType: this.Msgtype,
+					ShopId:this.shopId
+				});
+				if (result.code === 0) {
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+						result.data.forEach(function(item) {
+							item.PubTime=dateUtils.format(item.PubTime);
+							if(item.Islook==0){
+								_this.ReadNoticeInfo(item.id);
+							}
+						})
+					}
+					this.count = result.count;
+					if (this.count == 0) {
+						this.noDataIsShow = true;
+					}
+					if (parseInt(this.count) % this.pageSize === 0) {
+						this.allPage = this.count / this.pageSize;
+					} else {
+						this.allPage = parseInt(this.count / this.pageSize) + 1;
+					}
+					if (this.page === 1) {
+						this.newslist = result.data;
+					}
+					if (this.page > 1) {
+						this.newslist = this.newslist.concat(
+							result.data
+						);
+					}
+					if (this.allPage <= this.page) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				} else if (result.code === 2) {
+					let _this =this;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login?askUrl="+_this.curPage
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				} else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
+			gotoMsg(id){
+				uni.navigateTo({
+					url:'/pages/Message/msgDetail/msgDetail?id='+id
+				})
+			},
+			//添加阅读记录
+			async ReadNoticeInfo(Msgid){
+				let result = await post("News/ReadNoticeInfo",{
+					 UserId: this.userId,
+					 Token: this.token,
+					 newsid:Msgid
+				})
+				if (result.code === 0) {
+					
+				}
+			},
 			//跳转
 			tolink(Url) {
 				uni.navigateTo({
@@ -103,7 +199,13 @@
 			},
 		},
 		onReachBottom: function() {
-			
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.NoticeList();
+			} else {
+				this.loadingType = 2;
+			}
 		}
 	}
 </script>

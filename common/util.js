@@ -1,3 +1,7 @@
+
+
+const host = 'http://ddypapi.wtvxin.com/api/';  //接口地址
+
 function formatNumber(n) {
     const str = n.toString()
     return str[1] ? str : `0${str}`
@@ -65,56 +69,16 @@ var dateUtils = {
 	}
 };
 
-const host = 'http://ddypapi.wtvxin.com/api/';  //接口地址
-//请求封装
-function request(url, method, data, header = {}) {
-  uni.showLoading({
-    title: '加载中' //数据请求前loading
-  })
-  return new Promise((resolve, reject) => {
-    uni.request({
-      url: host + url, //仅为示例，并非真实的接口地址
-      method: method,
-      data: data,
-      header: {
-        'content-type': 'application/json;charset=utf-8' // 默认值
-      },
-      success: function (res) {
-       uni.hideLoading();
-        resolve(res.data)
-      },
-      fail: function (error) {
-        uni.hideLoading();
-        reject(false)
-      },
-      complete: function () {
-        uni.hideLoading();
-      }
-    })
-  })
-}
 
-// get请求
-function get(url, data) {
-  return request(url, 'GET', data)
-}
-// post请求
-function post(url, data) {
-  return request(url, 'POST', data)
-}
 
 // 判断是否登录了
 function toLogin(objUrl) {
   // const userInfo = wx.getStorageSync('userInfo');
   const userId = uni.getStorageSync('userId');
   const token = uni.getStorageSync('token');
-  console.log(token);
-  console.log(userId);
   if(userId && token){
-	  console.log('111');
     return true;
   }else{
-	  console.log('000');
 	  var strUrl = '';
 	  if(objUrl){
 			strUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
@@ -266,20 +230,21 @@ function navigate(url,params={}){
 		url:'/pages/'+url+(p&&('?'+p))
 	})
 }
-
-module.exports = {
-	formatTime: formatTime,
-	formatLocation: formatLocation,
-	dateUtils: dateUtils,
-	host:host,
-	get:get,
-	post:post,
-	toLogin:toLogin,
-	getCurrentPageUrlWithArgs:getCurrentPageUrlWithArgs,
-	getStorageOpenid:getStorageOpenid,
-	valPhone:valPhone,
-	SEOTitle:SEOTitle,
-	getUrlParam:getUrlParam,
-	setRegular:setRegular,
-	navigate:navigate
+import {get,post,requestHideLoading} from './request.js'
+export {
+	formatTime,
+	formatLocation,
+	dateUtils,
+	host,
+	get,
+	post,
+	requestHideLoading,
+	toLogin,
+	getCurrentPageUrlWithArgs,
+	getStorageOpenid,
+	valPhone,
+	SEOTitle,
+	getUrlParam,
+	setRegular,
+	navigate
 }
