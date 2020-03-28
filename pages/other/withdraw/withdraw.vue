@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-// import { post} from "@/utils";
+import { post} from "@/common/util.js";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -47,8 +47,8 @@ export default {
       this.$store.state.myCardInfo.bankCardNo.length - 4,
       this.$store.state.myCardInfo.bankCardNo.length
     );
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
+    this.userId = uni.getStorageSync("userId");
+    this.token = uni.getStorageSync("token");
     if (this.hasDefaultCard) {
       this.getBankList();
     }
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     setBarTitle() {
-      wx.setNavigationBarTitle({
+      uni.setNavigationBarTitle({
         title: "提现选择"
       });
     },
@@ -101,15 +101,15 @@ export default {
     shiftCardList() {
       this.hasDefaultCard = false;
       this.$store.commit("setSelectMyCard", {
-        url: "/pages/myson2/withdraw/main",
+        url: "/pages/other/withdraw/withdraw",
         status: true
       });
-      wx.navigateTo({ url: "/pages/myson/cardList/main" });
+      uni.navigateTo({ url: "/pages/Wallet/bankCard/bankCard" });
     },
     valOther() {
       let price = Number(this.amount);
       if (price < this.MinWithdrawal) {
-        wx.showToast({
+        uni.showToast({
           title: `最低提现金额为${this.MinWithdrawal}元!`,
           icon: "none",
           duration: 1500
@@ -117,7 +117,7 @@ export default {
         return false;
       }
       if (this.MaxWithdrawal>0 && price > this.MaxWithdrawal) {
-        wx.showToast({
+        uni.showToast({
           title: `最高提现金额为${this.MaxWithdrawal}元!`,
           icon: "none",
           duration: 1500
@@ -125,7 +125,7 @@ export default {
         return false;
       }
       if (!this.bankCardId) {
-        wx.showToast({
+        uni.showToast({
           title: "请选择提现的银行卡!",
           icon: "none",
           duration: 1500
@@ -133,7 +133,7 @@ export default {
         return false;
       }
       if (this.DaySurplusNum<=0) {
-        wx.showToast({
+        uni.showToast({
           title: "今日提现次数已使用完！",
           icon: "none",
           duration: 1500
@@ -192,13 +192,13 @@ export default {
       ).then(result => {
         if (result.code === 0) {
           //提现成功
-          wx.showToast({
+          uni.showToast({
             title: "提现申请成功！",
             icon: "none",
             duration: 1500,
             success: function() {
               setTimeout(function() {
-                wx.redirectTo({
+                uni.redirectTo({
                   url: "/pages/myson2/mywallet/main"
                 });
               }, 1500);

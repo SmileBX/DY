@@ -19,7 +19,7 @@
 					<view class="dian">收</view>
 					<view class="addrInfo">
 						<view class="title">[收货地址]</view>
-						<view class="txt">{{orderinfo.Address}}</view>
+						<view class="txt">{{orderinfo.Addr}}</view>
 					</view>
 				</view>
 			</view>
@@ -45,11 +45,7 @@
 </template>
 
 <script>
-	import {
-		host,
-		post,
-		get
-	} from '@/common/util.js';
+	import {post,get} from '@/common/util.js';
 	import "@/common/dd_style.css";
 	export default {
 		data() {

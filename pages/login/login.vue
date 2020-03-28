@@ -9,7 +9,7 @@
 			</view>
 			<view class="from pd10">
 				<view class="from-line">
-					<view :class="['iconfont',logintype?'icon-iconzh1':'icon-shouji']"></view>
+					<view :class="['iconfont',logintype?'icon-zh1':'icon-shouji']"></view>
 					<input type="text" class="ipt" v-model="tel" value="" placeholder="请输入手机号码" />
 				</view>
 				<view class="from-line" v-if="logintype">
@@ -42,7 +42,7 @@
 						<view class="name">微信</view>	
 					</view>
 					<view class="flex-item" @click="changeWay(2)">
-						<view :class="['iconfont',logintype?'icon-shouji':'icon-iconzh1']"></view>
+						<view :class="['iconfont',logintype?'icon-shouji':'icon-zh1']"></view>
 						<view class="name">{{logintype?'手机':'账号'}}</view>	
 					</view>
 				</view>	
@@ -213,42 +213,38 @@
 					     duration: 2000,
 						 success:function(){
 							setTimeout(function() {
-								// 20200119增加-默认跳转到首页
-								uni.switchTab({
-									url: "/pages/tabBar/index/index"
-								})
-								return;
-								if(_this.askUrl){
-								  if(_this.askUrl.indexOf("undefined")>-1){
-									uni.switchTab({
-									  url: "/pages/tabBar/my/my"
-									});
-								  }
-								  else if(_this.askUrl.indexOf("cart")>-1){
-									uni.switchTab({
-									  url: "/pages/tabBar/cart/cart"
-									});
-								  }
-								  else if(_this.askUrl.indexOf("/my/my")>-1){
-									uni.switchTab({
-									  url: "/pages/tabBar/my/my"
-									});
-								  }
-								  else if(_this.askUrl.indexOf("/discover/discover")>-1){
-									uni.switchTab({
-									  url: "/pages/tabBar/discover/discover"
-									});
-								  }
-								  else{
-									  uni.redirectTo({
-										url: _this.askUrl
-									  });
-								  }
-								}else{
-								  uni.switchTab({
-									url: "/pages/tabBar/my/my"
-								  });
-								}
+								uni.navigateBack();
+								// if(_this.askUrl){
+								//   if(_this.askUrl.indexOf("undefined")>-1){
+								// 	uni.switchTab({
+								// 	  url: "/pages/tabBar/my/my"
+								// 	});
+								//   }
+								//   else if(_this.askUrl.indexOf("cart")>-1){
+								// 	uni.switchTab({
+								// 	  url: "/pages/tabBar/cart/cart"
+								// 	});
+								//   }
+								//   else if(_this.askUrl.indexOf("/my/my")>-1){
+								// 	uni.switchTab({
+								// 	  url: "/pages/tabBar/my/my"
+								// 	});
+								//   }
+								//   else if(_this.askUrl.indexOf("/discover/discover")>-1){
+								// 	uni.switchTab({
+								// 	  url: "/pages/tabBar/discover/discover"
+								// 	});
+								//   }
+								//   else{
+								// 	  uni.redirectTo({
+								// 		url: _this.askUrl
+								// 	  });
+								//   }
+								// }else{
+								//   uni.switchTab({
+								// 	url: "/pages/tabBar/my/my"
+								//   });
+								// }
 							 }, 2000);
 						 }
 					});

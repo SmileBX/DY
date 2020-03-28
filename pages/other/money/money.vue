@@ -1,8 +1,8 @@
 <template>
   <div>
-      <!-- <div class="order_title bg_fff flex justifyContentAround pp3 ca">
-            <p v-for="(item,index) in menulist" :key="index" :class="{'active':activeIndex===index}" @tap="changeIndex(index)">{{item.Name}}</p>
-      </div> -->
+      <div class="order_title bg_fff flex justifyContentAround pp3 ca">
+            <p v-for="(item,index) in menulist" :key="index" :class="{'active':activeIndex===index}" @tap="changeIndex(index,item.Id)">{{item.Name}}</p>
+      </div>
       <div class="jus-b ali-c time-box">
         <div class="time ali-c jus-c"  @tap="choseTime">
           <span>{{setUpDate}}</span>
@@ -41,14 +41,12 @@ export default {
   data () {
     return {
       activeIndex:0,
-      // menulist:[{Id:1,Name:"消费记录"},{Id:2,Name:"充值记录"},
-      // // {Id:3,Name:"提现记录"}
-      // ],
+      menulist:[{Id:0,Name:"全部"},{Id:2,Name:"充值记录"},{Id:3,Name:"提现记录"}],
       showDate:false,
       minDate:new Date().setFullYear(2019,0,1),
       currentDate:new Date().getTime(),
       setUpDate:"",//时间
-      TypeId:3, //1.消费，2充值 3提现 
+      TypeId:0, //1.消费，2充值 3提现  0全部
       RechargeNumber:0,//总数
       userId:"",
       token:"",
@@ -80,9 +78,9 @@ export default {
         title: "提现记录"
       });
     },
-    changeIndex(i){
-      this.activeIndex = i
-      this.TypeId = i+1
+    changeIndex(index,id){
+      this.activeIndex = index
+      this.TypeId = id
       this.datalist = []
       this.setDate()//重置月份
       this.queryRecord()
@@ -214,7 +212,7 @@ export default {
     padding:10rpx 0;
 }
 .active{
-    color:#29a49f;
+    color:#FF3333;
 }
 .order_title p{
     position:relative;
@@ -227,7 +225,7 @@ export default {
     content: "";
     height: 2px;
     width:80rpx;
-    background: #29a49f;
+    background: #FF3333;
     left:50%;
     transform: translateX(-50%);
     bottom: 0;

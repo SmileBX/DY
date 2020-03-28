@@ -64,13 +64,13 @@
 			// 提现
 			towithdrawal(){
 				uni.navigateTo({
-					url:'/pages/tabBar/my/withdrawal'
+					url:'/pages/other/withdraw/withdraw'
 				})
 			},
 			// 交易明细
 			totransaction(){
 				uni.navigateTo({
-					url:'/pages/tabBar/my/transaction'
+					url:'/pages/other/money/money'
 				})
 			},
 		}

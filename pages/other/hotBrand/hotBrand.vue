@@ -1,13 +1,13 @@
 <template>
 	<view class="hotBrand">
-		<image src="../../static/of/hot_bg.png" class="bg mt2"></image>
+		<image src="/static/of/hot_bg.png" class="bg mt2"></image>
 		<view class="list mt2">
 			<view class="item flex" v-for="(item,key) in 5" :key="key">
 				<view class="item_left">
-					<image src="../../static/of/4.png" class="img"></image>
-					<image src="../../static/icons/b1.png" class="tip"></image>
-					<image src="../../static/icons/b2.png" class="tip" style="display:none"></image>
-					<image src="../../static/icons/b3.png" class="tip" style="display:none"></image>
+					<image src="/static/of/4.png" class="img"></image>
+					<image src="/static/icons/b1.png" class="tip"></image>
+					<image src="/static/icons/b2.png" class="tip" style="display:none"></image>
+					<image src="/static/icons/b3.png" class="tip" style="display:none"></image>
 				</view>
 				<view class="item_content flex1">
 					<view class="uni-bold">奥迪A4 Avant先锋派</view>

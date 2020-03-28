@@ -1,148 +1,300 @@
 <template>
-	<view class="order_detail">
-		<view style="width: 100%;background:#ff3737;" :style="{'height':barHeight+'px'}"></view>
-		<view class="top-box">
-			<view class="p2">
-				<span class="iconfont icon-arrow_r"></span>
-			</view>
-			<view class="order_statu mt1">
-				<view class="statu uni-bold">待发货</view>
-				<view class="font18">订单已支付，等待商家发货</view>
-			</view>		
-		</view>
-		<view class="pw3 all_top">
-			<!--地址-->
-			<view class="site flex flexAlignCenter">
-				<image src="../../../static/my/dz.png" class="dz"></image>
-				<view class="font18 flex1">
-					<view>刘华强 <span class="phone">131****2626</span></view>
-					<view>广东 深圳市 龙岗区 坂田街道 雅兰新洲社区学府 花园5期12栋</view>
-				</view>
-			</view>
-			<!--产品信息-->
-			<view class="mt2 bg_fff pro_info">
-				<view>
-					<image src="../../../static/of/shop1.png" class="logo"></image>
-					<text>SKG坚硕专卖店</text>
-				</view>
-				<view class="flex mt2 flexAlignCenter">
-					<image src="../../../static/of/2.png" class="img"></image>
-					<view class="flex1 main">
-						<view class="flex justifyContentBetween">
-							<view class="font18">佳兆业新世界大厦</view>
-							<view class="font18 color_gray">x1</view>
-						</view>
-						<view class="flex flexAlignCenter justifyContentBetween">
-							<view class="flex flexColumn">
-								<view class="font18 color_gray">B1703</view>
-								<view>¥2.8万</view>
-							</view>
-							<view class="font18 color_gray btn_tui">退款</view>
-						</view>
-					</view>
-				</view>
-			</view>
-			<!--订单明细-->
-			<view class="order_info mt2">
-				<view class="info_head">
-					<view class="flex justifyContentBetween">
-						<text>支付方式</text><text>在线支付</text>
-					</view>
-					<view class="mt1 flex justifyContentBetween">
-						<text>商品总价</text><text class="color_red">¥2.8万</text>
-					</view>
-					<view class="mt1 flex justifyContentBetween head_foot">
-						<text>运费</text><text class="color_red">+¥0.00</text>
-					</view>
-				</view>
-				<view class="flex justifyContentBetween mt2">
-					<text>实付</text><text class="color_red">¥2.8万</text>
-				</view>
-			</view>
-			<!--订单明细-->
-			<view class="order_info mt2">
-				<view class="uni-bold">订单信息</view>
-				<view class="mt1">
-					<view class="flex justifyContentBetween">
-						<text>订单编号</text>
-						<view>
-							<text>A1909282128011450560586T2</text>
-							<text class="color_red copy">复制</text>
-						</view>
-					</view>
-					<view class="mt1 flex justifyContentBetween">
-						<text>下单时间</text><text>2019-09-28 21:28:02</text>
-					</view>
-					<view class="mt1 flex justifyContentBetween head_foot flexAlignCenter">
-						<text>买家留言</text>
-						<input type="text" placeholder="请留言" class="text_right font18">
-					</view>
-				</view>
-			</view>
-			<view class="text_center mt2 pp2 bg_fff bor_r15">
-				<text class="iconfont icon-xiaoxi1"></text>
-				<text>联系客服</text>
-			</view>
-			<!--待发货申请退款-->
-			<view class="text_center mt2 pp2 bg_fff bottom" style="display: none;">
-				<text>申请退款</text>
-			</view>
-			<!--
-				待付款：取消订单 立即付款
-				待收货：查看物流 确认收货
-				待评价：查看物流 去评价
-			-->
-			<view class="text_center mt2 bg_fff bottom flex justifyContentBetween dobule">
-				<view>取消订单</view>
-				<view class="btn_add">立即付款</view>
-			</view>
-		</view>
-	</view>
+  <div class="ticket pw3">
+      <div class="bg_statu pp3 boxSize">
+          <p class="order_statu mt1">{{info.StatusName}}</p>
+          <!-- <p class="font22 mt1">剩余00:59:13自动取消订单</p> -->
+      </div>
+      <div class="or_list">
+        <!-- <div class="pp2 flex justifyContentBetween  bg_fff bor_tit flexAlignEnd">
+            <img src="http://jyy.wtvxin.com/static/images/icons/kc.png" alt="" class="kc_icon">
+            <div class="flex flex1 flexAlignCenter">
+                <div class="flex1">
+                    <p class="cr">
+                         [深圳市] 投递并签收，签收人：他人收 韵达，感谢使用 EMS经济快递，期待...
+                    </p>
+                    <p class=" cg mt1">2019-09-26 18:52:10</p>
+                </div>
+                <img src="http://jyy.wtvxin.com/static/images/icons/right.png" alt="" class="icon_right mr2">
+            </div>
+        </div> -->
+        <div class="pp2 flex justifyContentBetween radius flexWrap flexAlignEnd bg_fff ">
+            <img src="http://jyy.wtvxin.com/static/images/icons/lc.png" alt="" class="icon_lc">
+            <div class="flex1">
+                <p>
+                    <span>{{info.ContactName}}</span><span class="mr5">{{info.Tel}}</span>
+                </p>
+                <p class="font24 cg mt1">{{info.Addr}}</p>
+            </div>
+        </div>
+        <div class="or_item bg_fff radius">
+            <div class="pp3 flex bor_tit" v-for="(item, index) in info.OrderDetails" :key="index">
+                <img :src="item.PicNo" alt="" class="shop">
+                <div class="flex1 flex  mr2">
+                    <div class="or_left flex flexColumn justifyContentBetween">
+                      <p>{{item.ProductName}}</p>
+                      <p class="c-999">{{item.SpecText}}</p>
+                      <p class="cr font30">￥{{item.ActualPay}}</p>
+                    </div>
+                    <div class="mr3 flex flexColumn flexAlignEnd">
+                      <span>x{{item.Number}}</span>
+                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click="goUrl('/pages/myson/sertype/main?indexId='+index+'&id='+info.OrderNumber)">退款</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bor_tit pp2">
+                <p class="flex justifyContentBetween">
+                    <span>支付方式</span>
+                    <span>在线支付</span>
+                </p>
+                <p class="flex justifyContentBetween mt1">
+                    <span>商品总价</span>
+                    <span>¥{{info.TotalAmount}}</span>
+                </p>
+                <p class="flex justifyContentBetween">
+                    <span>优惠</span>
+                    <span>¥{{info.DiscountedAmount}}</span>
+                </p>
+                <p class="flex justifyContentBetween mt1">
+                    <span>运费</span>
+                    <span>¥{{info.ExpressPrice}}</span>
+                </p>
+            </div>
+            <div class="flex justifyContentBetween mt1 pp2">
+                <span>实付</span>
+                <span class="cr">¥{{info.Total}}</span>
+            </div>
+        </div>
+      </div>
+      <!---订单信息-->
+      <div class="bg_fff mt2 pp3 bor_tit radius order_posi">
+          <div class="">
+              <span class="order_title">订单信息</span>
+          </div>
+          <div class="cg mt2 order_info font24">
+              <p>订单编号：{{info.OrderNumber}} <span class="copy" @click="cop(info.OrderNumber)">复制</span> </p>
+              <p>创建时间：{{info.OrderTime}}</p>
+              <!-- <p>取消时间：2019-12-20 09:18:30</p>
+              <p>发货时间：2019-12-20 09:18:30</p> -->
+              <p>成交时间：{{info.Paytime}}</p>
+          </div>
+      </div>
+      <div class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi">
+          <img src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch">
+          <span>联系客服</span>
+      </div>
+      <div class="flex justifyContentEnd bg_fff mt2 bb_fix btnbox">
+          <p class="btn btn_gray" v-if="info.StatusName=='已发货'||info.StatusName=='已收货'" @click="goUrl('/pages/member/logistics/logistics?orderNo='+info.OrderNumber)">查看物流</p>
+          <p class="btn btn_gray" v-if="info.IsCancel==1" @click="chooseOrders(info.OrderNumber,1)">取消订单</p>
+          <p class="btn btn_gray" v-if="info.IsDel==1" @click="chooseOrders(info.OrderNumber,2)">删除订单</p>
+          <p class="btn btn_red" v-if="info.Ispay==1" @click="goUrl('/pages/pay/pay?orderNo='+item.OrderNumber)">立即支付</p>
+          <p class="btn btn_red" v-if="info.IsConfirmReceipt==1" @click="chooseOrders(info.OrderNumber,3)">确认收货</p>
+      </div>
+  </div>
 </template>
 
 <script>
-	import {host,post,get,toLogin} from '@/common/util.js';
-	export default{
-		data() {
-			return {
-				info:{},
-				barHeight:0,
-				userId: "",
-				token: "",
-				idOrderNo:"",
-			}
-		},
-		onLoad() {
-			// #ifdef APP-PLUS
-			var height = plus.navigator.getStatusbarHeight();
-			this.barHeight = height;console.log(this.barHeight)
-			// #endif
-			// #ifdef H5
-			this.barHeight = 0;
-			// #endif
-		},
-		onShow() {
-			this.userId = uni.getStorageSync("userId");
-			this.token = uni.getStorageSync("token");
-			this.OrderNo = this.$mp.query.id
-			if (toLogin()) {
-			    this.getDetail();
-			}
-		},
-		methods:{
-			getDetail(){
-			  post('Order/OrderDetails',{
-				UserId:wx.getStorageSync("userId"),
-				Token:wx.getStorageSync("token"),
-				OrderNo:this.$mp.query.id
-			  }).then(res=>{
-				this.info = res.data;
-			  })
-			},
-		}
-	}
+import {switchPath,post} from '@/common/util.js'
+export default {
+
+  data () {
+    return {
+      info:{},
+    }
+  },
+  onShow(){
+    this.getDetail()
+  },
+  methods: {
+    getDetail(){
+      post('Order/OrderDetails',{
+        UserId:uni.getStorageSync("userId"),
+        Token:uni.getStorageSync("token"),
+        OrderNo:this.$mp.query.id
+      }).then(res=>{
+        this.info = res.data;
+      })
+    },
+    //微信支付需参数
+    async ConfirmWeiXinSmallPay(no){
+      let result = await post('Order/ConfirmWeiXinSmallPay',{
+        OrderNo:no,
+        UserId:uni.getStorageSync("userId"),
+        Token:uni.getStorageSync("token"),
+        WxCode:uni.getStorageSync("wxCode"),
+		WxOpenid:uni.getStorageSync("openId")
+      })
+      let payData=JSON.parse(result.data.JsParam)
+      if(result.code==0){
+        let _this=this;
+        uni.requestPayment({
+          timeStamp: payData.timeStamp,
+          nonceStr: payData.nonceStr,
+          package: payData.package,
+          signType: payData.signType,
+          paySign: payData.paySign,
+          success(res) {
+              uni.redirectTo({
+                url: "/pages/goodsSon/paysuccess/main?OrderNo="+no
+              })
+            },
+          fail(res) {
+            console.log(res);
+            uni.redirectTo({
+              url: "/pages/goodsSon/paysuccess/main?OrderNo="+no+"&msg=fail"
+            })
+          }
+        })
+      }
+    },
+    chooseOrders(OrderNo,type){//确认取消
+      if(type==1){
+        var content="您确定要取消此订单吗？"
+        var url="Order/CancelOrders"
+      }else if(type==2){
+        var content="您确定要删除此订单吗？"
+        var url="Order/DeleteOrders"
+      }else{
+        var content="您确定收货成功吗？"
+        var url="Order/ConfirmReceipt"
+      }
+      uni.showModal({
+        title: '提示',
+        cancelText:"再想想",
+        content: content,
+        success (res) {
+          if (res.confirm) {
+            post(url,{
+              UserId:uni.getStorageSync("userId"),
+              Token:uni.getStorageSync("token"),
+              OrderNo:OrderNo,
+            }).then(res=>{
+              uni.showToast({
+                icon:'none',
+                title:res.msg
+              })
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    },
+    cop(dataNo){
+        uni.showToast({
+          icon:'none',
+          title: '复制成功',
+        })
+        uni.setClipboardData({
+          data: dataNo,
+          success: function (res) {
+            uni.getClipboardData({ 
+              success: function (res) {
+                console.log(res.data) // data
+              }
+            })
+          }
+        })
+    },
+    goUrl(url){
+      uni.navigateTo({
+        url:url
+      })
+    },
+  },
+}
 </script>
 
-<style lang="scss" scoped>
-	@import './style'
+<style scoped lang='scss'>
+  .ticket{
+    padding-bottom:300upx;
+  }
+.back_col{
+  background-color: #f00!important;
+}
+.or_list{
+  position: relative;top:180upx;left:0;
+  .shop_logo{
+    width:40upx;height:36upx;
+  }
+  .shop{
+    width:161upx;height:161upx;
+  }
+  .or_item{
+    margin-top:20upx;
+    &:first-child{
+      margin-top:0;
+    }
+    .or_left{
+      width:88%;
+      height:98%;
+    }
+  }
+}
+  .bor_tit{
+      border-bottom:1upx solid #f5f5f5;
+    }
+  .btn{
+    width:50%;height:88upx;text-align: center;line-height: 88upx;
+    margin-left:20upx;border-radius: 5upx;
+    flex: 1;
+  }
+  .btn_gray{
+    color:#858585;
+  }
+  .btn_red{
+    color:#ffffff;background:#ff3333; 
+  }
+  .btnbox .btn:nth-child(2){
+    color:#ffffff;background:#ff3333;
+  }
+  .order_title{
+   border-left:4upx solid #f00;padding-left:20upx;
+ }
+ .order_info p{
+   padding:5upx 0;
+ }
+ .copy{
+   padding:0upx 20upx;border:1upx solid red;color:#f00;font-size:20upx;
+   border-radius: 5upx;
+ }
+
+ .bg_statu{
+   width:750upx;background: #ff3333;
+   height:245upx;position: absolute;top:0;left:0;
+   color:#ffffff;
+ }
+ .icon_lc{
+   width:60upx;height:61upx;margin-right:20upx;
+   margin-bottom:6upx;
+ }
+ .kc_icon{
+   width:43upx;height:33upx;margin-right:20upx;
+   margin-bottom:6upx;
+ }
+  .icon_ch{
+    width:34upx;height:34upx;margin-right:15upx;
+  }
+  .btn_menu{
+    height:80upx;
+    width:50%;border-left:1px solid #f5f5f5;
+    &:first-child{
+      border-left:0;
+    }
+  }
+  .radius{
+    border-radius:15upx;
+  }
+  .tui_pill{
+    width:86upx;font-size:22upx;padding:5upx 0;text-align: center;
+    border:1upx solid #999999;color:#999999;border-radius: 10upx;
+  }
+  .bb_fix{
+    position: fixed;width:100%;bottom:0;left:0;
+  }
+  .order_statu{
+    font-size:38upx;
+  }
+  .order_posi{
+    position: relative;top:180upx;left:0;
+  }
 </style>

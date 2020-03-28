@@ -143,7 +143,7 @@
 				this.$emit('getsku',this.number,this.SpecText,canaddcar,this.price,this.plusprice);
 			},
 			change: function(num) {
-				this.number=num;
+				this.number=num[0];
 			},
 			moveHandle() {},
 			selectAllStock() {

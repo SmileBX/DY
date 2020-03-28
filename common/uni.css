@@ -105,7 +105,7 @@ image{ width: 100%; margin: 0 auto;}
 	line-height:1.5;
 }
 .uni-text{
-	font-size:28upx;
+	font-size:24upx;
 }
 .uni-title text{
 	font-size:24upx; 
@@ -160,7 +160,8 @@ image{ width: 100%; margin: 0 auto;}
 .red{ color: #f0370b;}
 .c_theme{color: #FF3333;}
 .c_blue{color: #5e729a;}
-.fz12{ font-size: 24upx;}
+.fz12{ font-size: 24upx !important;}
+.fz12 span{font-size: 24upx !important;}
 .b_radius{ border-radius: 16upx;}
 .p_re{position: relative;}
 /* 文本溢出隐藏 */

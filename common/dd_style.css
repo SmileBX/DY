@@ -903,6 +903,7 @@ button.fill {
 	position: relative;
 	width: 100%;
 	padding-top: 100%;
+	background-color: #f5f5f5;
 }
 
 .column .pictrueAll .pictrue image {

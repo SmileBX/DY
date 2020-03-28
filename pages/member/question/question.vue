@@ -1,21 +1,156 @@
 <template>
 	<view class="question">
-		<view class="qu_list">
-			<view class="qu_item" v-for="(item,index) in 3" :key="index">
+		<view class="qu_list" v-if="hasData">
+			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item)">
 				<view class="flex flexAlignCenter item_head bg_fff">
 					<view class="title flex flexAlignCenter flex1">
 						<span class="spill">{{index+1}}</span>
-						<view>订单什么时候发货</view>
+						<view>{{item.Title}}</view>
 					</view>
 					<span class="iconfont icon-iconset0418" :class="index==2?'icon-arrow_r':''"></span>
 				</view>
-				<view class="content">这个是内容详情飞飞说法发生法发飞洒发顺丰飞洒发发发生发生发生法发撒噶沙司搞撒嘎嘎啊傻瓜</view>
+				<view class="content" v-if="item.isShow">{{item.content}}</view>
+			</view>
+			<view class="uni-tab-bar-loading">
+				<uni-load-more :loadingType="loadingType"></uni-load-more>
 			</view>
 		</view>
+		<noData :isShow="noDataIsShow"></noData>
 	</view>
 </template>
 
 <script>
+	import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
+	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
+	export default{
+		components: {
+			noData,
+			uniLoadMore
+		},
+		data(){
+			return{
+				userId: "",
+				token: "",
+				curPage:"",
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				isLoad: false,
+				hasData: false,
+				noDataIsShow: false,
+				page: 1,
+				pageSize: 10,
+				allPage: 0,
+				count: 0,
+				datalist:{},
+				content:''
+			}
+		},
+		onShow(){
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
+			if (toLogin(this.curPage)) {
+				this.HelpList();
+			}
+			
+			
+		},
+		methods:{
+			//展示详情
+			showDetail(item){
+				this.datalist.map(value=>{
+					if(item == value){
+						this.$set(value,"isShow",true)
+					}else{
+						this.$set(value,"isShow",false)
+					}
+				})
+				item.isShow = !item.isShow
+				// this.getDetail(item)
+			},
+			// //获取详情
+			// getDetail(item){
+			// 	post('Help/GetHelpInfo',{
+			// 		UserId:This.userId,
+			// 		Token:this.token,
+			// 		Id:item.Id
+			// 	}).then(res=>{
+					
+			// 	})
+			// },
+			async HelpList() {
+				let result = await post("Help/HelpList", {
+					UserId: this.userId,
+					Token: this.token,
+					page: this.page,
+					pageSize: this.pageSize
+				});
+				if (result.code === 0) {
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+					}else{
+						this.noDataIsShow = true;
+					}
+					this.count = result.count;
+					if (this.count == 0) {
+						
+					}
+					if (parseInt(this.count) % this.pageSize === 0) {
+						this.allPage = this.count / this.pageSize;
+					} else {
+						this.allPage = parseInt(this.count / this.pageSize) + 1;
+					}
+					if (this.page === 1) {
+						this.datalist = result.data;
+					}
+					if (this.page > 1) {
+						this.datalist = this.datalist.concat(
+							result.data
+						);
+					}
+					this.datalist.map(item=>{
+						this.$set(item,"isShow",false)
+					})
+					if (this.allPage <= this.page) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				} else if (result.code === 2) {
+					let _this =this;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login?askUrl="+_this.curPage
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				} else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
+		},
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.HelpList();
+			} else {
+				this.loadingType = 2;
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>

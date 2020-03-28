@@ -28,31 +28,37 @@
 						<view class="item" v-for="(item2,index2) in item.ProData" :key="index2">
 							<view class="outside">
 								<view class="IconsCK IconsCK-radio" :class="{'disabled':item2.disBuy,'checked':item2.select}" @click="selectStyle(index,index2,item2.select,item2.disBuy,$event)"></view>
-								<view class="pictrueAll">
+								<view class="pictrueAll" @click="gotoDetail(item2.ProductId,item2.Isinvalid)">
 									<view class="pictrue">
 										<image :src="item2.PicNo" mode="widthFix"></image>
 									</view>
 								</view>
 								<view class="txtBox">
-									<view class="title text-line2">{{item2.Name}}</view>
+									<view class="title text-line2" @click="gotoDetail(item2.ProductId,item2.Isinvalid)">{{item2.Name}}</view>
 									<view class="flex skuBox">
-										<view class="flex-item flex1 left" v-if="item2.SpecText">
+										<view class="flex-item flex1" v-if="item2.SpecText" @click="showSku(item2.ProductId,item2.Id,item2.Number,0)">
 											<view class="type">{{item2.SpecText}}<view style="color: #9b9b9b; font-size: 30upx;" class="uni-icon uni-icon-arrowdown"></view>
 											</view>
 										</view>
-										<view class="flex-item right">
+										<view class="flex-item">
 											<!-- <text class="buyNum">x1</text> -->
 										</view>
 									</view>
 									<view class="flex mt5 flexAlignCneter">
-										<view class="flex-item flex1 left">
+										<view class="flex-item flex1">
 											<view class="new-price"><text class="yuan">￥</text>{{item2.Price}}
 											<!-- <text class="fz12">返两万</text> -->
 										</view>
 										</view>
-										<view class="flex-item right selNumRow">
-											<uni-number-box :disabled="false" :value="item2.Number" :min="item2.MinBuyNum" :max="item2.MaxBuyNum" v-on:change="change" :index="index2"></uni-number-box>
+										<view class="flex-item selNumRow">
+											<uni-number-box :disabled="false" :value="item2.Number" :min="item2.MinBuyNum" :max="item2.MaxBuyNum" v-on:change="change" :shopindex="index" :index="index2"></uni-number-box>
 										</view>
+									</view>
+									<view class="flex">
+										<view class="red fz12" v-if="item2.MinBuyNum>1">{{item2.MaxBuyNum}}件起购</view>
+										<view class="red fz12" v-if="item2.MaxBuyNum>0">限购{{item2.MaxBuyNum}}件</view>
+										<view class="red fz12" v-if="item2.Stock>0&&item2.Stock<10">仅剩{{item2.Stock}}件</view>
+										<view class="red fz12" v-if="item2.Isinvalid>0">{{Isinvalidstr[item2.Isinvalid]}}</view>
 									</view>
 								</view>
 							</view>
@@ -71,7 +77,7 @@
 								<view class="hj">总计:<text class="allPrice"><text class="fz12">￥</text>{{allPrice}}</text></view>
 								<!-- <view class="red fz12">返2万</view> -->
 							</view>
-							<button type="primary" size="middle" class="btnPay radius100" @click="golink('/pages/submitOrder/submitOrder')">结算({{selectlen}})</button>
+							<button type="primary" size="middle" class="btnPay radius100" @click="settle">结算({{selectlen}})</button>
 						</view>
 						<view class="deletbox" v-else>
 							<button class="delet2" @click="golink('/pages/member/myCollect/myCollect')">我的收藏</button>
@@ -94,7 +100,7 @@
 			</view>
 		</view>
 		<!-- SKU弹框 --> 
-		<popupsku :proInfo="proInfo" v-if="isProData" :show="showPopupSku" :fromcart="fromcart" :h5Top="true" :isPlus="isPLUS" v-on:hidePopup="hidePopup" v-on:selectSku="selectSku" :isLimint="isLimint"></popupsku>
+		<popupsku :proInfo="proInfo" v-if="isProData" :show="showPopupSku" :fromcart="fromcart" :showbtntype="1" :h5Top="true" :isPlus="isPLUS" v-on:hidePopup="hidePopup" v-on:selectSku="selectSku" :isLimint="isLimint"></popupsku>
 		<!-- 弹出优惠券 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupCoupon" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Coupon">
@@ -165,7 +171,8 @@
 				selectlen:0,//累计选中的产品
 				allPrice:0,//累计选中产品的金额
 				CouponList:{},//弹出优惠券列表
-				isLimint:0//0非限时购产品，1限时购产品
+				isLimint:0,//0非限时购产品，1限时购产品
+				Isinvalidstr:['可购买','告罄','已下架','预售','库存不足','规格不存在']
 			}
 		},
 		onLoad() {
@@ -192,23 +199,37 @@
 					url:url
 				})
 			},
+			// 跳转商品详情页
+			gotoDetail(pid,Isinvalid){
+				if(Isinvalid!=2){
+					uni.navigateTo({
+						url:'/pages/homePage/details?id='+pid
+					})
+				}else{
+					uni.showToast({
+						title: "该产品已下架！",
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
 			//加减商品的数量
 			change(msg){
 				console.log(msg)
-				console.log("msg");
 				let number=msg[0];
-				let index2=msg[1];
-				// if(this.cartlist[index].IsBuy==0){
-				// 	let dataArr=[],json = {};
-				// 	json["CartId"] = this.cartlist[index].Id;
-				// 	json["Total"] = number;
-				// 	json["SpecText"] = this.cartlist[index].SpecText;
-				// 	dataArr.push(json);
-				// 	this.eaditCart(dataArr,index,number);
-				// }
+				let index1=msg[1];
+				let index2=msg[2];
+				if(this.cartlist[index1].ProData[index2].Isinvalid==0){
+					let dataArr=[],json = {};
+					json["CartId"] = this.cartlist[index1].ProData[index2].Id;
+					json["Total"] = number;
+					json["SpecText"] = this.cartlist[index1].ProData[index2].SpecText;
+					dataArr.push(json);
+					this.eaditCart(dataArr,index1,index2,number);
+				}
 			},
 			//编辑商品规格数量
-			async eaditCart(Arr,index,number) {
+			async eaditCart(Arr,index1,index2,number) {
 				let info = await post("Cart/EditCart", {
 					UserId: this.userId,
 					Token: this.token,
@@ -216,8 +237,8 @@
 				});
 				if (info.code === 0) {
 					if(number){
-						// this.cartlist[index].Number = number;
-						// this.cartlist[index].select = true;
+						this.cartlist[index1].ProData[index2].Number = number;
+						this.cartlist[index1].ProData[index2].select = true;
 					}else{
 						this.checklen=0;
 						this.getCartList()
@@ -289,6 +310,8 @@
 						this.checklen=0;
 						this.hascartlist=true;
 						this.noDataIsShow=false;
+						this.allSelect=false;
+						this.allPrice=0;
 						let _this = this;
 						_this.$nextTick(function() {
 							_this.cartlist.forEach(function(item) {
@@ -320,14 +343,21 @@
 				let eaditnum =0;
 				let singelPrice=0;
 				_this.cartlist.forEach(function(item){
+					let singelnum=0,editsingelnum=0;
 					item.ProData.forEach(function(item2){
+						singelnum++;
 						if(item2.select==true){
 							singelPrice =Number(item2.Price)*parseInt(item2.Number);
 							eaditallPrice += singelPrice;
 							eaditnum++;
+							editsingelnum++;
 						}
 					})
-					
+					if(singelnum==editsingelnum){
+						 _this.$set(item, "select", true);	
+					}else{
+						 _this.$set(item, "select", false);
+					}
 				});
 				this.selectlen=eaditnum;
 				if(eaditnum==this.checklen){
@@ -515,13 +545,13 @@
 			settle(){
 				let _this = this;
 				let dataArr=[];
-				let prodatalist=[];
 				_this.cartlist.forEach(function(item){
-					if(item.select==true){
-						let id = item.Id;
-						dataArr.push(id);
-						prodatalist.push(item)
-					}
+					item.ProData.forEach(function(item2){
+						if(item2.select==true){
+							let id = item2.Id;
+							dataArr.push(id);
+						}
+					})
 				});
 				if(dataArr.length){
 					uni.navigateTo({ 
@@ -549,6 +579,7 @@
 				this.getProductInfo(proId);
 			},
 			selectSku(msg){
+				//console.log(msg)
 				this.SpecText=msg;
 				let dataArr=[],json = {};
 				json["CartId"] = this.skuCartId;
@@ -559,8 +590,8 @@
 			},
 			//商品详情信息
 			async getProductInfo(proId){
-				let result = await post("Goods/ProductInfo", {
-					proId: proId,
+				let result = await post("Goods/Goodsxq", {
+					Id: proId,
 					userId:this.userId,
 					token:this.token
 				});
@@ -667,21 +698,6 @@
 					});
 				}
 			},
-			
-			// 跳转商品详情页
-			gotoDetail(pid,type,disBuy){
-				if(!disBuy){
-					uni.navigateTo({
-						url:'/pages/productDetail/productDetail?proId='+pid+'&isLimint='+type
-					})
-				}else{
-					uni.showToast({
-						title: "该产品已失效！",
-						icon: "none",
-						duration: 2000
-					});
-				}
-			},
 			//获取会员信息
 			async getMemberInfo() {
 				let result = await post("User/GetMemberInfo", {
@@ -716,9 +732,9 @@
 	.content::before{
 		display: block;
 	    content: '';
-	    background: #ff3737;
+	    background: #ff3333;
 	    width: 150vw;
-	    height: 360px;
+	    height: 680upx;
 	    position: absolute;
 	    top: 50px;
 	    left: 50%;
@@ -793,7 +809,7 @@
 		margin-top: 8upx;
 	}
 	.carthead{
-		background-color: #ff3737;
+		background-color: #FF3333;
 		width: 750upx;
 		padding: 0 20upx;
 		display: flex;
@@ -806,7 +822,7 @@
 		box-sizing: border-box;
 	}
 	.wxcarthead{
-		background-color: #ff3737;
+		background-color: #FF3333;
 		width: 100%;
 		padding: 0 20upx;
 		display: flex;
