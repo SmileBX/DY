@@ -16,14 +16,27 @@
 			<view>软件版本</view>
 			<view>63.25.3</view>
 		</view>
-		<view class="btn_fix">退出登录</view>
+		<view class="btn_fix" @click="logOut()">退出登录</view>
 	</view>
 </template>
 
 <script>
-	
+export default {
+	data() {
+		return {};
+	},
+	methods:{
+		// 退出登录
+		logOut() {
+			uni.switchTab({
+				url: '/pages/tabBar/index/index'
+			});
+		}
+	}
+
+};
 </script>
 
 <style lang="scss">
-	@import'./style';
+@import './style';
 </style>

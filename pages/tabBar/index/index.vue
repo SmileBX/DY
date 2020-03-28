@@ -101,16 +101,16 @@
 				<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 					<view class="uni-bd uni-mt10">
 						<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="tolink('/pages/homePage/details?id=')">
+							<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details?id=')">
 								<view class="itembox">
 									<view class="image-view">
-										<image class="img" src="../../../static/of/3.png" mode="aspectFill"></image>
+										<image class="img" :src="item.PicNo" mode="aspectFill"></image>
 									</view>
 									<view class="txtbox">
-										<view class="txt uni-ellipsis">珍视明眼药水</view>
+										<view class="txt uni-ellipsis">{{item.Name}}</view>
 										<view class="uni-product-price">
-											<text class="uni-product-price-original">￥39.00</text>
-											<text class="uni-product-price-favour">￥60.00</text>
+											<text class="uni-product-price-original">￥{{item.Price}}</text>
+											<text class="uni-product-price-favour">￥{{item.MarketPrice}}</text>
 										</view>
 									</view>
 								</view>
@@ -122,20 +122,30 @@
 			<!--菜单列表-->
 			<view class="menu">
 				<view class="menu_nav flex justifyContentBetween">
-					<view class="menu_item flex flexAlignCenter flexColumn" v-for="(item,pll) in navlist" :key="pll" :class="{'active':pll==1}">
-						<view class="title">{{item.title}}</view>
-						<view class="subtitle">{{item.subtitle}}</view>
+					<view class="menu_item flex flexAlignCenter flexColumn"
+					v-for="(item,index) in handpick" :key="index" 
+					:class="{'active':index==indexs}" @click="hand(item.Id,index)">
+						<view class="title">{{item.Name}}</view>
+						<!-- <view class="subtitle">{{item.subtitle}}</view> -->
 					</view>
 				</view>
+				<view class="" style="display: flex;justify-content: space-between; padding: 0 30rpx;color:#999" >
+					<view class="subtitle" style="font-size:24rpx;">为您推荐</view>
+					<view class="subtitle" style="font-size:24rpx;">超值好货</view>
+					<view class="subtitle" style="font-size:24rpx;">省心省钱</view>
+					<view class="subtitle" style="font-size:24rpx;">款式齐全</view>
+					<view class="subtitle" style="font-size:24rpx;">服务到位</view>
+				</view>
+
 				<view class="list flex flexWrap justifyContentBetween">
-					<view class="item" v-for="(item,index) in 6" :key="index">
-						<image src="../../../static/of/4.png" class="item_img"></image>
+					<view class="item" v-for="(item,index) in handlist" :key="index">
+						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info flex flexColumn flexAlignCenter">
-							<view class="item_title">超越极限音波拉皮-颈部</view>
+							<view class="item_title">{{item.Name}}</view>
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
-									<span class="item_price">￥980</span>
-									<span class="item_market">￥2980</span>
+									<span class="item_price">￥{{item.Price}}</span>
+									<span class="item_market">￥{{item.MarketPrice}}</span>
 								</view>
 								<view class="item_market">68人付款</view>
 							</view>
@@ -154,12 +164,16 @@
 			return{
 				bannerlist:[{Pic:""}], // 轮播图
 				Typelist:[],           // 头部
-				menubarlist:[],         // 菜单
+				menubarlist:[],        // 菜单
+				Productlist:[],        // 商品列表
+				handpick:[],           // 精选
+				handlist:[],           // 精选列表
 				scrollLeft:0,
 				scrollLeft2:0,
 				tabIndex:0,
+				indexs:0,
 				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
-				navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
+				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
 				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
 			}
 		},
@@ -228,15 +242,50 @@
 						}
 						this.menubarlist[page].push(val)
 					})
+					let hand = []
+					let pick = {}
+					let picks = {}
+					pick.Name = "精选"
+					picks.Name = "实惠"
+					hand = result.data.slice(0,3)
+					hand.unshift(pick,picks)
+					this.handpick = hand
 				} else {
 					
 				}
 			},
-			
+			// 获取商品列表
+			async productlist() {
+				let result = await post("Goods/GoodsList", {
+					Page:1,
+					IsRecommend: 1,
+					// IsHot:1
+				});
+				if (result.code === 0) {
+					this.Productlist = result.data
+				} else {
+					
+				}
+			},
+			async hand(id,index) {
+				this.indexs = index
+				console.log(this.indexs,'this.indexs')
+				let result = await post("Goods/GoodsList", {
+					Page:1,
+					TypeId: id,
+				});
+				if (result.code === 0) {
+					this.handlist = result.data
+				} else {
+					
+				}
+			},
 		},
 		onLoad() {
 			this.banner();
 			this.typelist();
+			this.productlist();
+			this.hand();
 		},
 
 			
