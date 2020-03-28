@@ -51,7 +51,7 @@
 										</view>
 										</view>
 										<view class="flex-item right selNumRow">
-											<uni-number-box :disabled="false" :value="item2.Number" :min="item2.MinBuyNum" :max="item2.MaxBuyNum" v-on:change="change" :index="index2"></uni-number-box>
+											<uni-number-box :disabled="false" :value="item2.Number" :min="item2.MinBuyNum" :max="item2.MaxBuyNum" v-on:change="change" :shopindex="index" :index="index2"></uni-number-box>
 										</view>
 									</view>
 								</view>
@@ -71,7 +71,7 @@
 								<view class="hj">总计:<text class="allPrice"><text class="fz12">￥</text>{{allPrice}}</text></view>
 								<!-- <view class="red fz12">返2万</view> -->
 							</view>
-							<button type="primary" size="middle" class="btnPay radius100" @click="golink('/pages/submitOrder/submitOrder')">结算({{selectlen}})</button>
+							<button type="primary" size="middle" class="btnPay radius100" @click="settle">结算({{selectlen}})</button>
 						</view>
 						<view class="deletbox" v-else>
 							<button class="delet2" @click="golink('/pages/member/myCollect/myCollect')">我的收藏</button>
@@ -195,20 +195,20 @@
 			//加减商品的数量
 			change(msg){
 				console.log(msg)
-				console.log("msg");
 				let number=msg[0];
-				let index2=msg[1];
-				// if(this.cartlist[index].IsBuy==0){
-				// 	let dataArr=[],json = {};
-				// 	json["CartId"] = this.cartlist[index].Id;
-				// 	json["Total"] = number;
-				// 	json["SpecText"] = this.cartlist[index].SpecText;
-				// 	dataArr.push(json);
-				// 	this.eaditCart(dataArr,index,number);
-				// }
+				let index1=msg[1];
+				let index2=msg[2];
+				if(this.cartlist[index1].ProData[index2].Isinvalid==0){
+					let dataArr=[],json = {};
+					json["CartId"] = this.cartlist[index1].ProData[index2].Id;
+					json["Total"] = number;
+					json["SpecText"] = this.cartlist[index1].ProData[index2].SpecText;
+					dataArr.push(json);
+					this.eaditCart(dataArr,index1,index2,number);
+				}
 			},
 			//编辑商品规格数量
-			async eaditCart(Arr,index,number) {
+			async eaditCart(Arr,index1,index2,number) {
 				let info = await post("Cart/EditCart", {
 					UserId: this.userId,
 					Token: this.token,
@@ -216,8 +216,8 @@
 				});
 				if (info.code === 0) {
 					if(number){
-						// this.cartlist[index].Number = number;
-						// this.cartlist[index].select = true;
+						this.cartlist[index1].ProData[index2].Number = number;
+						this.cartlist[index1].ProData[index2].select = true;
 					}else{
 						this.checklen=0;
 						this.getCartList()
@@ -320,14 +320,21 @@
 				let eaditnum =0;
 				let singelPrice=0;
 				_this.cartlist.forEach(function(item){
+					let singelnum=0,editsingelnum=0;
 					item.ProData.forEach(function(item2){
+						singelnum++;
 						if(item2.select==true){
 							singelPrice =Number(item2.Price)*parseInt(item2.Number);
 							eaditallPrice += singelPrice;
 							eaditnum++;
+							editsingelnum++;
 						}
 					})
-					
+					if(singelnum==editsingelnum){
+						 _this.$set(item, "select", true);	
+					}else{
+						 _this.$set(item, "select", false);
+					}
 				});
 				this.selectlen=eaditnum;
 				if(eaditnum==this.checklen){
@@ -515,13 +522,13 @@
 			settle(){
 				let _this = this;
 				let dataArr=[];
-				let prodatalist=[];
 				_this.cartlist.forEach(function(item){
-					if(item.select==true){
-						let id = item.Id;
-						dataArr.push(id);
-						prodatalist.push(item)
-					}
+					item.ProData.forEach(function(item2){
+						if(item2.select==true){
+							let id = item2.Id;
+							dataArr.push(id);
+						}
+					})
 				});
 				if(dataArr.length){
 					uni.navigateTo({ 
@@ -716,9 +723,9 @@
 	.content::before{
 		display: block;
 	    content: '';
-	    background: #ff3737;
+	    background: #ff3333;
 	    width: 150vw;
-	    height: 360px;
+	    height: 680upx;
 	    position: absolute;
 	    top: 50px;
 	    left: 50%;
@@ -793,7 +800,7 @@
 		margin-top: 8upx;
 	}
 	.carthead{
-		background-color: #ff3737;
+		background-color: #FF3333;
 		width: 750upx;
 		padding: 0 20upx;
 		display: flex;
@@ -806,7 +813,7 @@
 		box-sizing: border-box;
 	}
 	.wxcarthead{
-		background-color: #ff3737;
+		background-color: #FF3333;
 		width: 100%;
 		padding: 0 20upx;
 		display: flex;
