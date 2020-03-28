@@ -186,27 +186,31 @@
 }
 
 .discount {
-	display: flex;
 	font-size: 20upx;
 	font-family: PingFang;
 	font-weight: 400;
 	color: rgba(255, 102, 102, 1);
-	padding-left: 30upx;
+	padding: 0 30upx;
 }
-
+.discount_l{
+	max-width: 80%;
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+}
 .merging {
-	width: 134upx;
 	height: 50upx;
 	background: rgba(255, 255, 255, 1);
 	border: 1upx solid rgba(255, 102, 102, 1);
-	border-radius: 7upx;
-	margin-right: 30upx;
-	line-height: 50upx;
+	border-radius: 6upx;
+	margin:4upx 20upx 4upx 0;
 	position: relative;
-}
-
-.merging span {
-	margin-left: 10upx;
+	padding: 0 10upx;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	line-height: 1;
 }
 
 .merging:before {
@@ -218,7 +222,7 @@
 	border-top: 1upx solid #f63517;
 	border-right: 1upx solid #f63517;
 	top: 50%;
-	left: -7upx;
+	left: -6upx;
 	margin-top: -4upx;
 	background: #fff;
 	box-sizing: border-box;
@@ -234,7 +238,7 @@
 	border-top: 1upx solid #f63517;
 	border-right: 1upx solid #f63517;
 	top: 50%;
-	left: 124upx;
+	right: -4upx;
 	margin-top: -4upx;
 	background: #fff;
 	box-sizing: border-box;

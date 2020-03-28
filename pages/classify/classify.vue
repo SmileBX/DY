@@ -28,7 +28,8 @@
 						<image class="img" :src="categoryList[bannerindex].Pic" mode="aspectFill"></image>
 					</view>
 					<view class="nav-rightList" v-if="hasData">
-						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index">
+						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
+						 @click="navigate('homePage/proList',{typeId:item.TypeId,classId:item.Id})">
 							<image :src="item.PicUrl" v-if="item.PicUrl" mode="aspectFill" />
 							<image src="/static/noPicmin.png" v-else mode="widthFix"></image>
 							<view class="txt">{{item.ClassName}}</view>
@@ -52,7 +53,7 @@
 	</view>
 </template>
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,navigate} from '@/common/util.js';
 	import uniNavBar from '@/components/uni-nav-bar.vue';
 	import uniIcons from '@/components/uni-icon.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
@@ -91,6 +92,7 @@
 		},
 		data() {
 			return {
+				navigate,
 				barHeight:0,
 				userId: "",
 				token: "",
@@ -165,6 +167,7 @@
 					
 				}
 			},
+			// 跳转
 			gotoProductList(type, id) {
 				if (type === 0) {
 					uni.navigateTo({

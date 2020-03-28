@@ -253,7 +253,7 @@ function getUrlParam(name) {
 	return null;
 }
 // 普通跳转
-function navigates(url,params={}){
+function navigate(url,params={}){
 	let p ='';
 	let arr = Object.keys(params);//键数组
 	arr.map(item=>{
@@ -263,7 +263,7 @@ function navigates(url,params={}){
 		}
 	})
 	uni.navigateTo({
-		url:url+(p&&('?'+p))
+		url:'/pages/'+url+(p&&('?'+p))
 	})
 }
 
@@ -281,5 +281,5 @@ module.exports = {
 	SEOTitle:SEOTitle,
 	getUrlParam:getUrlParam,
 	setRegular:setRegular,
-	navigates:navigates
+	navigate:navigate
 }
