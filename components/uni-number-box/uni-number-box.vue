@@ -17,6 +17,10 @@
 				type: Number,
 				default: 0
 			},
+			shopindex:{
+				type: Number,
+				default: 0
+			},
 			min: {
 				type: Number,
 				default: 1
@@ -56,7 +60,7 @@
 				this.inputValue = val;
 			},
 			inputValue(val) {
-				this.$emit('change', [val,this.index]);
+				this.$emit('change', [val,this.shopindex,this.index]);
 			}
 		},
 		methods: {
