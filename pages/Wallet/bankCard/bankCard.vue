@@ -174,7 +174,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .pageContent {
-  height: calc(100vh - 20upx);
+  height: calc(100vh - 20upx - 44px);
   background: #fff;
   position: relative;
   top: 20upx;

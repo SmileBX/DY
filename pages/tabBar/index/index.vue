@@ -41,7 +41,7 @@
 			<view class="page-section swiper">
 				<view class="page-section-spacing">
 					<swiper class="swiper" style="height: 400rpx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
-						<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/shortsightedness')">
+						<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/proList')">
 							<view  class="tab_item" v-for="(tab, index) in val" :key="index">
 								<view>
 									<image src="../../../static/of/4.png" class="tab_img"></image> 

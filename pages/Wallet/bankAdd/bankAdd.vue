@@ -263,7 +263,7 @@ export default {
               setTimeout(function() {
                 that.initData();
                 uni.redirectTo({
-                  url: "/pages/myson/cardList/main"
+                  url: "/pages/Wallet/bankCard/bankCard"
                 });
               }, 1500);
             }
