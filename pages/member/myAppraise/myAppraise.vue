@@ -11,11 +11,11 @@
 			</view>
 		</view>
 		<view class="comment-content">
-			<!-- <view class="comment-content__hd">全部评价</view> -->
-			<view class="flex justifyContentBetween bg_fff bb_tba">
+			<view class="comment-content__hd">全部评价</view>
+<!-- 			<view class="flex justifyContentBetween bg_fff bb_tba">
 				<view class="active">全部评价</view>
 				<view>有图</view>
-			</view>
+			</view> -->
 			<view class="commentList" v-if="hasData">
 				<block v-for="(item,index) in Commentlist" :key="index">
 					<view class="item" @click="commentDetail(item.Id)">
@@ -121,7 +121,7 @@
 			//写评价
 			gotoOrder(){
 				uni.navigateTo({
-					url:'/pages/order/order?tabIndex=4'
+					url:'/pages/member/order/order?tabIndex=4'
 				})
 			},
 			gotoDetail(id){
@@ -208,20 +208,6 @@
 						this.isLoad = true;
 						this.loadingType = 0
 					}
-				} else if (result.code === 2) {
-					let _this = this;
-					uni.showToast({
-						title: "登录超时，请重新登录!",
-						icon: "none",
-						duration: 2000,
-						success: function() {
-							setTimeout(function() {
-								uni.redirectTo({
-									url: "/pages/login/login?askUrl=" + _this.curPage
-								});
-							}, 2000);
-						}
-					}); //如果未登录则跳转到登陆页面
 				}else {
 					uni.showToast({
 						title: result.msg,

@@ -7,7 +7,7 @@
               <p class="total_wa">{{info.KTAmount}}</p>
           </div>
       </div>
-      <div class="mm_btn" @click="switchPath('/pages/other/withdraw/withdraw/main',$event)">提现</div>
+      <!-- <div class="mm_btn" @click="switchPath('/pages/other/withdraw/withdraw/main',$event)">提现</div> -->
       <div class="wa_list pw3">
           <div class="flex justifyContentBetween  wa_item pp3 bg_fff">
               <div class="flex flexAlignCenter">
@@ -37,13 +37,13 @@
               </div>
                <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
           </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/other/money/money',$event)">
+<!--          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/other/money/money',$event)">
               <div class="flex flexAlignCenter">
                   <img src="http://jyy.wtvxin.com/static/images/icons/w3.png" alt="" class="ww_wa">
                   <span class="mr2">提现记录</span>
               </div>
               <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
-          </div>
+          </div> -->
       </div>
   </div>
 </template>
