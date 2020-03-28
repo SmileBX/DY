@@ -121,6 +121,7 @@
 		
 		data() {
 			return {
+				navlist:[{id:1,title:'为您推荐'},{id:2,title:'精选推荐'}],
 				userId: "",
 				token: "",
 				barHeight:0,
