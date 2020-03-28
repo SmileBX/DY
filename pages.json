@@ -410,6 +410,14 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"enablePullDownRefresh" : true
 					}
+				},
+				{
+					"path":"addcomment/addcomment",
+					"style": {
+						"navigationBarTitleText": "发布评价",
+						"navigationBarBackgroundColor": "#ffffff",
+						"enablePullDownRefresh" : true
+					}
 				}
 				
 			]
