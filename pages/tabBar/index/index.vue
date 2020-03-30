@@ -19,7 +19,7 @@
 			</view>
 			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :scroll-left="scrollLeft" style="display: flex;">
 				<view v-for="(tab,index) in Typelist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
-				 :data-current="index">
+				 :data-current="index" @click="tapTab(index,tab.Id)">
 					<view class="s"> {{tab.Name}} </view>
 				</view>
 			</scroll-view>
@@ -141,7 +141,7 @@
 								<view class="subtitle" style="font-size:24rpx;">服务到位</view>
 							</view>
 							<view class="list flex flexWrap justifyContentBetween">
-								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="toDetail(item)">
 									<image :src="item.PicNo" class="item_img"></image>
 									<view class="item_info flex flexColumn flexAlignCenter">
 										<view class="item_title">{{item.Name}}</view>
@@ -162,7 +162,7 @@
 					<scroll-view class="menu_wrap" scroll-y @scrolltolower="loadMore(index1)">
 						<view class="menu">
 							<view class="list flex flexWrap justifyContentBetween">
-								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="toDetail(item)">
 									<image :src="item.PicNo" class="item_img"></image>
 									<view class="item_info flex flexColumn flexAlignCenter">
 										<view class="item_title">{{item.Name}}</view>
@@ -269,6 +269,22 @@
 				this.getGoodList(query,2);//获取分类列表
 				this.setScrollLeft(index);
 			},
+			//点击跳转
+			tapTab(index,id){
+				if (this.tabIndex === index) {
+					return false;
+				} else {
+					this.page=1;
+					this.tabIndex = index;
+					let query = {
+						Page:1,
+						// IsHot:this.IsHot,
+						// TypeId:this.TypeId,
+					}
+					this.setScrollLeft(index)
+					this.getGoodList(query,2);//获取分类列表
+				}
+			},
 			setScrollLeft: async function(tabIndex) {
 				let leftWidthSum = 0;
 				for (var i = 0; i <= tabIndex; i++) {
@@ -288,11 +304,16 @@
 					}).exec();
 				});
 			},
-			//跳转详情
-			tolink(Url,item) {
+			toDetail(item) {
 				let path = Url+'?id='+item.Id
 				uni.navigateTo({
-					url: path
+					url:'/pages/homePage/details?id='+item.Id
+				})
+			},
+			//跳转
+			tolink(Url) {
+				uni.navigateTo({
+					url: Url
 				})
 			},
 			// 车位 没跳
