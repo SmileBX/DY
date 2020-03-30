@@ -13,7 +13,7 @@
 					<view class="iconfont icon-xiangji"></view>
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass')"><view class="num">4</view></view>
+					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass','login')"><view class="num" v-if="newscount!=0">{{newscount}}</view></view>
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
@@ -186,7 +186,7 @@
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,toLogin} from '@/common/util.js';
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
@@ -210,9 +210,7 @@
 				pageSize:10,
 				page: 1,
 				isLoad: false,
-				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
-				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
-				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
+				newscount:0,
 			}
 		},
 		onLoad() {
@@ -220,9 +218,21 @@
 			this.typelist();
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
+			if(toLogin()){
+				this.NewsCount();
+			}
 		},
 		components:{uniLoadMore},
 		methods:{
+			async NewsCount() {
+				let result = await post("News/NewsCount", {
+					"UserId": uni.getStorageSync("userId"),
+					"Token": uni.getStorageSync("token")
+				});
+				if (result.code === 0) {
+					this.newscount = result.count;
+				} 
+			},
 			// 获取商品列表
 			async productlist() {
 				let query = {
@@ -310,36 +320,20 @@
 				})
 			},
 			//跳转
-			tolink(Url) {
-				uni.navigateTo({
-					url: Url
-				})
+			tolink(Url,islogin) {
+				if(islogin=="login"){
+					if(toLogin()){
+						uni.navigateTo({
+							url: Url
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url: Url
+					})
+				}
 			},
-			// 车位 没跳
-			// @click="totruckspace('/pages/homePage/truckspace')"
-			totruckspace(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 家居
-			tohouse(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 近视
-			toshortsightedness(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 汽车
-			toautomobile(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
+			
 			// 轮播图
 			async banner() {
 				let result = await post("Banner/BannerList", {
