@@ -13,7 +13,7 @@
 					<view class="iconfont icon-xiangji"></view>
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass')"><view class="num">4</view></view>
+					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass','login')"><view class="num" v-if="newscount!=0">{{newscount}}</view></view>
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
@@ -143,14 +143,14 @@
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
-									<view class="item_info flex flexColumn flexAlignCenter">
+									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
-											<view class="item_market">68人付款</view>
+											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
 									</view>
 								</view>
@@ -164,14 +164,14 @@
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
-									<view class="item_info flex flexColumn flexAlignCenter">
+									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
-											<view class="item_market">68人付款</view>
+											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
 									</view>
 								</view>	
@@ -186,7 +186,7 @@
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,toLogin} from '@/common/util.js';
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
@@ -210,6 +210,7 @@
 				pageSize:10,
 				page: 1,
 				isLoad: false,
+				newscount:0,
 			}
 		},
 		onLoad() {
@@ -217,9 +218,21 @@
 			this.typelist();
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
+			if(toLogin()){
+				this.NewsCount();
+			}
 		},
 		components:{uniLoadMore},
 		methods:{
+			async NewsCount() {
+				let result = await post("News/NewsCount", {
+					"UserId": uni.getStorageSync("userId"),
+					"Token": uni.getStorageSync("token")
+				});
+				if (result.code === 0) {
+					this.newscount = result.count;
+				} 
+			},
 			// 获取商品列表
 			async productlist() {
 				let query = {
@@ -301,11 +314,19 @@
 					}).exec();
 				});
 			},
-			//跳转详情
-			tolink(Url) {
-				uni.navigateTo({
-					url: Url
-				})
+			//跳转
+			tolink(Url,islogin) {
+				if(islogin=="login"){
+					if(toLogin()){
+						uni.navigateTo({
+							url: Url
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url: Url
+					})
+				}
 			},
 			// 轮播图
 			async banner() {
@@ -347,12 +368,6 @@
 				}
 			}
 			
-		},
-		onLoad() {
-			this.banner();
-			this.typelist();
-			this.productlist();
-			this.hand();
 		},
 		// 上拉加载
 		onReachBottom: function() {

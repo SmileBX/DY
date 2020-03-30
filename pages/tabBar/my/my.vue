@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view style="width: 100%;background:#ff3737;" :style="{'height':barHeight+'px'}"></view>
-		<view class="top-box">
+		<view class="top-box"> 
 			<view class="memberTop">
 				<view class="iconBtnBox">
 					<view @click="golink('/pages/message/messageClass/messageClass')" class="iconfont icon-xiaoxi iconBtn"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>

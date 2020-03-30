@@ -17,11 +17,11 @@
 					<input type="text" class="ipt" value="" v-model="code" placeholder="请输入验证码" />
 					<view class="getcode" @click="getCode">{{codeMsg}}</view>
 				</view>
-				<view class="from-line">
+				<view class="from-line" v-if="type!=1">
 					<view class="iconfont icon-mima"></view>
 					<input type="password" class="ipt" value="" v-model="pwd" placeholder="请输入密码" />
 				</view>
-				<view class="from-line">
+				<view class="from-line" v-if="type!=1">
 					<view class="iconfont icon-mima"></view>
 					<input type="password" class="ipt" value="" v-model="pwd2" placeholder="请再次输入密码" />
 				</view>
@@ -35,7 +35,7 @@
 					<navigator url="" class="inline-block" style="color:#004098;">《用户协议》</navigator>
 				</view>
 				<view class="ftbtn" style="padding:40upx 0 20upx 0;">
-					<button type="primary" class="btn" @click="btnSubmit">确认注册</button>
+					<button type="primary" class="btn" @click="btnSubmit">{{type==1?'确认绑定':'确认注册'}}</button>
 				</view>
 			</view>
 		</view>
@@ -53,6 +53,8 @@
 	export default {
 		onLoad(e) {
 			this.inviteCode=e.inviteCode;
+			this.type = e.type
+			console.log(this.type,"type999999999999")
 		},
 		onShow() {
 			if(this.inviteCode){
@@ -74,7 +76,8 @@
 				TIME_COUNT: 60,
 				has_click: false,
 				isAgree:true,
-				disabled: false
+				disabled: false,
+				type:0,//1小程序绑定手机号
 			};
 		},
 		methods: {
@@ -97,29 +100,31 @@
 					});
 					return false;
 				}
-				if (this.pwd == "" || this.pwd2 == "") {
-					uni.showToast({
-						title: "密码不能为空!",
-						icon: "none",
-						duration: 2000
-					});
-					return false;
-				}
-				if (this.pwd != this.pwd2) {
-					uni.showToast({
-						title: "两次输入密码不同!",
-						icon: "none",
-						duration: 2000
-					});
-					return false;
-				}
-				if (this.pwd.length < 6) {
-					uni.showToast({
-						title: "密码长度不能小于6个字符!",
-						icon: "none",
-						duration: 2000
-					});
-					return false;
+				if(this.type !== 1){
+					if (this.pwd == "" || this.pwd2 == "") {
+						uni.showToast({
+							title: "密码不能为空!",
+							icon: "none",
+							duration: 2000
+						});
+						return false;
+					}
+					if (this.pwd != this.pwd2) {
+						uni.showToast({
+							title: "两次输入密码不同!",
+							icon: "none",
+							duration: 2000
+						});
+						return false;
+					}
+					if (this.pwd.length < 6) {
+						uni.showToast({
+							title: "密码长度不能小于6个字符!",
+							icon: "none",
+							duration: 2000
+						});
+						return false;
+					}
 				}
 				if (!this.isAgree) {
 					uni.showToast({
@@ -132,8 +137,14 @@
 				return true;
 			},
 			async sendCode() {
+				let objUrl = ''
+				if(this.type == 1){
+					objUrl = 'GetMiniAppBindTelCode?Mobile='
+				}else{
+					objUrl = 'Login/GetRegSMSCode?Mobile='
+				}
 				uni.request({
-				    url:host+ 'Login/GetRegSMSCode?Mobile='+this.tel, //仅为示例，并非真实的接口地址
+				    url:host+ objUrl+this.tel, //仅为示例，并非真实的接口地址
 				    method: 'POST',
 				    header: {
 				      'content-type': 'application/json;charset=utf-8' // 默认值
@@ -172,6 +183,35 @@
 				    }
 				  })
 			},
+			async wxBand(){
+				let result = await post("Login/BindOrRegister", {
+					"mobile": this.tel,
+					"openId": uni.getStorageSync("openId"),
+					"yzcode": this.code,
+					"InviteCode": this.inviteCode
+				});
+				if (result.code === 0) {
+					let _this = this;
+					uni.showToast({
+						title: "绑定成功!",
+						icon: "none",
+						duration: 2000,
+						success: function() {
+							setTimeout(function() {
+								uni.navigateTo({
+									url: "/pages/login/login"
+								})
+							}, 2000);
+						}
+					});
+				} else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 2000
+					});
+				}
+			},
 			async phoneNumberRegister() {
 				let result = await post("Login/MobileRegister", {
 					"mobile": this.tel,
@@ -203,7 +243,12 @@
 			},
 			btnSubmit(){
 				if(valPhone(this.tel) && this.regResetPwdValOther()){
-					this.phoneNumberRegister();
+					if(this.type == 1){
+						this.wxBand()
+					}else{
+						this.phoneNumberRegister();
+					}
+					
 				}
 			}
 		},

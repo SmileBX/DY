@@ -320,7 +320,7 @@
 						success: function() {
 							setTimeout(function() {
 								wx.redirectTo({
-									url: '/pages/wxBindTel/wxBindTel'
+									url: '/pages/register/register?type=1'
 								})
 							}, 1500);
 						}

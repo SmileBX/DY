@@ -164,6 +164,7 @@ image{ width: 100%; margin: 0 auto;}
 .fz12 span{font-size: 24upx !important;}
 .b_radius{ border-radius: 16upx;}
 .p_re{position: relative;}
+.line-through{ text-decoration: line-through;}
 /* 文本溢出隐藏 */
 .uni-ellipsis {overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .wxParse .img{ display: block; width: 100% !important;}
