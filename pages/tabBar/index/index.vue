@@ -144,14 +144,14 @@
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
-									<view class="item_info flex flexColumn flexAlignCenter">
+									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
-											<view class="item_market">68人付款</view>
+											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
 									</view>
 								</view>
@@ -165,14 +165,14 @@
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
-									<view class="item_info flex flexColumn flexAlignCenter">
+									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
-											<view class="item_market">68人付款</view>
+											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
 									</view>
 								</view>	

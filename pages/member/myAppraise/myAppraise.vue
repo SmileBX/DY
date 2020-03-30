@@ -126,7 +126,7 @@
 			},
 			gotoDetail(id){
 				uni.navigateTo({
-					url:'/pages/productDetail/productDetail?proId='+id
+					url:'/pages/homePage/details?id='+id
 				})
 			},
 			commentDetail(id){
