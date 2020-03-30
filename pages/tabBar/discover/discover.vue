@@ -5,7 +5,7 @@
 				<text >大单易拼推荐</text>
 			</view>
 			<view class="flex justifyContentBetween serch_box">
-				<view class="flex search flexAlignCenter pw2 flex1">
+				<view class="flex search flexAlignCenter pw2 flex1" @click="goUrl('/pages/homePage/proList')">
 					<view class="iconfont icon-sousuo"></view>
 					<input type="text" placeholder="请输入关键字" class="flex1">
 				</view>
