@@ -327,7 +327,7 @@
         }
         
         ,{
-            "path" : "pages/member/orderTui/orderTui",
+            "path" : "orderTui/orderTui",
             "style" : {
 				"navigationBarTitleText": "售后订单"
 			}
