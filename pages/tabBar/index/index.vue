@@ -123,10 +123,10 @@
 			<view class="menu">
 				<view class="menu_nav flex justifyContentBetween">
 					<view class="menu_item flex flexAlignCenter flexColumn"
-					v-for="(item,index) in handpick" :key="index" 
-					:class="{'active':index==indexs}" @click="hand(item.Id,index)">
+					v-for="(item,keys) in handpick" :key="keys" :class="[keys === indexs ?'red' : 'black']"
+					 @click="hand(item.Id,keys)">
 						<view class="title">{{item.Name}}</view>
-						<!-- <view class="subtitle">{{item.subtitle}}</view> -->
+						<!-- <view class="subtitle">{{item.subtitle}}</view> :class=["index==0"?"red":"black"] :class="{'active':index==indexs}" -->
 					</view>
 				</view>
 				<view class="" style="display: flex;justify-content: space-between; padding: 0 30rpx;color:#999" >
@@ -154,11 +154,13 @@
 				</view>
 			</view>
 		</view>
+		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 	</view>
 </template>
 
 <script>
 	import {post,get} from '@/common/util.js';
+	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
 			return{
@@ -172,11 +174,16 @@
 				scrollLeft2:0,
 				tabIndex:0,
 				indexs:0,
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				pageSize:10,
+				page: 1,
+				isLoad: false,
 				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
 				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
 				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
 			}
 		},
+		components:{uniLoadMore},
 		methods:{
 			//跳转
 			tolink(Url) {
@@ -215,11 +222,7 @@
 					Cid:1
 				});
 				if (result.code === 0) {
-					// console.log(result,"轮播图")
 					this.bannerlist = result.data
-					// console.log(this.bannerlist)
-				} else {
-					
 				}
 			},
 			// 获取类型(商品)
@@ -250,8 +253,6 @@
 					hand = result.data.slice(0,3)
 					hand.unshift(pick,picks)
 					this.handpick = hand
-				} else {
-					
 				}
 			},
 			// 获取商品列表
@@ -263,21 +264,39 @@
 				});
 				if (result.code === 0) {
 					this.Productlist = result.data
-				} else {
-					
 				}
+					if (this.page === 1) {
+						this.Productlist = result.data;
+					}
+					if (this.page > 1) {
+						this.Productlist = this.Productlist.concat(result.data);
+					}
+					if (result.data.length < this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0;
+					}
 			},
-			async hand(id,index) {
-				this.indexs = index
-				console.log(this.indexs,'this.indexs')
+			async hand(id,keys) {
+				this.indexs = keys
 				let result = await post("Goods/GoodsList", {
 					Page:1,
 					TypeId: id,
 				});
 				if (result.code === 0) {
 					this.handlist = result.data
+				}
+				if (this.page > 1) {
+					this.handlist = this.handlist.concat(result.data);
+				}
+				if (result.data.length < this.pageSize) {
+					this.isLoad = false;
+					this.loadingType = 2;
 				} else {
-					
+					this.isLoad = true;
+					this.loadingType = 0;
 				}
 			},
 		},
@@ -287,6 +306,17 @@
 			this.productlist();
 			this.hand();
 		},
+		// 上拉加载
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.productlist();
+				this.hand();
+			} else {
+				this.loadingType = 2;
+			}
+		}
 
 			
 		
