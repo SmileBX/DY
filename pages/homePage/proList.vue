@@ -158,6 +158,9 @@
 			this.classId = options.classId||'';
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.keyWords="";
+			this.AreaCode="";
+			this.AreaType=0;
 			this.getClassify();
 			this.init();
 		},
@@ -264,6 +267,16 @@
 				this.AreaCode='';
 				this.init();
 			}
+		},
+		onPullDownRefresh(){
+			uni.stopPullDownRefresh();
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.keyWords="";
+			this.AreaCode="";
+			this.AreaType=0;
+			this.getClassify();
+			this.init();
 		},
 		onReachBottom: function() {
 			if (this.isLoad) {

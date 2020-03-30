@@ -3,7 +3,6 @@ import {host} from './util.js'
 
 //请求封装
 function request(url, method, data) {
-    console.log(host,'host')
     uni.showLoading({
       title: '加载中' //数据请求前loading
     })

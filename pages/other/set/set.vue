@@ -46,9 +46,19 @@
 			},
 			// 退出登录
 			logOut() {
-				uni.switchTab({
-					url: '/pages/tabBar/index/index'
-				});
+				uni.showModal({
+					title:'退出登录',
+					content:"是否退出登录！",
+					success(res){
+						if(res.confirm){
+							uni.setStorageSync('token', '');
+							uni.setStorageSync('userId', '');
+							uni.switchTab({
+								url: '/pages/tabBar/index/index'
+							});
+						}
+					}
+				})
 			},
 
 		}
