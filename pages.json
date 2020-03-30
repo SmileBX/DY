@@ -326,6 +326,12 @@
             	"navigationBarTitleText": "我的收藏"
             }
         }
+        ,{
+            "path" : "pages/getPassword/getPassword",
+            "style" : {
+				"navigationBarTitleText": "忘记密码"
+			}
+        }
     ],
 
 	"subPackages":[
