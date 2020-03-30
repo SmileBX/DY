@@ -1,9 +1,9 @@
 <template>
-	<view>
-		<view class="flex flexAlignCenter justifyContentBetween item bg_fff mt2">
+	<view class="uni-mt10">
+		<!-- <view class="flex flexAlignCenter justifyContentBetween item bg_fff mt2">
 			<view>账户和安全</view>
 			<view class="iconfont icon-arrow_r font26"></view>
-		</view>
+		</view> -->
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff" @click="golink('/pages/other/changeLoginPwd/changeLoginPwd')">
 			<view>修改登录密码</view>
 			<view class="iconfont icon-arrow_r font26"></view>
@@ -24,7 +24,7 @@
 			<view>软件版本</view>
 			<view>63.25.3</view>
 		</view>
-		<view class="btn_fix" @click="logout">退出登录</view>
+		<view class="btn_fix" @click="logOut">退出登录</view>
 	</view>
 </template>
 
