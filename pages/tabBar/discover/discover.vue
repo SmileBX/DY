@@ -53,7 +53,7 @@
 							<image src="../../../static/icons/hot_bg.png" class="bg"></image>
 							<image :src="item.PicNo"></image>
 							<view class="item_title">{{item.Name}}</view>
-							<view class="brand">1</view>
+							<view class="brand">{{index+1}}</view>
 						</view>
 					</view>
 				</view>
