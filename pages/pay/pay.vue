@@ -64,16 +64,22 @@
 				hasPayPassword:0, //是否设置支付密码
 				showPay:false,//支付密码弹框
 				Countdown:'00:00:00',
-				disable:false
+				disable:false,
+				WxOpenid:"",
+				WxCode:"",
 			}
 		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.WxOpenid=uni.getStorageSync("openId");
 			this.orderNo=this.$root.$mp.query.orderNo;
 			this.source=this.$root.$mp.query.source||0;
 			this.PayOrderDetails();
 			this.GetMemInfo();
+			// #ifdef  MP-WEIXIN
+			this.getcode();
+			// #endif
 		},
 		methods: {
 			//跳转
@@ -81,6 +87,15 @@
 				uni.navigateTo({
 					url: Url
 				})
+			},
+			// 判断浏览器环境
+			isWeixin() {
+			    var ua = navigator.userAgent.toLowerCase();
+				if (ua.match(/MicroMessenger/i)=="micromessenger") {
+					return true;
+				} else {
+					return false;
+				}
 			},
 			//获取账户信息
 			async GetMemInfo() {
@@ -191,15 +206,149 @@
 					},1500)
 				}
 			},
+			getcode(){
+			    let _this=this;
+				uni.login({
+					success: function(res) {
+					  if (res.code) {
+						_this.WxCode=res.code;
+					  } else {
+						console.log('登录失败！' + res.errMsg)
+					  }
+					}
+				});
+			},
+			//微信支付
+			async payweixin() {
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
+				let result = await post("Order/ConfirmWeiXinPay", {
+					UserId: this.userId,
+					Token: this.token,
+					orderNo:this.orderNo,
+					NewUrl:NewUrl,
+					WxCode:this.WxCode,
+					WxOpenid:this.WxOpenid,
+				})
+				if (result.code == 201) {
+					window.location.href=result.data;
+				}else if(result.code == 0){
+					this.callpay(result.data.JsParam);
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			//非微信环境 使用微信支付H5
+			async H5payweixin() {
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
+				let result = await post("Order/ConfirmWeiXinWapPay", {
+					UserId: this.userId,
+					Token: this.token,
+					orderNo:this.orderNo,
+					NewUrl:NewUrl
+				})
+				if (result.code == 201) {
+					window.location.href=result.data;
+				}else if(result.code == 0){
+					window.location.href = result.data.mweb_url;
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			callpay(param) {
+				if(typeof WeixinJSBridge === 'undefined') {
+					if(document.addEventListener) {
+						document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(), false);
+					} else if(document.attachEvent) {
+						document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady());
+						document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady());
+					}
+				} else {
+					this.onBridgeReady(param);
+				}
+			},
+			onBridgeReady(param){
+				var parameter = JSON.parse(param);
+				WeixinJSBridge.invoke(
+					'getBrandWCPayRequest', parameter,
+					function(res){
+					if(res.err_msg == "get_brand_wcpay_request:ok" ){
+					// 使用以上方式判断前端返回,微信团队郑重提示：
+					//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+					  uni.showToast({
+					  	title: "支付成功",
+					  	icon: "none",
+					  	duration: 1500
+					  });
+					}else{
+						uni.showToast({
+							title: "支付失败",
+							icon: "none",
+							duration: 1500
+						});
+					} 
+			  }); 
+			},
+			GetUrlRelativePath() {
+				var urlStr = '';　　　　
+				var url = document.location.toString();　　　　
+				var arrUrl = url.split("//");　　　　
+				var start = arrUrl[1].split("/");
+				urlStr = arrUrl[0] + '//' + start[0];　　　　
+				return urlStr;　　
+			},	
+			
+			//小程序支付
+			async ConfirmWeiXinSmallPay(){
+				  let result= await post("Order/ConfirmWeiXinSmallPay",{
+					WxCode: this.WxCode,
+					UserId: this.userId,
+					Token: this.token,
+					OrderNo: this.orderNo,
+					WxOpenid:this.WxOpenid 
+				  });
+				  var payData=JSON.parse(result.data.JsParam)
+				  if(result.code===0){
+						let _this=this;
+					uni.requestPayment({
+					  timeStamp: payData.timeStamp,
+					  nonceStr: payData.nonceStr,
+					  package: payData.package,
+					  signType: payData.signType,
+					  paySign: payData.paySign,
+					  success(res) {
+						  _this.type = "";
+							_this.showPay=false;
+							uni.redirectTo({
+								url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+							})
+						},
+					  fail(res) {}
+					})
+				  }
+			},
+			
 			//立即支付
 			submitBtn(){
 				if(!this.disable){
-					if(this.payType==0){
-						uni.showToast({
-							title: "暂未开通！",
-							icon: "none",
-							duration: 2000
-						});
+					if(this.payType==0){//微信支付
+						// #ifdef  H5
+						if(this.isWeixin()){
+							this.payweixin();
+						}else{
+							this.H5payweixin();
+						}
+						// #endif
+						// #ifdef  MP-WEIXIN
+						this.ConfirmWeiXinSmallPay()
+						// #endif
 					}else if(this.payType==1){
 						uni.showToast({
 							title: "暂未开通！",

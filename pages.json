@@ -325,13 +325,6 @@
             	"navigationBarTitleText": "我的收藏"
             }
         }
-        
-        ,{
-            "path" : "orderTui/orderTui",
-            "style" : {
-				"navigationBarTitleText": "售后订单"
-			}
-        }
     ],
 
 	"subPackages":[
@@ -539,11 +532,17 @@
 						"navigationBarTitleText": "编辑昵称"
 					}
 				},{
-				"path" : "addComment/addComment",
-				"style": {
-					"navigationBarTitleText": "发布评价"
+					"path" : "addComment/addComment",
+					"style": {
+						"navigationBarTitleText": "发布评价"
+					}
+				} 
+				,{
+					"path" : "orderTui/orderTui",
+					"style" : {
+						"navigationBarTitleText": "售后订单"
+					}
 				}
-			}
 		]
 	},{
 		"root":"pages/message",
