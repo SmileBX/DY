@@ -123,7 +123,7 @@ function getProductFileList(){
   localStorage.removeItem('userId');
   setTimeout(getProductFileList,24*3600 * 1000)//之后每天调用一次
 }
-setRegular(4);//每天凌晨4点刷新
+//setRegular(4);//每天凌晨4点刷新
 // 获取当前地址
 function getCurrentPageUrlWithArgs() {
   const pages = getCurrentPages();

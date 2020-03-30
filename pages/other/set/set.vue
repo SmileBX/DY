@@ -24,7 +24,7 @@
 			<view>软件版本</view>
 			<view>63.25.3</view>
 		</view>
-		<view class="btn_fix" @click="logOut()">退出登录</view>
+		<view class="btn_fix" @click="logout">退出登录</view>
 	</view>
 </template>
 
@@ -46,11 +46,23 @@
 			},
 			// 退出登录
 			logOut() {
-				uni.switchTab({
-					url: '/pages/tabBar/index/index'
-				});
+				uni.showModal({
+					title:'退出登录',
+					content:"是否退出登录！",
+					success(res){
+						if(res.confirm){
+							uni.setStorageSync('token', '');
+							uni.setStorageSync('userId', '');
+							uni.setStorageSync("unionid", ""); 
+							uni.setStorageSync("openId", ""); 
+							uni.setStorageSync("userInfo", "");
+							uni.switchTab({
+								url: '/pages/tabBar/index/index'
+							});
+						}
+					}
+				})
 			},
-
 		}
 	}
 </script>

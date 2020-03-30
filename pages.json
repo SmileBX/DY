@@ -144,6 +144,7 @@
 			"path":"pages/homePage/proList",
 			"style": {
 				"navigationBarTitleText": "列表",
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 					// "scrollIndicator": "none" //不显示滚动条
@@ -300,24 +301,7 @@
 				}
 			}
         }
-        ,{
-            "path" : "pages/message/msgDetail/msgDetail",
-            "style" : {
-				"navigationBarTitleText": "消息详情"
-			}
-        }
-        ,{
-            "path" : "pages/member/editinfo/editinfo",
-            "style": {
-            	"navigationBarTitleText": "个人资料"
-            }
-        }
-        ,{
-            "path" : "pages/member/editNickName/editNickName",
-            "style" : {
-				"navigationBarTitleText": "编辑昵称"
-			}
-        }
+        
         ,{
             "path" : "pages/Wallet/bankCard/bankCard",
             "style" : {
@@ -342,14 +326,9 @@
             	"navigationBarTitleText": "我的收藏"
             }
         }
+        
         ,{
-            "path" : "pages/member/addComment/addComment",
-            "style": {
-            	"navigationBarTitleText": "发布评价"
-            }
-        }
-        ,{
-            "path" : "pages/member/orderTui/orderTui",
+            "path" : "orderTui/orderTui",
             "style" : {
 				"navigationBarTitleText": "售后订单"
 			}
@@ -432,15 +411,7 @@
 						"navigationBarTitleText": "我的团队",
 						"enablePullDownRefresh" : true
 					}
-				},
-				{
-					"path":"addcomment/addcomment",
-					"style": {
-						"navigationBarTitleText": "发布评价",
-						"navigationBarBackgroundColor": "#ffffff"
-					}
 				}
-				
 			]
 		},
 		{
@@ -557,7 +528,23 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"enablePullDownRefresh" : true
 					}
+				},{
+					"path" : "editinfo/editinfo",
+					"style": {
+						"navigationBarTitleText": "个人资料"
+					}
 				}
+				,{
+					"path" : "editNickName/editNickName",
+					"style" : {
+						"navigationBarTitleText": "编辑昵称"
+					}
+				},{
+				"path" : "addComment/addComment",
+				"style": {
+					"navigationBarTitleText": "发布评价"
+				}
+			}
 		]
 	},{
 		"root":"pages/message",

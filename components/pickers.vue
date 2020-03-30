@@ -24,7 +24,6 @@
 </template>
 <script>
 export default {
-  name: "pickers组件封装,单层级选择",
   props: {
     // 展示状态
     show: {

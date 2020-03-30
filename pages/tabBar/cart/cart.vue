@@ -135,7 +135,7 @@
 </template>
 
 <script>
-	import {post,get,toLogin} from '@/common/util.js';
+	import {post,get} from '@/common/util.js';
 	import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
@@ -295,12 +295,15 @@
 					});
 				}
 			},
+
 		//获取购物车列表
 			async getCartList(){
+				console.log("99999")
 				let result = await post("Cart/ShopsCartList", {
-				UserId: this.userId,
-				Token: this.token,
+					UserId: this.userId,
+					Token: this.token
 				});
+				console.log("ppp")
 				if(result.code==0){
 					this.cartinfo=result.data;
 					this.cartlist=result.data.CartList;
@@ -334,6 +337,18 @@
 					}
 				}else if(result.code==2){
 					this.noDataIsShow=true;
+					this.hascartlist=false;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(e) {
+							if (e.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login"
+								});
+							} else if (e.cancel) {
+							}
+						}
+					});
 				}
 			},
 			//合计 金额、数量
@@ -545,6 +560,8 @@
 			settle(){
 				let _this = this;
 				let dataArr=[];
+				 uni.setStorageSync("addressinfo",'');
+				 uni.setStorageSync("invoiceinfo","");
 				_this.cartlist.forEach(function(item){
 					item.ProData.forEach(function(item2){
 						if(item2.select==true){
@@ -708,8 +725,7 @@
 					this.memberInfo = result.data;
 					this.isPLUS=this.memberInfo.IsPlus;
 				} else if (result.code === 2) {
-					this.userId=uni.setStorageSync("token", "");
-					this.token=uni.setStorageSync("userId", "");
+					
 				}
 			}
 		},
@@ -834,6 +850,7 @@
 		top: 0;
 		/* left: 20upx; */
 	}
+	.wxcarthead text{color: #fff;}
 	.carthead text:nth-child(1){
 		font-size: 32upx;
 		font-weight: bold;

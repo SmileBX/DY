@@ -319,9 +319,10 @@
 						duration: 1500,
 						success:function(){
 							setTimeout(function(){
-								uni.redirectTo({
-									url:"/pages/member/invoiceList/invoiceList"
-								})
+								uni.navigateBack();
+								// uni.redirectTo({
+								// 	url:"/pages/member/invoiceList/invoiceList"
+								// })
 							},1500)
 						}
 					});
@@ -366,9 +367,10 @@
 						duration: 1500,
 						success:function(){
 							setTimeout(function(){
-								uni.redirectTo({
-									url:"/pages/member/invoiceList/invoiceList"
-								})
+								uni.navigateBack();
+								// uni.redirectTo({
+								// 	url:"/pages/member/invoiceList/invoiceList"
+								// })
 							},1500)
 						}
 					});
