@@ -73,7 +73,6 @@
 										</view>
 									</view>
 								</view>
-									
 							</view>
 						</view>
 						<!--特惠-->
@@ -92,15 +91,15 @@
 							</view>
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<block v-if="index==0"><image src="../../../static/of/1.png"></image></block>
-									<block v-if="index==1"><image src="../../../static/of/5.png"></image></block>
-									<block v-if="index==2"><image src="../../../static/of/6.png"></image></block>
+									<block v-if="index==0"><image src="/static/of/1.png"></image></block>
+									<block v-if="index==1"><image src="/static/of/5.png"></image></block>
+									<block v-if="index==2"><image src="/static/of/6.png"></image></block>
 								</view>
 							</view>
 						</view>
 						<!--推荐-->
 						<view class="jian mt2">
-							<image src="../../../static/of/f3.png" class="jian_bg"></image>
+							<image src="/static/of/f3.png" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<!-- 热销榜单 -->
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
