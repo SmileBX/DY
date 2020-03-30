@@ -105,7 +105,7 @@
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10">
 									<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="toDetail(item)">
 											<view class="itembox">
 												<view class="image-view">
 													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -305,7 +305,6 @@
 				});
 			},
 			toDetail(item) {
-				let path = Url+'?id='+item.Id
 				uni.navigateTo({
 					url:'/pages/homePage/details?id='+item.Id
 				})

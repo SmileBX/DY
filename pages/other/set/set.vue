@@ -44,25 +44,24 @@
 					})
 				}
 			},
-			//退出登录
-			logout(){
-				uni.setStorageSync("token", ""); //保存的令牌 accessToken
-				uni.setStorageSync("userId", ""); //保存用户Id到本地缓存
-				uni.setStorageSync("unionid", ""); 
-				uni.setStorageSync("openId", ""); 
-				uni.setStorageSync("userInfo", "");
-				uni.showToast({
-					title: "已退出登录",
-					icon: "none",
-					duration: 2000,
-					success: function() {
-					  setTimeout(function() {
-						  uni.switchTab({
-							url: "/pages/tabBar/index/index"
-						  });
-					  }, 2000);
+			// 退出登录
+			logOut() {
+				uni.showModal({
+					title:'退出登录',
+					content:"是否退出登录！",
+					success(res){
+						if(res.confirm){
+							uni.setStorageSync('token', '');
+							uni.setStorageSync('userId', '');
+							uni.setStorageSync("unionid", ""); 
+							uni.setStorageSync("openId", ""); 
+							uni.setStorageSync("userInfo", "");
+							uni.switchTab({
+								url: '/pages/tabBar/index/index'
+							});
+						}
 					}
-				});
+				})
 			},
 		}
 	}

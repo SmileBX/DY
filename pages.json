@@ -144,6 +144,7 @@
 			"path":"pages/homePage/proList",
 			"style": {
 				"navigationBarTitleText": "列表",
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 					// "scrollIndicator": "none" //不显示滚动条
