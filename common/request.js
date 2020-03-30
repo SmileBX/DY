@@ -16,18 +16,20 @@ function request(url, method, data) {
         },
         success: function (res) {
           const ret = res.data;
-          if(ret.code===0||ret.code===1||ret.code===2){
+          if(ret.code===0){
              resolve(ret)
          }else if(ret.code==1){
-			 uni.showToast({
-			     title:ret.msg,
-			     icon:'none'
-			 });
-			 resolve(ret)
-		 }
+            uni.showToast({
+                title:ret.msg,
+                icon:'none'
+            });
+            resolve(ret)
+		    }
 		 else if(ret.code==2){
-			 localStorage.removeItem('token');
-			 localStorage.removeItem('userId');
+			//  localStorage.removeItem('token');
+      //  localStorage.removeItem('userId');
+       uni.setStorageSync("userId",'')
+       uni.setStorageSync("token",'')
 			 uni.showToast({
 			     title:ret.msg,
 			     icon:'none'

@@ -537,11 +537,15 @@
 					"style": {
 						"navigationBarTitleText": "发布评价"
 					}
-				} 
-				,{
+				},{
 					"path" : "orderTui/orderTui",
 					"style" : {
 						"navigationBarTitleText": "售后订单"
+					}
+				},{
+					"path" : "orderTuidetail/orderTuidetail",
+					"style" : {
+						"navigationBarTitleText": "售后详情"
 					}
 				}
 		]

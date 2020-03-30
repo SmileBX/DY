@@ -9,7 +9,7 @@
       </view>
       <view class="pw3 mt2 bg_fff">
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
-		  @click="goUrl('/pages/myson/sertydetail/main?indexId='+indexId+'&id='+OrderNumber+'&type=1')">
+		  @click="goUrl(1)">
               <view class="flex flexAlignCenter">
                   <image src="http://jyy.wtvxin.com/static/images/icons/huan.png" alt="" class="huan"></image>
                   <view class="mr2">申请换货</view>
@@ -17,7 +17,7 @@
                <span class="iconfont icon-arrow_r"></span>
           </view>
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
-		  @click="goUrl('/pages/myson/sertydetail/main?indexId='+indexId+'&id='+OrderNumber+'&type=2')">
+		  @click="goUrl(2)">
               <view class="flex flexAlignCenter">
                   <image src="http://jyy.wtvxin.com/static/images/icons/tui.png" alt="" class="huan"></image>
                   <view class="mr2">申请退货退款</view>
@@ -25,7 +25,7 @@
              <span class="iconfont icon-arrow_r"></span>
           </view>
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
-		  @click="goUrl('/pages/myson/sertydetail/main?indexId='+indexId+'&id='+OrderNumber+'&type=3')">
+		  @click="goUrl(3)">
               <view class="flex flexAlignCenter">
                   <image src="http://jyy.wtvxin.com/static/images/icons/tuiq.png" alt="" class="huan"></image>
                   <view class="mr2">仅退款（无需退货）</view>
@@ -37,11 +37,12 @@
 </template>
 
 <script>
-// import {switchPath,post} from '@/utils/common.js'
+import {switchPath,post,navigate} from '@/common/util.js'
 export default {
 
   data () {
     return {
+      navigate,
       indexId:0,
       OrderNumber:"",
       info:{}
@@ -63,10 +64,8 @@ export default {
         this.info = res.data.OrderDetails[this.indexId];
       })
     },
-    goUrl(url){
-      wx.navigateTo({
-        url:url
-      })
+    goUrl(type){
+      navigate('member/applyReturn/applyReturn',{indexId:this.indexId,id:this.OrderNumber,type})
     },
     
   },

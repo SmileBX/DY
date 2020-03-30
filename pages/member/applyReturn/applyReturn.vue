@@ -50,7 +50,7 @@
 </template>
 
 <script>
-// import {switchPath,post,get} from '@/utils'
+import {switchPath,post,get,navigate} from '@/common/util.js'
 import pickers from '@/components/pickers';
 export default {
   components: {pickers},
@@ -63,7 +63,7 @@ export default {
       RefundContent:"",//退款说明
       RefundReasonId:0,//退原因id
       showEdit:false,
-      list:[],
+      list:[{code: 0,message: "请选择"}],
       // type:"",
       typeTxt:"请选择",
     }
@@ -78,13 +78,14 @@ export default {
   },
   methods: {
     gettype(e){
-      console.log(e)
-      this.RefundReasonId=e.code;
-      this.typeTxt=e.message
+      if(e.code){
+        this.RefundReasonId=e.code;
+        this.typeTxt=e.message;
+      }
     },
     getCancelReason(){
       get('Order/CancelReason',{}).then(res=>{
-        this.list=res.data
+        this.list.push(...res.data)
       })
     },
     getDetail(){
@@ -112,9 +113,14 @@ export default {
         RefundContent:this.RefundContent,
         RefundReasonId: this.RefundReasonId,
       }).then(res=>{
-        wx.showToast({
-          title:res.msg
-        })
+        if(res.code===0){
+          wx.showToast({
+            title:res.msg
+          })
+          setTimeout(()=>{
+            uni.navigateBack();
+          },1500)
+        }
       })
     },
     goUrl(url){
