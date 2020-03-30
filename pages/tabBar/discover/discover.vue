@@ -76,7 +76,7 @@
 										<view class="txtbox">
 											<view class="txt uni-ellipsis">{{item.Name}}</view>
 											<view class="uni-product-price">
-												<text class="uni-product-price-original">￥2万(补贴)</text>
+												<text class="uni-product-price-original">￥{{item.Price}}</text>
 											</view>
 										</view>
 									</view>
@@ -102,9 +102,9 @@
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market">￥{{item.MarketPrice}}</span>
+									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
-								<view class="item_market">68人付款</view>
+								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
 						</view>
 					</view>
@@ -117,9 +117,9 @@
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market">￥{{item.MarketPrice}}</span>
+									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
-								<view class="item_market">68人付款</view>
+								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
 						</view>
 					</view>

@@ -6,7 +6,7 @@
 			
 			<!-- #ifdef MP-WEIXIN -->
 			<view class="menubtn iconfont icon-cart" @click="tolink('/pages/tabBar/cart/cart',true)"></view>
-			<button class="sharebtn" open-type="share"><view class="iconfont icon-fenxiang2"></view></button>
+			<button class="sharebtn" open-type="share"><view class="iconfont icon-share"></view></button>
 			<!-- #endif -->
 			<swiper class="swiper" :indicator-dots="false" :autoplay="false" :interval="5000" :duration="500" @change="changeBanner">
 				<swiper-item v-for="(item,index) in proInfo.PicData" :key="index">

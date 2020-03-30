@@ -2,31 +2,60 @@
 	<view class="hotBrand">
 		<image src="/static/of/hot_bg.png" class="bg mt2"></image>
 		<view class="list mt2">
-			<view class="item flex" v-for="(item,key) in 5" :key="key">
-				<view class="item_left">
-					<image src="/static/of/4.png" class="img"></image>
-					<image src="/static/icons/b1.png" class="tip"></image>
-					<image src="/static/icons/b2.png" class="tip" style="display:none"></image>
-					<image src="/static/icons/b3.png" class="tip" style="display:none"></image>
-				</view>
-				<view class="item_content flex1">
-					<view class="uni-bold">奥迪A4 Avant先锋派</view>
-					<view class="color_red mt1">￥13万<span class="line-thon ">指导价¥15万</span></view>
-					<view class="flex mt1 item_bt justifyContentBetween">
-						<view class="flex flag ">
-							<span class="flag_pill">返</span>
-							<span class="flag_mon color_red">￥2万</span>
+			<scroll-view class="hot_wrap" scroll-y>
+				<view class="item flex" v-for="(item,index) in datalist" :key="index">
+					<view class="item_left">
+						<image :src="item.PicNo" class="img"></image>
+						<image src="/static/icons/b1.png" class="tip" v-if="index==0"></image>
+						<image src="/static/icons/b2.png" class="tip" v-if="index==1"></image>
+						<image src="/static/icons/b3.png" class="tip" v-if="index==2"></image>
+					</view>
+					<view class="item_content flex1">
+						<view class="uni-bold">{{item.Name}}</view>
+						<view class="color_red mt1">￥{{item.Price}}万<span class="line-thon ">指导价¥{{item.MarketPrice}}万</span></view>
+						<view class="flex mt1 item_bt justifyContentBetween">
+							<view class="flex flag ">
+								<span class="flag_pill">返</span>
+								<span class="flag_mon color_red">￥{{item.DistributionIncome}}万</span>
+							</view>
+							<view class="qiang" @click="toDetail(item)">马上抢</view>
 						</view>
-						<view class="qiang">马上抢</view>
 					</view>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 	</view>
 	
 </template>
 
 <script>
+	import {post} from '@/common/util.js'
+	export default{
+		data(){
+			return{
+				datalist:[],
+			}
+		},
+		onShow(){
+			this.getHotList()
+		},
+		methods:{
+			async getHotList(){
+				const res = await post('Goods/GoodsList',{
+					Page:1,
+					IsHot:1,
+				})
+				if(res.code == 0){
+					this.datalist = res.data
+				}
+			},
+			toDetail(item) {
+				uni.navigateTo({
+					url:'/pages/homePage/details?id='+item.Id
+				})
+			},
+		}
+	}
 </script>
 
 <style scoped lang="scss">
@@ -74,5 +103,8 @@
 				border-radius: 0 5upx 5upx 0;
 			}
 		}
+	}
+	.hot_wrap{
+		height:calc(100vh-284upx);
 	}
 </style>

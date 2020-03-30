@@ -206,17 +206,11 @@
 						success(res) {
 							if (res.confirm) {
 								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
+								  url: "/pages/login/login"
 								});
 							} else if (res.cancel) {
 							}
 						}
-					});
-				}else{
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
 					});
 				}
 			},

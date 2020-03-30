@@ -80,7 +80,9 @@
 						<view class="orderinfo" v-if="item.IsInvoice==1" @click="ChooseInvoice(index)">
 							<view class="orderleft">开具发票</view>
 							<view class="orderright">
-								<view class="infotxt">可开票</view>
+								<view class="infotxt flex flex-end">{{Invoicetxt[index]||'可开票'}}
+									<span v-if="InvoiceIdArr[index]>0" @click.stop="delInvoicet(index)" class="delinvoice">×</span>
+								</view>
 								<view class="uni-icon uni-icon-arrowright"></view>
 							</view>
 						</view>
@@ -141,11 +143,11 @@
 						<view class="orderleft">订单备注</view>
 						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[0]"/>
 					</view>
-					<view class="orderinfo" v-if="info.IsInvoice==1" @click="ChooseInvoice">
+					<view class="orderinfo" v-if="info.IsInvoice==1" @click="ChooseInvoice(0)">
 						<view class="orderleft">开具发票</view>
 						<view class="orderright">
-							<view class="infotxt flex flex-end">{{Invoicetxt||'可开票'}}
-								<span v-if="InvoiceIdArr[0]>0" @click.stop="delInvoicet" class="delinvoice">×</span>
+							<view class="infotxt flex flex-end">{{Invoicetxt[0]||'可开票'}}
+								<span v-if="InvoiceIdArr[0]>0" @click.stop="delInvoicet(0)" class="delinvoice">×</span>
 							</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
@@ -213,8 +215,9 @@
 				couponId:0,//平台优惠券id
 				isPayWallet:0,//是否使用余额支付
 				isPayScore:0,//是否使用积分抵扣
+				shopIndex:0,
 				InvoiceIdArr:[],
-				Invoicetxt:'',
+				Invoicetxt:[],
 				remarkTxtArr:[]
 			};
 		},
@@ -239,14 +242,12 @@
 			}
 			if(uni.getStorageSync("invoiceinfo")){
 			  this.InvoiceInfo=uni.getStorageSync("invoiceinfo");
-			  this.InvoiceIdArr[0]=this.InvoiceInfo.Id;//发票的id
-			  this.Invoicetxt=this.InvoiceInfo.InvoiceTitleStr+"："+this.InvoiceInfo.HeaderName;
-			  console.log(this.Invoicetxt);
+			  this.shopIndex= this.InvoiceInfo.shopIndex;
+			  this.InvoiceIdArr[this.shopIndex]=this.InvoiceInfo.Id;//发票的id
+			  this.Invoicetxt[this.shopIndex]=this.InvoiceInfo.InvoiceTitleStr+"："+this.InvoiceInfo.HeaderName;
 			}else{
-			  this.InvoiceId=0;//发票的id
-			  this.InvoiceType=0;//发票的类型
-			  this.Invoicetxt="不开发票";
-			  this.InvoiceEmail="";
+			  this.InvoiceIdArr[this.shopIndex]=0;//发票的id
+			  this.Invoicetxt[this.shopIndex]="可开票";
 			}
 			if(this.orderSType==1){
 				this.GoodsCartList();
@@ -283,24 +284,18 @@
 			},
 			openCoupon(){
 				this.showCoupon=true;
-				
 			},
 			//选择发票
 			ChooseInvoice(index){
-				if(index){
-					uni.navigateTo({
-						url:'/pages/member/invoiceList/invoiceList?pagetype=confirm&shopIndex='+index
-					})
-				}else{
-					uni.navigateTo({
-						url:'/pages/member/invoiceList/invoiceList?pagetype=confirm'
-					})
-				}
+				uni.navigateTo({
+					url:'/pages/member/invoiceList/invoiceList?pagetype=confirm&shopIndex='+index
+				})
 			},
-			delInvoicet(){
+			delInvoicet(i){
+				let _this=this;
+			  _this.$set(_this.InvoiceIdArr,i,0);
+			  _this.$set(_this.Invoicetxt,i,"可开票");
 			  uni.setStorageSync("invoiceinfo","");
-			  this.InvoiceIdArr[0]=0;//发票的id
-			  this.Invoicetxt="可开票";
 			},
 			//购物车下单获取
 			async GoodsCartList(){

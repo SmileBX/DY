@@ -19,7 +19,7 @@
 			</view>
 			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :scroll-left="scrollLeft" style="display: flex;">
 				<view v-for="(tab,index) in Typelist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
-				 :data-current="index">
+				 :data-current="index" @click="tapTab(index,tab.Id)">
 					<view class="s"> {{tab.Name}} </view>
 				</view>
 			</scroll-view>
@@ -266,6 +266,22 @@
 				}
 				this.getGoodList(query,2);//获取分类列表
 				this.setScrollLeft(index);
+			},
+			//点击跳转
+			tapTab(index,id){
+				if (this.tabIndex === index) {
+					return false;
+				} else {
+					this.page=1;
+					this.tabIndex = index;
+					let query = {
+						Page:1,
+						// IsHot:this.IsHot,
+						// TypeId:this.TypeId,
+					}
+					this.setScrollLeft(index)
+					this.getGoodList(query,2);//获取分类列表
+				}
 			},
 			setScrollLeft: async function(tabIndex) {
 				let leftWidthSum = 0;
