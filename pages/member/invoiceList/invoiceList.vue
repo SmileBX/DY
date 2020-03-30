@@ -59,6 +59,7 @@
 				userId: "",
 				token: "",
 				list: [],
+				shopIndex:0,
 			};
 		},
 		onShow() {
@@ -66,11 +67,14 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.pagetype=this.$root.$mp.query.pagetype||'';
+			this.shopIndex=this.$root.$mp.query.shopIndex||0;
 			this.getInvoice();
 		},
 		methods: {
 			choseInvoice(index){
+				let _this=this;
 				if(this.pagetype == 'confirm'){
+					this.$set(_this.list[index],'shopIndex',_this.shopIndex);
 					uni.setStorageSync("invoiceinfo",this.list[index]);
 					uni.navigateBack()
 				}

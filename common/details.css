@@ -8,7 +8,7 @@
 
 .productBanner .menubtn {
 	position: absolute;
-	right: 20upx;
+	right: 120upx;
 	top: 20upx;
 	height: 72upx;
 	width: 72upx;
@@ -23,7 +23,7 @@
 
 .productBanner .sharebtn {
 	position: absolute;
-	right: 120upx;
+	right: 20upx;
 	top: 20upx;
 	height: 72upx;
 	width: 72upx;

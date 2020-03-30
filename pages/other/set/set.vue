@@ -24,7 +24,7 @@
 			<view>软件版本</view>
 			<view>63.25.3</view>
 		</view>
-		<view class="btn_fix">退出登录</view>
+		<view class="btn_fix" @click="logout">退出登录</view>
 	</view>
 </template>
 
@@ -43,6 +43,26 @@
 						url:url
 					})
 				}
+			},
+			//退出登录
+			logout(){
+				uni.setStorageSync("token", ""); //保存的令牌 accessToken
+				uni.setStorageSync("userId", ""); //保存用户Id到本地缓存
+				uni.setStorageSync("unionid", ""); 
+				uni.setStorageSync("openId", ""); 
+				uni.setStorageSync("userInfo", "");
+				uni.showToast({
+					title: "已退出登录",
+					icon: "none",
+					duration: 2000,
+					success: function() {
+					  setTimeout(function() {
+						  uni.switchTab({
+							url: "/pages/tabBar/index/index"
+						  });
+					  }, 2000);
+					}
+				});
 			},
 		}
 	}
