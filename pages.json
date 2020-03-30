@@ -326,6 +326,12 @@
             	"navigationBarTitleText": "我的收藏"
             }
         }
+        ,{
+            "path" : "pages/getPassword/getPassword",
+            "style" : {
+				"navigationBarTitleText": "忘记密码"
+			}
+        }
     ],
 
 	"subPackages":[
@@ -534,16 +540,17 @@
 						"navigationBarTitleText": "编辑昵称"
 					}
 				},{
-				"path" : "addComment/addComment",
-				"style": {
-					"navigationBarTitleText": "发布评价"
+					"path" : "addComment/addComment",
+					"style": {
+						"navigationBarTitleText": "发布评价"
+					}
+				} 
+				,{
+					"path" : "orderTui/orderTui",
+					"style" : {
+						"navigationBarTitleText": "售后订单"
+					}
 				}
-			},{
-				"path" : "orderTui/orderTui",
-				"style" : {
-					"navigationBarTitleText": "售后订单"
-				}
-			}
 		]
 	},{
 		"root":"pages/message",

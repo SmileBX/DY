@@ -26,7 +26,7 @@
 .head{
 	background:#16a6fd ;height:410upx;
 	.serch_box{
-		padding:10upx 30upx;background:#16a6fd ;
+		padding:10upx 0 10upx 30upx;background:#16a6fd ;
 		.search{
 			background:#ffffff;border-radius: 50upx;
 			input{
@@ -34,7 +34,7 @@
 			}
 		}
 		.head_r{
-			margin-left:20upx;
+			.iconfont{ font-size: 40upx; color: #fff; line-height: 1;}
 		}
 	}
 	.b_tab_list{

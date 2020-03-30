@@ -5,7 +5,7 @@
 				<text >大单易拼推荐</text>
 			</view>
 			<view class="flex justifyContentBetween serch_box">
-				<view class="flex search flexAlignCenter pw2 flex1">
+				<view class="flex search flexAlignCenter pw2 flex1" @click="goUrl('/pages/homePage/proList')">
 					<view class="iconfont icon-sousuo"></view>
 					<input type="text" placeholder="请输入关键字" class="flex1">
 				</view>
@@ -76,7 +76,7 @@
 										<view class="txtbox">
 											<view class="txt uni-ellipsis">{{item.Name}}</view>
 											<view class="uni-product-price">
-												<text class="uni-product-price-original">￥2万(补贴)</text>
+												<text class="uni-product-price-original">￥{{item.Price}}</text>
 											</view>
 										</view>
 									</view>
@@ -102,9 +102,9 @@
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market">￥{{item.MarketPrice}}</span>
+									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
-								<view class="item_market">68人付款</view>
+								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
 						</view>
 					</view>
@@ -117,16 +117,16 @@
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market">￥{{item.MarketPrice}}</span>
+									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
-								<view class="item_market">68人付款</view>
+								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 		</view>
-		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 	</view>
 </template>
 

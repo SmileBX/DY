@@ -7,13 +7,13 @@
 					<view class="locale uni-ellipsis" @click="typelist">深圳</view>
 					<view class="iconfont icon-arrow_down-copy font12"></view>
 				</view>
-				<view class="flex search flexAlignCenter pw2">
+				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList')">
 					<view class="iconfont icon-sousuo"></view>
 					<input type="text" placeholder="请输入关键字">
 					<view class="iconfont icon-xiangji"></view>
 				</view>
 				<view class="head_r flex flexAlignCenter">
-					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass')"><view class="num">4</view></view>
+					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass','login')"><view class="num" v-if="newscount!=0">{{newscount}}</view></view>
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
@@ -41,14 +41,13 @@
 							</view>
 						</view>
 						<!--菜单栏-->
-						<view class="page-section swiper">
+						<view class="page-section swiper" style="height: 400upx;">
 							<view class="page-section-spacing">
-								<swiper class="swiper" style="height: 400rpx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
-									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2"
-									 @click="toshortsightedness('/pages/homePage/proList')">
-										<view  class="tab_item" v-for="(tab, index) in val" :key="index">
+								<swiper class="swiper" style="height: 400upx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
+										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList')">
 											<view>
-												<image src="../../../static/of/4.png" class="tab_img"></image> 
+												<image :src="tab.Pic" class="tab_img"></image> 
 											</view>
 											<view class="tab_name center"> {{tab.Name}} </view>
 										</view>
@@ -93,7 +92,9 @@
 							</view>
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<image src="../../../static/of/1.png"></image>
+									<block v-if="index==0"><image src="../../../static/of/1.png"></image></block>
+									<block v-if="index==1"><image src="../../../static/of/5.png"></image></block>
+									<block v-if="index==2"><image src="../../../static/of/6.png"></image></block>
 								</view>
 							</view>
 						</view>
@@ -105,7 +106,7 @@
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10">
 									<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="toDetail(item)">
+										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 											<view class="itembox">
 												<view class="image-view">
 													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -141,7 +142,7 @@
 								<view class="subtitle" style="font-size:24rpx;">服务到位</view>
 							</view>
 							<view class="list flex flexWrap justifyContentBetween">
-								<view class="item" v-for="(item,index) in handlist" :key="index" @click="toDetail(item)">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
 									<view class="item_info flex flexColumn flexAlignCenter">
 										<view class="item_title">{{item.Name}}</view>
@@ -162,7 +163,7 @@
 					<scroll-view class="menu_wrap" scroll-y @scrolltolower="loadMore(index1)">
 						<view class="menu">
 							<view class="list flex flexWrap justifyContentBetween">
-								<view class="item" v-for="(item,index) in handlist" :key="index" @click="toDetail(item)">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
 									<view class="item_info flex flexColumn flexAlignCenter">
 										<view class="item_title">{{item.Name}}</view>
@@ -186,7 +187,7 @@
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,toLogin} from '@/common/util.js';
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
@@ -210,9 +211,7 @@
 				pageSize:10,
 				page: 1,
 				isLoad: false,
-				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
-				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
-				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
+				newscount:0,
 			}
 		},
 		onLoad() {
@@ -220,9 +219,21 @@
 			this.typelist();
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
+			if(toLogin()){
+				this.NewsCount();
+			}
 		},
 		components:{uniLoadMore},
 		methods:{
+			async NewsCount() {
+				let result = await post("News/NewsCount", {
+					"UserId": uni.getStorageSync("userId"),
+					"Token": uni.getStorageSync("token")
+				});
+				if (result.code === 0) {
+					this.newscount = result.count;
+				} 
+			},
 			// 获取商品列表
 			async productlist() {
 				let query = {
@@ -304,41 +315,19 @@
 					}).exec();
 				});
 			},
-			toDetail(item) {
-				uni.navigateTo({
-					url:'/pages/homePage/details?id='+item.Id
-				})
-			},
 			//跳转
-			tolink(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 车位 没跳
-			// @click="totruckspace('/pages/homePage/truckspace')"
-			totruckspace(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 家居
-			tohouse(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 近视
-			toshortsightedness(Url) {
-				uni.navigateTo({
-					url: Url
-				})
-			},
-			// 汽车
-			toautomobile(Url) {
-				uni.navigateTo({
-					url: Url
-				})
+			tolink(Url,islogin) {
+				if(islogin=="login"){
+					if(toLogin()){
+						uni.navigateTo({
+							url: Url
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url: Url
+					})
+				}
 			},
 			// 轮播图
 			async banner() {
@@ -380,12 +369,6 @@
 				}
 			}
 			
-		},
-		onLoad() {
-			this.banner();
-			this.typelist();
-			this.productlist();
-			this.hand();
 		},
 		// 上拉加载
 		onReachBottom: function() {
