@@ -174,18 +174,20 @@
 											<view class="item_market">68人付款</view>
 										</view>
 									</view>
-								</view>
+								</view>	
 							</view>
-						</view>
+						</view>	
 					</scroll-view>
 				</swiper-item>
 			</swiper>
 		</view>
+		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 	</view>
 </template>
 
 <script>
 	import {post,get} from '@/common/util.js';
+	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
 			return{
@@ -204,6 +206,10 @@
 				IsNew:1,//新品
 				TypeId:1,//类型Id
 				ClassId:1,//分类Id
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				pageSize:10,
+				page: 1,
+				isLoad: false,
 				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
 				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
 				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
@@ -215,6 +221,7 @@
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
 		},
+		components:{uniLoadMore},
 		methods:{
 			// 获取商品列表
 			async productlist() {
@@ -319,11 +326,7 @@
 					Cid:1
 				});
 				if (result.code === 0) {
-					// console.log(result,"轮播图")
 					this.bannerlist = result.data
-					// console.log(this.bannerlist)
-				} else {
-					
 				}
 			},
 			// 获取类型(商品)
@@ -354,13 +357,27 @@
 					hand = result.data.slice(0,3)
 					hand.unshift(pick,picks)
 					this.handpick = hand
-				} else {
-					
 				}
-			},
+			}
 			
 		},
-		
+		onLoad() {
+			this.banner();
+			this.typelist();
+			this.productlist();
+			this.hand();
+		},
+		// 上拉加载
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.productlist();
+				this.hand();
+			} else {
+				this.loadingType = 2;
+			}
+		}
 
 			
 		
