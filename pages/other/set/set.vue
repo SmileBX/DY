@@ -44,14 +44,13 @@
 					})
 				}
 			},
-			methods:{
-				// 退出登录
-				logOut() {
-					uni.switchTab({
-						url: '/pages/tabBar/index/index'
-					});
-				}
-			}
+			// 退出登录
+			logOut() {
+				uni.switchTab({
+					url: '/pages/tabBar/index/index'
+				});
+			},
+
 		}
 	}
 </script>
