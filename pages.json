@@ -285,6 +285,7 @@
             "path" : "pages/brand/brandproLsit/brandproLsit",
             "style" : {
 				"navigationBarTitleText": "品牌馆特惠",
+				"navigationBarBackgroundColor":"#fe6d36",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [
@@ -325,6 +326,12 @@
             }
         }
         
+        ,{
+            "path" : "pages/member/orderTui/orderTui",
+            "style" : {
+				"navigationBarTitleText": "售后订单"
+			}
+        }
     ],
 
 	"subPackages":[

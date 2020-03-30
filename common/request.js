@@ -16,7 +16,7 @@ function request(url, method, data) {
         },
         success: function (res) {
           const ret = res.data;
-          if(ret.code===0){
+          if(ret.code===0||ret.code===1||ret.code===2){
              resolve(ret)
          }else if(ret.code==1){
 			 uni.showToast({

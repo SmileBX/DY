@@ -1,5 +1,5 @@
 <template>
-	<view class="home" style="height: 100%;">
+	<view class="home index" style="height: 100%;">
 		<!--顶部搜索导航-->
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
@@ -24,150 +24,275 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="index_Content">
-			<!--轮播图-->
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
-						<swiper-item v-for="(banner,key) in bannerlist" :key="key">
-							<view class="swiper-item">
-								<image class="img" :src="banner.Pic" mode="aspectFill"></image>
-							</view>
-						</swiper-item>
-					</swiper>
-				</view>
-			</view>
-			<!--菜单栏-->
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" style="height: 400rpx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
-						<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2" @click="toshortsightedness('/pages/homePage/proList')">
-							<view  class="tab_item" v-for="(tab, index) in val" :key="index">
-								<view>
-									<image src="../../../static/of/4.png" class="tab_img"></image> 
-								</view>
-								<view class="tab_name center"> {{tab.Name}} </view>
-							</view>
-						</swiper-item>
-					</swiper>
-				</view>
-			</view>
-			<!--拼品牌馆-->
-			<view class="index_pin">
-				<image src="../../../static/of/f1.png" mode="widthFix"></image>
-				<view class="pin_list flex justifyContentBetween">
-					<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex')">
-						<view class="item_logo">
-							<image src="../../../static/of/logo.png" mode="aspectFill"></image>
-						</view>
-						<view class="flex justifyContentBetween item_info">
-							<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
-								<view class="item_info_title">专注纯实木</view>
-								<view class="item_sige">连续八年实木家具</view>
-							</view>
-							<view class="right_img">
-								<image src="../../../static/of/2.png" mode="aspectFill"></image>
+		<view class="index_Content uni-tab-bar">
+			<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab">
+				<swiper-item>
+					<scroll-view class="uni-index-wrap" scroll-y>
+						<!--轮播图-->
+						<view class="page-section swiper">
+							<view class="page-section-spacing">
+								<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+									<swiper-item v-for="(banner,key) in bannerlist" :key="key">
+										<view class="swiper-item">
+											<image class="img" :src="banner.Pic" mode="aspectFill"></image>
+										</view>
+									</swiper-item>
+								</swiper>
 							</view>
 						</view>
-					</view>
-						
-				</view>
-			</view>
-			<!--特惠-->
-			<view class="hui mt2">
-				<image src="../../../static/of/f2.png" class="hui_bg"></image>
-				<view class="flex hui_title">
-					<view class="mr2">全场4折封顶</view>
-					<view class="flex tile_time">
-						<view class="mr1">仅剩</view>
-						<view class="flex justifyContentCenter flexAlignCneter">
-							<span class="time_span">18</span>:
-							<span class="time_span">56</span>:
-							<span class="time_span">34</span>
+						<!--菜单栏-->
+						<view class="page-section swiper">
+							<view class="page-section-spacing">
+								<swiper class="swiper" style="height: 400rpx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2"
+									 @click="toshortsightedness('/pages/homePage/proList')">
+										<view  class="tab_item" v-for="(tab, index) in val" :key="index">
+											<view>
+												<image src="../../../static/of/4.png" class="tab_img"></image> 
+											</view>
+											<view class="tab_name center"> {{tab.Name}} </view>
+										</view>
+									</swiper-item>
+								</swiper>
+							</view>
 						</view>
-					</view>
-				</view>
-				<view class="list flex justifyContentBetween">
-					<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-						<image src="../../../static/of/1.png"></image>
-					</view>
-				</view>
-			</view>
-			<!--推荐-->
-			<view class="jian mt2">
-				<image src="../../../static/of/f3.png" class="jian_bg"></image>
-				<view class="jian_sign">美 好 生 活 抢 先 到</view>
-				<!-- 热销榜单 -->
-				<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
-					<view class="uni-bd uni-mt10">
-						<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-							<view class="scroll-view-item_H" v-for="(item,index) in 6" :key="index" @click="tolink('/pages/homePage/details?id=')">
-								<view class="itembox">
-									<view class="image-view">
-										<image class="img" src="../../../static/of/3.png" mode="aspectFill"></image>
+						<!--拼品牌馆-->
+						<view class="index_pin">
+							<image src="../../../static/of/f1.png" mode="widthFix"></image>
+							<view class="pin_list flex justifyContentBetween">
+								<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex')">
+									<view class="item_logo">
+										<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 									</view>
-									<view class="txtbox">
-										<view class="txt uni-ellipsis">珍视明眼药水</view>
-										<view class="uni-product-price">
-											<text class="uni-product-price-original">￥39.00</text>
-											<text class="uni-product-price-favour">￥60.00</text>
+									<view class="flex justifyContentBetween item_info">
+										<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
+											<view class="item_info_title">专注纯实木</view>
+											<view class="item_sige">连续八年实木家具</view>
+										</view>
+										<view class="right_img">
+											<image src="../../../static/of/2.png" mode="aspectFill"></image>
+										</view>
+									</view>
+								</view>
+									
+							</view>
+						</view>
+						<!--特惠-->
+						<view class="hui mt2">
+							<image src="../../../static/of/f2.png" class="hui_bg"></image>
+							<view class="flex hui_title">
+								<view class="mr2">全场4折封顶</view>
+								<view class="flex tile_time">
+									<view class="mr1">仅剩</view>
+									<view class="flex justifyContentCenter flexAlignCneter">
+										<span class="time_span">18</span>:
+										<span class="time_span">56</span>:
+										<span class="time_span">34</span>
+									</view>
+								</view>
+							</view>
+							<view class="list flex justifyContentBetween">
+								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
+									<image src="../../../static/of/1.png"></image>
+								</view>
+							</view>
+						</view>
+						<!--推荐-->
+						<view class="jian mt2">
+							<image src="../../../static/of/f3.png" class="jian_bg"></image>
+							<view class="jian_sign">美 好 生 活 抢 先 到</view>
+							<!-- 热销榜单 -->
+							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
+								<view class="uni-bd uni-mt10">
+									<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
+										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+											<view class="itembox">
+												<view class="image-view">
+													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
+												</view>
+												<view class="txtbox">
+													<view class="txt uni-ellipsis">{{item.Name}}</view>
+													<view class="uni-product-price">
+														<text class="uni-product-price-original">￥{{item.Price}}</text>
+														<text class="uni-product-price-favour">￥{{item.MarketPrice}}</text>
+													</view>
+												</view>
+											</view>
+										</view>
+									</scroll-view>
+								</view>
+							</view>
+						</view>
+						<!--菜单列表-->
+						<view class="menu">
+							<view class="menu_nav flex justifyContentBetween">
+								<view class="menu_item flex flexAlignCenter flexColumn"
+								v-for="(item,index) in handpick" :key="index" 
+								:class="{'active':index==indexs}" @click="handItem(item.Id,index)">
+									<view class="title">{{item.Name}}</view>
+									<!-- <view class="subtitle">{{item.subtitle}}</view> -->
+								</view>
+							</view>
+							<view class="" style="display: flex;justify-content: space-between; padding: 0 30rpx;color:#999" >
+								<view class="subtitle" style="font-size:24rpx;">为您推荐</view>
+								<view class="subtitle" style="font-size:24rpx;">超值好货</view>
+								<view class="subtitle" style="font-size:24rpx;">省心省钱</view>
+								<view class="subtitle" style="font-size:24rpx;">款式齐全</view>
+								<view class="subtitle" style="font-size:24rpx;">服务到位</view>
+							</view>
+							<view class="list flex flexWrap justifyContentBetween">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+									<image :src="item.PicNo" class="item_img"></image>
+									<view class="item_info flex flexColumn flexAlignCenter">
+										<view class="item_title">{{item.Name}}</view>
+										<view class="flex flexAlignEnd justifyContentBetween item_total">
+											<view class="flex flexAlignEnd">
+												<span class="item_price">￥{{item.Price}}</span>
+												<span class="item_market">￥{{item.MarketPrice}}</span>
+											</view>
+											<view class="item_market">68人付款</view>
 										</view>
 									</view>
 								</view>
 							</view>
-						</scroll-view>
-					</view>
-				</view>
-			</view>
-			<!--菜单列表-->
-			<view class="menu">
-				<view class="menu_nav flex justifyContentBetween">
-					<view class="menu_item flex flexAlignCenter flexColumn" v-for="(item,pll) in navlist" :key="pll" :class="{'active':pll==1}">
-						<view class="title">{{item.title}}</view>
-						<view class="subtitle">{{item.subtitle}}</view>
-					</view>
-				</view>
-				<view class="list flex flexWrap justifyContentBetween">
-					<view class="item" v-for="(item,index) in 6" :key="index">
-						<image src="../../../static/of/4.png" class="item_img"></image>
-						<view class="item_info flex flexColumn flexAlignCenter">
-							<view class="item_title">超越极限音波拉皮-颈部</view>
-							<view class="flex flexAlignEnd justifyContentBetween item_total">
-								<view class="flex flexAlignEnd">
-									<span class="item_price">￥980</span>
-									<span class="item_market">￥2980</span>
-								</view>
-								<view class="item_market">68人付款</view>
-							</view>
 						</view>
-					</view>
-				</view>
-			</view>
+					</scroll-view>
+				</swiper-item>
+				<swiper-item v-if="index1<Typelist.length-1" v-for="(tab,index1) in Typelist" :key="index1">
+					<scroll-view class="menu_wrap" scroll-y @scrolltolower="loadMore(index1)">
+						<view class="menu">
+							<view class="list flex flexWrap justifyContentBetween">
+								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details',item)">
+									<image :src="item.PicNo" class="item_img"></image>
+									<view class="item_info flex flexColumn flexAlignCenter">
+										<view class="item_title">{{item.Name}}</view>
+										<view class="flex flexAlignEnd justifyContentBetween item_total">
+											<view class="flex flexAlignEnd">
+												<span class="item_price">￥{{item.Price}}</span>
+												<span class="item_market">￥{{item.MarketPrice}}</span>
+											</view>
+											<view class="item_market">68人付款</view>
+										</view>
+									</view>
+								</view>	
+							</view>
+						</view>	
+					</scroll-view>
+				</swiper-item>
+			</swiper>
 		</view>
+		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 	</view>
 </template>
 
 <script>
 	import {post,get} from '@/common/util.js';
+	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
 			return{
 				bannerlist:[{Pic:""}], // 轮播图
 				Typelist:[],           // 头部
-				menubarlist:[],         // 菜单
+				menubarlist:[],        // 菜单
+				Productlist:[],        // 商品列表
+				handpick:[],           // 精选
+				handlist:[],           // 精选列表
 				scrollLeft:0,
 				scrollLeft2:0,
 				tabIndex:0,
+				indexs:0,
+				IsRecommend:1,//1: 推荐
+				IsHot:1,//精选
+				IsNew:1,//新品
+				TypeId:1,//类型Id
+				ClassId:1,//分类Id
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				pageSize:10,
+				page: 1,
+				isLoad: false,
 				// tablist:[{id:1,TypeName:'车位'},{id:2,TypeName:'公寓'},{id:3,TypeName:'新房'},{id:4,TypeName:'商业'},{id:5,TypeName:'汽车'},{id:6,TypeName:'牙齿'},{id:7,TypeName:'欧美'},{id:8,TypeName:'近视'},{id:9,TypeName:'近视'},{id:10,TypeName:'近视'},{id:11,TypeName:'近视'},{id:12,TypeName:'近视'}],
-				navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
+				// navlist:[{id:1,title:'精选',subtitle:'为您推荐'},{id:2,title:'实惠',subtitle:'超值好货'},{id:3,title:'房产',subtitle:'省心省钱'},{id:4,title:'汽车',subtitle:'款式齐全'},{id:5,title:'服务',subtitle:'服务到位'}],
 				// datalist:[{id:1,TypeName:'今日推荐'},{id:2,TypeName:'今日推荐'},{id:3,TypeName:'特价倒计时'},{id:4,TypeName:'房产'},{id:5,TypeName:'家居'},{id:6,TypeName:'大健康'}]
 			}
 		},
+		onLoad() {
+			this.banner();
+			this.typelist();
+			this.productlist();//获取推荐列表
+			this.hand();//获取精选等分类列表
+		},
+		components:{uniLoadMore},
 		methods:{
-			//跳转
-			tolink(Url) {
+			// 获取商品列表
+			async productlist() {
+				let query = {
+					Page:1,
+					IsRecommend:this.IsRecommend,
+				}
+				this.getGoodList(query,1)
+			},
+			async hand() {
+				let query = {
+					Page:1,
+					// IsHot:this.IsHot,
+					// TypeId:this.TypeId,
+				}
+				this.getGoodList(query,2)
+			},
+			async getGoodList(prams,tip){
+				const res = await post('Goods/GoodsList',prams)
+				if(tip==1){ //首页推荐列表
+					this.Productlist = res.data
+				}else{ //精选列表
+					this.handlist = res.data
+				}
+			},
+			handItem(item,index){
+				this.indexs = index
+				let query = {
+					Page:1,
+					// IsHot:this.IsHot,
+					// ClassId:this.ClassId,
+				}
+				this.getGoodList(query,2)
+			},//精选列表获取分类列表
+			async changeTab(e) {
+				this.page=1;
+				let index = e.detail.current;
+				let id= this.Typelist[index].Id;
+				this.tabIndex = index;
+				let query = {
+					Page:1,
+					// IsHot:this.IsHot,
+					// TypeId:this.TypeId,
+				}
+				this.getGoodList(query,2);//获取分类列表
+				this.setScrollLeft(index);
+			},
+			setScrollLeft: async function(tabIndex) {
+				let leftWidthSum = 0;
+				for (var i = 0; i <= tabIndex; i++) {
+					let nowElement = await this.getWidth('tabNum' + i);
+					leftWidthSum = leftWidthSum + nowElement.width+8;//8是margin值
+				}
+				let winWidth = uni.getSystemInfoSync().windowWidth;
+				this.scrollLeft = leftWidthSum > winWidth ? (leftWidthSum - winWidth) : 0;
+			},
+			getWidth(id) { //得到元素的宽
+				return new Promise((res, rej) => {
+					uni.createSelectorQuery().select('#' + id).fields({
+						size: true,
+						scrollOffset: true
+					}, (data) => {
+						res(data);
+					}).exec();
+				});
+			},
+			//跳转详情
+			tolink(Url,item) {
+				let path = Url+'?id='+item.Id
 				uni.navigateTo({
-					url: Url
+					url: path
 				})
 			},
 			// 车位 没跳
@@ -201,11 +326,7 @@
 					Cid:1
 				});
 				if (result.code === 0) {
-					// console.log(result,"轮播图")
 					this.bannerlist = result.data
-					// console.log(this.bannerlist)
-				} else {
-					
 				}
 			},
 			// 获取类型(商品)
@@ -228,16 +349,35 @@
 						}
 						this.menubarlist[page].push(val)
 					})
-				} else {
-					
+					let hand = []
+					let pick = {}
+					let picks = {}
+					pick.Name = "精选"
+					picks.Name = "实惠"
+					hand = result.data.slice(0,3)
+					hand.unshift(pick,picks)
+					this.handpick = hand
 				}
-			},
+			}
 			
 		},
 		onLoad() {
 			this.banner();
 			this.typelist();
+			this.productlist();
+			this.hand();
 		},
+		// 上拉加载
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.productlist();
+				this.hand();
+			} else {
+				this.loadingType = 2;
+			}
+		}
 
 			
 		

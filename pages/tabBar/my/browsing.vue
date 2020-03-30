@@ -4,43 +4,46 @@
 		<view class="nav">
 			<view class="" @click="toback()"><image class="back" src="../../../static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">我的足迹</view>
-			<view class="redact" v-if="isShowDel" @click="cancelDel">编辑</view>
-			<view class="redact" v-else @click="ShowDel">完成</view>
+
+			<view class="redact" v-if="isShowDel" @click="ShowDel">完成</view>
+			<view class="redact" v-else @click="ShowDel">编辑</view>
 		</view>
-		<view class="">
+		<view class="" style="padding-top: 88rpx;">
 			<view class="minbox">
 				<view class="min">今天</view>
 				<view class="arrowss"><image class="arrows" src="../../../static/hpicons/arrows2.svg" mode=""></image></view>
 			</view>
-			<view class="listbox">
-				<view class="choose" v-if="isShowDel"><view class="IconsCK IconsCK-radio checked"></view></view>
+			<view class="listbox" v-for="(val, key) in footprintlist" :key="key">
+				<view class="choose" v-if="isShowDel" @click.stop="shiftChecked(key)"><view class="IconsCK IconsCK-radio" :class="{ checked: val.checked }"></view></view>
 				<view class="drawing">
-					<view class=""><image class="imgs" src="" mode=""></image></view>
+					<view class=""><image class="imgs" :src="val.PicFrist" mode=""></image></view>
 					<view class="brace">
-						<view class="being">牙套牙齿矫正器</view>
+						<view class="being">{{ val.ProName }}</view>
 						<view class="correct">
 							<span class="spanl">¥</span>
-							1680
-							<span class="spanr">¥1888</span>
+							{{ val.Price }}
+							<span class="spanr" v-show="false">¥1888</span>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="lect" v-if="isShowDel">
-			<view class="lects"><view class="IconsCK IconsCK-radio checked"></view></view>
+			<view class="lects" @click="cancelDel()"><view class="IconsCK IconsCK-radio" :class="{ checked }"></view></view>
 			<view class="cancel">
 				<view class="cover">全选</view>
-				<view class="covers">删除</view>
+				<view class="covers" @click="btnDel">删除</view>
 			</view>
 		</view>
-		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
+		<noData :isShow="noDataIsShow"></noData>
+		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType" v-if="noDataIsShow == false"></uni-load-more></view>
 	</view>
 </template>
 
 <script>
 import { post, get } from '@/common/util.js';
 import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
+import noData from '@/components/noData.vue'; //暂无数据
 export default {
 	data() {
 		return {
@@ -49,11 +52,19 @@ export default {
 			token: '',
 			page: 1,
 			pageSize: 10,
-			loadingType: 0 //0加载前，1加载中，2没有更多了
+			loadingType: 0, //0加载前，1加载中，2没有更多了
+			footprintlist: {}, //列表
+			count: 0,
+			noDataIsShow: false, //暂无数据
+			allPage: 0,
+			datalength: 0,
+			Ids: [], //保存要删除数据
+			checked: false
 		};
 	},
 	components: {
-		uniLoadMore
+		uniLoadMore,
+		noData
 	},
 	onLoad() {
 		this.userId = uni.getStorageSync('userId');
@@ -68,12 +79,39 @@ export default {
 				url: '/pages/tabBar/my/my'
 			});
 		},
-		//点击编辑
+		//点击编辑 完成
 		ShowDel() {
-			this.isShowDel = true;
+			this.isShowDel = !this.isShowDel;
 		},
+		// 全选
 		cancelDel() {
-			this.isShowDel = false;
+			this.checked = !this.checked;
+			if (this.checked) {
+				this.footprintlist.forEach(function(item) {
+					item.checked = true;
+				});
+			} else {
+				this.footprintlist.forEach(function(item) {
+					item.checked = false;
+				});
+			}
+		},
+		//选择
+		shiftChecked(key) {
+			console.log(key, 'key');
+			this.footprintlist[key].checked = !this.footprintlist[key].checked;
+			let _this = this;
+			let sum = 0;
+			_this.footprintlist.forEach(function(item) {
+				if (item.checked !== _this.checked) {
+					sum += 1;
+				}
+			});
+			if (sum == this.footprintlist.length) {
+				_this.checked = this.footprintlist[0].checked;
+			} else {
+				_this.checked = false;
+			}
 		},
 		/*获取足迹列表*/
 		async FootprintList() {
@@ -84,7 +122,53 @@ export default {
 				pageSize: this.pageSize
 			});
 			if (result.code === 0) {
-				console.log(result.data, '获取足迹列表');
+				let _this = this;
+				if (result.data.length > 0) {
+					result.data.forEach(function(item) {
+						_this.$set(item, 'txt', '');
+						_this.$set(item, 'checked', false);
+					});
+				}
+				this.count = result.count;
+				if (result.data.length > 0) {
+					this.noDataIsShow = false;
+				}
+				if (result.data.length == 0 && this.page == 1) {
+					this.noDataIsShow = true;
+				}
+				if (this.page === 1) {
+					this.footprintlist = result.data;
+				}
+				if (this.page > 1) {
+					this.footprintlist = this.footprintlist.concat(result.data);
+				}
+				if (result.data.length < this.pageSize) {
+					this.isLoad = false;
+					this.loadingType = 2;
+				} else {
+					this.isLoad = true;
+					this.loadingType = 0;
+				}
+				this.datalength = this.footprintlist.length;
+			}
+		},
+		// 删除
+		btnDel() {
+			let _this = this;
+			this.footprintlist.forEach(function(item) {
+				if (item.checked == true) {
+					_this.Ids.push(item.Id);
+				}
+				console.log(_this.Ids, '_this.Ids');
+			});
+			if (this.Ids.length > 0) {
+				this.DeleteMyFootprint();
+			} else {
+				uni.showToast({
+					title: '请选择需要删除的项！',
+					icon: 'none',
+					duration: 1500
+				});
 			}
 		},
 		async DeleteMyFootprint() {
@@ -93,17 +177,31 @@ export default {
 				Token: this.token,
 				Id: this.Ids.join(',')
 			});
-		},
-		// 下拉刷新
-		onPullDownRefresh() {
-			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-			let _this = this;
-			_this.page = 1;
-			_this.loadingType = 1;
-			setTimeout(function() {
-				_this.FootprintList();
-				// uni.stopPullDownRefresh(); //停止下拉刷新动画
-			}, 1000);
+			if (result.code === 0) {
+				let _this = this;
+				for (let j = 0; j < _this.Ids.length; j++) {
+					for (let i = 0; i < _this.datalength; i++) {
+						if (_this.footprintlist[i]) {
+							if (_this.Ids[j] == _this.footprintlist[i].Id) {
+								_this.footprintlist.splice(i, 1);
+							}
+						}
+					}
+				}
+				_this.datalength = _this.footprintlist.length;
+				_this.Ids = [];
+				uni.showToast({
+					title: result.msg,
+					icon: 'none',
+					duration: 2000
+				});
+			} else {
+				uni.showToast({
+					title: result.msg,
+					icon: 'none',
+					duration: 2000
+				});
+			}
 		},
 		// 上拉加载
 		onReachBottom: function() {
@@ -130,6 +228,9 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 30rpx;
+	position: fixed;
+	top: 0;
+	z-index: 12;
 }
 .back {
 	width: 35rpx;
@@ -174,6 +275,7 @@ export default {
 .arrows {
 	width: 27rpx;
 	height: 20rpx;
+	margin-left: 2rpx;
 }
 .listbox {
 	padding: 30rpx;
