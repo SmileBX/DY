@@ -3,12 +3,12 @@
 		 <view class="payinfo">
 		    <view class="p1">待付款金额</view>
 		    <view class="p2 flex flex-center"><view class="yuan">￥</view><view class="payprice">{{orderInfo.TotalPrice}}</view></view>
-		    <div class="countTiem">支付剩余时间{{orderInfo.Hours+':'+orderInfo.Minutes+':'+orderInfo.Seconds}}</div>
+		    <div class="countTiem">支付剩余时间{{Countdown}}</div>
 		  </view>
 		  <view class="pay-hd uni-mb10">选择支付方式</view>
 		  <view class="pay-bd line-list">
 			<block v-for="(item,index) in payway" :key="index"> 
-				<view class="line-item flex-between" @click="tabBtn(index)">
+				<view class="line-item flex-between" @click="tabBtn(item.type)">
 				  <view class="item-l flex-start">
 					<view :class="['icon',item.className]"></view>
 					<view class="lab">{{item.typeName}}</view>
@@ -20,9 +20,9 @@
 			</block>
 		  </view>
 		<view class="ftbtn" style="padding:20upx;">
-		    <view class="btn" @click="submitBtn">立即支付</view>
+		    <view :class="['btn',disable?'disabled':'']" @click="submitBtn">立即支付</view>
 		</view>
-		<pay v-on:hidePay="hidePay" v-on:getPassword="getPassword" v-if="showPay" :allprice="orderInfo.TotalPrice"></pay>
+		<pay v-on:hidePay="hidePay" v-on:getPassword="getPassword" v-if="showPay" :allprice="allprice"></pay>
 	</view>
 </template>
 
@@ -40,24 +40,31 @@
 				orderNo:"",
 				payType:0, //0微信支付
 				payway:[{
+					type:0,
 					typeName:"微信支付",
 					className:"icon_weixin"
 				},{
+					type:1,
 					typeName:"支付宝",
 					className:"icon_alipay"
 				},{
+					type:2,
 					typeName:"银联支付",
 					className:"icon_yinlian"
 				},{
+					type:3,
 					typeName:"余额支付",
 					className:"icon_yue"
 				}],
 				orderInfo:{}, //订单信息
+				allprice:'0',
 				source:1,//1来源从下单页，0从订单列表或订单详情
 				MemberWallet:0,//会员余额
 				Score:0,//会员积分
 				hasPayPassword:0, //是否设置支付密码
 				showPay:false,//支付密码弹框
+				Countdown:'00:00:00',
+				disable:false
 			}
 		},
 		onShow(){
@@ -96,6 +103,9 @@
 				})
 				if (result.code == 0) {
 					this.orderInfo=result.data;
+					this.allprice=this.orderInfo.TotalPrice.toString();
+					this.Countdown=this.orderInfo.Hours+':'+this.orderInfo.Minutes+':'+this.orderInfo.Seconds;
+					this.downTiem(this.orderInfo.Hours,this.orderInfo.Minutes,this.orderInfo.Seconds);
 				}else{
 					uni.showToast({
 						title: result.msg,
@@ -103,6 +113,29 @@
 						duration: 1500
 					});
 				}
+			},
+			//支付倒计时
+			downTiem(h,m,s){
+				let _this=this;
+				let newTime = Date.parse(new Date());
+				let timeResidue1 = (h*3600 +m*60 + s*1)*1000;
+				let timeDing = 	newTime + timeResidue1; //截止时间
+				let timer =setInterval(function(){
+					let now = Date.parse(new Date());
+					timeResidue1 = timeResidue1 - 1000;
+					//定义变量 h,m,s保存倒计时的时间
+					//var h,m,s;
+					if (timeResidue1>=0) {
+						h = Math.floor(timeResidue1/1000/60/60%24);
+						m = Math.floor(timeResidue1/1000/60%60);
+						s = Math.floor(timeResidue1/1000%60);  
+						//将倒计时赋值到div中
+           			    _this.Countdown=h+":"+m+":"+s;
+					}else{
+						_this.disable=true;
+						clearInterval(timer)
+					}
+				},1000)
 			},
 			tabBtn(index){
 				this.payType=index;
@@ -160,36 +193,50 @@
 			},
 			//立即支付
 			submitBtn(){
-				if(this.payType==0){
-					
-				}else if(this.payType==1){
-					
-				}else if(this.payType==2){
-					
-				}else if(this.payType==3){//余额
-					if(this.hasPayPassword==1){
-						if(this.MemberWallet<this.orderInfo.TotalPrice){
-							uni.showToast({
-								title: "余额不足，请选择其他支付方式！",
-								icon: "none",
-								duration: 2000
-							});
-						}else{
-							this.showPay=true;
-						}
-					}else{
-						uni.showModal({
-							content:'您还未设置支付密码，无法使用余额支付，是否马上设置？',
-							success: function (res) {
-								if (res.confirm) {
-									uni.navigateTo({
-										url:"/pages/other/setpwd/setpwd"
-									})
-								} else if (res.cancel) {
-									console.log('用户点击取消');
-								}
+				if(!this.disable){
+					if(this.payType==0){
+						uni.showToast({
+							title: "暂未开通！",
+							icon: "none",
+							duration: 2000
+						});
+					}else if(this.payType==1){
+						uni.showToast({
+							title: "暂未开通！",
+							icon: "none",
+							duration: 2000
+						});
+					}else if(this.payType==2){
+						uni.showToast({
+							title: "暂未开通！",
+							icon: "none",
+							duration: 2000
+						});
+					}else if(this.payType==3){//余额
+						if(this.hasPayPassword==1){
+							if(this.MemberWallet<this.orderInfo.TotalPrice){
+								uni.showToast({
+									title: "余额不足，请选择其他支付方式！",
+									icon: "none",
+									duration: 2000
+								});
+							}else{
+								this.showPay=true;
 							}
-						})
+						}else{
+							uni.showModal({
+								content:'您还未设置支付密码，无法使用余额支付，是否马上设置？',
+								success: function (res) {
+									if (res.confirm) {
+										uni.navigateTo({
+											url:"/pages/other/setpwd/setpwd"
+										})
+									} else if (res.cancel) {
+										console.log('用户点击取消');
+									}
+								}
+							})
+						}
 					}
 				}
 			},
@@ -206,6 +253,7 @@
 	left: 0;
   }
   .ftbtn .btn{ height: 80upx; width: 100%; border-radius: 16upx; background: #FF3333; display: flex; justify-content: center; align-items: center; flex-direction: column; font-size: 30upx; color:  #fff;}
+  .ftbtn .btn.disabled{ background-color: #C9C9C9;}
   .payinfo{ background: #ff3333; text-align: center; color: #fff; padding: 40upx 0;}
   .payinfo .p1{font-size: 32upx;}
   .payinfo .p2 .payprice{ font-size: 76upx; line-height: 1.5}

@@ -29,7 +29,7 @@
 		props:{
 			allprice:{
 				type: String,
-				default: "0.00"
+				default: "0"
 			}
 		},
 		data() {

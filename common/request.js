@@ -16,15 +16,30 @@ function request(url, method, data) {
         },
         success: function (res) {
           const ret = res.data;
-          if(ret.code===0){
+          if(ret.code===0||ret.code===1||ret.code===2){
              resolve(ret)
+         }else if(ret.code==1){
+			 uni.showToast({
+			     title:ret.msg,
+			     icon:'none'
+			 });
+			 resolve(ret)
+		 }
+		 else if(ret.code==2){
+			 localStorage.removeItem('token');
+			 localStorage.removeItem('userId');
+			 uni.showToast({
+			     title:ret.msg,
+			     icon:'none'
+			 });
+			 resolve(ret)
          }else{
-              uni.showToast({
-                  title:ret.msg,
-                  icon:'none'
-              });
-              reject(ret)
-         }
+			uni.showToast({
+			    title:ret.msg,
+			    icon:'none'
+			});
+			reject(ret) 
+		 }
         },
         fail: function (error) {
           uni.showToast({

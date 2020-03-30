@@ -279,35 +279,36 @@
 					  duration: 2000,
 					  success:function(){
 						setTimeout(function() {
-							if(_this.askUrl){
-							  if(_this.askUrl.indexOf("undefined")>-1){
-								uni.switchTab({
-								  url: "/pages/tabBar/my/my"
-								});
-							  }
-							  if(_this.askUrl.indexOf("cart")>-1){
-								uni.switchTab({
-								  url: "/pages/tabBar/cart/cart"
-								});
-							  }
-							  if(_this.askUrl.indexOf("/my/my")>-1){
-								uni.switchTab({
-								  url: "/pages/tabBar/my/my"
-								});
-							  }
-							  if(_this.askUrl.indexOf("/discover/discover")>-1){
-								uni.switchTab({
-								  url: "/pages/tabBar/discover/discover"
-								});
-							  }
-							  uni.redirectTo({
-								url: _this.askUrl
-							  });
-							}else{
-							  uni.switchTab({
-								url: "/pages/tabBar/my/my"
-							  });
-							}
+							uni.navigateBack();
+							// if(_this.askUrl){
+							//   if(_this.askUrl.indexOf("undefined")>-1){
+							// 	uni.switchTab({
+							// 	  url: "/pages/tabBar/my/my"
+							// 	});
+							//   }
+							//   if(_this.askUrl.indexOf("cart")>-1){
+							// 	uni.switchTab({
+							// 	  url: "/pages/tabBar/cart/cart"
+							// 	});
+							//   }
+							//   if(_this.askUrl.indexOf("/my/my")>-1){
+							// 	uni.switchTab({
+							// 	  url: "/pages/tabBar/my/my"
+							// 	});
+							//   }
+							//   if(_this.askUrl.indexOf("/discover/discover")>-1){
+							// 	uni.switchTab({
+							// 	  url: "/pages/tabBar/discover/discover"
+							// 	});
+							//   }
+							//   uni.redirectTo({
+							// 	url: _this.askUrl
+							//   });
+							// }else{
+							//   uni.switchTab({
+							// 	url: "/pages/tabBar/my/my"
+							//   });
+							// }
 						 }, 2000);
 					  }
 					});

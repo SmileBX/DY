@@ -81,7 +81,7 @@
 						</view>
 						<view class="txt">待评价</view>
 					</view>
-					<view class="item" @click="golink('/pages/afterSale/afterSale')">
+					<view class="item" @click="golink('/pages/member/orderTui/orderTui')">
 						<view class="iconImg">
 							<image class="icon" src="../../../static/icons/u_order5.png" mode="widthFix"></image>
 						</view>
@@ -178,7 +178,7 @@
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
-			this.token = uni.getStorageSync("token");
+			this.token = uni.getStorageSync("token");console.log(toLogin())
 			if (toLogin()) {
 				this.NewsCount();
 			    this.getMemberInfo();
@@ -206,17 +206,11 @@
 						success(res) {
 							if (res.confirm) {
 								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
+								  url: "/pages/login/login"
 								});
 							} else if (res.cancel) {
 							}
 						}
-					});
-				}else{
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
 					});
 				}
 			},
