@@ -1,14 +1,16 @@
 <template>
 	<!-- 浏览记录 -->
 	<view class="browsing">
+		<!--  #ifndef  MP-WEIXIN -->
 		<view class="nav">
 			<view class="" @click="toback()"><image class="back" src="../../../static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">我的足迹</view>
-
 			<view class="redact" v-if="isShowDel" @click="ShowDel">完成</view>
 			<view class="redact" v-else @click="ShowDel">编辑</view>
 		</view>
-		<view class="" style="padding-top: 88rpx;">
+		<!--  #endif -->
+		<view  :style="{'height':barHeight+44+'px'}"></view>
+		<view class="bb_pt">
 			<view class="minbox">
 				<view class="min">今天</view>
 				<view class="arrowss"><image class="arrows" src="../../../static/hpicons/arrows2.svg" mode=""></image></view>
@@ -67,6 +69,13 @@ export default {
 		noData
 	},
 	onLoad() {
+		// #ifdef APP-PLUS
+		var height = plus.navigator.getStatusbarHeight();
+		this.barHeight = height;
+		// #endif
+		// #ifdef H5
+		this.barHeight = 0;
+		// #endif
 		this.userId = uni.getStorageSync('userId');
 		this.token = uni.getStorageSync('token');
 		console.log(this.userId, 'this.userId');
@@ -217,7 +226,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped>	
 .browsing {
 	background: #ffffff;
 }

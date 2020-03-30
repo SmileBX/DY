@@ -2,8 +2,10 @@
 	<view>
 		<view class="BrandInfo" style="background-image: url(../../../static/icons/user_bg.png);">
 			<!-- #ifdef MP-WEIXIN -->
-			<view class="menubtn iconfont icon-aixin"></view>
-			<button class="sharebtn" open-type="share"><view class="iconfont icon-fenxiang1"></view></button>
+			<view class="flex justifyContentBetween bb_mt">
+				<view class="menubtn iconfont icon-aixin"></view>
+				<button class="sharebtn" open-type="share"><view class="iconfont icon-fenxiang1"></view></button>
+			</view>
 			<!-- #endif -->
 			<view class="inner flex flex-start">
 				<view class="logoBox">

@@ -134,5 +134,9 @@ export default {
         border-radius:25upx;border-bottom:1px dashed#f5f5f5;
     }
   }
+  .icon_right{
+	  width:12upx;height:22upx;
+	  margin:0
+  }
 
 </style>

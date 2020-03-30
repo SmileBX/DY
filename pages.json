@@ -326,13 +326,6 @@
             	"navigationBarTitleText": "我的收藏"
             }
         }
-        
-        ,{
-            "path" : "orderTui/orderTui",
-            "style" : {
-				"navigationBarTitleText": "售后订单"
-			}
-        }
     ],
 
 	"subPackages":[
@@ -410,6 +403,7 @@
 					"style": {
 						"navigationBarTitleText": "我的团队",
 						"enablePullDownRefresh" : true
+						
 					}
 				}
 			]
@@ -543,6 +537,11 @@
 				"path" : "addComment/addComment",
 				"style": {
 					"navigationBarTitleText": "发布评价"
+				}
+			},{
+				"path" : "orderTui/orderTui",
+				"style" : {
+					"navigationBarTitleText": "售后订单"
 				}
 			}
 		]
