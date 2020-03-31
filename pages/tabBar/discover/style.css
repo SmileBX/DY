@@ -34,7 +34,7 @@
 			}
 		}
 		.head_r{
-			.iconfont{ font-size: 40upx; color: #fff; line-height: 1;}
+			.iconfont{ font-size: 40upx; color: #fff; line-height: 1; padding: 10upx 30upx;}
 		}
 	}
 	.b_tab_list{

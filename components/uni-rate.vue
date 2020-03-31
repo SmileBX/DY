@@ -114,7 +114,8 @@
 		line-height: 0;
 		font-size: 0;
 		display: flex;
-		flex-direction: row
+		flex-direction: row;
+		align-items: center;
 	}
 	.ratetxt{color: #b2b2b2; font-size: 28upx; margin-left: 20upx;}
 	.uni-rate-icon {

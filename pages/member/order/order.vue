@@ -3,7 +3,7 @@
 		<view class="bg_fff tabList flex">
 			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{'active':index==tabIndex}"  @click="cliTab(index)">{{item.name}}</view>
 		</view>
-		<view class="list pw3">
+		<view class="list pw3" style="padding-top: 80upx;" v-if="hasData">
 			<!--
 			等待买家付款:取消订单 立即支付
 			买家已付款/交易关闭:无状态
@@ -13,15 +13,15 @@
 			-->
 			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNumber)">
 				<view class="flex justifyContentBetween flexAlignCenter">
-					<view>
-						<image src="../../../static/my/shop.png" class="logo"></image>
-						<text class="uni-bold shop_name">{{item.ShopName}}</text>
-						<text class="iconfont icon-arrow_r font18"></text>
+					<view class="shopbox flex flex-start">
+						<view class="iconfont icon-dianpu"></view>
+						<text class="shopName uni-ellipsis">{{item.ShopName}}</text>
+						<view class="iconfont icon-arrow_r"></view>
 					</view>
 					<view class="color_red font18">{{item.StatusName}}</view>
 				</view>
 				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind">
-					<image src="../../../static/of/4.png" class="img mr2"></image>
+					<image :src="ite.PicNo" class="img mr2"></image>
 					<view class="flex1 order_info">
 						<view>{{ite.ProductName}}</view> 
 						<view class="color_gray font18">{{ite.SpecText}}</view> 
@@ -40,7 +40,11 @@
 					<view class="btn_r" v-if="item.IsConfirmReceipt==1" @click.stop="chooseOrders(item.OrderNumber,3)">确认收货</view>
 				</view>
 			</view>
-			<noData :isShow="isnNoData"></noData>
+			
+		</view>
+		<noData :isShow="noDataIsShow"></noData>
+		<view class="uni-tab-bar-loading" v-if="hasData">
+			<uni-load-more :loadingType="loadingType"></uni-load-more>
 		</view>
 		<!-- 选择评价商品 -->
 		  <view class="change-goods flexc" v-if="showChange" @click="showChange=false">
@@ -58,9 +62,11 @@
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
+	import uniLoadMore from '@/components/uni-load-more.vue';
 	export default{
 		components: {
-			noData
+			noData,
+			uniLoadMore
 		},
 		data(){
 			return{
@@ -69,8 +75,11 @@
 				page:1,
 				pagesize:3,
 				list:[],
-				isnNoData:false,
-				isOver:false,
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				hasData: false,
+				noDataIsShow:false,
+				isLoad: false,
+				// isOver:false,
 				needChangeGoods:[],
 				showChange:false,
 				changeNumId:'',//评价多商品订单时选中的订单no
@@ -82,15 +91,15 @@
 			this.tabIndex = this.$mp.query.tabIndex
 			this.list = []
 			this.page = 1
-			this.isOver = false
-			this.isnNoData = false
+			this.noDataIsShow = false;
+			this.hasData = false;
 			if (toLogin()) {
 			    this.getList();
 			}
 		},
 		methods:{
 			goUrl(url){
-			  wx.navigateTo({
+			  uni.navigateTo({
 				url:url
 			  })
 			},
@@ -98,31 +107,47 @@
 			  this.tabIndex = index
 			  this.page=1;
 			  this.list=[];
-			  this.isOver = false
-			  this.isnNoData = false
+			  this.noDataIsShow = false;
+			  this.hasData = false;
 			  this.getList()
 			},
 			getList(){
 			  post('Order/OrderList',{
-				UserId:wx.getStorageSync("userId"),
-				Token:wx.getStorageSync("token"),
+				UserId:uni.getStorageSync("userId"),
+				Token:uni.getStorageSync("token"),
 				Page:this.page,
 				PageSize:this.pagesize,
 				Status:this.tabIndex,
 				// Type:0,
 			  }).then(res=>{
 				if(res.code===0){
-				  this.list.push(...res.data)
-				  if(res.count == 0){
-					this.isnNoData = true
+				  let _this=this;
+				  if (res.data.length > 0) {
+				  	this.hasData = true;
+					this.noDataIsShow = false;
 				  }
-				  if(res.count<=this.isOver){
-					this.isOver = true;console.log(this.isOver)
+				  if (res.data.length == 0&&this.page==1) {
+				  	this.noDataIsShow = true;
+					this.hasData = false;
+				  }
+				  if (this.page === 1) {
+				  	this.list = res.data;
+				  }
+				  if (this.page > 1) {
+				  	this.list.push(...res.data)
+				  }
+				  if (res.data.length <this.pagesize) {
+				  	this.isLoad = false;
+				  	this.loadingType = 2;
+				  } else {
+				  	this.isLoad = true;
+				  	this.loadingType = 0
 				  }
 				}
 			  })
 			},
 			chooseOrders(OrderNo,type){//确认取消
+				let _this=this;
 			  if(type==1){
 				var content="您确定要取消此订单吗？"
 				var url="Order/CancelOrders"
@@ -133,23 +158,22 @@
 				var content="您确定收货成功吗？"
 				var url="Order/ConfirmReceipt"
 			  }
-			  wx.showModal({
+			  uni.showModal({
 				title: '提示',
 				cancelText:"再想想",
 				content: content,
 				success (res) {
 				  if (res.confirm) {
 					post(url,{
-					  UserId:wx.getStorageSync("userId"),
-					  Token:wx.getStorageSync("token"),
+					  UserId:uni.getStorageSync("userId"),
+					  Token:uni.getStorageSync("token"),
 					  OrderNo:OrderNo,
 					}).then(res=>{
-					  this.showCancel = false
-					  this.list = []
-					  this.isOver = false
-					  this.isnNoData = false
-					  this.getList()
-					  wx.showToast({
+					  _this.showCancel = false;
+					  _this.list = [];
+					  _this.noDataIsShow = false;
+					  _this.getList();
+					  uni.showToast({
 						icon:'none',
 						title:res.msg
 					  })
@@ -173,12 +197,15 @@
 			  this.goUrl('/pages/member/addComment/addComment?id='+this.changeNumId+'&detailId='+detailId)
 			},
 		},
-		onReachBottom(){console.log(this.isOver,this.isnNoData)
-		    if(!this.isOver&&!this.isnNoData){
-		      this.page++
-		      this.getList()
-		    }
-		  },
+		onReachBottom(){
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.getList();
+			} else {
+				this.loadingType = 2;
+			}
+		}
 	}
 	
 </script>

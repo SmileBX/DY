@@ -93,7 +93,7 @@
 		width: 100%;
 		height: 300rpx;
 		border-radius:30rpx;
-		background:url(/static/icons/wallet2.png);
+		background:url(http://ddyp.wtvxin.com/static/icons/wallet2.png);
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(252,252,252,1);

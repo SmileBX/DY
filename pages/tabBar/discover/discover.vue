@@ -49,7 +49,7 @@
 						</view>
 					</view>
 					<view class="list flex justifyContentBetween">
-						<view class="item" v-for="(item,index) in Productlist" :key="index">
+						<view class="item" v-for="(item,index) in Productlist" :key="index"  @click="goUrl('/pages/homePage/details?id='+item.Id)">
 							<image src="../../../static/icons/hot_bg.png" class="bg"></image>
 							<image :src="item.PicNo"></image>
 							<view class="item_title">{{item.Name}}</view>
@@ -68,7 +68,7 @@
 					<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 						<view class="uni-bd">
 							<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-								<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index">
+								<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 									<view class="itembox">
 										<view class="image-view">
 											<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -94,30 +94,30 @@
 						<view class="title">{{item.title}}</view>
 					</view>
 				</view>
-				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 0">
+				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 0" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 					<view class="item" v-for="(item,index) in promotelist" :key="index">
 						<image :src="item.PicNo" class="item_img"></image>
-						<view class="item_info flex flexColumn flexAlignCenter">
+						<view class="item_info">
 							<view class="item_title">{{item.Name}}</view>
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+									<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
 								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 1">
+				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 1" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 					<view class="item" v-for="(item,index) in hotlist" :key="index">
 						<image :src="item.PicNo" class="item_img"></image>
-						<view class="item_info flex flexColumn flexAlignCenter">
+						<view class="item_info">
 							<view class="item_title">{{item.Name}}</view>
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
 								<view class="flex flexAlignEnd">
 									<span class="item_price">￥{{item.Price}}</span>
-									<span class="item_market" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+									<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 								</view>
 								<view class="item_market">{{item.SalesVolume}}人付款</view>
 							</view>
@@ -154,11 +154,12 @@
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.productlist()
 		},
 		methods: {
 			//链接跳转
 			goUrl(url){
-			  wx.navigateTo({
+			  uni.navigateTo({
 				url:url
 			  })
 			},
@@ -206,9 +207,6 @@
 					}
 				}
 			},
-		},
-		onLoad() {
-			this.productlist()
 		},
 		// 上拉加载
 		onReachBottom: function() {
