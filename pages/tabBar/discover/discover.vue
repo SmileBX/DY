@@ -15,26 +15,26 @@
 			</view>
 			<view class="flex b_tab_list">
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="../../../static/icons/t1.png"></image>
+					<image src="/static/icons/t1.png"></image>
 					<view class="flex1">品牌授权</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="../../../static/icons/t2.png"></image>
+					<image src="/static/icons/t2.png"></image>
 					<view class="flex1">退货无忧</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="../../../static/icons/t3.png"></image>
+					<image src="/static/icons/t3.png"></image>
 					<view class="flex1">买手精选</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="../../../static/icons/t4.png"></image>
+					<image src="/static/icons/t4.png"></image>
 					<view class="flex1">天天平价</view>
 				</view>
 			</view>
 		</view>
 		<view class="main">
 			<view class="tui_bg">
-				<image src="../../../static/of/tui_bg.png"></image>
+				<image src="/static/of/tui_bg.png"></image>
 			</view>
 			<view class="card">
 				<view class="pw3">
@@ -50,11 +50,10 @@
 							</view>
 						</view>
 						<view class="list flex justifyContentBetween">
-							<view class="item" v-for="(item,index) in Productlist" :key="index">
-								<image src="../../../static/icons/hot_bg.png" class="bg"></image>
+							<view class="item" v-for="(item,index) in Productlist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
+								<view class="brand">{{index+1}}</view>
 								<image :src="item.PicNo"></image>
 								<view class="item_title">{{item.Name}}</view>
-								<view class="brand">{{index+1}}</view>
 							</view>
 						</view>
 					</view>
@@ -69,7 +68,7 @@
 						<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 							<view class="uni-bd">
 								<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-									<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index">
+									<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 										<view class="itembox">
 											<view class="image-view">
 												<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -96,7 +95,7 @@
 						</view>
 					</view>
 					<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 0">
-						<view class="item" v-for="(item,index) in promotelist" :key="index">
+						<view class="item" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 							<image :src="item.PicNo" class="item_img"></image>
 							<view class="item_info">
 								<view class="item_title">{{item.Name}}</view>
@@ -111,7 +110,7 @@
 						</view>
 					</view>
 					<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 1">
-						<view class="item" v-for="(item,index) in hotlist" :key="index">
+						<view class="item" v-for="(item,index) in hotlist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 							<image :src="item.PicNo" class="item_img"></image>
 							<view class="item_info">
 								<view class="item_title">{{item.Name}}</view>

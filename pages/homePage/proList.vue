@@ -169,12 +169,14 @@
 		methods: {
 			// 每次 切换分类、切换区域，返回默认值
 			init(){
+				this.page=1;
 				this.Sort=0;
 				this.Order=0;
 				this.getprolist();
 			},
+			// 如果已经点击了筛选则更换排序
 			onSort(sort){
-				// 如果已经点击了筛选则更换排序
+				this.page=1;
 				if(sort===this.Sort){
 					this.Order=this.Order===0?1:0;
 				}else{

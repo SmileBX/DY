@@ -59,7 +59,8 @@
     "mp-weixin" : {
         "appid" : "wxb4b4bd5c271e48bf",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "minified" : true
         },
         "usingComponents" : true
     },
@@ -72,5 +73,9 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "大单易拼",
+        "domain" : "ddyp.wtvxin.com"
     }
 }

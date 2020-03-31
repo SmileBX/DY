@@ -53,7 +53,7 @@
 </template>
 
 <script>
-	import {host,post,get,dateUtils} from '@/common/util.js';
+	import {host,post,get,dateUtils,getCurrentPageUrlWithArgs,toLogin} from '@/common/util.js';
 	import uParse from '@/components/uParse/src/wxParse.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
@@ -93,7 +93,6 @@
 			}
 		},
 		onLoad: function(e) {
-			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.Msgtype=e.type;
@@ -101,7 +100,7 @@
 			this.shopId=e.shopId;
 		},
 		onShow(){
-			if (toLogin(this.curPage)) {
+			if (toLogin()) {
 				this.NoticeList();
 				uni.setNavigationBarTitle({
 					title: this.keyname

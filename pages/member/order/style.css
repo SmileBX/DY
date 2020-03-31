@@ -2,7 +2,7 @@
 	position: fixed;
 	width: 100%;
 	left: 0;
-	top: 44px;
+	/* top: 44px; */
 	height: 80upx;
 	z-index: 9;
 	.item{

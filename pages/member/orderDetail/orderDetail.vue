@@ -37,7 +37,7 @@
                     </div>
                     <div class="mr3 flex flexColumn flexAlignEnd">
                       <span>x{{item.Number}}</span>
-                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click="goUrl('/pages/myson/sertype/main?indexId='+index+'&id='+info.OrderNumber)">退款</span>
+                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click="navigate('member/afterSaleType/afterSaleType',{indexId:index,id:info.OrderNumber})">退款</span>
                     </div>
                 </div>
             </div>
@@ -93,11 +93,12 @@
 </template>
 
 <script>
-import {switchPath,post} from '@/common/util.js'
+import {switchPath,post,navigate} from '@/common/util.js'
 export default {
 
   data () {
     return {
+      navigate,
       info:{},
     }
   },

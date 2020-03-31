@@ -57,8 +57,9 @@
 
 .tui_bg{
 	padding:0 30upx;position: relative;
-	image{
+	.swiper,.img,.swiper-item{
 		width:690upx;height:340upx;
+		border-radius:15upx;
 	}
 }
 .combox{
@@ -125,12 +126,17 @@
 					padding:10upx;
 					font-size:26upx;text-align: center;
 				}
-				.brand{
+				.bb_brand{
 					position: absolute;top:-4upx;left:16upx;z-index:20;color:#ffffff;
 				}
-				.bg{
+				.brand{
 					position: absolute;top:0;left:0;z-index:10;
 					width:46upx;height:48upx;
+					text-align: center;
+					color: #fff;
+					line-height: 46upx;
+					background: url(/static/icons/hot_bg.png) center center no-repeat;
+					background-size: 100% 100%;
 				}
 			}
 		}

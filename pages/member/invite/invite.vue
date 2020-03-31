@@ -61,8 +61,9 @@
 
 <script>
 import {post} from '@/common/util.js'
+ //#ifdef H5
 import html2canvas from 'html2canvas';
-
+//#endif
 export default {
   data () {
     return {

@@ -58,22 +58,21 @@
 						<!--拼品牌馆-->
 						<view class="index_pin">
 							<image src="../../../static/of/f1.png" mode="widthFix"></image>
-							<view class="pin_list flex justifyContentBetween">
-								<view class="pin_item" v-for="(item,key) in 4" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex')">
+							<view class="pin_list flex" :class="brandList>1?'justifyContentBetween':'justifyContentCenter'">
+								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.BrandId+'&TypeId='+item.Id)">
 									<view class="item_logo">
 										<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 									</view>
 									<view class="flex justifyContentBetween item_info">
 										<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
-											<view class="item_info_title">专注纯实木</view>
-											<view class="item_sige">连续八年实木家具</view>
+											<view class="item_info_title">{{item.Name}}</view>
+											<view class="item_sige">{{item.Intro}}</view>
 										</view>
 										<view class="right_img">
-											<image src="../../../static/of/2.png" mode="aspectFill"></image>
+											<image :src="item.Pic" mode="aspectFill"></image>
 										</view>
 									</view>
 								</view>
-									
 							</view>
 						</view>
 						<!--特惠-->
@@ -92,15 +91,15 @@
 							</view>
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<block v-if="index==0"><image src="../../../static/of/1.png"></image></block>
-									<block v-if="index==1"><image src="../../../static/of/5.png"></image></block>
-									<block v-if="index==2"><image src="../../../static/of/6.png"></image></block>
+									<block v-if="index==0"><image src="/static/of/1.png"></image></block>
+									<block v-if="index==1"><image src="/static/of/5.png"></image></block>
+									<block v-if="index==2"><image src="/static/of/6.png"></image></block>
 								</view>
 							</view>
 						</view>
 						<!--推荐-->
 						<view class="jian mt2">
-							<image src="../../../static/of/f3.png" class="jian_bg"></image>
+							<image src="/static/of/f3.png" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<!-- 热销榜单 -->
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
@@ -198,6 +197,7 @@
 				Productlist:[],        // 商品列表
 				handpick:[],           // 精选
 				handlist:[],           // 精选列表
+				brandList:[],          //品牌馆
 				scrollLeft:0,
 				scrollLeft2:0,
 				tabIndex:0,
@@ -219,12 +219,19 @@
 			this.typelist();
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
+			this.getBrandList() //品牌馆
 			if(toLogin()){
 				this.NewsCount();
 			}
 		},
 		components:{uniLoadMore},
 		methods:{
+			async getBrandList(){
+				const res = await post('Goods/BrandList',{})
+				if(res.code == 0){
+					this.brandList = res.data
+				}
+			},
 			async NewsCount() {
 				let result = await post("News/NewsCount", {
 					"UserId": uni.getStorageSync("userId"),

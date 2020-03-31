@@ -81,7 +81,7 @@
 </template>
 
 <script>
-	import {host,post,get,dateUtils,toLogin,} from '@/common/util.js';
+	import {host,post,get,toLogin} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import "@/common/dd_style.css";

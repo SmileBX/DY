@@ -24,7 +24,7 @@
 						<label class="weui-label">所在地区</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input type="text" class="weui-input" disabled="true" placeholder="请选择所在地区" :value="pickerText"  />
+						<input type="text" class="weui-input" disabled="true" placeholder="请选择所在地区" v-model="pickerText"  />
 					</view>
 				</view>
 				<view class="weui-cell flexAlignStart">
@@ -48,7 +48,7 @@
 				<button type="primary" class="btn_bb" @click="submit">{{buttonText}}</button>
 			</view>
 			<mpvue-city-picker v-if="hasData" :province="province" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
-			 v-on:onconfirm="onconfirm(arguments)"></mpvue-city-picker>
+			 @onconfirm="onconfirm"></mpvue-city-picker>
 		</view>
 	</view>
 </template>
@@ -161,6 +161,7 @@
 	    },
 		//获取选择的地址code
 		onconfirm(code) {
+			console.log(code,"}}}}}}}}}")
 			this.provincesCode=code[0];
 			this.cityCode=code[1];
 			this.quCode=code[2];
