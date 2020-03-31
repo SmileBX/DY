@@ -115,7 +115,7 @@
 													<view class="txt uni-ellipsis">{{item.Name}}</view>
 													<view class="uni-product-price">
 														<text class="uni-product-price-original">￥{{item.Price}}</text>
-														<text class="uni-product-price-favour">￥{{item.MarketPrice}}</text>
+														<text class="uni-product-price-favour" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</text>
 													</view>
 												</view>
 											</view>

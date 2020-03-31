@@ -157,7 +157,7 @@ image{ width: 100%; margin: 0 auto;}
 .uni-h5 {font-size: 28upx; color: #8f8f94;}
 .uni-h6 {font-size: 24upx; color: #8f8f94;}
 .uni-bold{font-weight:bold;}
-.red{ color: #f0370b;}
+.red{ color: #FF3333 !important;}
 .c_theme{color: #FF3333;}
 .c_blue{color: #5e729a;}
 .fz12{ font-size: 24upx !important;}
@@ -531,7 +531,7 @@ radio-group label, checkbox-group label{
 }
 .uni-list-cell-navigate {
 	font-size:30upx;
-	padding: 22upx 20upx;
+	padding: 22upx 30upx;
 	line-height: 48upx;
 	position: relative;
 	display: flex;
@@ -542,7 +542,7 @@ radio-group label, checkbox-group label{
 	align-items: center;
 }
 .uni-list-cell-navigate {
-	padding-right: 20upx;
+	padding-right: 30upx;
 }
 .uni-navigate-badge {
 	padding-right: 50upx;
@@ -551,7 +551,7 @@ radio-group label, checkbox-group label{
 	font-family: uniicons;
 	content: '\e583';
 	position: absolute;
-	right: 20upx;
+	right: 30upx;
 	top: 50%;
 	color: #bbb;
 	-webkit-transform: translateY(-50%);
@@ -597,7 +597,7 @@ radio-group label, checkbox-group label{
 .uni-list.uni-active {
 	height: auto;
 }
-
+.uni-list-cell-navigate .list-cell-r{ padding-right: 30upx;}
 /* 三行列表 */
 .uni-triplex-row {
 	display: flex;

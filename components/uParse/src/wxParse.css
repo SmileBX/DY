@@ -13,7 +13,7 @@
   width: 100%;
   font-family: Helvetica, sans-serif;
   font-size: 30upx;
-  color: #666;
+  color: #333;
   line-height: 1.8;
 }
 
@@ -63,19 +63,27 @@
 .wxParse .h5>view,
 .wxParse .h6>view,
 .wxParse .b,
-.wxParse .strong {
-  font-weight: bolder;
+.wxParse .strong{
+  font-weight: bold;
 }
-
+.wxParse .b view,
+.wxParse .strong view{
+  font-weight: bold;
+  font-size: 32upx;
+}
 .wxParse .p {
   margin: 1em 0;
+  text-indent: 2em;
 }
-
+.wxParse .p view{
+	display: inline;
+}
 .wxParse .i,
 .wxParse .cite,
 .wxParse .em,
 .wxParse .var,
-.wxParse .address {
+.wxParse .address,
+.wxParse .i view{
   font-style: italic;
 }
 
@@ -140,13 +148,15 @@
 }
 
 .wxParse .img {
- /* display: inline-block;
+ display: inline-block;
   width: 0;
   height: 0;
   max-width: 100%;
-  overflow: hidden; */
+  overflow: hidden;
 }
-
+.wxParse .p .img{
+	margin-left: -2em;
+}
 .wxParse .blockquote {
   margin: 10upx 0;
   padding: 22upx 0 22upx 22upx;

@@ -38,16 +38,16 @@
 										</view>
 										<view class="txtBox">
 											<view class="title text-line2">{{item.ProductTitle}}</view>
-											<view class="flex skuBox">
-												<view class="flex-item flex1 left">
+											<view class="flex skuBox flex-between">
+												<view class="flex-item flex1">
 													<text class="sku">{{item.ProductSpecification}}</text>
 												</view>
 												<view class="flex-item right">
 													<!-- <text class="buyNum">x1</text> -->
 												</view>
 											</view>
-											<view class="flex">
-												<view class="flex-item flex1 left">
+											<view class="flex flex-between">
+												<view class="flex-item flex1">
 													<text class="new-price">￥{{item.ProductPrice}}</text>
 												</view>
 												<view class="flex-item right">

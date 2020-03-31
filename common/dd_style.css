@@ -646,7 +646,7 @@ button.fill {
 .memberTop .iconBtnBox {
 	text-align: right;
 }
-.iconBtnBox .iconfont.icon-xiaoxi .uni-badge{ position: absolute; top: 0; right: 0; background: #fa3d34; color: #fff;transform: scale(.8);} 
+.iconBtnBox .iconfont.icon-xiaoxi .uni-badge{ position: absolute; top: 0; right: 0; border: 1px solid #FF3333; background: #fff; color: #FF3737;transform: scale(.8);} 
 .memberTop .iconBtn {
 	width: 30px;
     height: 30px;

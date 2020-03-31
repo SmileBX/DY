@@ -1,15 +1,11 @@
 <template>
 	<!-- 全部评价 -->
 	<view class="evaluation">
-		<view class="minute">
-			<view class="given">
+		<view class="minute uni-bg-white" style="display: none;">
+			<view class="given flex flex-between">
 				<view class="screen">评分：</view>
-				<view class="stars" style="margin-right: 210rpx;">
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+				<view class="flex">
+				   <view class="star iconfont icon-collect" v-for="(item1,index1) in 5" :key="index1"></view> 
 				</view>
 				<view class="min">商品好评度99%</view>
 			</view>
@@ -29,97 +25,170 @@
 			</view>
 		</view>
 		<!-- 商品评价详情 -->
-		<view class="minute">
-			<view class="given">
-				<view class="picture" style="padding-right: 10px;">
-					<view class="portrait">
-						<image src="../../static/hpicons/back.svg" mode=""></image>
+		<view class="CommentList uni-bg-white" v-if="hasData">
+			<view class="minute" v-for="(item,index) in datalist" :key="index">
+				<view class="given flex flex-between">
+					<view class="flex flex-start">
+						<view class="tx">
+							<image :src="item.Avatar||'/static/default.png'" mode="aspectFill"></image>
+						</view>
+						<view class="name uni-ellipsis">{{item.NickName}}</view>
+						<view class="flex">
+						   <view class="star iconfont icon-collect" v-for="(item1,index1) in item.Rank" :key="index1"></view> 
+						</view>
 					</view>
+					<view class="min">{{item.AddTime}}</view>
 				</view>
-				<view class="screen">筱风月忆</view>
-				<view class="stars" style="margin-right: 140rpx;">
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
+				<view class="carport">{{item.ContentText}}</view>
+				<view class="commentpic" v-if="item.PicData.length">
+					<block v-for="(i,e) in item.imgArr" :key="e">
+					  <image :src="i" alt="" class="shop_pic" @click="previewImg(item.imgArr,i)" mode="aspectFill"></image>
+					</block>
+				</view>
+				<view class="figure" style="display: none;">
+					<view class="figurebox">
+						<text class="iconfont icon-pinglun1"></text>5786
 					</view>
-				<view class="min">2019-09-08</view>
-			</view>
-			<view class="carport">医院的服务还不错，环境也很好，做完这个手术之后，看 什么东西都清晰了。术后恢复的挺好的。</view>
-			<view class="carportimg">
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
-			</view>
-			<view class="figure">
-				<view class="figurebox">
-					<image class="news" src="../../static/hpicons/news.svg" mode=""></image>5786
+					<view class="figurebox"><text class="iconfont icon-zan"></text>4633</view>
 				</view>
-				<view class="figurebox"><image class="praise" src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
 			</view>
 		</view>
-		<view class="minute">
-			<view class="given">
-				<view class="picture" style="padding-right: 10px;">
-					<view class="portrait">
-						<image src="../../static/hpicons/back.svg" mode=""></image>
-					</view>
-				</view>
-				<view class="screen">筱风月忆</view>
-				<view class="stars" style="margin-right: 140rpx;">
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					</view>
-				<view class="min">2019-09-08</view>
-			</view>
-			<view class="carport">医院的服务还不错，环境也很好，做完这个手术之后，看 什么东西都清晰了。术后恢复的挺好的。</view>
-			<view class="carportimg">
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
-			</view>
-			<view class="figure">
-				<view class="figurebox">
-					<image class="news" src="../../static/hpicons/news.svg" mode=""></image>5786
-				</view>
-				<view class="figurebox"><image class="praise" src="../../static/hpicons/praise.svg" mode=""></image>4633</view>
-			</view>
+		<noData :isShow="noDataIsShow"></noData>
+		<view class="uni-tab-bar-loading" v-if="hasData">
+			<uni-load-more :loadingType="loadingType"></uni-load-more>
 		</view>
 	</view>
 </template>
 
-<script></script>
-
-<style scoped>
-	/* 商品评价详情 */
-	.evaluation{
-		background: #FFFFFF;
+<script>
+	import {post,get,dateUtils} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
+	import uniLoadMore from '@/components/uni-load-more.vue';
+	export default{
+		components: {
+			noData,
+			uniLoadMore
+		},
+		data(){
+			return{
+				userId: "",
+				token: "",
+				proId:'',//商品id
+				loadingType: 0, //0加载前，1加载中，2没有更多了
+				isLoad: false,
+				hasData: false,
+				noDataIsShow: false,
+				page: 1,
+				pageSize: 5,
+				datalist:[]
+			}
+		},
+		onShow() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.proId=this.$root.$mp.query.id;
+			this.GetEvaluate();
+		},
+		methods:{
+			async GetEvaluate() {
+				let result = await post("Order/OrderCommentList", {
+					UserId: this.userId,
+					Token: this.token,
+					ProId:this.proId,
+					Page: this.page,
+					PageSize: this.pageSize
+				});
+				if (result.code === 0) {
+					let _this=this
+					if (result.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+						result.data.forEach(function(item){
+							item.AddTime=dateUtils.format(item.AddTime)
+							 let arr = [];
+							 for(var i=0;i<item.PicData.length;i++){
+								arr.push(item.PicData[i].PicUrl)
+							 }
+							 _this.$set(item, "imgArr",arr);
+						})
+					}
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (this.page === 1) {
+						this.datalist = result.data;
+					}
+					if (this.page > 1) {
+						this.datalist = this.datalist.concat(
+							result.data
+						);
+					}
+					if (result.data.length <this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				}
+			},
+			//预览图片
+			previewImg(imgurls,index){
+			  uni.previewImage({
+				current:index,
+				urls: imgurls,
+				indicator:imgurls.length
+			  });
+			},
+		},
+		onReachBottom: function() {
+			if (this.isLoad) {
+				this.loadingType = 1;
+				this.page++;
+				this.GetEvaluate();
+			} else {
+				this.loadingType = 2;
+			}
+		}
 	}
+</script>
+
+<style scoped lang="scss">
+	/* 商品评价详情 */
+	.CommentList{ margin-top: 20upx;}
 	.minute{
-		padding: 30rpx;
-		border-bottom: 1rpx solid rgba(237,237,237,1)
+		padding: 30upx;
+		border-bottom: 1px solid #eee
+	}
+	.CommentList .minute:last-child{
+		border-bottom: none;
 	}
 	.given{
 		display: flex;
-		/* padding-left: 22rpx; */
-		height:78rpx;
-	}
-	.stars{
-		display: flex;
-		margin-top: -8rpx;
-	}
-	.star{
-		width:24rpx;
-		height:24rpx;
-		margin-left: 15rpx;
-		margin-top: 25rpx;
+		/* padding-left: 22upx; */
+		height:78upx;
+		.tx{
+			width:48upx;
+			height:48upx;
+			margin-right: 10upx;
+			border-radius:50%;
+			background: #eee;
+			overflow: hidden; 
+			image{
+				display: block;
+				height: 100%; width: 100%;
+			}
+		}
+		.name{ max-width: 200upx;}
+		.star{
+		  font-size: 24upx;
+		  margin-left: 10upx;
+		  color: #ffc405 !important;
+		}
 	}
 	.min{
-		font-size:28rpx;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(255,51,51,1);
@@ -127,54 +196,47 @@
 	.graded{
 		display: flex;
 		justify-content: space-around;
-		font-size:24rpx;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(51,51,51,1);
 	}
 	.gradedbox{
-		width:152rpx;
-		height:56rpx;
-		border:1rpx solid rgba(255,51,51,1);
-		border-radius:28rpx;
+		width:152upx;
+		height:56upx;
+		border:1upx solid rgba(255,51,51,1);
+		border-radius:28upx;
 		text-align: center;
 	}
 	.below{
 		display: flex;
 		justify-content: center;
-		padding-top: 20rpx;
+		padding-top: 20upx;
 	}
 	.belowimg{
-		width: 35rpx;
-		height: 35rpx;
+		width: 35upx;
+		height: 35upx;
 	}
 	.carport{
-		font-size:28rpx;
+		font-size:28upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(51,51,51,1);
-		line-height:50rpx;
+		line-height:50upx;
 	}
-	.carportimg{
+	.commentpic{
 		display: flex;
-		margin: 20rpx 0 40rpx 0;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		margin: 20upx 0 20upx;
 	}
-	.carportimgs{
-		width:223rpx;
-		height:223rpx;
-		border-radius:10px;
-		background: #00BFFF;
-		margin-left: 10rpx;
-	}
-	.picture{
-		display: flex;
-		/* padding-top: 15rpx; */
-	}
-	.portrait{
-		width:48rpx;
-		height:48rpx;
-		border-radius:50%;
-		background: #795548;
+	.commentpic image{
+		width:220upx;
+		height:220upx;
+		border-radius:12upx;
+		background: #eee;
+		margin: 0 4upx 8upx;
+		overflow: hidden;
 	}
 	.figure{
 		display: flex;
@@ -183,19 +245,12 @@
 	}
 	.figurebox{
 		display: flex;
-		padding-left: 40rpx;
-		font-size:22rpx;
+		align-items: center;
+		padding-left: 40upx;
+		font-size:22upx;
 		font-family:PingFang;
 		font-weight:500;
+		.iconfont{ margin-right: 10upx;}
 	}
-	.news{
-		width: 61rpx;
-		height: 47rpx;
-	}
-	.praise{
-		width: 100rpx;
-		height: 40rpx;
-	}
-	
 	
 </style>

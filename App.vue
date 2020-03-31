@@ -18,6 +18,7 @@
 	@import './common/iconfont.css';
 	@import './common/common.scss';
 	@import './common/lz.css';
+	@import './components/uParse/src/wxParse.css';
 	page{
 		background: #f5f5f5;
 		height: 100%;

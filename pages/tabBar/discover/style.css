@@ -1,3 +1,7 @@
+.content .main{
+	height: calc(100% - 230upx);
+	overflow-y: auto;
+}
 .carthead{
 	background-color: #16a6fd;
 	color:#ffffff;
@@ -24,7 +28,7 @@
 	font-size: 38upx;
 }
 .head{
-	background:#16a6fd ;height:410upx;
+	background:#16a6fd;
 	.serch_box{
 		padding:10upx 0 10upx 30upx;background:#16a6fd ;
 		.search{
@@ -50,8 +54,9 @@
 		}
 	}
 }
+
 .tui_bg{
-	padding:0 30upx;position: relative;top:-180upx;
+	padding:0 30upx;position: relative;
 	image{
 		width:690upx;height:340upx;
 	}
@@ -107,7 +112,6 @@
 	}
 }
 .card{
-	position: relative;top:-160upx;
 	.hot{
 		padding-bottom:30upx;
 		.list{

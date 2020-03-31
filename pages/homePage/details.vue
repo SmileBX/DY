@@ -103,39 +103,38 @@
 		</view>
 		<view class="pole"></view>
 		<!-- 商品评价 -->
-		<view class="merchandise">
-			<view class="evaluate">
-				<view class="">商品评价<span>(3)</span></view>
-				<view class="whole" @click="toevaluation('/pages/homePage/evaluation')">查看全部
-					<image class="arrows" src="../../static/hpicons/arrows.svg" mode=""></image>
-				</view>
+		<view class="comment">
+			<view class="comment_hd">
+			  <view class="tit_l">商品评价<span>({{CommentList.length}})</span></view>
+			  <view class="tit_r flex flex-end" v-if="hasComment" @click="tolink('/pages/homePage/evaluation?id='+proId)">
+				<view class="red">查看全部</view>
+				<view class="iconfont icon-arrow_r"></view>
+			  </view>
 			</view>
-		</view>
-		
-		<view class=""></view>
-		<!-- 商品评价详情 -->
-		<view class="minute">
-			<view class="given">
-				<view class="picture">
-					<view class="portrait">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+			<block v-if="hasComment">
+				<view class="comment-item" v-for="(item,index) in CommentList" :key="index">
+				  <view class="name ali-c jus-b">
+					<view class="ali-c">
+					  <img class="tx" :src="item.Avatar||'/static/default.png'" alt="">
+					  <view>{{item.NickName}}</view>
 					</view>
+					<view class="flex">
+					   <view class="star iconfont icon-collect" v-for="(item1,index1) in item.Rank" :key="index1"></view>
+					</view>
+				  </view>
+				  <view class="detail">{{item.ContentText}}</view>
+				  <view class="flex flexWrap"  v-if="item.PicData">
+					<block v-for="(i,e) in item.imgArr" :key="e">
+					  <img v-if="e<3" :src="i" alt="" class="shop_pic" @click="previewImg(item.imgArr,i)">
+					</block>
+				  </view>
+				  <view class="time">{{item.AddTime}}</view>
 				</view>
-				<view class="screen">筱风月忆</view>
-				<view class="stars">
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="../../static/hpicons/collect.svg" mode=""></image>
-					</view>
-				<view class="min">2019-09-08</view>
-			</view>
-			<view class="carport">柜子做工很好，适合家里装修风格，尺寸标准，空间够大 做工方面精致，几乎没什么气味！很实用！</view>
-			<view class="carportimg">
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
-				<image class="carportimgs" src="" mode=""></image>
+			</block>
+			<view class="uni-comment" v-else>
+				<view class="uni-center" style="padding: 20upx; color: #999;">
+					暂无评论
+				</view>
 			</view>
 		</view>
 		<view class="pole"></view>
@@ -279,7 +278,7 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import popupsku from '@/components/popupSku.vue';
 	import uniRate from '@/components/uni-rate.vue';
-	import "@/common/details.css";
+	import "@/common/details.scss";
 	export default {
 		components: {
 			uParse,
@@ -308,6 +307,8 @@
 				canaddcar:false, //sku齐全可以加入购物车
 				price:'',
 				plusprice:'',
+				hasComment:false,
+				CommentList:[],//评价列表
 			}
 		},
 		onLoad() {
@@ -318,6 +319,7 @@
 			this.token = uni.getStorageSync("token");
 			this.proId=this.$root.$mp.query.id;
 			this.Goodsxq();
+			this.getCommentList();
 		},
 		onNavigationBarButtonTap(e) {
 			if(e.index===0){
@@ -441,7 +443,41 @@
 					});
 				}
 			},
-			
+			//评论列表
+			async getCommentList(){
+			  let res=await post("Order/OrderCommentList",{
+				Page:1,
+				PageSize: 2,
+				ProId:this.proId,
+				UserId: this.userId,
+				Token: this.token,
+			  })
+			  if(res.code==0){
+				let _this=this
+				if(res.data.length){
+					_this.hasComment=true;
+					res.data.forEach(function(item) {
+					  let arr = []
+					  for(var i=0;i<item.PicData.length;i++){
+						arr.push(item.PicData[i].PicUrl)
+						console.log(arr)
+					  }
+					  _this.$set(item, "imgArr",arr);
+					})
+					_this.CommentList=res.data;
+				}else{
+					_this.hasComment=false;
+				}
+			   }
+			},
+			 //预览图片
+			previewImg(imgurls,index){
+			  uni.previewImage({
+				current:index,
+				urls: imgurls,
+				indicator:imgurls.length
+			  });
+			},
 		},
 		onPageScroll(e){
 			if(e.scrollTop>300){

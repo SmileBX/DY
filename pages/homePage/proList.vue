@@ -2,7 +2,7 @@
 	<!-- 家居 -->
 	<view class="truckspace">
 		<!-- 搜索 -->
-		<view class="head">
+		<view class="head_Screen">
 			<view class="truck">
 				<view class="searchbox">
 					<view class="searchation" @click="onClassify">
@@ -295,7 +295,7 @@
 		background: #FFFFFF;
 		/* height: 100vh; */
 	}
-	.head{
+	.head_Screen{
 		position:fixed; 
 		width:100%;
 		background: #FFFFFF; 
@@ -303,155 +303,155 @@
 	}
 	.truck{
 		display: flex;
-		/* margin-top: 61rpx;  相距于头部的距离*/  
-		margin-left: 30rpx;
+		/* margin-top: 61upx;  相距于头部的距离*/  
+		margin-left: 30upx;
 	}
 	.searchbox{
 		display: flex;
-		width:606rpx;
-		height:68rpx;
-		border:1rpx solid rgba(204,204,204,1);
-		border-radius:10rpx;
+		width:606upx;
+		height:68upx;
+		border:1upx solid rgba(204,204,204,1);
+		border-radius:10upx;
 	}
 	.searchation{
 		display: flex;
 	}
 	.searchboxl{
-		padding-top: 16rpx;
-		padding-left: 34rpx;
-		font-size:26rpx;
+		padding-top: 16upx;
+		padding-left: 34upx;
+		font-size:26upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(51,51,51,1);
-		line-height:35rpx;
+		line-height:35upx;
 	}
 	.searchboxr{
-		width:17rpx;
-		height:9rpx;
-		margin-left: 16rpx;
+		width:17upx;
+		height:9upx;
+		margin-left: 16upx;
 	}
 	.uta{
-		height: 70rpx;
+		height: 70upx;
 	}
 	.searchico{
 		display: flex;
 	}
 	.searchpole{
-		margin-top: 20rpx;
-		margin-left: 19rpx;
-		width:1rpx;
-		height:26rpx;
-		border:2rpx solid rgba(236,236,236,1);
+		margin-top: 20upx;
+		margin-left: 19upx;
+		width:1upx;
+		height:26upx;
+		border:2upx solid rgba(236,236,236,1);
 	}
 	.searchimg{
-		margin-left: 30rpx;
-		width:27rpx;
-		height:28rpx;
+		margin-left: 30upx;
+		width:27upx;
+		height:28upx;
 	}
 	.saarch{
-		height: 70rpx;
+		height: 70upx;
 	}
 	.input{
-		font-size:26rpx;
+		font-size:26upx;
 		font-family:PingFang;
 		font-weight:500;
 		/* color:rgba(204,204,204,1); */
-		line-height:35rpx;
-		margin-left: 17rpx;
-		margin-top: 16rpx;
+		line-height:35upx;
+		margin-left: 17upx;
+		margin-top: 16upx;
 	}
 	.abrogate{
-		font-size:28rpx;
+		font-size:28upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(51,51,51,1);
-		line-height:35rpx;
-		margin: 20rpx 0 0 30rpx;
+		line-height:35upx;
+		margin: 20upx 0 0 30upx;
 	}
 	/* 区域 */
 	.areabox{
-		margin-top: 40rpx;
+		margin-top: 20upx;
 		display: flex;
 		justify-content: space-around;
 		width: 100%;
-		font-size:28rpx;
+		font-size:28upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(51,51,51,1);
-		margin-bottom: 29rpx;
+		margin-bottom: 20upx;
 	}
 	.area{
 		display: flex;
 	}
 	.areaimg{
-		margin-left: 11rpx;
-		width:14rpx;
-		height:9rpx;
+		margin-left: 11upx;
+		width:14upx;
+		height:9upx;
 	}
 	.utas{
-		height:60rpx;
+		height:60upx;
 	}
 	/* 列表 */
 	.trucklist{
-		padding-top: 186rpx;
+		padding-top: 158upx;
 	}
 	.truckac{
 		width:100%;
-		height:20rpx;
+		height:20upx;
 		background:rgba(242,242,242,1);
 	}
 	.listbox{
-		/* margin: 20rpx 0 20rpx 31rpx; */
+		/* margin: 20upx 0 20upx 31upx; */
 		display: flex;
-		padding: 20rpx 30rpx;
+		padding: 20upx 30upx;
 		border-bottom: 1px solid #eee;
 	}
 	.listbox:last-child{ border-bottom: none;}
 	.listimg{
-		width:240rpx;
-		height:240rpx;
+		width:240upx;
+		height:240upx;
 		background:#eee;
-		border-radius:12rpx;
+		border-radius:12upx;
 		overflow: hidden;
 	}
 	.listpt{
-		padding-left:30rpx;
+		padding-left:30upx;
 		width: 65%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
 	.listtitle{
-		font-size:32rpx;
+		font-size:32upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(51,51,51,1);
 	}
 	.listtitles{
-		font-size:26rpx;
+		font-size:26upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(153,153,153,1);
 	}
 	.listplace{
 		display: flex;
-		font-size:26rpx;
+		font-size:26upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(153,153,153,1);
-		line-height:156rpx;
+		line-height:156upx;
 	}
 	.listplace span{
-		font-size:14rpx;
+		font-size:14upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(153,153,153,1);
 	}
 	/* .listpole{
-		width:1rpx;
-		height:26rpx;
-		border:1rpx solid rgba(204,204,204,1);
-		margin:15rpx 11rpx 0 11rpx;
+		width:1upx;
+		height:26upx;
+		border:1upx solid rgba(204,204,204,1);
+		margin:15upx 11upx 0 11upx;
 	} */
 	.listprice{
 		display: flex;
@@ -461,61 +461,61 @@
 		display: flex;
 	}
 	.selling{
-		font-size:32rpx;
+		font-size:32upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(255,51,51,1);
 	}
 	.selling span{
-		font-size:20rpx;
+		font-size:20upx;
 	}
 	.original{
-		font-size:22rpx;
+		font-size:22upx;
 		font-family:PingFang;
 		font-weight:500;
 		text-decoration:line-through;
 		color:rgba(153,153,153,1);
-		margin: 15rpx 0 0 15rpx;
+		margin: 15upx 0 0 15upx;
 	}
 	.rt{
-		height:42rpx;
-		border:1rpx solid rgba(255,51,51,1);
-		border-radius:4rpx;
+		height:42upx;
+		border:1upx solid rgba(255,51,51,1);
+		border-radius:4upx;
 	}
 	.cash{
-		width:38rpx;
+		width:38upx;
 		height:100%;
 		background:rgba(255,51,51,1);
-		border-radius:4rpx 0rpx 0rpx 4rpx;
-		font-size:24rpx;
+		border-radius:4upx 0upx 0upx 4upx;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(255,255,255,1);
 		text-align: center;
 	}
 	.cashm{
-		height:21rpx;
-		font-size:24rpx;
+		height:21upx;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(255,51,51,1);
-		margin-left: 10rpx;
+		margin-left: 10upx;
 	}
 	.lp{
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(255,51,51,1);
-		padding-top: 10rpx;
+		padding-top: 10upx;
 	}
 	.listkey{
-		font-size:24rpx;
-		line-height:30rpx;
-		padding: 0 10rpx;
-		height:32rpx;
-		border:1rpx solid rgba(247,192,192,1);
-		border-radius:16rpx;
+		font-size:24upx;
+		line-height:30upx;
+		padding: 0 10upx;
+		height:32upx;
+		border:1upx solid rgba(247,192,192,1);
+		border-radius:16upx;
 		text-align: center;
-		margin-right: 10rpx;
+		margin-right: 10upx;
 		box-sizing: content-box;
 	}
 	.rotate180{
