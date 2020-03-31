@@ -34,9 +34,9 @@
 		</view>
 		<view class="main">
 			<view class="tui_bg">
-				<image src="/static/of/tui_bg.png"></image>
+				<image class="img" src="/static/of/tui_bg.png"></image>
 			</view>
-			<view class="card">
+			<view class="card uni-mt10">
 				<view class="pw3">
 					<view class="hot combox">
 						<view class="flex title justifyContentBetween">

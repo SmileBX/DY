@@ -56,7 +56,18 @@
 }
 
 .tui_bg{
-	padding:0 30upx;position: relative;
+	padding:0 30upx;
+	position: relative;
+	&::before{
+		display: block;
+		content: "";
+		height: 200upx;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: #16a6fd;
+	}
 	.swiper,.img,.swiper-item{
 		width:690upx;height:340upx;
 		border-radius:15upx;
@@ -132,11 +143,10 @@
 				.brand{
 					position: absolute;top:0;left:0;z-index:10;
 					width:46upx;height:48upx;
-					text-align: center;
-					color: #fff;
-					line-height: 46upx;
 					background: url(/static/icons/hot_bg.png) center center no-repeat;
 					background-size: 100% 100%;
+					text-align: center;
+					line-height: 46upx; color: #fff;
 				}
 			}
 		}
