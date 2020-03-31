@@ -1,15 +1,15 @@
 <template>
 	<view class="question">
-		<view class="qu_list" v-if="hasData">
-			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item)">
+		<view class="qu_list" >
+			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item,index)">
 				<view class="flex flexAlignCenter item_head bg_fff">
 					<view class="title flex flexAlignCenter flex1">
 						<span class="spill">{{index+1}}</span>
 						<view>{{item.Title}}</view>
 					</view>
-					<span class="iconfont icon-iconset0418" :class="index==2?'icon-arrow_r':''"></span>
+					<span class="iconfont icon-iconset0418" :class="item.isShow?'icon-arrow_r':''"></span>
 				</view>
-				<view class="content" v-if="item.isShow">{{item.content}}</view>
+				<view class="content" v-if="item.isShow">{{item.Contents}}</view>
 			</view>
 			<view class="uni-tab-bar-loading">
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
@@ -41,7 +41,7 @@
 				pageSize: 10,
 				allPage: 0,
 				count: 0,
-				datalist:{},
+				datalist:[{id:1,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:2,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:3,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:4,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:5,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false}],
 				content:''
 			}
 		},
@@ -49,35 +49,28 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
-			if (toLogin(this.curPage)) {
-				this.HelpList();
-			}
+			// if (toLogin(this.curPage)) {
+			// 	this.HelpList();
+			// }
 			
 			
 		},
 		methods:{
 			//展示详情
-			showDetail(item){
-				this.datalist.map(value=>{
-					if(item == value){
-						this.$set(value,"isShow",true)
+			showDetail(item,i){
+				this.datalist.map((value,index)=>{
+					if(index == i){
+						if(value.isShow){
+							this.$set(value,"isShow",false)
+						}else{
+							this.$set(value,"isShow",true)
+						}
 					}else{
 						this.$set(value,"isShow",false)
 					}
 				})
-				item.isShow = !item.isShow
 				// this.getDetail(item)
 			},
-			// //获取详情
-			// getDetail(item){
-			// 	post('Help/GetHelpInfo',{
-			// 		UserId:This.userId,
-			// 		Token:this.token,
-			// 		Id:item.Id
-			// 	}).then(res=>{
-					
-			// 	})
-			// },
 			async HelpList() {
 				let result = await post("Help/HelpList", {
 					UserId: this.userId,
@@ -88,6 +81,9 @@
 				if (result.code === 0) {
 					let _this=this;
 					if (result.data.length > 0) {
+						result.data.map(item=>{
+							this.$set(item,"isShow",false)
+						})
 						this.hasData = true;
 					}else{
 						this.noDataIsShow = true;
@@ -109,9 +105,7 @@
 							result.data
 						);
 					}
-					this.datalist.map(item=>{
-						this.$set(item,"isShow",false)
-					})
+					console.log(this.datalist,"MMMMMMMMMMMMMMMMMMMMMMMMMMM")
 					if (this.allPage <= this.page) {
 						this.isLoad = false;
 						this.loadingType = 2;

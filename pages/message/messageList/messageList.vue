@@ -53,7 +53,7 @@
 </template>
 
 <script>
-	import {host,post,get,dateUtils} from '@/common/util.js';
+	import {host,post,get,dateUtils,getCurrentPageUrlWithArgs,toLogin} from '@/common/util.js';
 	import uParse from '@/components/uParse/src/wxParse.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多

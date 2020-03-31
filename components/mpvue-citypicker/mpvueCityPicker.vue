@@ -77,7 +77,8 @@ export default {
     pickerConfirm(e) {
       this.showPicker = false;
 			this.pickerText=this.type1+" "+this.type2+" "+this.type3;
-      this.$emit('onconfirm', this.provincesCode,this.cityCode,this.quCode,this.pickerText);
+			let data = [this.provincesCode,this.cityCode,this.quCode,this.pickerText]
+      this.$emit('onconfirm', data);
     },
     provincesChange(e) {
 		console.log(e)

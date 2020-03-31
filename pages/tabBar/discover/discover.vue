@@ -33,7 +33,13 @@
 			</view>
 		</view>
 		<view class="tui_bg">
-			<image src="../../../static/of/tui_bg.png"></image>
+			<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+				<swiper-item v-for="(banner,key) in bannerlist" :key="key" >
+					<view class="swiper-item" >
+						<image class="img" :src="banner.Pic" mode="aspectFill"></image>
+					</view>
+				</swiper-item>
+			</swiper>
 		</view>
 		<view class="card">
 			<view class="pw3">
@@ -49,11 +55,11 @@
 						</view>
 					</view>
 					<view class="list flex justifyContentBetween">
-						<view class="item" v-for="(item,index) in Productlist" :key="index">
+						<view class="item" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 							<image src="../../../static/icons/hot_bg.png" class="bg"></image>
 							<image :src="item.PicNo"></image>
 							<view class="item_title">{{item.Name}}</view>
-							<view class="brand">{{index+1}}</view>
+							<view class="bb_brand">{{index+1}}</view>
 						</view>
 					</view>
 				</view>
@@ -68,7 +74,8 @@
 					<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 						<view class="uni-bd">
 							<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-								<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index">
+								<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index" 
+								 @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<view class="itembox">
 										<view class="image-view">
 											<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -95,7 +102,7 @@
 					</view>
 				</view>
 				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 0">
-					<view class="item" v-for="(item,index) in promotelist" :key="index">
+					<view class="item" v-for="(item,index) in promotelist" :key="index"  @click="tolink('/pages/homePage/details?id='+item.Id)">
 						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info">
 							<view class="item_title">{{item.Name}}</view>
@@ -110,7 +117,7 @@
 					</view>
 				</view>
 				<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 1">
-					<view class="item" v-for="(item,index) in hotlist" :key="index">
+					<view class="item" v-for="(item,index) in hotlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info">
 							<view class="item_title">{{item.Name}}</view>
@@ -142,6 +149,7 @@
 				barHeight:0,
 				Productlist:[],
 				promotelist:[],
+				bannerlist:[],//广告轮播图
 				indexs:0,
 				hotlist:[],
 				loadingType: 0, //0加载前，1加载中，2没有更多了
@@ -151,16 +159,44 @@
 			}
 		},
 		components: {uniLoadMore},
+		
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.banner()
+		},
+		onLoad() {
+			this.productlist()
 		},
 		methods: {
+			// 轮播图
+			async banner() {
+				let result = await post("Banner/BannerList", {
+					Cid:2
+				});
+				if (result.code === 0) {
+					this.bannerlist = result.data
+				}
+			},
 			//链接跳转
 			goUrl(url){
 			  wx.navigateTo({
 				url:url
 			  })
+			},
+			//跳转
+			tolink(Url,islogin) {
+				if(islogin=="login"){
+					if(toLogin()){
+						uni.navigateTo({
+							url: Url
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url: Url
+					})
+				}
 			},
 			// 获取商品列表
 			async productlist() {
@@ -206,9 +242,6 @@
 					}
 				}
 			},
-		},
-		onLoad() {
-			this.productlist()
 		},
 		// 上拉加载
 		onReachBottom: function() {

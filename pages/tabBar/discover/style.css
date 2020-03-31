@@ -52,8 +52,9 @@
 }
 .tui_bg{
 	padding:0 30upx;position: relative;top:-180upx;
-	image{
+	.swiper,.img,.swiper-item{
 		width:690upx;height:340upx;
+		border-radius:15upx;
 	}
 }
 .combox{
@@ -121,7 +122,7 @@
 					padding:10upx;
 					font-size:26upx;text-align: center;
 				}
-				.brand{
+				.bb_brand{
 					position: absolute;top:-4upx;left:16upx;z-index:20;color:#ffffff;
 				}
 				.bg{

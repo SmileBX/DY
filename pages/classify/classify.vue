@@ -1,8 +1,8 @@
 <template>
 	<view class="content" style="height: 100%;">
 		<!-- 固定在顶部的导航栏 -->
+		<!--#ifdef H5 || APP-PLUS-->
 		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true" left-icon="arrowleft" @click-left="toback">
-			
 			<view class="input-view">
 				<uni-icons type="search" size="22" color="#666666"></uni-icons>
 				<input confirm-type="search" disabled="true" class="input" @click="gotoProductList(0)" type="text"
@@ -12,6 +12,16 @@
 				<view class="iconfont icon-xiaoxi" style="color: #333;"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>
 			</block> -->
 		</uni-nav-bar>
+		<!--#endif-->
+		<!--#ifdef MP-WEIXIN-->
+		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true">
+			<view class="input-view">
+				<uni-icons type="search" size="22" color="#666666"></uni-icons>
+				<input confirm-type="search" disabled="true" class="input" @click="gotoProductList(0)" type="text"
+				 placeholder="输入搜索关键词" />
+			</view>
+		</uni-nav-bar>
+		<!--#endif-->
 		<view  :style="{'height':barHeight+44+'px'}"></view>
 		<!-- 使用非原生导航栏后需要在页面顶部占位 -->
 		<view class="container">
