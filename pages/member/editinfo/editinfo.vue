@@ -43,20 +43,39 @@
             <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="">
           </div>
         </div>
-		<div class="list ali-c jus-b list_img flex" >
+<!-- 		<div class="list ali-c jus-b list_img flex" >
 		  <span>个性签名</span>
 		  <div class="flex flexAlignCenter">
 		    <input type="text" placeholder="请输入您的个性签名!" class="flex1 text_right" v-model="mysign">
 		  </div>
+		</div> -->
+		<div class="list ali-c jus-b list_img flex" @click="BindRelation(info.IsBind)">
+		  <span>邀请人</span>
+		  <div class="flex flexAlignCenter">
+			<input type="text" placeholder="未绑定" v-model="info.Inviter" disabled class="flex1 text_right">
+			<img v-if="info.IsBind==1" src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="">
+		  </div>
 		</div>
       </div>
       <div class="btn" @click="EditUserInfo">保存</div>
+	  <!-- 弹出输入邀请人 -->
+		<uni-popup :show="showPopupBind" v-on:hidePopup="hidePopup">
+		  <div class="modal-head">填写邀请人</div>
+		  <div class="modal-content">
+			  <input type='text' placeholder="请输入您的邀请人" v-model="inviteCode" auto-focus/>
+		  </div>
+		  <div class="modal-footer flex justifyContentBetween">
+			<div class="btn-cancel" @click="hidePopup">取消</div>
+			<div class="btn-confirm" @click="onConfirmBind">确定</div> 
+		  </div>
+		</uni-popup>
   </div>
 </template>
 
 <script>
 import {post,valPhone} from '@/common/util'
 import { pathToBase64, base64ToPath } from '@/common/image-tools.js';
+import uniPopup from '@/components/uni-popup/uni-popup.vue';
 export default {
   data () {
     return {
@@ -71,7 +90,12 @@ export default {
       showPopupBind:false,
       inviteCode:"",
 	  mysign:"",//个性签名
+	  showPopupBind:false,
+	  inviteCode:""
     }
+  },
+  components: {
+    uniPopup
   },
   onLoad(){
     this.userId = uni.getStorageSync("userId")
@@ -135,6 +159,36 @@ export default {
 			})
 		})
     },
+	//绑定推荐关系（无推荐关系可绑定）
+	BindRelation(e){
+	  if(e==1){
+		this.inviteCode="";
+		this.showPopupBind=true;
+	  }
+	},
+	//统一的关闭popup方法
+	hidePopup: function() {
+	  this.showPopupBind = false;
+	},
+	//确认绑定推荐人
+	onConfirmBind(){
+	  if(valPhone(this.inviteCode)){
+		this.BindRelationMobile()
+	  }
+	},
+	BindRelationMobile(){
+	  post('Login/BindRelationMobile',{
+		UserId:this.userId,
+		Token:this.token,
+		mobile:this.inviteCode
+	  }).then(res=>{
+		wx.showToast({
+		  title: res.msg,
+		  icon: "none"
+		})
+		this.hidePopup();
+	  })
+	},
     //性别
     setsex() {
       const that = this;

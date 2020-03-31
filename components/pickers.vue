@@ -32,7 +32,7 @@ export default {
     },
     // 可选的数组
     arr: {
-      type: Object,
+      type: Array,
       default: []
     }
   },

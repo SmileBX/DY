@@ -1,7 +1,7 @@
 <template>
 	<view class="order">
 		<view class="list pw3">
-			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNumber)">
+			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNo)">
 				<view class="flex justifyContentBetween flexAlignCenter">
 					<view>
 						<image src="../../../static/my/shop.png" class="logo"></image>
@@ -23,7 +23,8 @@
 				</view>
 				<view class="text_right mt2">实付：¥<span class="font32 uni-bold">{{item.UnitPrice}}</span></view>
 				<view class="btn flex justifyContentEnd">
-					<view class="btn_r" v-if="item.Ispay==1" @click.stop="goUrl('/pages/member/applyReturn/applyReturn?orderNo='+item.OrderNumber)">售后详情</view>
+					<view class="btn_r"  @click.stop="goUrl('/pages/member/orderTuidetail/orderTuidetail?orderNo='+item.OrderNo+'&RefundId='+item.RefundId)">售后详情</view>
+					<view class="btn_c"  @click.stop="cancel(item)">取消售后</view>
 				</view>
 			</view>
 			<noData :isShow="isnNoData"></noData>
@@ -50,15 +51,18 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			this.list = []
-			this.page = 1
-			this.isOver = false
-			this.isnNoData = false
+			this.init();
 			if (toLogin()) {
 			    this.getList();
 			}
 		},
 		methods:{
+			init(){
+				this.list = []
+				this.page = 1
+				this.isOver = false
+				this.isnNoData = false
+			},
 			goUrl(url){
 			  wx.navigateTo({
 				url:url
@@ -81,6 +85,33 @@
 				  }
 				}
 			  })
+			},
+			// 取消售后
+			cancel(item){
+				const that = this;
+				uni.showModal({
+					title:'取消售后',
+					content:'是否取消当前售后！',
+					success(res){
+						if(res.confirm){
+							post('Order/CanelRefund',{
+								UserId: that.userId,
+								Token: that.token,
+								OrderNo: item.OrderNo,
+								RefundId: item.RefundId,
+							}).then(ret=>{
+								if(ret.code===0){
+									uni.showToast({
+										title:'取消成功！'
+									})
+									setTimeout(()=>{
+										that.init();
+									},1500)
+								}
+							})
+						}
+					}
+				})
 			}
 		},
 		onReachBottom(){console.log(this.isOver,this.isnNoData)
@@ -122,6 +153,9 @@
 			}
 			.btn_r{
 				background: #ff3333;color:#ffffff;
+			}
+			.btn_c{
+				background: #ccc;color:#ffffff;
 			}
 			
 		}
