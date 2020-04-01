@@ -41,7 +41,7 @@
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
 						 @click="navigate('homePage/proList',{typeId:item.TypeId,classId:item.Id})">
 							<image :src="item.PicUrl" v-if="item.PicUrl" mode="aspectFill" />
-							<image src="/static/noPicmin.png" v-else mode="widthFix"></image>
+							<image src="http://ddyp.wtvxin.com/static/noPicmin.png" v-else mode="widthFix"></image>
 							<view class="txt">{{item.ClassName}}</view>
 						</view>
 					</view>

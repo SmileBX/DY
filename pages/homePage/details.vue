@@ -18,11 +18,11 @@
 			<view class="streaming" v-if="false">
 				<image class="figure" src="" mode=""></image>
 				<view class="closes">
-					<image class="close" src="../../static/hpicons/close.svg" mode=""></image>
+					<image class="close" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
 				</view>
 				
 				<view class="broadcast">
-					<image class="litre" src="../../static/hpicons/close.svg" mode=""></image>
+					<image class="litre" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
 					<view class="">直播中</view>
 				</view>
 			</view>
@@ -57,13 +57,13 @@
 			<view class="purchase" style="display: none;">
 				<view class="picture">
 					<view class="portrait">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 				</view>
 				<view class="screen">心善若水</view>
@@ -79,7 +79,7 @@
 					<view class="">快递</view>
 					<!-- <input class="province" type="text" placeholder="广东 广州" disabled> -->
 					<view class="">{{proInfo.Freight==0?'包邮':proInfo.Freight}}</view>
-					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="../../static/hpicons/arrows.svg" mode=""></image> -->
+					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image> -->
 				</view>
 			</view>
 			<view class="pick" @click="showSku(0)">
@@ -99,7 +99,7 @@
 		</view>
 		<!-- 品牌介绍 -->
 		<view class="needknow" v-if="isServiceInfo">
-			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
+			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
 		</view>
 		<view class="pole"></view>
 		<!-- 商品评价 -->
@@ -115,7 +115,7 @@
 				<view class="comment-item" v-for="(item,index) in CommentList" :key="index">
 				  <view class="name ali-c jus-b">
 					<view class="ali-c">
-					  <img class="tx" :src="item.Avatar||'/static/default.png'" alt="">
+					  <img class="tx" :src="item.Avatar||'http://ddyp.wtvxin.com/static/default.png'" alt="">
 					  <view>{{item.NickName}}</view>
 					</view>
 					<view class="flex">
@@ -141,7 +141,7 @@
 		<!-- 商品特别说明 -->
 		<view class="explain">
 			<view class="pledge border_bottom">
-				<image class="safety" src="../../static/hpicons/safety.svg" mode=""></image>正品保证 
+				<image class="safety" src="http://ddyp.wtvxin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
 				<span>100%正品 品牌直采</span>
 			</view>
 			<view class="especially">

@@ -57,7 +57,7 @@
 						</view>
 						<!--拼品牌馆-->
 						<view class="index_pin">
-							<image src="../../../static/of/f1.png" mode="widthFix"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/f1.png" mode="widthFix"></image>
 							<view class="pin_list flex">
 								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="item_logo">
@@ -77,7 +77,7 @@
 						</view>
 						<!--特惠-->
 						<view class="hui mt2">
-							<image src="../../../static/of/f2.png" class="hui_bg"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/f2.png" class="hui_bg"></image>
 							<view class="flex hui_title">
 <!-- 								<view class="mr2">全场4折封顶</view>
 								<view class="flex tile_time">
@@ -91,15 +91,15 @@
 							</view>
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<block v-if="index==0"><image src="/static/of/1.png"></image></block>
-									<block v-if="index==1"><image src="/static/of/5.png"></image></block>
-									<block v-if="index==2"><image src="/static/of/6.png"></image></block>
+									<block v-if="index==0"><image src="http://ddyp.wtvxin.com/static/of/1.png"></image></block>
+									<block v-if="index==1"><image src="http://ddyp.wtvxin.com/static/of/5.png"></image></block>
+									<block v-if="index==2"><image src="http://ddyp.wtvxin.com/static/of/6.png"></image></block>
 								</view>
 							</view>
 						</view>
 						<!--推荐-->
 						<view class="jian mt2">
-							<image src="/static/of/f3.png" class="jian_bg"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/f3.png" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<!-- 热销榜单 -->
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">

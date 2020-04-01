@@ -3,8 +3,9 @@
 		{
 			"path": "pages/tabBar/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh" : false,
+				"navigationBarBackgroundColor":"#ff3333",
 				"app-plus": {
 					"titleNView": false
 					//"bounce": "none",
@@ -20,8 +21,10 @@
 		{
 			"path": "pages/tabBar/discover/discover",
 			"style": {
-				"navigationBarTitleText": "推荐",
+				"navigationBarTitleText": "大单易拼推荐",
 				"enablePullDownRefresh" : true,
+				"navigationBarBackgroundColor":"#16a6fd",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
 				}
@@ -44,6 +47,8 @@
 			"style": {
 				"navigationBarTitleText": "购物车",
 				"enablePullDownRefresh" : true,
+				"navigationBarBackgroundColor":"#FF3333",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false
 				}
@@ -53,6 +58,8 @@
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor":"#ff5a5b",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
 				}
@@ -161,13 +168,13 @@
 						"type": "transparent",
 						"buttons": [{
 								"text": "\ue605",
-								"fontSrc": "/static/iconfont.ttf",
+								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
 								"fontSize": "22px",
 								"color": "#333"
 							},
 							{
 								"text": "\ue66e",
-								"fontSrc": "/static/iconfont.ttf",
+								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
 								"fontSize": "22px",
 								"color": "#333"
 							}
@@ -267,13 +274,13 @@
 						"type": "transparent",
 						"buttons": [{
 								"text": "\ue71a",
-								"fontSrc": "/static/iconfont.ttf",
+								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#fff"
 							},
 							{
 								"text": "\ue641",
-								"fontSrc": "/static/iconfont.ttf",
+								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#fff"
 							}
@@ -292,7 +299,7 @@
 						"buttons": [
 							{
 								"text": "\ue605",
-								"fontSrc": "/static/iconfont.ttf",
+								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#000"
 							}

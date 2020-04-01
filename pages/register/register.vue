@@ -3,7 +3,7 @@
 		<view class="regLoginBox">
 			<view class="logo">
 				<view class="img">
-					<image src="/static/logo.png" mode="widthFix"></image>
+					<image src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
 					<view class="Title">大单易拼</view>
 				</view>
 			</view>
@@ -262,7 +262,7 @@
 
 <style>
 	.content{
-		  background:#fff/* url('http://wht.wtvxin.com/static/lz/logingif.gif') no-repeat */;
+		  background:#fff/* url('http://wht.wtvxin.comhttp://ddyp.wtvxin.com/static/lz/logingif.gif') no-repeat */;
 		  background-size: 100% 100%;
 		  min-height: 100%;
 		  position: relative;

@@ -1669,7 +1669,7 @@ radio-group label, checkbox-group label{
 	vertical-align: top;
 	height: 100%;
 	width: 44upx;
-	background: url(http://www.sc-mall.net/static/filter.png) center no-repeat;
+	background: url(http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/filter.png) center no-repeat;
 	background-size: 30upx;
 }
 .filterMenu .shift {
@@ -1678,7 +1678,7 @@ radio-group label, checkbox-group label{
 	position: absolute;
 	right: 0;
 	top:0;
-	background: url(http://www.sc-mall.net/static/shiftMenu1.png) center no-repeat;
+	background: url(http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/shiftMenu1.png) center no-repeat;
 	background-size: 36upx;
 }
 .filterMenu .shift:before{
@@ -1692,7 +1692,7 @@ radio-group label, checkbox-group label{
 	margin-top:-20upx;
 }
 .filterMenu .shift.dan-filter{
-	background: url(http://www.sc-mall.net/static/shiftMenu2.png) center no-repeat;
+	background: url(http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/shiftMenu2.png) center no-repeat;
 	background-size:36upx;
 }
 .level__product-list{
@@ -2027,4 +2027,4 @@ radio-group label, checkbox-group label{
 }
 .pd15{padding: 0 30upx;}
 /* 返回顶部 */
-.topbtn{ height: 100upx; width: 100upx; background: url(http://www.sc-mall.net/static/top.png) center center; background-size: cover; position: fixed; right: 10upx; bottom: 110upx; z-index: 99;}
+.topbtn{ height: 100upx; width: 100upx; background: url(http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/top.png) center center; background-size: cover; position: fixed; right: 10upx; bottom: 110upx; z-index: 99;}

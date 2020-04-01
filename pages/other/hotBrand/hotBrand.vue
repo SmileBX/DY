@@ -1,14 +1,14 @@
 <template>
 	<view class="hotBrand">
-		<image src="/static/of/hot_bg.png" class="bg mt2"></image>
+		<image src="http://ddyp.wtvxin.com/static/of/hot_bg.png" class="bg mt2"></image>
 		<view class="list mt2">
 			<scroll-view class="hot_wrap" scroll-y>
 				<view class="item flex" v-for="(item,index) in datalist" :key="index">
 					<view class="item_left">
 						<image :src="item.PicNo" class="img"></image>
-						<image src="/static/icons/b1.png" class="tip" v-if="index==0"></image>
-						<image src="/static/icons/b2.png" class="tip" v-if="index==1"></image>
-						<image src="/static/icons/b3.png" class="tip" v-if="index==2"></image>
+						<image src="http://ddyp.wtvxin.com/static/icons/b1.png" class="tip" v-if="index==0"></image>
+						<image src="http://ddyp.wtvxin.com/static/icons/b2.png" class="tip" v-if="index==1"></image>
+						<image src="http://ddyp.wtvxin.com/static/icons/b3.png" class="tip" v-if="index==2"></image>
 					</view>
 					<view class="item_content flex1">
 						<view class="uni-bold">{{item.Name}}</view>

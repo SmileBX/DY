@@ -20,13 +20,13 @@
 				<view class="list" v-if="tabIndex==1">
 					<view class="item mt10" v-for="(item,index) in list" :key="index">
 						<view class="flex item_shop flexAlignCenter">
-							<image src="../../../static/of/shop.png" class="shop_logo"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/shop.png" class="shop_logo"></image>
 							<view class="flex1 uni-bold">雅邦美妆旗舰店</view>
 						</view>
 						<view class="item_list flex mt2">
 							<view class="flex flexColumn flexAlignCenter item_list_fill" v-for="(item,index) in 3" :key="index">
 								<view class="img flex flexAlignCenter justifyContentCenter">
-									<image src="../../../static/of/car.png"></image>
+									<image src="http://ddyp.wtvxin.com/static/of/car.png"></image>
 								</view>
 								<view>¥33万</view>
 							</view>

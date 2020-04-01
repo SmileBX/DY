@@ -3,7 +3,7 @@
 	<view class="browsing">
 		<!--  #ifndef  MP-WEIXIN -->
 		<view class="nav">
-			<view class="" @click="toback()"><image class="back" src="../../../static/hpicons/back.svg" mode=""></image></view>
+			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">我的足迹</view>
 			<view class="redact" v-if="isShowDel" @click="ShowDel">完成</view>
 			<view class="redact" v-else @click="ShowDel">编辑</view>
@@ -13,7 +13,7 @@
 		<view class="bb_pt">
 			<view class="minbox">
 				<view class="min">今天</view>
-				<view class="arrowss"><image class="arrows" src="../../../static/hpicons/arrows2.svg" mode=""></image></view>
+				<view class="arrowss"><image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows2.svg" mode=""></image></view>
 			</view>
 			<view class="listbox" v-for="(val, key) in footprintlist" :key="key">
 				<view class="choose" v-if="isShowDel" @click.stop="shiftChecked(key)"><view class="IconsCK IconsCK-radio" :class="{ checked: val.checked }"></view></view>

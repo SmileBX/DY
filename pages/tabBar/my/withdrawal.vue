@@ -8,7 +8,7 @@
 					<image class="fold" src="" mode=""></image>
 					<view class="detail">招商银行储蓄卡(9632)</view>
 					<view class="">
-						<image class="arrows" src="../../../static/hpicons/arrows.svg"mode=""></image>
+						<image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg"mode=""></image>
 					</view>
 				</view>
 			</view>

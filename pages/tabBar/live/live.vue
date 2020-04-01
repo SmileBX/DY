@@ -1,6 +1,6 @@
 <template>
 	<view class="content myCollectPage">
-		<image src="/static/of/live.png" mode="widthFix"></image>
+		<image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix"></image>
 	</view>
 </template>
 

@@ -3,7 +3,7 @@
 		<view class="comment-head weui-cell mb10">
 			<view class="weui-cell__bd">
 				<image class="tx" v-if="Userinfo.Avatar" :src="Userinfo.Avatar" mode="aspectFill"></image>
-				<image class="tx" v-else src="/static/default.png" mode="aspectFill"></image>
+				<image class="tx" v-else src="http://ddyp.wtvxin.com/static/default.png" mode="aspectFill"></image>
 				<text class="name uni-ellipsis">{{Userinfo.NickName}}</text>
 			</view>
 			<view class="weui-cell__ft">
