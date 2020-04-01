@@ -353,6 +353,7 @@
 			},
 			//合计 金额、数量
 			AllPrice(){
+				
 				let _this = this;
 				let eaditallPrice =0;
 				let eaditnum =0;
@@ -376,12 +377,15 @@
 				});
 				this.selectlen=eaditnum;
 				if(eaditnum==this.checklen){
+					console.log("8888"+this.allPrice)
 						this.allSelect=true;
 						this.allPrice= this.cartinfo.PayAmount;
 				}else{
+					console.log("444444"+this.allPrice)
 					this.allSelect=false;
 					this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 				}
+				console.log("ppppppppppppp"+this.allPrice)
 			},
 			//全选、反选
 			Allcheck() {

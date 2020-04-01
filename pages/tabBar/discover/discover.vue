@@ -34,7 +34,13 @@
 		</view>
 		<view class="main">
 			<view class="tui_bg">
-				<image class="img" src="/static/of/tui_bg.png"></image>
+				<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+					<swiper-item v-for="(banner,key) in bannerlist" :key="key" >
+						<view class="swiper-item" >
+							<image class="img" :src="banner.Pic" mode="aspectFill"></image>
+						</view>
+					</swiper-item>
+				</swiper>
 			</view>
 			<view class="card uni-mt10">
 				<view class="pw3">
@@ -144,6 +150,7 @@
 				barHeight:0,
 				Productlist:[],
 				promotelist:[],
+				bannerlist:[],//广告轮播图
 				indexs:0,
 				hotlist:[],
 				loadingType: 0, //0加载前，1加载中，2没有更多了
@@ -153,9 +160,13 @@
 			}
 		},
 		components: {uniLoadMore},
+		onLoad() {
+		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.banner();
+			this.productlist();
 		},
 		methods: {
 			//链接跳转
@@ -163,6 +174,14 @@
 			  uni.navigateTo({
 				url:url
 			  })
+			},
+			async banner() {
+				let result = await post("Banner/BannerList", {
+					Cid:2
+				});
+				if (result.code === 0) {
+					this.bannerlist = result.data
+				}
 			},
 			// 获取商品列表
 			async productlist() {
@@ -209,9 +228,7 @@
 				}
 			},
 		},
-		onLoad() {
-			this.productlist()
-		},
+		
 		// 上拉加载
 		onReachBottom: function() {
 			if (this.isLoad) {
