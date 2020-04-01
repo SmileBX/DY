@@ -100,7 +100,8 @@
 					});
 					return false;
 				}
-				if(this.type !== 1){
+				if(this.type != 1){
+					console.log("9999999999")
 					if (this.pwd == "" || this.pwd2 == "") {
 						uni.showToast({
 							title: "密码不能为空!",
@@ -138,14 +139,18 @@
 			},
 			async sendCode() {
 				let objUrl = ''
+				let method = ''
 				if(this.type == 1){
-					objUrl = 'GetMiniAppBindTelCode?Mobile='
+					objUrl = 'Login/GetMiniAppBindTelCode?Mobile='
+					method:'get'
+					
 				}else{
 					objUrl = 'Login/GetRegSMSCode?Mobile='
+					method:'POST'
 				}
 				uni.request({
 				    url:host+ objUrl+this.tel, //仅为示例，并非真实的接口地址
-				    method: 'POST',
+				    method: method,
 				    header: {
 				      'content-type': 'application/json;charset=utf-8' // 默认值
 				    },

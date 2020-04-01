@@ -279,7 +279,10 @@
 					  duration: 2000,
 					  success:function(){
 						setTimeout(function() {
-							uni.navigateBack();
+							uni.switchTab({
+							  url: "/pages/tabBar/my/my"
+							});
+							// uni.navigateBack();
 							// if(_this.askUrl){
 							//   if(_this.askUrl.indexOf("undefined")>-1){
 							// 	uni.switchTab({
