@@ -56,7 +56,7 @@
 							</view>
 						</view>
 						<view class="list flex justifyContentBetween">
-							<view class="item" v-for="(item,index) in Productlist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
+							<view class="item" v-for="(item,index) in Hitslist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 								<view class="brand">{{index+1}}</view>
 								<image :src="item.PicNo"></image>
 								<view class="item_title">{{item.Name}}</view>
@@ -149,6 +149,7 @@
 				token: "",
 				barHeight:0,
 				Productlist:[],
+				Hitslist:[],
 				promotelist:[],
 				bannerlist:[],//广告轮播图
 				indexs:0,
@@ -166,6 +167,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.banner();
+			this.getHitslist()
 			this.productlist();
 		},
 		methods: {
@@ -184,10 +186,21 @@
 				}
 			},
 			// 获取商品列表
+			async getHitslist() {
+				let result = await post("Goods/GoodsList", {
+					Page:1,
+					PageSize:3,
+					IsHits: 1,  //热销榜
+				});
+				if (result.code === 0) {
+					this.Hitslist = result.data
+				}
+			},
+			// 获取商品列表
 			async productlist() {
 				let result = await post("Goods/GoodsList", {
 					Page:1,
-					IsRecommend: 1,  //推荐
+					IsRecommend: 1,  //推荐IsHits
 				});
 				if (result.code === 0) {
 					let list = result.data

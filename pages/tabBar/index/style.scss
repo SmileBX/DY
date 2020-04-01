@@ -74,7 +74,7 @@
 	}
 	.pin_list{
 		flex-wrap:wrap;
-		padding:0 20upx;
+		padding:0 24upx;
 		padding-bottom:20upx;
 		.pin_item{
 			background: #e1daf4;border-radius:15upx;
@@ -102,6 +102,9 @@
 			.item_info{
 				margin-top:30upx
 			}
+		}
+		.pin_item:nth-child(2n+1){
+			margin-right: 20upx;
 		}
 		.bg1{
 			background: #e1daf4;

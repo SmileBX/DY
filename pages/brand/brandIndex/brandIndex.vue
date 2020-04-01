@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="BrandInfo" style="background-image: url(../../../static/icons/user_bg.png);">
+		<view class="BrandInfo" :style="{background: 'url('+BrandInfo.Backdrop+')'}">
 			<!-- #ifdef MP-WEIXIN -->
 			<view class="flex justifyContentBetween bb_mt">
 				<view class="menubtn iconfont icon-aixin"></view>
@@ -9,11 +9,11 @@
 			<!-- #endif -->
 			<view class="inner flex flex-start">
 				<view class="logoBox">
-					<image class="img" src="../../../static/of/yd.png" mode="widthFix"></image>
+					<image class="img" :src="BrandInfo.Logo" mode="widthFix"></image>
 				</view>
 				<view class="textbox">
-					<view class="name">源氏木语</view>
-					<view class="brand-desc">源氏木语专场-品牌钜惠</view>
+					<view class="name">{{BrandInfo.Name}}</view>
+					<view class="brand-desc">{{BrandInfo.Intro}}</view>
 				</view>
 			</view>
 		</view>
@@ -84,7 +84,7 @@
 			<view class="uni-mt10">
 				<view class="proList flex flexWrap justifyContentBetween">
 					<view class="item" v-for="(item,index) in datalist" :key="index">
-						<image src="../../../static/of/4.png" class="item_img"></image>
+						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info flex flexColumn flexAlignCenter">
 							<view class="item_title">{{item.Name}}</view>
 							<view class="flex flexAlignEnd justifyContentBetween item_total">
@@ -129,6 +129,7 @@
 		data() {
 			return {
 				proList:[],//推荐列表
+				BrandInfo:{},//品牌信息
 				navigate,
 				userId: "",
 				token: "",
@@ -156,28 +157,36 @@
 				areaList,
 			}
 		},
-		onLoad(e){
-			if(e.BrandId){
-				this.BrandId = e.BrandId
-			}
+		onShow(){
+			this.BrandId = this.$root.$mp.query.BrandId
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
 			this.AreaCode="";
 			this.AreaType=0;
 			this.init();
-			
-		},
-		onShow(){
+			this.getBrandList()
 			this.getPsoList()
 			this.getcommonProList()
 		},
 		methods: {
+			async getBrandList(){
+				const res = await post('Goods/BrandList',{})
+				if(res.code == 0){
+					res.data.forEach(item=>{console.log(this.BrandId,item.Id)
+						if(item.Id==this.BrandId){
+							this.BrandInfo=item
+						}
+					})
+				}
+			},
 			async getPsoList(){
-				const res = await post('Goods/GetProductClass',{
-					TypeId:this.typeId,
-					// BrandId:this.BrandId
-				})
+				let res = await post("Goods/GoodsList", {
+					Page: 1,
+					PageSize: 8,
+					BrandId:this.BrandId,
+					IsRecommend:1,//1推荐
+				});
 				if(res.code == 0){
 					this.proList = res.data
 				}
