@@ -9,7 +9,7 @@
               <radio class="radio" color="#FF3333" :checked="item.IsDefault==1">
                 <text>默认地址</text>
               </radio>
-          </label>
+          </label> 
           <view class="ali-c flex justifyContentBetween flexAlignCenter">
             <view class="ali-c btt flex flexAlignCenter" @tap="editSite(item.Id)">
               <image class="write" src="http://jyy.wtvxin.com/static/images/icons/write.png" alt=""></image>

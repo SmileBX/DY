@@ -6,7 +6,7 @@
       <div class="jus-b ali-c time-box">
         <div class="time ali-c jus-c"  @tap="choseTime">
           <span>{{setUpDate}}</span>
-          <img src="http://jyy.wtvxin.com/static/images/icons/sj.png" alt="">
+           <img src="http://jyy.wtvxin.com/static/images/icons/sj.png" alt="" style="margin:0">
         </div>
         <p>
           <!-- <span v-if="activeIndex == 0">消费</span>

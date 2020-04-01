@@ -41,7 +41,7 @@
 				pageSize: 10,
 				allPage: 0,
 				count: 0,
-				datalist:[{id:1,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:2,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:3,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:4,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false},{id:5,Title:'哈哈哈哈哈',Contents:'吼吼吼吼佛山佛i后i后i后i哈佛后i后i后i发后i后i后覅后i后i后i发后i后i后方',isShow:false}],
+				datalist:[],
 				content:''
 			}
 		},
@@ -49,9 +49,9 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
-			// if (toLogin(this.curPage)) {
-			// 	this.HelpList();
-			// }
+			if (toLogin(this.curPage)) {
+				this.HelpList();
+			}
 			
 			
 		},

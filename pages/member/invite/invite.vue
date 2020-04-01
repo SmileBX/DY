@@ -1,5 +1,5 @@
 <template>
-  <view class="invite bg_fff" style="min-height:100vh">
+  <view class="invite bg_fff" style="padding-bottom: 30upx;">
 	  <view id="bb_canvas">
 		  <view class="inn_bg ">
 			  <image src="http://jyy.wtvxin.com/static/images/icons/inn.png" alt="" class=" invite"></image>
@@ -7,8 +7,8 @@
 		  <view class=" flex bg_fff pp3 flexAlignCenter">
 			  <view class=" flex flexColumn flex1 justifyContentStart">
 				  <view class=" flex flexAlignCenter">
-					  <image :src="Avatar" alt="" class="ava"></image>
-					  <view class="mr2">
+					  <image :src="Avatar" alt="" class="ava mr2"></image>
+					  <view class="mr2" style="margin-left:20upx;">
 						  <view>{{tel}}</view>
 						  <!-- #ifdef H5 -->
 						  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
@@ -384,7 +384,7 @@ export default {
   }
   .ava{
     width:100upx;height:100upx;
-	margin:0;
+	margin:0
   }
   .code_img{
     width:160upx;height:160upx;
@@ -464,6 +464,14 @@ export default {
     width: 100%;
     height: 100%;
   }
+}
+.emptybox{
+	display: flex;flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	image{
+		width:200upx;height:200upx;
+	}
 }
 </style>
 
