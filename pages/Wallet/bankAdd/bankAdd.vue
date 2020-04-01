@@ -26,7 +26,7 @@
                 class="weui-input"
               >
             </div>
-            <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right mr1">
+            <view class="iconfont icon-arrow_r fz12"></view>
           </div>
           <div class="ipt flex flexAlignCenter">
             <div class="lab">银行卡号</div>

@@ -5,7 +5,7 @@
         <div class="pull">推荐银行</div>
         <div
           class="payitem flex flexAlignCenter"
-          :class="{'active':activeIndex===index}"
+          :class="{'active':activeIndex===index||activeid==item.Id}"
           v-for="(item,index) in banklist"
           :key="index"
           @click="selectCardList(index,item.Id)"
@@ -33,12 +33,14 @@ export default {
     this.userId = uni.getStorageSync("userId");
     this.token = uni.getStorageSync("token");
     this.getBankinfoList();
+	this.activeid=this.$store.state.cardInfo.id;
   },
   data() {
     return {
       userId: "",
       token: "",
       activeIndex: -1,
+	  activeid:"",
       banklist: []
     };
   },
@@ -66,9 +68,7 @@ export default {
       this.$store.commit("update", { cardInfo });
       console.log(this.$store.state.cardInfo)
       // 跳转到上一页
-      uni.redirectTo({ url: selectCard.url });
-      // 跳转到上一页
-      // uni.redirectTo({ url: ""});
+      uni.navigateBack({ url: selectCard.url });
     },
     getBankinfoList() {
       let that = this;
@@ -131,8 +131,8 @@ export default {
     position: absolute;
     width: 28upx;
     height: 14upx;
-    border-left: 2px solid #338afb;
-    border-bottom: 2px solid #338afb;
+    border-left: 2px solid #ff9325;
+    border-bottom: 2px solid #ff9325;
     transform: rotate(-45deg);
     top: 4upx;
     left: 0;
