@@ -215,7 +215,6 @@
 			},
 			//加减商品的数量
 			change(msg){
-				console.log(msg)
 				let number=msg[0];
 				let index1=msg[1];
 				let index2=msg[2];
@@ -230,24 +229,21 @@
 			},
 			//编辑商品规格数量
 			async eaditCart(Arr,index1,index2,number) {
-				let info = await post("Cart/EditCart", {
+				let res = await post("Cart/EditCart", {
 					UserId: this.userId,
 					Token: this.token,
 					data: Arr
 				});
-				if (info.code === 0) {
+				if (res.code === 0) {
 					if(number){
 						this.cartlist[index1].ProData[index2].Number = number;
 						this.cartlist[index1].ProData[index2].select = true;
-					}else{
-						this.checklen=0;
+					}
+					else{
 						this.getCartList()
 					}
-				 //合计
-				this.AllPrice();
-				} else if (info.code === 2) {
-
-				}
+				    this.AllPrice();
+				} 
 			},
 			//删除购物车
 			async DelCart(Arr){
@@ -298,23 +294,20 @@
 
 		//获取购物车列表
 			async getCartList(){
-				console.log("99999")
 				let result = await post("Cart/ShopsCartList", {
 					UserId: this.userId,
 					Token: this.token
 				});
-				console.log("ppp")
 				if(result.code==0){
 					this.cartinfo=result.data;
 					this.cartlist=result.data.CartList;
-					this.checklen=0;
 					this.selectlen=0;
 					if(result.data.CartData.length>0){
-						this.checklen=0;
+						this.checklen=result.data.CartData.length;
 						this.hascartlist=true;
 						this.noDataIsShow=false;
 						this.allSelect=false;
-						this.allPrice=0;
+						//this.allPrice=0;
 						let _this = this;
 						_this.$nextTick(function() {
 							_this.cartlist.forEach(function(item) {
@@ -325,12 +318,12 @@
 										_this.$set(item2, "disBuy", true);
 										_this.$set(item2, "select", false);
 									}else{
-										_this.checklen++;
 										_this.$set(item2, "disBuy", false);
 									}
 								})
 							}); 
 						});
+						
 					}else{
 						this.noDataIsShow=true;
 						this.hascartlist=false;
@@ -353,7 +346,6 @@
 			},
 			//合计 金额、数量
 			AllPrice(){
-				
 				let _this = this;
 				let eaditallPrice =0;
 				let eaditnum =0;
@@ -363,8 +355,10 @@
 					item.ProData.forEach(function(item2){
 						singelnum++;
 						if(item2.select==true){
-							singelPrice =Number(item2.Price)*parseInt(item2.Number);
-							eaditallPrice += singelPrice;
+							if(item2.Isinvalid==0){
+								singelPrice =Number(item2.Price)*parseInt(item2.Number);
+								eaditallPrice += singelPrice;
+							}
 							eaditnum++;
 							editsingelnum++;
 						}
@@ -377,19 +371,16 @@
 				});
 				this.selectlen=eaditnum;
 				if(eaditnum==this.checklen){
-					console.log("8888"+this.allPrice)
 						this.allSelect=true;
-						this.allPrice= this.cartinfo.PayAmount;
 				}else{
-					console.log("444444"+this.allPrice)
 					this.allSelect=false;
-					this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 				}
-				console.log("ppppppppppppp"+this.allPrice)
+				this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 			},
 			//全选、反选
 			Allcheck() {
 				this.allSelect=!this.allSelect;
+				console.log("点击全选"+this.allSelect)
 				let _this = this;
 				if(!this.isEdit){//未打开编辑按钮的全选
 					if(this.allSelect){
@@ -475,13 +466,14 @@
 						_this.$set(e, "select", false);
 					})
 				}
-				_this.allSelect=_this.Cknum();
 				if(!_this.isEdit){//未打开编辑按钮的单选
 					_this.AllPrice();//合计
 				}
+				_this.allSelect=_this.Cknum();
 			},
 			//累计选中
 			Cknum(){
+				console.log("累计")
 				let _this=this;
 				let cknum=0,cknumed=0,all=false;
 				if(_this.isEdit){
@@ -514,12 +506,13 @@
 							if(item2.Isinvalid==0){
 								cknum++;
 								itemcknum++;
-							}
-							if(item2.select==true){
-								cknumed++;
-								itemcknumed++;
+								if(item2.select==true){
+									cknumed++;
+									itemcknumed++;
+								}
 							}
 						})
+						console.log(itemcknum+','+itemcknumed)
 						if(itemcknum==itemcknumed){
 							 _this.$set(item, "select", true);	
 						}else{
