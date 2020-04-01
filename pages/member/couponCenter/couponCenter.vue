@@ -1,31 +1,31 @@
 <template>
-  <view class="ticket">
-      <view class="tab flex">
-        <view class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</view>
-        <span :style="'left:'+tabStyle+'upx'"></span>
-      </view>
-      <block v-if="hasData">
-        <view class="list jus-b" v-for="(item,index) in datalist" :key="index">
-          <view class="left">
-            <view>{{item.Title}}</view>
-            <span>有效期{{item.AddTime}}至{{item.EndTime}}</span>
-            <view class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</view>
-            <view class="flexc" :class="tabIndex==0?'back_col':'use'">减满券</view>
-          </view>
-          <view class="right flexc" :class="tabIndex==0?'back_col':''">
-            <view>
-              <view>{{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span></view>
-              <span>满{{item.MeetConditions}}元可使用</span>
-            </view>
-          </view>
-        </view>
-      </block>
+  <div class="ticket">
+     <block v-if="hasData">
+      <div class="list jus-b" v-for="(item,index) in datalist" :key="index">
+        <div class="left flex">
+          <div class="price">
+            {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
+          </div>
+          <div class="info">
+              <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
+              <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
+              <span>有效期至{{item.EndTime}}</span>
+          </div>
+          <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
+          <div class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</div>
+        </div>
+        <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
+          <div>
+            <p>立即领取</p>
+          </div>
+        </div>
+      </div>
+     </block>
       <noData :isShow="noDataIsShow"></noData>
       <view class="loading" v-if="hasData">
         <load-more :loadingType="loadingType"></load-more>
       </view>
-      <view class="btn_de" @click="goUrl('/pages/member/couponCenter/couponCenter')">领券中心</view>
-  </view>
+  </div>
 </template>
 
 <script>
@@ -35,9 +35,6 @@ import LoadMore from '@/components/uni-load-more.vue';
 export default {
   data () {
     return {
-		tabList:['未使用','已使用','已失效'],
-		tabIndex:0,
-		couponStatus:1,//0全部，1可用，2已使用，3已失效
 		userId:"",
 		token:"",
 		hasData:false,
@@ -50,42 +47,28 @@ export default {
 		datalist:{},
     }
   },
-  computed: {
-    tabStyle(){
-      return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
-    }
-  },
   onShow(){
-    this.userId = uni.getStorageSync("userId")
-    this.token = uni.getStorageSync("token")
-    this.page=1;
-    this.CouponList()
+    this.userId = wx.getStorageSync("userId")
+    this.token = wx.getStorageSync("token")
+    this.CouponCenter()
   },
   components: {
     noData,LoadMore
   },
   methods: {
     goUrl(url){
-      uni.navigateTo({
+      wx.navigateTo({
         url:url
       })
     },
-    cliTab(index){
-      this.tabIndex = index;
-      this.couponStatus=index+1;
-      this.page=1;
-      this.noDataIsShow=false;
-      this.hasData=false;
-      this.CouponList();
-    },
-    //我的优惠券
-    CouponList(){
-      post('User/CouponList',{
+   
+    //优惠券
+    CouponCenter(){
+      post('Coupon/CouponCenter',{
           UserId:this.userId,
           Token:this.token,
           Page:this.page,
-          PageSize:this.pageSize,
-          Status:this.couponStatus
+          PageSize:this.pageSize
       }).then(res=>{
         if(res.code==0){
           let _this = this;
@@ -93,9 +76,8 @@ export default {
           if (len > 0) {
             this.hasData = true;
             this.noDataIsShow = false;
-            res.data.map(item=>{
-              item.AddTime=item.AddTime.split("T")[0];
-              item.EndTime=item.EndTime.split("T")[0];
+            res.data.forEach(item=>{
+              item.EndTime=item.EndTime.split(" ")[0];
             })
           }
           if (len == 0&&this.page==1) {
@@ -121,14 +103,26 @@ export default {
         }
       })
     },
-
+    //领券
+    ReceiveCoupon(id){
+      post('Coupon/GetCoupon',{
+          UserId:this.userId,
+          Token:this.token,
+          CouponId:id
+      }).then(res=>{
+         wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
+      })
+    },
   },
   onReachBottom: function() {
     if (this.isLoad) {
       this.loadingType = 1;
       this.isOved = false;
       this.page++;
-      this.CouponList();
+      this.CouponCenter();
     } else {
       this.loadingType = 2;
       if (this.page > 1) {
@@ -142,7 +136,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-	@import '../../../common/lz.css';
 .list::after{
   content:'';
   display: inline-block;
@@ -178,13 +171,28 @@ export default {
   }
   .left{
     width: 460upx;
-    padding: 60upx 0 0 35upx;
+    padding: 50upx 0 0 35upx;
     position: relative;
+    .price{
+      color: #f00;
+      font-size: 48upx;
+      margin-right: 20upx;
+      min-width: 100upx;
+      span{
+        font-size: 30upx!important;
+        color: #f00;
+      }
+    }
+    .info{
+      line-height: 1.2;
+      text-align: left;
+      p{margin-bottom: .1rem}
+    }
     span{
-      font-size: 20upx;
+      font-size: 24upx;
       color: #999;
     }
-    view{
+    .back_col{
       width: 128upx;
 	    height: 40upx;
       border-radius: 0 0 24px 0;
@@ -194,6 +202,17 @@ export default {
       font-size: 24upx;
       color: #fff
     }
+    .useinfo{ 
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 10upx 20upx;
+      font-size: 24upx;
+      color: #999;
+      box-sizing: border-box;
+      border-top: 1px dashed #eee;
+    }
   }
   .right{
     width: 230upx;
@@ -201,8 +220,8 @@ export default {
     text-align: center;
     p{
       color: #fff;
-      font-size: 56upx;
-      font-weight: 900;
+      font-size: 38upx;
+      font-weight: bold;
       span{
         font-size: 20upx
       }
@@ -235,7 +254,7 @@ export default {
 }
 .btn_de{
   width:100%;position: fixed;bottom:0;
-  height:88upx;line-height: 88upx;background: #f00;
+  height:88upx;line-height: 88upx;background: #338afb;
   color:#ffffff;text-align: center;
 }
 </style>

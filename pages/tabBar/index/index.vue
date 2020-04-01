@@ -348,7 +348,7 @@
 			// 获取类型(商品)
 			async typelist(){
 				let result = await post("Goods/TypeList", {
-					Type:1
+					Type:0
 				});
 				if (result.code === 0) {
 					let unm = result.data
