@@ -7,12 +7,13 @@
             {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
           </div>
           <div class="info">
-              <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
-              <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
+			  <P>{{item.Name}}</P>
+             <!-- <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
+              <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p> -->
               <span>有效期至{{item.EndTime}}</span>
           </div>
-          <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
-          <div class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</div>
+          <div class="flexc back_col">{{item.DiscountType==1?'满减券':'折扣券'}}</div>
+          <div class="useinfo oneline" v-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</div>
         </div>
         <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
           <div>
@@ -141,7 +142,7 @@ export default {
   display: inline-block;
   position: absolute;
   top: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -152,7 +153,7 @@ export default {
   display: inline-block;
   position: absolute;
   bottom: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -250,11 +251,7 @@ export default {
   }
 }
 .back_col{
-  background-color: #f00!important;
+  background-color: #FF3737!important;
 }
-.btn_de{
-  width:100%;position: fixed;bottom:0;
-  height:88upx;line-height: 88upx;background: #338afb;
-  color:#ffffff;text-align: center;
-}
+
 </style>

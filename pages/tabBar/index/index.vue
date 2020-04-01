@@ -155,6 +155,7 @@
 									</view>
 								</view>
 							</view>
+							<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 						</view>
 					</scroll-view>
 				</swiper-item>
@@ -176,12 +177,13 @@
 									</view>
 								</view>	
 							</view>
+							<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 						</view>	
 					</scroll-view>
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
+		
 	</view>
 </template>
 
@@ -220,7 +222,7 @@
 			this.productlist();//获取推荐列表
 			this.hand();//获取精选等分类列表
 			this.getBrandList() //品牌馆
-			if(toLogin()){
+			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}
 		},
@@ -239,7 +241,7 @@
 				});
 				if (result.code === 0) {
 					this.newscount = result.count;
-				} 
+				}
 			},
 			// 获取商品列表
 			async productlist() {
@@ -374,20 +376,30 @@
 					hand.unshift(pick,picks)
 					this.handpick = hand
 				}
-			}
+			},
+			loadMore(e) {
+				if (this.isLoad) {
+					this.loadingType = 1;
+					this.page++;
+					this.productlist();
+					this.hand();
+				} else {
+					this.loadingType = 2;
+				}
+			},
 			
 		},
 		// 上拉加载
-		onReachBottom: function() {
-			if (this.isLoad) {
-				this.loadingType = 1;
-				this.page++;
-				this.productlist();
-				this.hand();
-			} else {
-				this.loadingType = 2;
-			}
-		}
+		// onReachBottom: function() {
+		// 	if (this.isLoad) {
+		// 		this.loadingType = 1;
+		// 		this.page++;
+		// 		this.productlist();
+		// 		this.hand();
+		// 	} else {
+		// 		this.loadingType = 2;
+		// 	}
+		// }
 
 			
 		
