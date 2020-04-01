@@ -134,9 +134,7 @@
 				token: "",
 				page: 1,
 				pageSize: 12,
-				typeId:'',
 				BrandId:'',
-				classId:'',
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				hasData: false,
@@ -159,13 +157,9 @@
 			}
 		},
 		onLoad(e){
-			if(e.TypeId){
-				this.typeId = e.TypeId
-			}
 			if(e.BrandId){
 				this.BrandId = e.BrandId
 			}
-			this.classId = e.classId||'';
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
@@ -209,8 +203,7 @@
 				let result = await post("Goods/GoodsList", {
 					Page: this.page,
 					PageSize: this.pageSize,
-					TypeId:this.typeId,
-					ClassId:this.classId,
+					BrandId:this.BrandId,
 					Sort:this.Sort,//0-默认1-人气2-价格
 					Order:this.Order,//排序方式0-升序，1-降序
 					IsRecommend:this.IsRecommend,//1推荐

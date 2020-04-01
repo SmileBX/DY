@@ -59,7 +59,7 @@
 						<view class="index_pin">
 							<image src="../../../static/of/f1.png" mode="widthFix"></image>
 							<view class="pin_list flex" :class="brandList>1?'justifyContentBetween':'justifyContentCenter'">
-								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.BrandId+'&TypeId='+item.Id)">
+								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="item_logo">
 										<image src="../../../static/of/logo.png" mode="aspectFill"></image>
 									</view>
