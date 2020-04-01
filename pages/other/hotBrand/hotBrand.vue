@@ -43,7 +43,8 @@
 			async getHotList(){
 				const res = await post('Goods/GoodsList',{
 					Page:1,
-					IsHot:1,
+					IsHits:1,
+					PageSize: 10,
 				})
 				if(res.code == 0){
 					this.datalist = res.data

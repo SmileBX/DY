@@ -83,13 +83,13 @@
 }
 .levelPanel{
 	.list{
-		padding:0 20upx 0;
+		padding:0 ;
 		.item{
 			background: #ffffff;border-radius:12upx;
 			margin-bottom: 20upx;
 			padding:20upx;
 			.item_left{
-				width:200upx;height:200upx;position: relative;margin-right:10upx;
+				width:200upx;height:200upx;position: relative;margin-right:20upx;
 				.img{width:100%;height:100%;}
 				.tip{
 					position: absolute;top:0;left:0;

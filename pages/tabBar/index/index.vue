@@ -61,11 +61,11 @@
 							<view class="pin_list flex">
 								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="item_logo">
-										<image src="../../../static/of/logo.png" mode="aspectFill"></image>
+										<image :src="item.Logo" mode="widthFix"></image>
 									</view>
 									<view class="flex justifyContentBetween item_info">
 										<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
-											<view class="item_info_title">{{item.Name}}</view>
+											<!-- <view class="item_info_title">{{item.Name}}</view> -->
 											<view class="item_sige">{{item.Intro}}</view>
 										</view>
 										<view class="right_img">
@@ -79,7 +79,7 @@
 						<view class="hui mt2">
 							<image src="../../../static/of/f2.png" class="hui_bg"></image>
 							<view class="flex hui_title">
-								<view class="mr2">全场4折封顶</view>
+<!-- 								<view class="mr2">全场4折封顶</view>
 								<view class="flex tile_time">
 									<view class="mr1">仅剩</view>
 									<view class="flex justifyContentCenter flexAlignCneter">
@@ -87,7 +87,7 @@
 										<span class="time_span">56</span>:
 										<span class="time_span">34</span>
 									</view>
-								</view>
+								</view> -->
 							</view>
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
