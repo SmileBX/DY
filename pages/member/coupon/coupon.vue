@@ -7,14 +7,14 @@
       <block v-if="hasData">
         <view class="list jus-b" v-for="(item,index) in datalist" :key="index">
           <view class="left">
-            <view>{{item.Title}}</view>
-            <span>有效期{{item.AddTime}}至{{item.EndTime}}</span>
-            <view class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</view>
-            <view class="flexc" :class="tabIndex==0?'back_col':'use'">减满券</view>
+            <view class="name">{{item.Title}}</view>
+            <view class="time">有效期{{item.AddTime}}至{{item.EndTime}}</view>
+            <view class="useinfo oneline" v-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</view>
+            <view class="coupoutag flexc" :class="tabIndex==0?'back_col':'use'">{{item.DiscountType==1?'满减券':'折扣券'}}</view>
           </view>
           <view class="right flexc" :class="tabIndex==0?'back_col':''">
             <view>
-              <view>{{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span></view>
+              <view class="num">{{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span></view>
               <span>满{{item.MeetConditions}}元可使用</span>
             </view>
           </view>
@@ -142,13 +142,12 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-	@import '../../../common/lz.css';
 .list::after{
   content:'';
   display: inline-block;
   position: absolute;
   top: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -159,7 +158,7 @@ export default {
   display: inline-block;
   position: absolute;
   bottom: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -178,15 +177,18 @@ export default {
   }
   .left{
     width: 460upx;
-    padding: 60upx 0 0 35upx;
+    padding: 40upx 0 0 35upx;
     position: relative;
-    span{
-      font-size: 20upx;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+    .time{
+      font-size: 24upx;
       color: #999;
     }
-    view{
+    .coupoutag{
       width: 128upx;
-	    height: 40upx;
+	  height: 40upx;
       border-radius: 0 0 24px 0;
       position: absolute;
       top: 0;
@@ -194,12 +196,16 @@ export default {
       font-size: 24upx;
       color: #fff
     }
+	.useinfo{
+		font-size: 24upx;
+		color: #999;
+	}
   }
   .right{
     width: 230upx;
     background-color: #d4d5d6;
     text-align: center;
-    p{
+    .num{
       color: #fff;
       font-size: 56upx;
       font-weight: 900;
@@ -231,11 +237,11 @@ export default {
   }
 }
 .back_col{
-  background-color: #f00!important;
+  background-color: #FF3737!important;
 }
 .btn_de{
   width:100%;position: fixed;bottom:0;
-  height:88upx;line-height: 88upx;background: #f00;
+  height:88upx;line-height: 88upx;background: #FF3737;
   color:#ffffff;text-align: center;
 }
 </style>

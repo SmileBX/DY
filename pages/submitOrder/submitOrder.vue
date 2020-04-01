@@ -58,10 +58,12 @@
 							<view class="orderleft">合计</view>
 							<view class="orderright">￥{{item.TotalPrice}}</view>
 						</view>
-						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon">
+						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon(item.UseCouponList,item.CouponId,index)">
 							<view class="orderleft">优惠券</view>
 							<view class="orderright">
-								<view class="infotxt">不使用</view>
+								<block v-for="(e,i) in item.UseCouponList" :key="i">
+									<view class="infotxt">{{e.Id==item.CouponId?e.Title:'不使用'}}</view>
+								</block>
 								<view class="uni-icon uni-icon-arrowright"></view>
 							</view>
 						</view>
@@ -124,10 +126,12 @@
 						<view class="orderleft">合计</view>
 						<view class="orderright">￥{{info.TotalPrice}}</view>
 					</view>
-					<view class="orderinfo" v-if="info.UseCouponList.length" @click="openCoupon">
+					<view class="orderinfo" v-if="hasCoupon" @click="openCoupon(info.UseCouponList,info.ShopCouponId,0)">
 						<view class="orderleft">优惠券</view>
 						<view class="orderright">
-							<view class="infotxt">不使用</view>
+							<block v-for="(e,i) in info.UseCouponList" :key="i">
+								<view class="infotxt">{{e.Id==info.ShopCouponId?e.Title:'不使用'}}</view>
+							</block>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
@@ -168,23 +172,26 @@
 		<!-- 优惠券弹窗 -->
 		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
 			<view class="couponbox" style="z-index: 10000;">
-				<view class="titlebox">
-					<view  @click="closeCoupon" class="uni-icon uni-icon-arrowleft" style="font-size: 50upx;color:#333;"></view>
-					<text class="title">选择优惠券</text>
+				<view class="bottom-title">
+					选择优惠券
+				</view>
+				<view class="uni-close-btn" @click="closeCoupon">
+					<view class="iconfont icon-close"></view>
 				</view>
 				<scroll-view scroll-y style="width: 100%;height: 560upx;">
 					<view class="coupon">
-						<view class="couponitem">
-							<view class="couponname">不使用优惠券</view>
-							<view style="margin: 0;" class="IconsCK IconsCK-radio checked"></view>
+						<view class="couponitem" @click="selectCoupon(-1)">
+							<view class="couponname">不使用</view>
+							<view style="margin: 0;" :class="['IconsCK IconsCK-radio',popCouponId<0?'checked':'']"></view>
 						</view>
-						<view class="couponitem" v-for="(item,index) in 2" :key="index">
-							<view class="couponname">满减券：省20元
+						<view class="couponitem" v-for="(item,index) in popcouponData" :key="index" @click="selectCoupon(item.Id)">
+							<view class="couponname">{{item.Title}}
 							</view>
-							<view style="margin: 0;" class="IconsCK IconsCK-radio"></view>
+							<view style="margin: 0;" :class="['IconsCK IconsCK-radio',popCouponId==item.Id?'checked':'']"></view>
 						</view>
 					</view>
 				</scroll-view>
+				<view class="bottom-btn" @click="selectCouponok">完成</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -208,6 +215,7 @@
 				ProId:"",//产品Id(立即购买)
 				Total:"",//购买总数量(立即购买)
 				SpecText:"",//产品规格文本(立即购买)
+				hasCoupon:false,//是否有店铺券（立即购买）
 				info:{},//产品信息
 				addrInfo:{},//地址信息
 				isAddress:false,
@@ -218,7 +226,11 @@
 				shopIndex:0,
 				InvoiceIdArr:[],
 				Invoicetxt:[],
-				remarkTxtArr:[]
+				remarkTxtArr:[],
+				popcouponData:[],//弹出优惠券数据
+				popCouponId:-1,//弹出选中优惠券id
+				popCouponIdArr:[],
+				popshopCouponIndex:0,
 			};
 		},
 		onLoad: function() {
@@ -281,9 +293,33 @@
 			
 			closeCoupon(){
 				this.showCoupon=false;
+				this.popcouponData=[];
 			},
-			openCoupon(){
+			openCoupon(data,id,index){
 				this.showCoupon=true;
+				this.popcouponData=data;
+				this.popCouponId=id;
+				this.popshopCouponIndex=index;
+			},
+			//选择优惠券
+			selectCoupon(id){
+				this.popCouponId=id;
+			},
+			selectCouponok(){
+				this.popCouponIdArr[this.popshopCouponIndex]=this.popCouponId;
+				if(this.orderSType==1){
+					let DataArr = [];
+					for (let i = 0; i < this.info.CartList.length; i++) {
+						let json = {};
+						json["ShopId"] = this.info.CartList[i].ShopId;
+						json["CouponId"]=this.popCouponIdArr[i];
+						DataArr.push(json);
+					}
+					this.GoodsCartList(DataArr);
+				}else{
+					this.BuyNowGoods();
+				}
+				this.closeCoupon();
 			},
 			//选择发票
 			ChooseInvoice(index){
@@ -298,13 +334,14 @@
 			  uni.setStorageSync("invoiceinfo","");
 			},
 			//购物车下单获取
-			async GoodsCartList(){
+			async GoodsCartList(DataArr){
 			  let result=await post("Cart/ShopsCartList",{
 				UserId: this.userId,
 				Token: this.token,
 				CartIdList:this.CartIds,
 				AddressId:this.addressId,
-				CouponId:this.couponId
+				CouponId:this.couponId,
+				ShopData:DataArr
 			  })
 			  if(result.code==0){
 				this.info=result.data;
@@ -364,11 +401,17 @@
 				Token: this.token,
 				AddressId:this.addressId,
 				CouponId:this.couponId,
+				ShopCouponId:this.popCouponIdArr[0],
 				data:dataArr,
 			  })
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+				if(result.data.UseCouponList.length){
+					this.hasCoupon=true;
+				}else{
+					this.hasCoupon=false;
+				}
 				_this.$set(_this.info,"countItem",_this.infoAllNumber)
 			  }else{
 				uni.showToast({
@@ -388,6 +431,7 @@
 				SpecText:this.SpecText,
 				AddressId:this.addressId,
 				CouponId:this.couponId,
+				ShopCouponId:this.popCouponIdArr[0],
 				InvoiceId:this.InvoiceIdArr[0],
 				Remark:this.remarkTxtArr[0]
 			  })
@@ -414,7 +458,6 @@
 			confirm(){
 				if(this.addrInfo){
 					if(this.orderSType==0){//立即购买
-					
 					  this.BuyNowSubmitOrder();
 					}else{
 					  let DataArr = [];
