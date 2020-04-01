@@ -233,7 +233,7 @@ export default {
     font-size: 30upx;
   }
   input {
-    flex-grow: 1;
+    /* flex-grow: 1; */
     margin-left: 20upx;
   }
 }
@@ -250,8 +250,9 @@ export default {
 }
 .btns{
 	height:88upx;line-height: 88upx;color:#ffffff;
-  margin-top:60upx;
+	margin-top:60upx;
   .btn{
+	  height:88upx;line-height: 88upx;
     border-radius: 16upx;margin:0 auto;
   }
   .bg_ff952e{
