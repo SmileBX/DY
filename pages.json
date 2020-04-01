@@ -555,7 +555,14 @@
 						"navigationBarTitleText": "售后详情"
 					}
 				}
-			]
+			    ,{
+                    "path" : "couponCenter/couponCenter",
+                    "style" : {
+						"navigationBarTitleText": "优惠券",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+                }
+            ]
 		},
 		{
 			"root":"pages/message",
