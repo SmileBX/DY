@@ -12,7 +12,7 @@
 				<view class="head_r flex flexAlignCenter">
 					<view class="iconfont icon-caidan" @click="goUrl('/pages/classify/classify')"></view>
 				</view>
-			</view>
+			</view> 
 			<view class="flex b_tab_list">
 				<view class="flex flexAlignCenter b_tab_item">
 					<image src="/static/icons/t1.png"></image>
