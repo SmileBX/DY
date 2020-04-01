@@ -52,7 +52,7 @@
 			<block v-for="(item,index) in datalist" :key="index" v-show="hasData">
 				<view class="listbox" @click="navigate('homePage/details',{id:item.Id})">
 					<view class="listimg">
-						<image :src="item.PicNo" mode="widthFix"></image>
+						<image :src="item.PicNo" mode="aspectFill"></image>
 					</view>
 					<view class="listpt">
 						<view>
@@ -415,6 +415,10 @@
 		background:#eee;
 		border-radius:12upx;
 		overflow: hidden;
+	}
+	.listimg image{
+		width:100%;
+		height:100%;
 	}
 	.listpt{
 		padding-left:30upx;
