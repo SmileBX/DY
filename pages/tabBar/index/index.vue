@@ -27,7 +27,7 @@
 		<view class="index_Content uni-tab-bar">
 			<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab">
 				<swiper-item>
-					<scroll-view class="uni-index-wrap" scroll-y>
+					<scroll-view class="uni-index-wrap" scroll-y @scrolltolower="loadMore">
 						<!--轮播图-->
 						<view class="page-section swiper">
 							<view class="page-section-spacing">
@@ -78,8 +78,8 @@
 						<!--特惠-->
 						<view class="hui mt2">
 							<image src="http://ddyp.wtvxin.com/static/of/f2.png" class="hui_bg"></image>
-							<view class="flex hui_title">
-<!-- 								<view class="mr2">全场4折封顶</view>
+							<!-- <view class="flex hui_title">
+								<view class="mr2">全场4折封顶</view>
 								<view class="flex tile_time">
 									<view class="mr1">仅剩</view>
 									<view class="flex justifyContentCenter flexAlignCneter">
@@ -87,8 +87,8 @@
 										<span class="time_span">56</span>:
 										<span class="time_span">34</span>
 									</view>
-								</view> -->
-							</view>
+								</view>
+							</view> -->
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
 									<block v-if="index==0"><image src="http://ddyp.wtvxin.com/static/of/1.png"></image></block>
@@ -97,15 +97,14 @@
 								</view>
 							</view>
 						</view>
-						<!--推荐-->
-						<view class="jian mt2">
+						<!--推荐推荐-->
+						<view class="jian mt2" v-if="hasrec">
 							<image src="http://ddyp.wtvxin.com/static/of/f3.png" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
-							<!-- 热销榜单 -->
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10">
 									<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-										<view class="scroll-view-item_H" v-for="(item,index) in Productlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
+										<view class="scroll-view-item_H" v-for="(item,index) in recProductlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 											<view class="itembox">
 												<view class="image-view">
 													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -162,8 +161,8 @@
 				<swiper-item v-if="index1<Typelist.length-1" v-for="(tab,index1) in Typelist" :key="index1">
 					<scroll-view class="menu_wrap" scroll-y @scrolltolower="loadMore(index1)">
 						<view class="menu">
-							<view class="list flex flexWrap justifyContentBetween">
-								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
+							<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
+								<view class="item" v-for="(item,index) in datalist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img"></image>
 									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
@@ -177,7 +176,8 @@
 									</view>
 								</view>	
 							</view>
-							<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
+							<view class="uni-tab-bar-loading" v-if="hasData"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
+							<noData :isShow="noDataIsShow"></noData>
 						</view>	
 					</scroll-view>
 				</swiper-item>
@@ -189,6 +189,7 @@
 
 <script>
 	import {post,get,toLogin} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
@@ -196,8 +197,11 @@
 				bannerlist:[{Pic:""}], // 轮播图
 				Typelist:[],           // 头部
 				menubarlist:[],        // 菜单
-				Productlist:[],        // 商品列表
+				hasrec:false,
+				recProductlist:[],        // 精选推荐
+				hashand:false,
 				handpick:[],           // 精选
+				indextid:"",//首页tab切换分类id
 				handlist:[],           // 精选列表
 				brandList:[],          //品牌馆
 				scrollLeft:0,
@@ -207,29 +211,34 @@
 				IsRecommend:1,//1: 推荐
 				IsHot:1,//精选
 				IsNew:1,//新品
-				TypeId:1,//类型Id
-				ClassId:1,//分类Id
+				tid:"",//类型id
+				cid:"",//分类id
+				hasData: false,
+				noDataIsShow: false,
 				loadingType: 0, //0加载前，1加载中，2没有更多了
-				pageSize:10,
+				pageSize:6,
 				page: 1,
 				isLoad: false,
+				datalist:[],//顶部分类产品
 				newscount:0,
 			}
 		},
 		onLoad() {
 			this.banner();
 			this.typelist();
-			this.productlist();//获取推荐列表
-			this.hand();//获取精选等分类列表
 			this.getBrandList() //品牌馆
+			this.Recprolist();//精选推荐
+			this.hand();//获取精选等分类列表
+		},
+		onShow(){
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}
 		},
-		components:{uniLoadMore},
+		components:{noData,uniLoadMore},
 		methods:{
 			async getBrandList(){
-				const res = await post('Goods/BrandList',{})
+				let res = await post('Goods/BrandList',{})
 				if(res.code == 0){
 					this.brandList = res.data
 				}
@@ -244,65 +253,139 @@
 				}
 			},
 			// 获取商品列表
-			async productlist() {
-				let query = {
-					Page:1,
-					IsRecommend:this.IsRecommend,
+			async getprolist() {
+				let result = await post("Goods/GoodsList", {
+					Page: this.page,
+					PageSize: this.pageSize,
+					TypeId:this.tid,
+					ClassId:this.cid
+				});
+				if (result.code === 0) {
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (this.page === 1) {
+						this.datalist = result.data;
+					}
+					if (this.page > 1) {
+						this.datalist = this.datalist.concat(
+							result.data
+						);
+					}
+					if (result.data.length <this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
 				}
-				this.getGoodList(query,1)
 			},
+			
+			//获取精选推荐产品
+			async Recprolist(){
+				let res = await post('Goods/GoodsList',{
+					Page: 1,
+					PageSize: 10,
+					IsRecommend: 1,
+					IsHot:1
+				})
+				if(res.code==0){ //首页精选推荐
+					if(res.data.length){
+						this.hasrec=true;
+						this.recProductlist = res.data
+					}else{
+						this.hasrec=false;
+					}
+				}
+			},
+			handItem(id,index){
+				if (this.indexs === index) {
+					return false;
+				}else{
+					this.page=1;
+					this.indextid=id;
+					this.indexs = index;
+					this.hand();
+				}
+			},
+			//精选列表获取分类列表
 			async hand() {
-				let query = {
-					Page:1,
-					// IsHot:this.IsHot,
-					// TypeId:this.TypeId,
+				let datajson={};
+				if(this.indexs==0){
+					datajson={
+						Page: this.page,
+						PageSize: this.pageSize,
+						IsHot: 1, //推荐
+					}
+				}else if(this.indexs==1){
+					datajson={
+						Page: this.page,
+						PageSize: this.pageSize,
+						IsSubsidy:1,//有补贴
+						//IsUseCoupons:1//有券
+					}
+				}else{
+					datajson={
+						Page: this.page,
+						PageSize: this.pageSize,
+						TypeId:this.indextid,
+					}
 				}
-				this.getGoodList(query,2)
+				let result = await post("Goods/GoodsList",datajson);
+				if (result.code === 0) {
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hashand = true;
+						this.noDataIsShow = false;
+					}
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+						this.hashand = false;
+					}
+					if (this.page === 1) {
+						this.handlist = result.data;
+					}
+					if (this.page > 1) {
+						this.handlist = this.handlist.concat(
+							result.data
+						);
+					}
+					if (result.data.length <this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				}
 			},
-			async getGoodList(prams,tip){
-				const res = await post('Goods/GoodsList',prams)
-				if(tip==1){ //首页推荐列表
-					this.Productlist = res.data
-				}else{ //精选列表
-					this.handlist = res.data
-				}
-			},
-			handItem(item,index){
-				this.indexs = index
-				let query = {
-					Page:1,
-					// IsHot:this.IsHot,
-					// ClassId:this.ClassId,
-				}
-				this.getGoodList(query,2)
-			},//精选列表获取分类列表
+			//顶部导航滑动切换
 			async changeTab(e) {
 				this.page=1;
 				let index = e.detail.current;
-				let id= this.Typelist[index].Id;
+				this.tid= this.Typelist[index].Id;
+				this.cid='';
 				this.tabIndex = index;
-				let query = {
-					Page:1,
-					// IsHot:this.IsHot,
-					// TypeId:this.TypeId,
-				}
-				this.getGoodList(query,2);//获取分类列表
-				this.setScrollLeft(index);
+				this.getprolist()
 			},
-			//点击跳转
+			//顶部导航点击跳转
 			tapTab(index,id){
 				if (this.tabIndex === index) {
 					return false;
 				} else {
 					this.page=1;
 					this.tabIndex = index;
-					let query = {
-						Page:1,
-						// IsHot:this.IsHot,
-						// TypeId:this.TypeId,
-					}
 					this.setScrollLeft(index)
-					this.getGoodList(query,2);//获取分类列表
+					this.tid=id;
+					this.cid='';
+					this.getprolist()
 				}
 			},
 			setScrollLeft: async function(tabIndex) {
@@ -381,8 +464,11 @@
 				if (this.isLoad) {
 					this.loadingType = 1;
 					this.page++;
-					this.productlist();
-					this.hand();
+					if(e){
+						this.getprolist();
+					}else{
+						this.hand();
+					}
 				} else {
 					this.loadingType = 2;
 				}
