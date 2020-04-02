@@ -2,7 +2,12 @@
   <view class="ticket">
       <view class="tab flex">
         <view class="flex1 flexc" :class="{'active':tabIndex==index}" v-for="(item, index) in tabList" :key="index" @click="cliTab(index)">{{item}}</view>
-        <span :style="'left:'+tabStyle+'upx'"></span>
+        <!-- #ifndef MP-WEIXIN -->
+        <span :style="{'left':tabStyle+'upx'}"></span>
+        <!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		<span :style="{'left':tabStyle+'rpx'}"></span>
+		<!-- #endif -->
       </view>
       <block v-if="hasData">
         <view class="list jus-b" v-for="(item,index) in datalist" :key="index">
@@ -52,6 +57,7 @@ export default {
   },
   computed: {
     tabStyle(){
+		console.log(((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2))
       return ((750/this.tabList.length)*this.tabIndex)+(((750/this.tabList.length)-50)/2)
     }
   },
@@ -220,7 +226,6 @@ export default {
   }
 }
 .tab{
-  position: relative;
   height: 92upx;
   background-color: #fff;
   position: relative;

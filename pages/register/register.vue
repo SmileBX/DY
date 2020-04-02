@@ -142,12 +142,13 @@
 				let method = ''
 				if(this.type == 1){
 					objUrl = 'Login/GetMiniAppBindTelCode?Mobile='
-					method:'get'
+					method='get'
 					
 				}else{
 					objUrl = 'Login/GetRegSMSCode?Mobile='
-					method:'POST'
+					method='POST'
 				}
+				console.log(this.type,"类型")
 				uni.request({
 				    url:host+ objUrl+this.tel, //仅为示例，并非真实的接口地址
 				    method: method,

@@ -173,7 +173,7 @@
 					if (selectedSkuKeyLen === this.skuKey.length) {
 						let selectedSpeList = this.selectedAllMateSku();
 						this.stock = selectedSpeList.ProStock;
-						if(this.isLimint==1){
+						if(this.isLimint==1&&this.proInfo.IsSku==0){
 							this.price = this.proInfo.TimePrice;
 						}else{
 							if(this.fromPinTuan){
@@ -293,9 +293,9 @@
 				return obj;
 			},
 			goodsDetail() {
-				if(this.isLimint==1){
+				if(this.isLimint==1&&this.proInfo.IsSku==0){
 					this.price=this.proInfo.TimePrice;
-					this.oprice=this.proInfo.ProductPrice;
+					this.oprice=this.proInfo.Price;
 				}else{
 					if(this.fromPinTuan){
 						this.price=this.proInfo.FightingPrice;
