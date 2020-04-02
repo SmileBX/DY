@@ -229,6 +229,8 @@
 			this.getBrandList() //品牌馆
 			this.Recprolist();//精选推荐
 			this.hand();//获取精选等分类列表
+		},
+		onShow(){
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}

@@ -203,7 +203,6 @@
 				});
 				if (result.code === 0) {
 					if(result.data.length){
-						console.log("kkkkkkkk")
 						this.haspromote=true;
 						this.promotelist = result.data;
 					}
