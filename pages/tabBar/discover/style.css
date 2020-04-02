@@ -1,7 +1,3 @@
-.content .main{
-	height: calc(100% - 230upx);
-	overflow-y: auto;
-}
 .carthead{
 	background-color: #16a6fd;
 	color:#ffffff;
@@ -29,6 +25,11 @@
 }
 .head{
 	background:#16a6fd;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 999;
 	.serch_box{
 		padding:10upx 0 10upx 30upx;background:#16a6fd ;
 		.search{
@@ -54,9 +55,13 @@
 		}
 	}
 }
-
+.content .main{
+	padding-top: 230upx;
+	/* #ifdef MP-WEIXIN */
+	padding-top: 142upx;
+	/* #endif */
+}
 .tui_bg{
-	padding:0 30upx;
 	position: relative;
 	&::before{
 		display: block;
@@ -68,16 +73,25 @@
 		left: 0;
 		background: #16a6fd;
 	}
-	.swiper,.img,.swiper-item{
-		width:690upx;height:340upx;
-		border-radius:15upx;
+	.swiper{
+		width:100%;
+		height:340upx;
+		.swiper-item{
+			padding: 0 30upx;
+		}
+		.img{
+			height:340upx;
+			overflow: hidden;
+			border-radius:12upx;
+		}
 	}
+	
 }
 .combox{
 	.pb0{
 		padding-bottom:0upx!important;
 	}
-	background: #ffffff;border-radius:15upx;
+	background: #ffffff;border-radius:12upx;
 	.title{
 		padding:10upx 20upx;
 		.name{

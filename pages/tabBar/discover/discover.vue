@@ -50,11 +50,11 @@
 						<view class="flex title justifyContentBetween">
 							<view class="flex flexAlignEnd">
 								<view class="name">热销榜</view>
-								<view class="subtitle">排序由销量、搜索、好评等综合得出</view>
+								<!-- <view class="subtitle">排序由销量、搜索、好评等综合得出</view> -->
 							</view>
 							<view class="flex flexAlignCenter" @click="goUrl('/pages/other/hotBrand/hotBrand')">
 								<view class="color_gray">更多</view>
-								<view class="uni-icon uni-icon-arrowright"></view>
+								<view class="iconfont icon-arrow_r fz12"></view>
 							</view>
 						</view>
 						<view class="list flex justifyContentBetween">
@@ -98,12 +98,12 @@
 				<view class="menu">
 					<view class="menu_nav flex justifyContentBetween">
 						<view class="menu_item flex flexAlignCenter flexColumn" 
-						v-for="(item,key) in navlist" :key="key" :class="{'active':key==indexs}" @click="hand(key)">
+						v-for="(item,index) in navlist" :key="index" :class="{'active':index==indexs}" @click="tapTab(index)">
 							<view class="title">{{item.title}}</view>
 						</view>
 					</view>
-					<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 0">
-						<view class="item" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
+					<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
+						<view class="item" v-for="(item,index) in datalist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 							<image :src="item.PicNo" class="item_img"></image>
 							<view class="item_info">
 								<view class="item_title">{{item.Name}}</view>
@@ -117,31 +117,20 @@
 							</view>
 						</view>
 					</view>
-					<view class="list flex flexWrap justifyContentBetween" v-if="indexs === 1">
-						<view class="item" v-for="(item,index) in hotlist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
-							<image :src="item.PicNo" class="item_img"></image>
-							<view class="item_info">
-								<view class="item_title">{{item.Name}}</view>
-								<view class="flex flexAlignEnd justifyContentBetween item_total">
-									<view class="flex flexAlignEnd">
-										<span class="item_price">￥{{item.Price}}</span>
-										<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
-									</view>
-									<view class="item_market">{{item.SalesVolume}}人付款</view>
-								</view>
-							</view>
-						</view>
-					</view>
+					<noData :isShow="noDataIsShow"></noData>
 				</view>
-				<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
+				<view class="uni-tab-bar-loading" v-if="hasData"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
 			</view>
 		</view>
+		<!-- #ifndef MP-WEIXIN -->
 		<view style="height: 50px;"></view>
+		<!-- #endif -->
 	</view>
 </template>
 
 <script>
-	import {post} from '@/common/util.js'
+	import {post} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default {
 		data() {
@@ -150,19 +139,20 @@
 				userId: "",
 				token: "",
 				barHeight:0,
-				Productlist:[],
 				Hitslist:[],
 				promotelist:[],
 				bannerlist:[],//广告轮播图
 				indexs:0,
-				hotlist:[],
-				loadingType: 0, //0加载前，1加载中，2没有更多了
-				pageSize:6,
 				page: 1,
+				pageSize: 6,
+				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
+				hasData: false,
+				noDataIsShow: false,
+				datalist:[],
 			}
 		},
-		components: {uniLoadMore},
+		components: {noData,uniLoadMore},
 		onLoad() {
 		},
 		onShow(){
@@ -171,6 +161,7 @@
 			this.banner();
 			this.getHitslist()
 			this.productlist();
+			this.getprolist();
 		},
 		methods: {
 			//链接跳转
@@ -187,7 +178,7 @@
 					this.bannerlist = result.data
 				}
 			},
-			// 获取商品列表
+			// 获取热销商品列表
 			async getHitslist() {
 				let result = await post("Goods/GoodsList", {
 					Page:1,
@@ -198,58 +189,73 @@
 					this.Hitslist = result.data
 				}
 			},
-			// 获取商品列表
+			// 获取商品列表（商家力推）
 			async productlist() {
 				let result = await post("Goods/GoodsList", {
 					Page:1,
+					PageSize:10,
 					IsRecommend: 1,  //推荐IsHits
 				});
 				if (result.code === 0) {
-					let list = result.data
-					this.Productlist = list.slice(0,3)
-					if (this.page === 1) {
-						this.promotelist = result.data;
-					}
-					if (this.page > 1) {
-						this.promotelist = this.promotelist.concat(result.data);
-					}
-					if (result.data.length < this.pageSize) {
-						this.isLoad = false;
-						this.loadingType = 2;
-					} else {
-						this.isLoad = true;
-						this.loadingType = 0;
-					}
+					this.Productlist = result.data
 				}
 			},
-			async hand(keys) {
-				this.indexs = keys
-				let result = await post("Goods/GoodsList", {
-					Page:1,
-					IsHot: 1, //精选
-				});
-				if (result.code === 0) {
-					this.hotlist = result.data
-					if (this.page > 1) {
-						this.hotlist = this.hotlist.concat(result.data);
+			//切换
+			tapTab(index) {
+				this.page=1;
+				this.indexs = index;
+				this.getprolist()
+			},
+			async getprolist() {
+				let datajson={};
+				if(this.indexs==0){
+					datajson={
+						Page: this.page,
+						PageSize: this.pageSize,
+						IsRecommend: 1, //推荐
 					}
-					if (result.data.length < this.pageSize) {
+				}else if(this.indexs==1){
+					datajson={
+						Page: this.page,
+						PageSize: this.pageSize,
+						IsHot:1//精选
+					}
+				}
+				let result = await post("Goods/GoodsList", datajson);
+				if (result.code === 0) {
+					let _this=this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (this.page === 1) {
+						this.datalist = result.data;
+					}
+					if (this.page > 1) {
+						this.datalist = this.datalist.concat(
+							result.data
+						);
+					}
+					if (result.data.length <this.pageSize) {
 						this.isLoad = false;
 						this.loadingType = 2;
 					} else {
 						this.isLoad = true;
-						this.loadingType = 0;
+						this.loadingType = 0
 					}
 				}
 			},
 		},
 		
-		// 上拉加载
 		onReachBottom: function() {
 			if (this.isLoad) {
 				this.loadingType = 1;
 				this.page++;
-				this.hand();
+				this.getprolist();
 			} else {
 				this.loadingType = 2;
 			}
