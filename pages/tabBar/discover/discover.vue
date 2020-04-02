@@ -45,7 +45,7 @@
 				</swiper>
 			</view>
 			<view class="card uni-mt10">
-				<view class="pw3">
+				<view class="pw3" v-if="hasHits">
 					<view class="hot combox">
 						<view class="flex title justifyContentBetween">
 							<view class="flex flexAlignEnd">
@@ -66,7 +66,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="pw3 mt2">
+				<view class="pw3 mt2" v-if="haspromote">
 					<view class="combox">
 						<view class="flex title justifyContentBetween pb0">
 							<view class="flex flexAlignEnd">
@@ -139,7 +139,9 @@
 				userId: "",
 				token: "",
 				barHeight:0,
+				hasHits:false,
 				Hitslist:[],
+				haspromote:false,
 				promotelist:[],
 				bannerlist:[],//广告轮播图
 				indexs:0,
@@ -160,7 +162,7 @@
 			this.token = uni.getStorageSync("token");
 			this.banner();
 			this.getHitslist()
-			this.productlist();
+			this.shopProductlist();
 			this.getprolist();
 		},
 		methods: {
@@ -186,18 +188,25 @@
 					IsHits: 1,  //热销榜
 				});
 				if (result.code === 0) {
-					this.Hitslist = result.data
+					if(result.data.length){
+						this.hasHits=true;
+						this.Hitslist = result.data
+					}
 				}
 			},
 			// 获取商品列表（商家力推）
-			async productlist() {
+			async shopProductlist() {
 				let result = await post("Goods/GoodsList", {
 					Page:1,
 					PageSize:10,
-					IsRecommend: 1,  //推荐IsHits
+					IsRecommend: 1,  //推荐
 				});
 				if (result.code === 0) {
-					this.Productlist = result.data
+					if(result.data.length){
+						console.log("kkkkkkkk")
+						this.haspromote=true;
+						this.promotelist = result.data;
+					}
 				}
 			},
 			//切换
