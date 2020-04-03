@@ -14,7 +14,8 @@
           <view class="left">
             <view class="name">{{item.Title}}</view>
             <view class="time">有效期{{item.AddTime}}至{{item.EndTime}}</view>
-            <view class="useinfo oneline" v-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</view>
+            <div class="useinfo oneline" v-if="item.ShopName">仅可购买{{item.ShopName}}店铺商品</div>
+            <div class="useinfo oneline" v-else-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</div>
             <view class="coupoutag flexc" :class="tabIndex==0?'back_col':'use'">{{item.DiscountType==1?'满减券':'折扣券'}}</view>
           </view>
           <view class="right flexc" :class="tabIndex==0?'back_col':''">
@@ -172,7 +173,7 @@ export default {
 }
 .list{
   width: 690upx;
-  height: 180upx;
+  height: 200upx;
   border-radius: 15upx;
   margin: 30upx;
   background-color: #fff;
@@ -185,9 +186,7 @@ export default {
     width: 460upx;
     padding: 40upx 0 0 35upx;
     position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	
     .time{
       font-size: 24upx;
       color: #999;
@@ -203,8 +202,15 @@ export default {
       color: #fff
     }
 	.useinfo{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 10upx 20upx;
 		font-size: 24upx;
 		color: #999;
+		box-sizing: border-box;
+		border-top: 1px dashed #eee;
 	}
   }
   .right{

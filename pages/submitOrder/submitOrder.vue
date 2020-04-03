@@ -58,7 +58,7 @@
 							<view class="orderleft">合计</view>
 							<view class="orderright">￥{{item.TotalPrice}}</view>
 						</view>
-						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon(item.UseCouponList,item.CouponId,index)">
+						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openshopCoupon(item.UseCouponList,item.CouponId,index)">
 							<view class="orderleft">优惠券</view>
 							<view class="orderright">
 								<block v-for="(e,i) in item.UseCouponList" :key="i">
@@ -126,7 +126,7 @@
 						<view class="orderleft">合计</view>
 						<view class="orderright">￥{{info.TotalPrice}}</view>
 					</view>
-					<view class="orderinfo" v-if="hasCoupon" @click="openCoupon(info.UseCouponList,info.ShopCouponId,0)">
+					<view class="orderinfo" v-if="hasCoupon" @click="openshopCoupon(info.UseCouponList,info.ShopCouponId,0)">
 						<view class="orderleft">优惠券</view>
 						<view class="orderright">
 							<block v-for="(e,i) in info.UseCouponList" :key="i">
@@ -211,7 +211,26 @@
 					</view>
 				</view>				
 			</view>
-			
+			<!-- 使用平台券 (购物车)-->
+			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==1&&info.yhAmount>0">
+				<view class="orderinfo" @click="openCoupon(info.CouponsList,info.CouponId)">
+					<view class="orderleft">平台优惠</view>
+					<view class="orderright">
+						<view class="infotxt">{{info.CouponId>0?'￥'+info.yhAmount:'不使用'}}</view>
+						<view class="uni-icon uni-icon-arrowright"></view>
+					</view>
+				</view>
+			</view>
+			<!-- 使用平台券 (立即购买)-->
+			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==0&&info.PlatDisPrice>0">
+				<view class="orderinfo" @click="openCoupon(info.CouponsList,info.CouponId)">
+					<view class="orderleft">平台优惠</view>
+					<view class="orderright">
+						<view class="infotxt">{{info.CouponId>0?'￥'+info.PlatDisPrice:'不使用'}}</view>
+						<view class="uni-icon uni-icon-arrowright"></view>
+					</view>
+				</view>
+			</view>
 		</view>
 		<view style="width: 100%;height: 160upx;"></view>
 		<view class="footer flex flex-between">
@@ -279,6 +298,7 @@
 				InvoiceIdArr:[],
 				Invoicetxt:[],
 				remarkTxtArr:[],
+				popCouponType:0,//弹出优惠券类型，0平台券，1店铺券
 				popcouponData:[],//弹出优惠券数据
 				popCouponId:-1,//弹出选中优惠券id
 				popCouponIdArr:[],
@@ -352,18 +372,30 @@
 				this.showCoupon=false;
 				this.popcouponData=[];
 			},
-			openCoupon(data,id,index){
+			openshopCoupon(data,id,index){
+				this.popCouponType=1;
 				this.showCoupon=true;
 				this.popcouponData=data;
 				this.popCouponId=id;
 				this.popshopCouponIndex=index;
 			},
+			openCoupon(data,id){
+				this.popCouponType=0;
+				this.showCoupon=true;
+				this.popcouponData=data;
+				this.popCouponId=id;
+			},
 			//选择优惠券
 			selectCoupon(id){
 				this.popCouponId=id;
+				
 			},
 			selectCouponok(){
-				this.popCouponIdArr[this.popshopCouponIndex]=this.popCouponId;
+				if(this.popCouponType==0){
+					this.couponId=this.popCouponId;
+				}else{
+					this.popCouponIdArr[this.popshopCouponIndex]=this.popCouponId;
+				}
 				if(this.orderSType==1){
 					let DataArr = [];
 					for (let i = 0; i < this.info.CartList.length; i++) {

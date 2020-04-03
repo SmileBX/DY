@@ -45,7 +45,7 @@
 							<view class="page-section-spacing">
 								<swiper class="swiper" style="height: 400upx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
 									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
-										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList')">
+										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
 											<view>
 												<image :src="tab.Pic" class="tab_img"></image> 
 											</view>
