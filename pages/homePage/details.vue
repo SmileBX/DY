@@ -235,7 +235,7 @@
 		<view class="foot-fiexd">
 			<view class="dd-foot">
 				<view class="border-top"></view>
-				<view class="foot-item">
+				<view class="foot-item" @click="tolink('/pages/brand/shopIndex/shopIndex?ShopId='+proInfo.ShopData.ShopId)">
 					<view class="bd"><view class="iconfont icon-dianpu"></view>店铺</view>
 				</view>
 				<view class="foot-item" style="position: relative;">
@@ -251,7 +251,8 @@
 					<view class="bd"><view class="iconfont" :class="[IsCollect ? 'icon-collect' : 'icon-collect1']" @click="collect"></view>收藏</view>
 					<!-- 实心 icon-collect-->
 				</view>
-				<view class="foot-item foot-item-btns">
+				<!-- 有拼团样式 -->
+				<view class="foot-item foot-item-btns" v-if="GroupId>0">
 					<view class="btn btn_1 flex" @click="showSku(0)">
 						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
 						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
@@ -259,7 +260,7 @@
 					</view>
 					<view class="btn btn_2 flex" @click="showSku(1)">
 						<view>
-							<view class="num">¥126</view>
+							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
 						</view>
 						<view class="listm rt flex" v-if="proInfo.DistributionIncome>0">
@@ -268,11 +269,22 @@
 						</view>
 					</view>
 				</view>
+				<!-- 无拼团样式 -->
+				<view class="foot-item foot-item-btns" v-else>
+					<view class="btn btn_1 flex" @click="showSku(0)">
+						<view class="txt">加入购物车</view>
+					</view>
+					<view class="btn btn_2 flex" @click="showSku(0)">
+						<view>
+							<view class="txt">立即购买</view>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 详情底部 end -->
 		<view class="topbtn" @click="Top" v-if="isTop"></view>
-		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1"></popupsku>
+		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" :fromPinTuan="fromPinTuan" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1"></popupsku>
 		<!-- 弹出产品参数 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupinfo" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Attr">
@@ -313,6 +325,8 @@
 				token: "",
 				isTop:false,//是否显示置顶
 				proId:'',//商品id
+				GroupId:0,//拼团id
+				GroupPrice:0,//拼团价格
 				proInfo:{},
 				IsCollect:false, //是否收藏该商品
 				bannerindex:0,//当前轮播图
@@ -322,6 +336,7 @@
 				attrArr:{},//产品参数
 				isServiceInfo:false,//服务
 				showbtntype:0,
+				fromPinTuan:false,//是否是拼团sku
 				isProData:false,
 				number:1,
 				SpecText:'',
@@ -335,6 +350,8 @@
 				timeStr:[],//倒计时
 				starTimetype:1,//0秒杀未开始，1一开始，2已结束
 				percentage:0,//已售百分比
+				GroupSku:[],//拼团商品Sku
+				ProSku:[],//普通商品Sku
 			}
 		},
 		onLoad() {
@@ -389,7 +406,14 @@
 				});
 				if(result.code==0){
 					this.proInfo=result.data;
-					this.isProData = true;
+					this.ProSku=result.data.Sku;
+					this.GroupId=this.proInfo.GroupId;
+					if(this.proInfo.GroupId>0){//可以拼团
+						this.GroupProductInfo()
+						this.isProData = false;
+					}else{
+						this.isProData = true;
+					}
 					if(this.proInfo.PicData.length){
 						this.hasBanner=true;
 					}
@@ -401,6 +425,21 @@
 						this.attrArr=JSON.parse(this.proInfo.ParameterJson);
 					}
 					this.GetRTime(this.proInfo.FlashSaleEndTime);//限时商品倒计时
+				}
+			},
+			//拼团商品详情
+			async GroupProductInfo(){
+				let result = await post("GroupBuy/GroupProductInfo", {
+					userId:this.userId,
+					token:this.token,
+					GroupId: this.GroupId
+				});
+				if(result.code==0){
+					var _this=this;
+					this.GroupSku=result.data.Sku;
+					this.$set(_this.proInfo,'FightingPrice',result.data.FightingPrice);//在普通产品详情添加拼团商品信息，公用一套sku组件
+					this.$set(_this.proInfo,'OriginalPrice',result.data.OriginalPrice);
+					this.GroupPrice=result.data.FightingPrice;
 				}
 			},
 			//限时商品倒计时
@@ -440,9 +479,19 @@
 			},
 			//展示底部 Sku
 			showSku: function(type) {
-				this.hidePopup();
+				this.isProData = false;
+				this.hidePopup();console.log(type)
+				var _this=this;
+				if(type==1){//替换传给sku组件的值
+					this.fromPinTuan=true
+					this.$set(_this.proInfo,'Sku',_this.GroupSku);
+				}else{
+					this.fromPinTuan=false
+					this.$set(_this.proInfo,'Sku',_this.ProSku);
+				}
 				this.showbtntype=type;
 				this.showPopupSku = true;
+				this.isProData = true;
 			},
 			//展示底部 参数
 			showInfo: function() {
@@ -451,6 +500,7 @@
 			},
 			//统一的关闭popup方法
 			hidePopup: function() {
+				this.isProData = false;
 				this.showPopupSku=false;
 				this.showPopupinfo = false;
 			},

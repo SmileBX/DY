@@ -30,11 +30,11 @@
 }
 
 .logo {
-	padding: 0 0 40upx;
+	padding: 0 0 80upx;
 }
 
 .logo .img {
-	width: 280upx;
+	width: 200upx;
 	margin: 0 auto;
 	
 }
@@ -137,7 +137,7 @@
 }
 
 .MP-login .logoimg {
-    width: 280upx;
+    width: 200upx;
     /* height: 150upx; */
 }
 .login-btn {
