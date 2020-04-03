@@ -28,10 +28,30 @@
 			</view>
 			<view class="pagination" v-if="hasBanner">{{bannerindex+1}}/{{proInfo.PicData.length}}</view>
 		</view>
+		<div v-if="isLimint==1" :class="['limitTiem jus-b ali-c',starTimetype!=1?'no':'']">
+			  <div class="limt-left">
+				<div class="active-price jus-a ali-c">
+					<h3><span>¥</span>{{proInfo.TimePrice}}</h3>
+					  <p>¥{{proInfo.Price}}</p>
+				</div>
+				<div class="percentage">
+				  <span :style="['width:'+proInfo.StockProportion+'%']"><i>已抢{{proInfo.SalesVolume}}件</i></span>
+				</div>
+			  </div>
+			  <div class="limt-right">
+				<div class="txt">限时秒杀</div>
+				<div class="time ali-c jus-b" >
+					<span class="timetxt">{{starTimetype==1?'距离结束':'距离开始'}}</span>
+					<div class="countDown" v-if="timeStr.length">
+					  <span>{{timeStr[1]}}</span>:<span>{{timeStr[2]}}</span>:<span>{{timeStr[3]}}</span>
+					</div>
+				</div>
+			  </div>
+		  </div>
 		<!-- 价格 位置 展示 -->
 		<view class="">
 			<view class="listpt">
-				<view class="listprice">
+				<view class="listprice" v-if="isLimint==0">
 					<view class="listm">
 						<view class="selling"><span>¥</span>{{proInfo.Price}}</view>
 						<view class="original" v-if="proInfo.MarketPrice>proInfo.Price">¥{{proInfo.MarketPrice}}</view>
@@ -233,7 +253,8 @@
 				</view>
 				<view class="foot-item foot-item-btns">
 					<view class="btn btn_1 flex" @click="showSku(0)">
-						<view class="num">¥{{proInfo.Price}}</view>
+						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
+						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
 						<view class="txt">单独购买</view>
 					</view>
 					<view class="btn btn_2 flex" @click="showSku(1)">
@@ -251,7 +272,7 @@
 		</view>
 		<!-- 详情底部 end -->
 		<view class="topbtn" @click="Top" v-if="isTop"></view>
-		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="0"></popupsku>
+		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1"></popupsku>
 		<!-- 弹出产品参数 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupinfo" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Attr">
@@ -309,6 +330,11 @@
 				plusprice:'',
 				hasComment:false,
 				CommentList:[],//评价列表
+				isLimint:0,//0非限时购产品，1限时购产品
+				timer:null,
+				timeStr:[],//倒计时
+				starTimetype:1,//0秒杀未开始，1一开始，2已结束
+				percentage:0,//已售百分比
 			}
 		},
 		onLoad() {
@@ -318,6 +344,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.proId=this.$root.$mp.query.id;
+			this.isLimint=this.$root.$mp.query.isLimint||0;
 			this.Goodsxq();
 			this.getCommentList();
 		},
@@ -373,7 +400,43 @@
 					if(this.proInfo.ParameterJson!=""&&this.proInfo.ParameterJson!="{}"){
 						this.attrArr=JSON.parse(this.proInfo.ParameterJson);
 					}
+					this.GetRTime(this.proInfo.FlashSaleEndTime);//限时商品倒计时
 				}
+			},
+			//限时商品倒计时
+			GetRTime(endTime) {
+			  let _this = this;
+			  //倒计时
+			  let endtime=endTime.replace(/-/g, '/').replace(/T/g, ' ');
+			  let EndTime = new Date(endtime); //结束时间
+			  this.timer = setInterval(function() {
+			  let NowTime = new Date(); //当前时间
+			  let t = EndTime.getTime() - NowTime.getTime();
+			  if (t > 0) {
+				let d = Math.floor(t / 1000 / 60 / 60 / 24); //天
+				let h = Math.floor((t / 1000 / 60 / 60) % 24); //时
+				let m = Math.floor((t / 1000 / 60) % 60); //分
+				let s = Math.floor((t / 1000) % 60); //秒
+				if (parseInt(d) < 1) {
+				d = "";
+				} else {
+				d = d + "天";
+				}
+				if (parseInt(h) < 10) {
+				h = "0" + h;
+				}
+				if (parseInt(m) < 10) {
+				m = "0" + m;
+				}
+				if (parseInt(s) < 10) {
+				s = "0" + s;
+				}
+				_this.timeStr = [d,h,m,s];
+			  } else {
+				this.starTimetype=2;
+				clearInterval(this.timer);
+			  }
+			  }, 1000);
 			},
 			//展示底部 Sku
 			showSku: function(type) {
@@ -488,6 +551,44 @@
 		}
 	}
 </script>
-<style scoped>
+<style scoped lang='scss'>
 	page{ background-color: #fff;}
+	.limitTiem{
+	    background: #ff3333;
+	    color: #fff;
+	    padding: 20rpx 30rpx;
+	    .limt-left{
+	      .active-price{
+	        h3{ font-size: 40rpx; margin-right: 10rpx;
+	          span{ font-size: 28rpx !important}
+	        }
+	        p{text-decoration: line-through}
+	      } 
+	      .percentage{
+	          width:210rpx;
+	          height:24rpx;
+	          line-height:24rpx;
+	          font-size:24rpx;
+	          background:#ff747a;
+	          border-radius:20rpx;
+	          text-align:center;
+	          position:relative;
+	          overflow: hidden;
+	          span{
+	            position:absolute;
+	            top:0;
+	            left:0;
+	            height:100%;
+	            border-radius:20rpx;
+	            background:#ffaa01;
+	            display:block;
+	            i{ display: inline-block;width: 220rpx}
+	          }
+	        }
+	    }
+	    .limt-right .txt{ font-size: 40rpx; font-weight: bold;text-align: right;}
+	    .countDown span{
+	      background: #fff; color: #ff3333; border-radius: 4rpx; margin: 0 6rpx; padding: 0 4rpx;
+	    }
+	  }
 </style>

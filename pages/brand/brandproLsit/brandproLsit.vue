@@ -2,7 +2,7 @@
 	<view>
 		<view class="brand_rec">
 			<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-				<view class="scroll-view-item_H" v-for="(item,index) in proList1" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
+				<view class="scroll-view-item_H" v-for="(item,index) in proList1" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id+'&isLimint=1')">
 					<view class="itembox">
 						<view class="image-view">
 							<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -10,7 +10,7 @@
 						<view class="txtbox">
 							<view class="brandlogo">
 								<!-- <image class="img" src="http://ddyp.wtvxin.com/static/of/2.png" mode="aspectFit"></image> -->
-								<view class="name uni-ellipsis">剩余{{item.overTime}}</view>
+								<view class="name uni-ellipsis">剩余<label style="color: #f11;">{{item.overTime}}</label></view>
 							</view>
 							<view class="txt_1 uni-ellipsis">￥{{item.TimePrice}}</view>
 							<view class="txt_2 uni-ellipsis">{{item.Name}}</view>
@@ -47,7 +47,7 @@
 		</view> -->
 		<view class="levelPanel">
 			<view class="list">
-				<view class="item flex" v-for="(item,index) in proList2" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
+				<view class="item flex" v-for="(item,index) in proList2" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id+'&isLimint=1')">
 					<view class="item_left">
 						<image :src="item.PicNo" class="img"></image>
 					</view>
@@ -59,7 +59,7 @@
 							<view class="flex flag ">
 								<!-- <span class="flag_pill">返</span>
 								<span class="flag_mon color_red">￥2万</span> -->
-								<text>剩余{{item.overTime}}</text>
+								<text>剩余<label style="color: #f11;">{{item.overTime}}</label></text>
 							</view>
 							<view class="qiang">马上抢</view>
 						</view>
@@ -140,7 +140,6 @@
 				clearInterval(timer);
 			  }
 			  }, 1000);
-			  return timeStr;
 			},
 			//跳转
 			tolink(Url) {

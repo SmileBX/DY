@@ -178,7 +178,7 @@
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
-			this.token = uni.getStorageSync("token");console.log(toLogin())
+			this.token = uni.getStorageSync("token");
 			if (toLogin()) {
 				this.NewsCount();
 			    this.getMemberInfo();

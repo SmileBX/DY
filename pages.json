@@ -58,7 +58,7 @@
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
-				"navigationBarBackgroundColor":"#ff5a5b",
+				"navigationBarBackgroundColor":"#ff4e4f",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
@@ -168,13 +168,13 @@
 						"type": "transparent",
 						"buttons": [{
 								"text": "\ue605",
-								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
+								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "22px",
 								"color": "#333"
 							},
 							{
 								"text": "\ue66e",
-								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
+								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "22px",
 								"color": "#333"
 							}
@@ -274,13 +274,13 @@
 						"type": "transparent",
 						"buttons": [{
 								"text": "\ue71a",
-								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
+								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#fff"
 							},
 							{
 								"text": "\ue641",
-								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
+								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#fff"
 							}
@@ -299,7 +299,7 @@
 						"buttons": [
 							{
 								"text": "\ue605",
-								"fontSrc": "http://ddyp.wtvxin.com/static/iconfont.ttf",
+								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "20px",
 								"color": "#000"
 							}
