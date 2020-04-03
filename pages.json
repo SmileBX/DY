@@ -84,15 +84,6 @@
 			}
 		},
 		{
-			"path": "pages/tabBar/my/withdrawal",
-			"style": {
-				"navigationBarTitleText": "余额提现",  //我的页面里
-				"app-plus": {
-					// "titleNView": false //首页去除原生导航
-				}
-			}
-		},
-		{
 			"path": "pages/tabBar/my/topup",
 			"style": {
 				"navigationBarTitleText": "余额充值",  //我的页面里

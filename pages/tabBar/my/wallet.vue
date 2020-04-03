@@ -12,12 +12,12 @@
 				<view class="folds">
 					<image class="fold" src="http://ddyp.wtvxin.com/static/icons/wallet1.png" mode=""></image>
 				</view>
-				<view class="detail" @click="totransaction">交易明细</view>
+				<view class="detail" @click="golink('/pages/other/money/money')">交易明细</view>
 				<view class="">
 					<image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image>
 				</view>
 			</view>
-			<view class="drawing" style="padding-top: 20rpx;">
+			<view class="drawing" style="padding-top: 20upx;">
 				<view class="folds">
 					<image class="fold" src="http://ddyp.wtvxin.com/static/icons/wallet3.png" mode=""></image>
 				</view>
@@ -28,8 +28,8 @@
 			</view>
 		</view>
 		<view class="present">
-			<view class="recharge"  @click="totopup">充值</view>
-			<view class="recharge" @click="towithdrawal">提现</view>
+			<view class="recharge" style="width: 100%;"  @click="golink('/pages/tabBar/my/topup')">充值</view>
+			<!-- <view class="recharge" @click="golink('/pages/other/withdraw/withdraw')">提现</view> -->
 		</view>
 		
 	</view>
@@ -55,24 +55,7 @@
 					})
 				}
 			},
-			// 充值
-			totopup(){
-				uni.navigateTo({
-					url:'/pages/tabBar/my/topup'
-				})
-			},
-			// 提现
-			towithdrawal(){
-				uni.navigateTo({
-					url:'/pages/other/withdraw/withdraw'
-				})
-			},
-			// 交易明细
-			totransaction(){
-				uni.navigateTo({
-					url:'/pages/other/money/money'
-				})
-			},
+			
 		}
 	
 	}
@@ -83,54 +66,54 @@
 	}
 	.walletbox{
 		background: #FFFFFF;
-		padding: 30rpx;
+		padding: 30upx;
 	}
 	.across{
-		padding-bottom: 20rpx;
+		padding-bottom: 20upx;
 		border-bottom:1px solid rgba(236,236,236,1);
 	}
 	.reveal{
 		width: 100%;
-		height: 300rpx;
-		border-radius:30rpx;
+		height: 300upx;
+		border-radius:30upx;
 		background:url(http://ddyp.wtvxin.com/static/icons/wallet2.png);
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(252,252,252,1);
 		text-align: center;
-		padding-top: 70rpx;
+		padding-top: 70upx;
 	}
 	.symbol{
-		font-size:60rpx;
+		font-size:60upx;
 	}
 	.symbol span{
-		font-size:40rpx;
+		font-size:40upx;
 	}
 	.balance{
-		font-size:24rpx;
+		font-size:24upx;
 	}
 	.drawing{
 		display: flex;
 	}
 	.fold{
-		width:44rpx;
-		height:44rpx;
+		width:44upx;
+		height:44upx;
 	}
 	.detail{
-		font-size:28rpx;
+		font-size:28upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(36,36,36,1);
-		padding-left: 25rpx;
+		padding-left: 25upx;
 		padding-right: 70%;
 	}
 	.arrows{
-		width:22rpx;
-		height:19rpx;
+		width:22upx;
+		height:19upx;
 		padding-right: 1;
 	}
 	.present{
-		padding: 100rpx 30rpx 0 30rpx;
+		padding: 100upx 30upx 0 30upx;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -139,11 +122,11 @@
 		color:rgba(255,255,255,1);
 	}
 	.recharge{
-		width:320rpx;
-		height:88rpx;
+		width:320upx;
+		height:80upx;
 		background:rgba(255,51,51,1);
-		border-radius:10rpx;
-		font-size:32rpx;
+		border-radius:10upx;
+		font-size:32upx;
 		display: flex;
 		align-items: center;
 		justify-content: center;

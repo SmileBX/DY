@@ -22,7 +22,7 @@
         </p>
       </div>
       <div class="tips" style="padding:20upx 0;border-top:1px solid #f2f2f2;">可提现余额：{{Wallet}}
-        <span class="red" @click="Allwithdraw">全部提现</span>
+        <span class="red" v-if="Wallet>0" @click="Allwithdraw">全部提现</span>
       </div>
     </div>
     <div class="btns">
@@ -34,10 +34,16 @@
 import { post} from "@/common/util.js";
 export default {
   onLoad() {
-    this.setBarTitle();
   },
   onShow() {
+	 
     this.Wallet = this.$store.state.Wallet;
+	this.wType=this.$root.$mp.query.type||0;
+	if(this.wType==1){
+		uni.setNavigationBarTitle({
+		  title: "佣金提现"
+		}); 
+	}
     this.amount = '';
     //  console.log("余额"+this.Wallet);
     this.bankCardId = this.$store.state.myCardInfo.id;
@@ -58,15 +64,15 @@ export default {
   },
   data() {
     return {
-      Wallet:0,
-      curPage: "",
+      Wallet:0,//可提现金额
       userId: "",
       token: "",
+	  wType:0,//提现类型，0余额，1佣金
       hasData: false,
       bankCardId: "",
       bankLogo: "",
-      bankCardName: "中国银行",
-      bankCardNo: "3790",
+      bankCardName: "",
+      bankCardNo: "",
       hasDefaultCard: true,
       amount: "" ,//提现的金额
       MinWithdrawal:'',	//每次提现最小额度
@@ -78,17 +84,12 @@ export default {
     };
   },
   methods: {
-    setBarTitle() {
-      uni.setNavigationBarTitle({
-        title: "提现选择"
-      });
-    },
     //获取提现限制条件
     getLimitationOfWithdrawal(){
       post('DrawMoney/LimitationOfWithdrawal',{
           UserId: this.userId,
           Token: this.token
-      },this.curPage).then(res=>{
+      }).then(res=>{
           // console.log(res)
           this.MinWithdrawal =res.data.MinWithdrawal //每次提现最小额度
           this.MaxWithdrawal =res.data.MaxWithdrawal  //每次提现最大额度
@@ -145,7 +146,9 @@ export default {
     submitWithdraw() {
       //提现
       if (this.valOther()) {
-        this.DrawMoneyApply();
+		  if(this.wType==1){
+			  this.DrawMoneyApply();
+		  }
       }
     },
    
@@ -177,8 +180,8 @@ export default {
     Allwithdraw(){
       this.amount=this.Wallet;
     },
+	//佣金提现
     DrawMoneyApply() {
-      //提现
       let that = this;
       post(
         "DrawMoney/memberDrawMoneyApply",
