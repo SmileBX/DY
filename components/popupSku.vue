@@ -44,7 +44,7 @@
 				</view>
 			</view>
 			<view style="height: 120upx;"></view>
-			<view class="popup-ft" style="margin-left:20upx;" v-if="showbtntype==1">
+			<view class="popup-ft" v-if="showbtntype==1">
 				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
 			<view class="popup-ft" v-if="showbtntype==0">
@@ -177,7 +177,8 @@
 							this.price = this.proInfo.TimePrice;
 						}else{
 							if(this.fromPinTuan){
-								this.price=this.proInfo.FightingPrice;
+								// this.price=this.proInfo.FightingPrice;
+								this.price = selectedSpeList.GroupPrice;
 							}else{
 								this.price = selectedSpeList.Price;
 								this.plusprice=selectedSpeList.PlusPrice;
@@ -361,6 +362,20 @@
 					else{
 						this.$emit('getsku',this.number,this.SpecText,this.price);
 						this.$emit('hidePopup');
+						if (toLogin()){
+							if(this.valSubmit()){
+								let money="";
+								if(this.isPlus==1&&this.IsPlusPrice==1&&this.isLimint!=1){
+									money=this.plusprice;
+								}else{
+									money=this.price;
+								}
+								let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&GroupId='+this.proInfo.GroupId;
+								uni.navigateTo({
+									url: objUrl
+								})
+							}
+						}
 					}
 				}else{
 					uni.showToast({

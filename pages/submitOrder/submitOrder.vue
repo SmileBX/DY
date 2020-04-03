@@ -95,7 +95,7 @@
 				</view>
 			</block>
 			<!-- 立即购买 -->
-			<view v-else class="procontent b_radius uni-mb10">
+			<view  v-if="orderSType==0&&GroupId==0" class="procontent b_radius uni-mb10">
 				<view class="shopbox">
 					<view class="iconfont icon-dianpu"></view>
 					<text class="shopName">{{info.ShopName}}</text>
@@ -161,13 +161,64 @@
 					</view>
 				</view>				
 			</view>
+			<!-- 拼团 购买 -->
+			<view v-if="orderSType==0&&GroupId>0" class="procontent b_radius uni-mb10">
+				<view class="shopbox">
+					<view class="iconfont icon-dianpu"></view>
+					<text class="shopName">{{info.ShopName}}</text>
+					<view class="uni-icon uni-icon-arrowright"></view>
+				</view>
+				<view class="outside">
+					<view class="pictrueAll">
+						<view class="pictrue">
+							<image :src="info.ImageNo" mode="aspectFill" ></image>
+						</view>
+					</view>
+					<view class="txtBox">
+						<view class="title">{{info.Title}}</view>
+						<view class="protype" v-if="info.SpecText">{{info.SpecText}}</view>
+						<view class="pronumber">
+							<view class="number">x{{Total}}</view><view class="price">￥{{info.FightingPrice}}</view>
+						</view>
+					</view>
+				</view>
+				<view class="orderbox">
+					<view class="orderinfo">
+						<view class="orderleft">运费</view>
+						<view class="orderright">
+							{{info.Freight>0?'￥'+info.Freight:'免邮'}}
+						</view>
+					</view>
+					<view class="orderinfo">
+						<view class="orderleft">合计</view>
+						<view class="orderright">￥{{info.allPayMoney}}</view>
+					</view>
+					<view class="orderinfo" style="border: none;">
+						<view class="orderleft">订单备注</view>
+						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[0]"/>
+					</view>
+					<view class="orderinfo" @click="ChooseInvoice(0)">
+						<view class="orderleft">开具发票</view>
+						<view class="orderright">
+							<view class="infotxt flex flex-end">{{Invoicetxt[0]||'可开票'}}
+								<span v-if="InvoiceIdArr[0]>0" @click.stop="delInvoicet(0)" class="delinvoice">×</span>
+							</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
+						</view>
+					</view>
+					<view class="allprice">
+						<text>共计{{Total}}件商品</text><text>小计：</text><text>￥{{info.allPayMoney}}</text>
+					</view>
+				</view>				
+			</view>
 			
 		</view>
 		<view style="width: 100%;height: 160upx;"></view>
 		<view class="footer flex flex-between">
 			<view class="footleft" v-if="orderSType==1"><text class="color_gray fz12">(共{{info.countItem}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.PayAmount}}</text></view>
-			<view class="footleft" v-if="orderSType==0"><text class="color_gray fz12">(共{{info.AllNumber}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.AllPrice}}</text></view>
-			<view class="footright" @click="confirm">提交订单</view>
+			<view class="footleft" v-if="orderSType==0&&GroupId==0"><text class="color_gray fz12">(共{{info.AllNumber}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.AllPrice}}</text></view>
+			<view class="footleft" v-if="orderSType==0&&GroupId>0"><text class="color_gray fz12">(共{{Total}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.allPayMoney}}</text></view>
+			<view class="footright" @click="confirm">{{GroupId>0?'确认拼团':'提交订单'}}</view>
 		</view>
 		<!-- 优惠券弹窗 -->
 		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
@@ -213,6 +264,7 @@
 				showCoupon:false,//优惠券弹框
 				CartIds: "", //购物车提交的item的id
 				ProId:"",//产品Id(立即购买)
+				GroupId:0,
 				Total:"",//购买总数量(立即购买)
 				SpecText:"",//产品规格文本(立即购买)
 				hasCoupon:false,//是否有店铺券（立即购买）
@@ -242,6 +294,7 @@
 			this.orderSType= this.$root.$mp.query.orderSType;
 			this.CartIds=this.$root.$mp.query.cartItem;
 			this.ProId=this.$root.$mp.query.id;
+			this.GroupId=this.$root.$mp.query.GroupId||0;
 			this.Total=this.$root.$mp.query.number;
 			this.SpecText=this.$root.$mp.query.SpecText;
 			if(uni.getStorageSync("addressinfo")){
@@ -264,7 +317,11 @@
 			if(this.orderSType==1){
 				this.GoodsCartList();
 			}else{
-				this.BuyNowGoods();
+				if(this.GroupId>0){
+					this.BuyGroup();//拼团确认订单
+				}else{
+					this.BuyNowGoods();//立即购买确认订单
+				}
 			}
 		},
 		methods: {
@@ -317,7 +374,7 @@
 					}
 					this.GoodsCartList(DataArr);
 				}else{
-					this.BuyNowGoods();
+					this.BuyNowGoods();//立即购买确认订单
 				}
 				this.closeCoupon();
 			},
@@ -421,6 +478,27 @@
 				});
 			  }
 			},
+			//拼团订单渲染
+			async BuyGroup(){
+			  let result=await post("GroupBuy/ConfirmationGroup",{
+				UserId: this.userId,
+				Token: this.token,
+				AddressId:this.addressId,
+				GroupId:this.GroupId,
+				Number:this.Total,//购买总数量
+				SpecText:this.SpecText//产品规格文本
+			  })
+			  if(result.code==0){
+				  let _this=this;
+				_this.info=result.data;
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
 			//立即购买提交
 			async BuyNowSubmitOrder(){
 			  let result=await post("Order/BuyNowSubmitOrder",{
@@ -454,11 +532,46 @@
 				});
 			  }
 			},
+			//确认拼团
+			async CreateGroupOrder(){
+			  let result=await post("GroupBuy/CreateGroupOrder",{
+				UserId: this.userId,
+				Token: this.token,
+				GroupId:this.GroupId,//产品Id
+				Number:this.Total,
+				SpecText:this.SpecText,
+				AddressId:this.addressId,
+				InvoiceId:this.InvoiceIdArr[0],
+				Remark:this.remarkTxtArr[0]
+			  })
+			  if(result.code==0){
+				uni.showToast({
+				  title: '订单提交成功',
+				  success(){
+					setTimeout(res=>{
+						uni.redirectTo({
+							url: '/pages/pay/pay?orderNo='+result.data+'&source=1'
+						})
+					},1500)
+				  }
+				})
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
 			//提交订单
 			confirm(){
 				if(this.addrInfo){
-					if(this.orderSType==0){//立即购买
-					  this.BuyNowSubmitOrder();
+					if(this.orderSType==0){
+					  if(this.GroupId>0){
+						  this.CreateGroupOrder();//确认拼团
+					  }else{
+						  this.BuyNowSubmitOrder();//立即购买
+					  }
 					}else{
 					  let DataArr = [];
 					  for (let i = 0; i < this.info.CartList.length; i++) {

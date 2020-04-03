@@ -3,8 +3,9 @@
 		{
 			"path": "pages/tabBar/index/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "大单易拼",
 				"enablePullDownRefresh" : false,
+				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor":"#ff3333",
 				"app-plus": {
 					"titleNView": false
@@ -337,6 +338,30 @@
             "path" : "pages/getPassword/getPassword",
             "style" : {
 				"navigationBarTitleText": "忘记密码"
+			}
+        }
+        ,{
+            "path" : "pages/brand/shopIndex/shopIndex",
+            "style" : {
+				"navigationBarTitleText": "店铺详情",
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"text": "\ue71a",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							},
+							{
+								"text": "\ue641",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							}
+						]
+					}
+				}
 			}
         }
     ],
