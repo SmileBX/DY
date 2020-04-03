@@ -408,6 +408,9 @@ radio-group label, checkbox-group label{
   transform: scaleY(.5);
   background-color: #e6e6e6;
 }
+.line-list .line-item:last-child::before{
+	display: none;
+}
 .line-list .line-item.line-arrow-r{
   padding-right: 40upx;
 }

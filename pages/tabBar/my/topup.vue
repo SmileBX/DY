@@ -13,21 +13,21 @@
 			<view class="carry">该卡本次最多可充值¥20000</view>
 			<view class="pay-hd uni-mb10">选择支付方式</view>
 			<view class="pay-bd line-list">
-						<block v-for="(item,index) in payway" :key="index"> 
-							<view class="line-item flex-between" @click="tabBtn(item.type)">
-							  <view class="item-l flex-start">
-								<view :class="['icon',item.className]"></view>
-								<view class="lab">{{item.typeName}}</view>
-							  </view>
-							  <view class="item-r">
-								<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==index?'checked':'']"></view>
-							  </view>
-							</view>
-						</block>
+				<block v-for="(item,index) in payway" :key="index"> 
+					<view class="line-item flex-between" @click="tabBtn(item.type)">
+					  <view class="item-l flex-start">
+						<view :class="['icon',item.className]"></view>
+						<view class="lab">{{item.typeName}}</view>
+					  </view>
+					  <view class="item-r">
+						<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==index?'checked':'']"></view>
+					  </view>
+					</view>
+				</block>
 			</view>
-			<view class="present">
-				<view class="recharge">确认充值</view>
-			</view>
+		</view>
+		<view class="present">
+			<view class="recharge" @click="Submit">确认充值</view>
 		</view>
 	</view>
 </template>
@@ -41,15 +41,17 @@
 					type:0,
 					typeName:"微信支付",
 					className:"icon_weixin"
-				},{
-					type:1,
-					typeName:"支付宝",
-					className:"icon_alipay"
-				},{
-					type:2,
-					typeName:"银联支付",
-					className:"icon_yinlian"
-				}],
+				},
+				// {
+				// 	type:1,
+				// 	typeName:"支付宝",
+				// 	className:"icon_alipay"
+				// },{
+				// 	type:2,
+				// 	typeName:"银联支付",
+				// 	className:"icon_yinlian"
+				// },
+				],
 				payType:0, //0微信支付
 				money:"",//充值金额
 			}
@@ -59,9 +61,66 @@
 			this.token = uni.getStorageSync("token");
 		},
 		methods:{
+			// 判断浏览器环境
+			isWeixin() {
+			    var ua = navigator.userAgent.toLowerCase();
+				if (ua.match(/MicroMessenger/i)=="micromessenger") {
+					return true;
+				} else {
+					return false;
+				}
+			},
 			tabBtn(index){
 				this.payType=index;
 			},
+			Submit(){
+				if(this.money>0){
+					// #ifdef  H5
+					if(this.isWeixin()){
+						//this.AddRecharge();
+					}else{
+						//this.H5AddRecharge();
+					}
+					// #endif
+					
+				}else{
+					uni.showToast({
+						title: "请输入充值金额",
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			//小程序支付
+			async ConfirmWeiXinSmallPay(){
+				  let result= await post("Order/WeiXinSmallRechAmount",{
+					WxCode: this.WxCode,
+					UserId: this.userId,
+					Token: this.token,
+					OrderNo: this.orderNo,
+					WxOpenid:this.WxOpenid 
+				  });
+				  var payData=JSON.parse(result.data.JsParam)
+				  if(result.code===0){
+						let _this=this;
+					uni.requestPayment({
+					  timeStamp: payData.timeStamp,
+					  nonceStr: payData.nonceStr,
+					  package: payData.package,
+					  signType: payData.signType,
+					  paySign: payData.paySign,
+					  success(res) {
+						  _this.type = "";
+							_this.showPay=false;
+							uni.redirectTo({
+								//url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+							})
+						},
+					  fail(res) {}
+					})
+				  }
+			},
+			
 		}
 	
 	}

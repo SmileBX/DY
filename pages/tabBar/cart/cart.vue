@@ -189,6 +189,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			//this.getMemberInfo();
+			this.allPrice=0;
 			this.cartlist=[];
 			this.getCartList();
 			this.isEdit=false;
