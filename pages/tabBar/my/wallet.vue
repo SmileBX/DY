@@ -44,8 +44,8 @@
 			}
 		},
 		onShow() {
-			this.wallet=this.$root.$mp.query.id;
-			this.wallet=Number(this.wallet).toFixed(2)
+			this.wallet=this.$store.state.Wallet;
+			//this.wallet=Number(this.wallet).toFixed(2)
 		},
 		methods:{
 			golink(url){

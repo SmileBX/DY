@@ -408,7 +408,7 @@
 				{
 					"path":"money/money",
 					"style": {
-						"navigationBarTitleText": "提现记录"
+						"navigationBarTitleText": "交易明细"
 					}
 				},
 				{

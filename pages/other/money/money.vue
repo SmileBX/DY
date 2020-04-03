@@ -11,7 +11,7 @@
         <p>
           <!-- <span v-if="activeIndex == 0">消费</span>
           <span v-else-if="activeIndex == 1">充值</span> -->
-          <span>提现</span>
+          <span>最近交易</span>
           ￥{{RechargeNumber}}</p>
       </div>
       <div v-if="hasData">
@@ -65,7 +65,6 @@ export default {
 		// LoadMore
   },
   onShow(){
-    this.setBarTitle();
     //设置当前时间
     this.setDate()
     this.userId = wx.getStorageSync("userId")
@@ -73,11 +72,6 @@ export default {
     this.queryRecord()
   },
   methods: {
-    setBarTitle() {
-      wx.setNavigationBarTitle({
-        title: "提现记录"
-      });
-    },
     changeIndex(index,id){
       this.activeIndex = index
       this.TypeId = id

@@ -22,7 +22,7 @@
         </p>
       </div>
       <div class="tips" style="padding:20upx 0;border-top:1px solid #f2f2f2;">可提现余额：{{Wallet}}
-        <span class="font22 cfc" @click="Allwithdraw">全部提现</span>
+        <span class="red" @click="Allwithdraw">全部提现</span>
       </div>
     </div>
     <div class="btns">
@@ -214,6 +214,7 @@ export default {
 .cardpic {
   width: 58upx;
   height: 58upx;
+  margin-right: 10upx;
 }
 .widthdrawBox{
   padding:0 30upx;

@@ -101,7 +101,7 @@
 			</view>
 			<view class="section__bd Sevice">
 				<view class="dd-list col__list li_25 center clear">
-					<view class="item" @click="golink('/pages/tabBar/my/wallet?id='+memberInfo.Wallet)">
+					<view class="item" @click="golink('/pages/tabBar/my/wallet')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_qb.png" mode=""></image>
 						<view class="txt">我的钱包</view>
 					</view>
@@ -199,6 +199,9 @@
 				})
 				if (result.code === 0) {
 					this.memberInfo = result.data;
+					this.$store.commit("update", {
+					  Wallet:result.data.Wallet
+					});  
 				} else if (result.code === 2) {
 					let _this = this;
 					uni.showModal({
