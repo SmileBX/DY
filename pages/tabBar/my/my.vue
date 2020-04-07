@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view style="width: 100%;background:#ff3737;" :style="{'height':barHeight+'px'}"></view>
+		<view style="width: 100%;background:#ff4e4f;" :style="{'height':barHeight+'px'}"></view>
 		<view class="top-box"> 
 			<view class="memberTop">
 				<view class="iconBtnBox">
@@ -155,7 +155,6 @@
 
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
-	import "@/common/dd_style.css";
 	export default {
 		data() {
 			return {
