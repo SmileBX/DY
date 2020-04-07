@@ -15,7 +15,7 @@
 				<view  v-if="Msgtype==1" class="uni-list-cell">
 					<view class="uni-media-list">
 						<view class="uni-media-list-logo">
-							<image class="img" src="http://ddyp.wtvxin.com/static/default.png" mode="aspectFill"></image>
+							<image class="img" src="../../../static/default.png" mode="aspectFill"></image>
 						</view>
 						<view  class="uni-media-list-body">
 							<view class="uni-media-list-text-top flex flex-between">
@@ -28,7 +28,7 @@
 						</view>
 					</view>
 				</view>
-				<view v-else class="list-item" @click="tolink('/pages/message/msgDetail/msgDetail')">
+				<view v-else class="list-item" @click="tolink('/pages/message/msgDetail/msgDetail?id='+item.id)">
 					<view class="center uni-mb10">
 						<text class="time">{{item.PubTime}}</text>
 					</view>
@@ -100,18 +100,19 @@
 			this.shopId=e.shopId;
 		},
 		onShow(){
-			if (toLogin()) {
+			console.log(this.Msgtype,"////////")
+			if (toLogin(this.curPage)) {
 				this.NoticeList();
-				// uni.setNavigationBarTitle({
-				// 	title: this.keyname
-				// })
+				uni.setNavigationBarTitle({
+					title: this.keyname
+				})
 			}
 		},
 		methods: {
 			/*获取消息列表*/
 			async NoticeList() {
 				let result = await post("News/MyNoticeList", {
-					UserId: this.userId,
+					UserId: this.userId, 
 					Token: this.token,
 					page: this.page,
 					pageSize: this.pageSize,

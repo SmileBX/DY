@@ -75,20 +75,23 @@
 				const floorValue = Math.floor(value)
 				const ceilValue = Math.ceil(value)
 				for (let i = 0; i < max; i++) {
+				
 					if (floorValue > i) {
 						starList.push({
 							activeWitch: '100%'
 						})
 					} else if (ceilValue - 1 === i) {
 						starList.push({
-							activeWitch: (value - floorValue) * 100 + '%'
+							activeWitch: (value - floorValue) * 100 + '%',
 						})
 					} else {
+						
 						starList.push({
 							activeWitch: '0'
 						})
 					}
 				}
+				console.log(starList,"starList")
 				return starList
 			}
 		},

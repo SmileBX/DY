@@ -271,6 +271,7 @@
 				uni.setStorageSync("token", result.data.Token);
 				uni.setStorageSync("userId", result.data.UserId);
 				uni.setStorageSync("openId", result.data.openId);
+				console.log(result.data,"mmmmmmmmmmmm")
 				if(result.code===0){
 					let _this = this;
 					uni.showToast({

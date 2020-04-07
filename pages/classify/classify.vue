@@ -40,7 +40,7 @@
 					</view>
 					<block v-if="hasProData">
 						<view class="level__product-list uni-mt10" style="padding-left: 20upx;">
-							<view class="item flex" v-for="(item,index) in prolist" :key="index">
+							<view class="item flex" v-for="(item,index) in prolist" :key="index" @click="goDetail(item.Id)">
 								<image :src="item.PicNo" class="item_img"></image>
 								<view class="item_info">
 									<view class="item_title twoline">{{item.Name}}</view>
