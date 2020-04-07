@@ -39,7 +39,7 @@
 			this.Msgid=e.id;
 		},
 		onShow(){
-			//this.NoticeInfo();
+			this.NoticeInfo();
 		},
 		methods: {
 			async NoticeInfo(){

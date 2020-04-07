@@ -61,9 +61,10 @@
 						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openshopCoupon(item.UseCouponList,item.CouponId,index)">
 							<view class="orderleft">店铺优惠</view>
 							<view class="orderright">
-								<block v-for="(e,i) in item.UseCouponList" :key="i">
-									<view class="infotxt">{{e.Id==item.CouponId?'￥'+item.yhPrice:'不使用'}}</view>
-								</block>
+								<view class="infotxt">{{CouponStr}}</view>
+								<!-- <block v-for="(e,i) in item.UseCouponList" :key="i">
+									<view class="infotxt" v-if="e.Id==item.CouponId">{{e.Id==item.CouponId?'￥'+item.yhPrice:'不使用'}}</view>
+								</block> -->
 								<view class="uni-icon uni-icon-arrowright"></view>
 							</view>
 						</view>
@@ -129,9 +130,10 @@
 					<view class="orderinfo" v-if="hasCoupon" @click="openshopCoupon(info.UseCouponList,info.ShopCouponId,0)">
 						<view class="orderleft">店铺优惠</view>
 						<view class="orderright">
-							<block v-for="(e,i) in info.UseCouponList" :key="i">
-								<view class="infotxt">{{e.Id==info.ShopCouponId?'￥'+info.yhPrice:'不使用'}}</view>
-							</block>
+							<view class="infotxt">{{CouponStr}}</view>
+							<!-- <block v-for="(e,i) in info.UseCouponList" :key="i">
+								<view class="infotxt" v-if="e.Id==info.ShopCouponId">{{e.Id==info.ShopCouponId?'￥'+info.yhPrice:'不使用'}}</view>
+							</block> -->
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
@@ -146,7 +148,7 @@
 					<!-- 使用平台券 (立即购买)-->
 					<view class="orderinfo" v-if="orderSType==0&&hasCouponpt" @click="openCoupon(info.CouponsList,info.CouponId)">
 						<view class="orderleft">平台优惠</view>
-						<view class="orderright">
+						<view class="orderright"> 
 							<view class="infotxt">{{info.CouponId>0?'￥'+info.PlatDisPrice:'不使用'}}</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
@@ -303,6 +305,7 @@
 				popCouponId:-1,//弹出选中优惠券id
 				popCouponIdArr:[],
 				popshopCouponIndex:0,
+				CouponStr:'',
 			};
 		},
 		onLoad: function() {
@@ -388,7 +391,7 @@
 			//选择优惠券
 			selectCoupon(id){
 				this.popCouponId=id;
-				
+			
 			},
 			selectCouponok(){
 				if(this.popCouponType==0){
@@ -434,6 +437,11 @@
 			  })
 			  if(result.code==0){
 				this.info=result.data;
+				if(result.data.yhAmount == 0){
+					this.CouponStr = '不使用'
+				}else{
+					this.CouponStr = '￥' + result.data.yhAmount
+				}
 				if(result.data.CouponsList.length){
 					this.hasCouponpt=true;
 				}else{
@@ -501,6 +509,11 @@
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+				if(result.data.yhPrice == 0){
+					this.CouponStr = '不使用'
+				}else{
+					this.CouponStr = '￥' + result.data.yhPrice
+				}
 				if(result.data.CouponsList.length){
 					this.hasCouponpt=true;
 				}else{

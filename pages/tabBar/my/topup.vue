@@ -65,6 +65,7 @@
 			this.WxOpenid = uni.getStorageSync("openId");
 			this.WxCode = uni.getStorageSync('code')
 			// #endif
+			console.log(this.WxOpenid,"///////")
 		},
 		methods:{
 			// 判断浏览器环境
@@ -99,13 +100,67 @@
 					});
 				}
 			},
+			//获取域名
+			GetUrlRelativePath() {
+				var urlStr = '';
+				var url = document.location.toString();
+				var arrUrl = url.split("//");
+				var start = arrUrl[1].split("/");
+				urlStr = arrUrl[0] + '//' + start[0];
+				return urlStr;
+			},
+			//微信付款
+			async AddRecharge(){
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/member/Recharge/Recharge';
+				let result= await post("Recharge/AddRecharge",{
+					UserId: this.userId,
+					Token: this.token,
+					RechargeId: this.RechargeId,
+					WxOpenid: this.WxOpenid,
+					WxCode: this.WxCode,
+					NewUrl: NewUrl
+				});
+				if (result.code == 201) {
+					window.location.href=result.data;
+				}else if(result.code == 0){
+					this.callpay(result.data.JsParam);
+					uni.setStorageSync('openId', result.data.openid);
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			//非微信环境 使用微信支付H5
+			async H5AddRecharge(){
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/member/Recharge/Recharge';
+				let result= await post("Recharge/AddRechargeWapPay",{
+					UserId: this.userId,
+					Token: this.token,
+					RechargeId: this.RechargeId,
+					NewUrl: NewUrl
+				});
+				if (result.code == 201) {
+					window.location.href=result.data;
+				}else if(result.code == 0){
+					window.location.href = result.data.mweb_url;
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
 			//小程序支付
 			async ConfirmWeiXinSmallPay(){
 				  let result= await post("Order/WeiXinSmallRechAmount",{
 					WxCode: this.WxCode,
 					UserId: this.userId,
 					Token: this.token,
-					OrderNo: this.orderNo,
+					RechargeAmount:this.money,
 					WxOpenid:this.WxOpenid 
 				  });
 				  var payData=JSON.parse(result.data.JsParam)

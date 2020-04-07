@@ -74,6 +74,12 @@
 					{{proInfo.Synopsis}}
 				</view>
 			</view>
+			<view class="slider"></view>
+			<view class="flex justifyContentStart bb_shop">
+				<image :src="proInfo.ShopData.Logo" class="shop_bb_logo"></image>
+				<view class="uni-bold">{{proInfo.ShopData.ShopNick}}</view>
+			</view>
+			
 			<view class="purchase" style="display: none;">
 				<view class="picture">
 					<view class="portrait">
@@ -602,6 +608,16 @@
 	}
 </script>
 <style scoped lang="scss">
+	.bb_shop{
+		text-align: left;
+		padding:30upx;
+		align-items: center;;
+	}
+	.shop_bb_logo{
+		width:80upx;height:80upx;
+		border-radius: 50%;
+		margin:0
+	}
 	page{ background-color: #fff;}
 	.shop_pic{
 		width:160upx;height:160upx;

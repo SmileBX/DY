@@ -110,6 +110,7 @@
 							result.data
 						);
 					}
+					this.datalist.sort(this.sortId)
 					if (this.allPage <= this.page) {
 						this.isLoad = false;
 						this.loadingType = 2;
@@ -138,6 +139,9 @@
 					});
 				}
 			},
+			sortId(a,b){
+				return b.IsTop-a.IsTop
+			}
 		},
 		onReachBottom: function() {
 			if (this.isLoad) {

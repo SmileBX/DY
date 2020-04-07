@@ -34,7 +34,12 @@
 		</view>
 		<view class="kefubox">
 			<view class="kefuitem addrightborder" @click="phonecall(info.WebTel)"><view class="uni-icon uni-icon-phone-filled kefuicon"></view><text>拨打电话</text></view>
+			<!--#ifdef MP-WEIXIN-->
 			<button open-type="contact" class="kefuitem"><view class="uni-icon uni-icon-contact kefuicon"></view><text>在线客服</text></button>
+			<!--#endif-->
+			<!--#ifdef APP-PLUS || H5 -->
+			<view class="kefuitem" @click="toKefu"><view class="uni-icon uni-icon-contact kefuicon"></view><text>在线客服</text></view>
+			<!--#endif-->
 		</view>
 		<view class="submitbtn" @click="submitbtn" >请填写寄回信息单号</view>
 		<!-- 填写寄回信息 -->
@@ -120,6 +125,11 @@
 			this.getExpressCompanyList()
 		},
 		methods: {
+			toKefu(){
+				uni.navigateTo({
+					url:'/pages/other/kefu/kefu'
+				})
+			},
 			//打开寄回信息单号
 			submitbtn(){
 				this.isShowShade2=true

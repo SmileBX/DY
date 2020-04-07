@@ -12,14 +12,16 @@
 			<view>设置支付密码</view>
 			<view class="iconfont icon-arrow_r font26"></view>
 		</view>
+		<!-- #ifdef APP-PLUS -->
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>清理缓存</view>
 			<view>63.25M</view>
 		</view>
-		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
+		<!-- #endif -->
+		<!-- <view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>关于我们</view>
 			<view class="iconfont icon-arrow_r font26"></view>
-		</view>
+		</view> -->
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>软件版本</view>
 			<view>63.25.3</view>

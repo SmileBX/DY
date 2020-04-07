@@ -170,6 +170,11 @@
 			this.getcommonProList()
 		},
 		methods: {
+			goDetail(id){
+				uni.navigateTo({
+					url:'/pages/homePage/details?id='+id
+				})
+			},
 			async getShop(){
 				const res = await post('Shop/ReadShop',{ShopId:this.ShopId,})
 				if(res.code == 0){

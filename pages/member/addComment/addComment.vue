@@ -44,14 +44,14 @@
 					<view class="rate-item flex flex-start">
 						<view class="title">物流服务</view>
 						<view class="grade">
-							<uni-rate size="18" margin="10" color="#bbb" :starType="2" :showtxt="true" active-color="#ffc405" value="0"
+							<uni-rate size="18" margin="10" color="#bbb" :starType="2" :showtxt="true" active-color="#ffc405" value="5"
 							 @change="onChange"></uni-rate>
 						</view>
 					</view>
 					<view class="rate-item flex flex-start">
 						<view class="title">服务态度</view>
 						<view class="grade">
-							<uni-rate size="18" margin="10" color="#bbb" :starType="3" :showtxt="true" active-color="#ffc405" value="0"
+							<uni-rate size="18" margin="10" color="#bbb" :starType="3" :showtxt="true" active-color="#ffc405" value="5"
 							 @change="onChange"></uni-rate>
 						</view>
 					</view>
@@ -83,8 +83,8 @@
 				text: '',
 				imgList: [],
 				proRank: 5, //产品评价等级
-				serRank: 0, //服务评价等级
-				logRank: 0, //物流评价等级
+				serRank: 5, //服务评价等级
+				logRank: 5, //物流评价等级
 				inputTxtLength: 0, //当前输入字数
 			}
 		},

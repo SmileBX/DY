@@ -14,7 +14,7 @@
           <view class="left">
             <view class="name">{{item.Title}}</view>
             <view class="time">有效期{{item.AddTime}}至{{item.EndTime}}</view>
-            <div class="useinfo oneline" v-if="item.ShopName">仅可购买{{item.ShopName}}店铺商品</div>
+            <div class="useinfo oneline" v-if="item.ShopName" style="left: 15upx;">仅可购买{{item.ShopName}}店铺商品</div>
             <div class="useinfo oneline" v-else-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</div>
             <view class="coupoutag flexc" :class="tabIndex==0?'back_col':'use'">{{item.DiscountType==1?'满减券':'折扣券'}}</view>
           </view>
