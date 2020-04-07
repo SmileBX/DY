@@ -120,7 +120,6 @@
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import wpicker from "@/components/w-picker/w-picker.vue";
-	import "@/common/product.scss";
 	export default {
 		components: {
 			noData,
@@ -157,8 +156,17 @@
 				areaList,
 			}
 		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+			// console.log(e.BrandId)
+			this.BrandId = e.BrandId
+			// #endif
+			
+		},
 		onShow(){
+			// #ifndef APP-PLUS
 			this.BrandId = this.$root.$mp.query.BrandId
+			// #endif
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
@@ -312,6 +320,7 @@
 </script>
 
 <style scoped lang="scss">
+	@import "@/common/product.scss";
 	@import './style';
 	/* 区域 */
 	.areabox{
