@@ -1,5 +1,8 @@
 .content {
 		height: 100%;
+		width: 750upx;
+		overflow-x: hidden!important;
+		position:relative;
 	}
 	.content::before{
 		display: block;
@@ -82,7 +85,7 @@
 	}
 	.carthead{
 		background-color: #FF3333;
-		width: 750upx;
+		width: 710upx;
 		padding: 0 20upx;
 		display: flex;
 		align-items: center;
@@ -91,7 +94,7 @@
 		z-index: 8;
 		position: fixed;
 		top: 0;
-		box-sizing: border-box;
+		box-sizing: content-box;
 	}
 	.wxcarthead{
 		background-color: #FF3333;

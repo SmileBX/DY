@@ -140,7 +140,6 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import popupsku from '@/components/popupSku.vue';
-	import "@/common/dd_style.css";
 	export default {
 		components: {
 			uniNumberBox,uniPopup,popupsku,noData
@@ -703,4 +702,5 @@
 
 <style lang="scss" scoped>
 	@import './style';
+	@import '../../../common/dd_style.css';
 </style>
