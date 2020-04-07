@@ -13,21 +13,21 @@
 			<view class="carry">该卡本次最多可充值¥20000</view>
 			<view class="pay-hd uni-mb10">选择支付方式</view>
 			<view class="pay-bd line-list">
-						<block v-for="(item,index) in payway" :key="index"> 
-							<view class="line-item flex-between" @click="tabBtn(item.type)">
-							  <view class="item-l flex-start">
-								<view :class="['icon',item.className]"></view>
-								<view class="lab">{{item.typeName}}</view>
-							  </view>
-							  <view class="item-r">
-								<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==index?'checked':'']"></view>
-							  </view>
-							</view>
-						</block>
+				<block v-for="(item,index) in payway" :key="index"> 
+					<view class="line-item flex-between" @click="tabBtn(item.type)">
+					  <view class="item-l flex-start">
+						<view :class="['icon',item.className]"></view>
+						<view class="lab">{{item.typeName}}</view>
+					  </view>
+					  <view class="item-r">
+						<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==index?'checked':'']"></view>
+					  </view>
+					</view>
+				</block>
 			</view>
-			<view class="present" @click="Submit">
-				<view class="recharge">确认充值</view>
-			</view>
+		</view>
+		<view class="present">
+			<view class="recharge" @click="Submit">确认充值</view>
 		</view>
 	</view>
 </template>
@@ -41,15 +41,17 @@
 					type:0,
 					typeName:"微信支付",
 					className:"icon_weixin"
-				},{
-					type:1,
-					typeName:"支付宝",
-					className:"icon_alipay"
-				},{
-					type:2,
-					typeName:"银联支付",
-					className:"icon_yinlian"
-				}],
+				},
+				// {
+				// 	type:1,
+				// 	typeName:"支付宝",
+				// 	className:"icon_alipay"
+				// },{
+				// 	type:2,
+				// 	typeName:"银联支付",
+				// 	className:"icon_yinlian"
+				// },
+				],
 				payType:0, //0微信支付
 				money:"",//充值金额
 				WxOpenid:'',//微信支付
@@ -65,97 +67,68 @@
 			// #endif
 		},
 		methods:{
-			tabBtn(index){
-				this.payType=index;
-			},
 			// 判断浏览器环境
 			isWeixin() {
-				var ua = navigator.userAgent.toLowerCase();
+			    var ua = navigator.userAgent.toLowerCase();
 				if (ua.match(/MicroMessenger/i)=="micromessenger") {
 					return true;
 				} else {
 					return false;
 				}
 			},
-			//获取域名
-			GetUrlRelativePath() {
-				var urlStr = '';
-				var url = document.location.toString();
-				var arrUrl = url.split("//");
-				var start = arrUrl[1].split("/");
-				urlStr = arrUrl[0] + '//' + start[0];
-				return urlStr;
+			tabBtn(index){
+				this.payType=index;
 			},
-			//非微信环境 使用微信支付H5
-			async H5AddRecharge(){
-				alert('暂无接口')
-				let NewUrl=this.GetUrlRelativePath() +'/#/pages/tabBar/my/topup';
-				let result= await post("Order/ConfirmWeiXinWapPay",{
-					UserId: this.userId,
-					Token: this.token,
-					RechargeAmount:this.money,
-					NewUrl: NewUrl
-				});
-				if (result.code == 201) {
-					window.location.href=result.data;
-				}else if(result.code == 0){
-					window.location.href = result.data.mweb_url;
-				}else {
+
+			Submit(){
+				if(this.money>0){
+					// #ifdef  H5
+					if(this.isWeixin()){
+						//this.AddRecharge();
+					}else{
+						//this.H5AddRecharge();
+					}
+					// #endif
+					this.ConfirmWeiXinSmallPay()
+					
+				}else{
 					uni.showToast({
-						title: result.msg,
+						title: "请输入充值金额",
 						icon: "none",
 						duration: 1500
 					});
 				}
 			},
-			Submit(){
-				// #ifdef  H5
-				if(this.isWeixin()){
-					this.AddRecharge();
-				}else{
-					this.H5AddRecharge();
-				}
-				// #endif
-				// #ifdef  MP-WEIXIN
-				// this.getcode();
-				this.ConfirmWeiXinSmallPay()
-				// #endif
-			},
+			//小程序支付
 			async ConfirmWeiXinSmallPay(){
-				const res = await post('Order/WeiXinSmallRechAmount',{
-					UserId:this.userId,
-					Token:this.token,
-					RechargeAmount:this.money,
-					WxOpenid:this.WxOpenid,
-					WxCode:this.WxCode
-				})
-				if(res.code == 0){
-					let payData = JSON.parse(result.data.JsParam)
-					wx.requestPayment({
-						timeStamp: payData.timeStamp,
-						nonceStr: payData.nonceStr,
-						package: payData.package,
-						signType: payData.signType,
-						paySign: payData.paySign,
-						success(res) {
-							uni.showToast({
-								title: "支付成功",
-								duration: 1500
-							});
-							setTimeout(function(){
-								uni.switchTab({
-									url: "/pages/tabBar/my/my"
-								})
-							},1400)
+				  let result= await post("Order/WeiXinSmallRechAmount",{
+					WxCode: this.WxCode,
+					UserId: this.userId,
+					Token: this.token,
+					OrderNo: this.orderNo,
+					WxOpenid:this.WxOpenid 
+				  });
+				  var payData=JSON.parse(result.data.JsParam)
+				  if(result.code===0){
+						let _this=this;
+					uni.requestPayment({
+					  timeStamp: payData.timeStamp,
+					  nonceStr: payData.nonceStr,
+					  package: payData.package,
+					  signType: payData.signType,
+					  paySign: payData.paySign,
+					  success(res) {
+						  _this.type = "";
+							_this.showPay=false;
+							uni.redirectTo({
+								//url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+							})
 						},
-						fail(res) {
-							
-						}
+					  fail(res) {}
 					})
-					
-				}
-				console.log('确认充值！')
+				  }
 			},
+
 		}
 	
 	}
@@ -239,19 +212,19 @@
 	}
 	.pay-bd .line-item .lab{ padding-left: 20upx; font-size: 30upx}
 	.icon_alipay {
-	    background: url(/static/icons/pay_alipay.png) center center no-repeat;
+	    background: url(http://ddyp.wtvxin.com/static/icons/pay_alipay.png) center center no-repeat;
 	    background-size: cover;
 	}
 	.icon_weixin {
-	    background: url(/static/icons/pay_weixin.png) center center no-repeat;
+	    background: url(http://ddyp.wtvxin.com/static/icons/pay_weixin.png) center center no-repeat;
 	    background-size: cover;
 	}
 	.icon_yinlian {
-	    background: url(/static/icons/pay_yinlian.png) center center no-repeat;
+	    background: url(http://ddyp.wtvxin.com/static/icons/pay_yinlian.png) center center no-repeat;
 	    background-size: cover;
 	}
 	.icon_yue {
-	    background: url(/static/icons/pay_yue.png) center center no-repeat;
+	    background: url(http://ddyp.wtvxin.com/static/icons/pay_yue.png) center center no-repeat;
 	    background-size: cover;
 	}
 	.real-ipt{ width: 400upx; margin: 0 auto; font-size: 36upx;border: 1px solid #ddd; padding: .1rem;}

@@ -20,7 +20,7 @@
 					</view>
 				</view>
 				<view class="noaddr" v-else @click="golink('/pages/member/address/address?pagetype=confirm')">
-					<view class="icon icon_addr"><image src="../../static/icons/no_addr2.png" mode="widthFix"></image></view>
+					<view class="icon icon_addr"><image src="http://ddyp.wtvxin.com/static/icons/no_addr2.png" mode="widthFix"></image></view>
 					<view class="addtxt center">暂无收货地址，点击添加</view>
 				</view>
 			</view>
@@ -58,17 +58,19 @@
 							<view class="orderleft">合计</view>
 							<view class="orderright">￥{{item.TotalPrice}}</view>
 						</view>
-						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openCoupon">
-							<view class="orderleft">优惠券</view>
+						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openshopCoupon(item.UseCouponList,item.CouponId,index)">
+							<view class="orderleft">店铺优惠</view>
 							<view class="orderright">
-								<view class="infotxt">不使用</view>
+								<block v-for="(e,i) in item.UseCouponList" :key="i">
+									<view class="infotxt">{{e.Id==item.CouponId?'￥'+item.yhPrice:'不使用'}}</view>
+								</block>
 								<view class="uni-icon uni-icon-arrowright"></view>
 							</view>
 						</view>
-						<view class="orderinfo" v-if="item.yhPrice>0">
+						<!-- <view class="orderinfo" v-if="item.yhPrice>0">
 							<view class="orderleft">店铺优惠</view>
 							<view class="orderright">￥{{item.yhPrice}}</view>
-						</view>
+						</view> -->
 						<view class="orderinfo" v-if="item.zkPrice>0">
 							<view class="orderleft">折扣金额</view>
 							<view class="orderright">￥{{item.zkPrice}}</view>
@@ -93,7 +95,7 @@
 				</view>
 			</block>
 			<!-- 立即购买 -->
-			<view v-else class="procontent b_radius uni-mb10">
+			<view  v-if="orderSType==0&&GroupId==0" class="procontent b_radius uni-mb10">
 				<view class="shopbox">
 					<view class="iconfont icon-dianpu"></view>
 					<text class="shopName">{{info.ShopName}}</text>
@@ -124,20 +126,30 @@
 						<view class="orderleft">合计</view>
 						<view class="orderright">￥{{info.TotalPrice}}</view>
 					</view>
-					<view class="orderinfo" v-if="info.UseCouponList.length" @click="openCoupon">
-						<view class="orderleft">优惠券</view>
+					<view class="orderinfo" v-if="hasCoupon" @click="openshopCoupon(info.UseCouponList,info.ShopCouponId,0)">
+						<view class="orderleft">店铺优惠</view>
 						<view class="orderright">
-							<view class="infotxt">不使用</view>
+							<block v-for="(e,i) in info.UseCouponList" :key="i">
+								<view class="infotxt">{{e.Id==info.ShopCouponId?'￥'+info.yhPrice:'不使用'}}</view>
+							</block>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
-					<view class="orderinfo" v-if="info.yhPrice>0">
+					<!-- <view class="orderinfo" v-if="info.yhPrice>0">
 						<view class="orderleft">店铺优惠</view>
 						<view class="orderright">￥{{info.yhPrice}}</view>
-					</view>
+					</view> -->
 					<view class="orderinfo" v-if="info.zkPrice>0">
 						<view class="orderleft">折扣金额</view>
 						<view class="orderright">￥{{info.zkPrice}}</view>
+					</view>
+					<!-- 使用平台券 (立即购买)-->
+					<view class="orderinfo" v-if="orderSType==0&&hasCouponpt" @click="openCoupon(info.CouponsList,info.CouponId)">
+						<view class="orderleft">平台优惠</view>
+						<view class="orderright">
+							<view class="infotxt">{{info.CouponId>0?'￥'+info.PlatDisPrice:'不使用'}}</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
+						</view>
 					</view>
 					<view class="orderinfo" style="border: none;">
 						<view class="orderleft">订单备注</view>
@@ -157,34 +169,98 @@
 					</view>
 				</view>				
 			</view>
+			<!-- 拼团 购买 -->
+			<view v-if="orderSType==0&&GroupId>0" class="procontent b_radius uni-mb10">
+				<view class="shopbox">
+					<view class="iconfont icon-dianpu"></view>
+					<text class="shopName">{{info.ShopName}}</text>
+					<view class="uni-icon uni-icon-arrowright"></view>
+				</view>
+				<view class="outside">
+					<view class="pictrueAll">
+						<view class="pictrue">
+							<image :src="info.ImageNo" mode="aspectFill" ></image>
+						</view>
+					</view>
+					<view class="txtBox">
+						<view class="title">{{info.Title}}</view>
+						<view class="protype" v-if="info.SpecText">{{info.SpecText}}</view>
+						<view class="pronumber">
+							<view class="number">x{{Total}}</view><view class="price">￥{{info.FightingPrice}}</view>
+						</view>
+					</view>
+				</view>
+				<view class="orderbox">
+					<view class="orderinfo">
+						<view class="orderleft">运费</view>
+						<view class="orderright">
+							{{info.Freight>0?'￥'+info.Freight:'免邮'}}
+						</view>
+					</view>
+					<view class="orderinfo">
+						<view class="orderleft">合计</view>
+						<view class="orderright">￥{{info.allPayMoney}}</view>
+					</view>
+					<view class="orderinfo" style="border: none;">
+						<view class="orderleft">订单备注</view>
+						<input class="inputtxt" placeholder="填写内容已和商家家协商确认" type="text" v-model="remarkTxtArr[0]"/>
+					</view>
+					<view class="orderinfo" @click="ChooseInvoice(0)">
+						<view class="orderleft">开具发票</view>
+						<view class="orderright">
+							<view class="infotxt flex flex-end">{{Invoicetxt[0]||'可开票'}}
+								<span v-if="InvoiceIdArr[0]>0" @click.stop="delInvoicet(0)" class="delinvoice">×</span>
+							</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
+						</view>
+					</view>
+					<view class="allprice">
+						<text>共计{{Total}}件商品</text><text>小计：</text><text>￥{{info.allPayMoney}}</text>
+					</view>
+				</view>				
+			</view>
+			<!-- 使用平台券 (购物车)-->
+			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==1&&hasCouponpt">
+				<view class="orderinfo" @click="openCoupon(info.CouponsList,info.CouponId)">
+					<view class="orderleft">平台优惠</view>
+					<view class="orderright">
+						<view class="infotxt">{{info.CouponId>0?'￥'+info.yhAmount:'不使用'}}</view>
+						<view class="uni-icon uni-icon-arrowright"></view>
+					</view>
+				</view>
+			</view>
 			
 		</view>
 		<view style="width: 100%;height: 160upx;"></view>
 		<view class="footer flex flex-between">
 			<view class="footleft" v-if="orderSType==1"><text class="color_gray fz12">(共{{info.countItem}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.PayAmount}}</text></view>
-			<view class="footleft" v-if="orderSType==0"><text class="color_gray fz12">(共{{info.AllNumber}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.AllPrice}}</text></view>
-			<view class="footright" @click="confirm">提交订单</view>
+			<view class="footleft" v-if="orderSType==0&&GroupId==0"><text class="color_gray fz12">(共{{info.AllNumber}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.AllPrice}}</text></view>
+			<view class="footleft" v-if="orderSType==0&&GroupId>0"><text class="color_gray fz12">(共{{Total}}件)</text>总计：<text class="num"><text class="fz12">￥</text>{{info.allPayMoney}}</text></view>
+			<view class="footright" @click="confirm">{{GroupId>0?'确认拼团':'提交订单'}}</view>
 		</view>
 		<!-- 优惠券弹窗 -->
 		<uni-popup mode="fixed" :show="showCoupon" :h5Top="true" position="bottom" @hidePopup="closeCoupon">
 			<view class="couponbox" style="z-index: 10000;">
-				<view class="titlebox">
-					<view  @click="closeCoupon" class="uni-icon uni-icon-arrowleft" style="font-size: 50upx;color:#333;"></view>
-					<text class="title">选择优惠券</text>
+				<view class="bottom-title">
+					选择优惠券
+				</view>
+				<view class="uni-close-btn" @click="closeCoupon">
+					<view class="iconfont icon-close"></view>
 				</view>
 				<scroll-view scroll-y style="width: 100%;height: 560upx;">
 					<view class="coupon">
-						<view class="couponitem">
-							<view class="couponname">不使用优惠券</view>
-							<view style="margin: 0;" class="IconsCK IconsCK-radio checked"></view>
+						<view class="couponitem" @click="selectCoupon(-1)">
+							<view class="couponname">不使用</view>
+							<view style="margin: 0;" :class="['IconsCK IconsCK-radio',popCouponId<0?'checked':'']"></view>
 						</view>
-						<view class="couponitem" v-for="(item,index) in 2" :key="index">
-							<view class="couponname">满减券：省20元
+						<view class="couponitem" v-for="(item,index) in popcouponData" :key="index" @click="selectCoupon(item.Id)">
+							<view class="couponname">{{item.Title}}
 							</view>
-							<view style="margin: 0;" class="IconsCK IconsCK-radio"></view>
+							<view style="margin: 0;" :class="['IconsCK IconsCK-radio',popCouponId==item.Id?'checked':'']"></view>
 						</view>
 					</view>
 				</scroll-view>
+				<view class="bottom-btn" @click="selectCouponok">完成</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -206,19 +282,27 @@
 				showCoupon:false,//优惠券弹框
 				CartIds: "", //购物车提交的item的id
 				ProId:"",//产品Id(立即购买)
+				GroupId:0,
 				Total:"",//购买总数量(立即购买)
 				SpecText:"",//产品规格文本(立即购买)
+				hasCoupon:false,//是否有店铺券（立即购买）
 				info:{},//产品信息
 				addrInfo:{},//地址信息
 				isAddress:false,
 				addressId:0,//地址id
 				couponId:0,//平台优惠券id
+				hasCouponpt:false,
 				isPayWallet:0,//是否使用余额支付
 				isPayScore:0,//是否使用积分抵扣
 				shopIndex:0,
 				InvoiceIdArr:[],
 				Invoicetxt:[],
-				remarkTxtArr:[]
+				remarkTxtArr:[],
+				popCouponType:0,//弹出优惠券类型，0平台券，1店铺券
+				popcouponData:[],//弹出优惠券数据
+				popCouponId:-1,//弹出选中优惠券id
+				popCouponIdArr:[],
+				popshopCouponIndex:0,
 			};
 		},
 		onLoad: function() {
@@ -230,6 +314,7 @@
 			this.orderSType= this.$root.$mp.query.orderSType;
 			this.CartIds=this.$root.$mp.query.cartItem;
 			this.ProId=this.$root.$mp.query.id;
+			this.GroupId=this.$root.$mp.query.GroupId||0;
 			this.Total=this.$root.$mp.query.number;
 			this.SpecText=this.$root.$mp.query.SpecText;
 			if(uni.getStorageSync("addressinfo")){
@@ -252,7 +337,11 @@
 			if(this.orderSType==1){
 				this.GoodsCartList();
 			}else{
-				this.BuyNowGoods();
+				if(this.GroupId>0){
+					this.BuyGroup();//拼团确认订单
+				}else{
+					this.BuyNowGoods();//立即购买确认订单
+				}
 			}
 		},
 		methods: {
@@ -281,9 +370,45 @@
 			
 			closeCoupon(){
 				this.showCoupon=false;
+				this.popcouponData=[];
 			},
-			openCoupon(){
+			openshopCoupon(data,id,index){
+				this.popCouponType=1;
 				this.showCoupon=true;
+				this.popcouponData=data;
+				this.popCouponId=id;
+				this.popshopCouponIndex=index;
+			},
+			openCoupon(data,id){
+				this.popCouponType=0;
+				this.showCoupon=true;
+				this.popcouponData=data;
+				this.popCouponId=id;
+			},
+			//选择优惠券
+			selectCoupon(id){
+				this.popCouponId=id;
+				
+			},
+			selectCouponok(){
+				if(this.popCouponType==0){
+					this.couponId=this.popCouponId;
+				}else{
+					this.popCouponIdArr[this.popshopCouponIndex]=this.popCouponId;
+				}
+				if(this.orderSType==1){
+					let DataArr = [];
+					for (let i = 0; i < this.info.CartList.length; i++) {
+						let json = {};
+						json["ShopId"] = this.info.CartList[i].ShopId;
+						json["CouponId"]=this.popCouponIdArr[i];
+						DataArr.push(json);
+					}
+					this.GoodsCartList(DataArr);
+				}else{
+					this.BuyNowGoods();//立即购买确认订单
+				}
+				this.closeCoupon();
 			},
 			//选择发票
 			ChooseInvoice(index){
@@ -298,16 +423,22 @@
 			  uni.setStorageSync("invoiceinfo","");
 			},
 			//购物车下单获取
-			async GoodsCartList(){
+			async GoodsCartList(DataArr){
 			  let result=await post("Cart/ShopsCartList",{
 				UserId: this.userId,
 				Token: this.token,
 				CartIdList:this.CartIds,
 				AddressId:this.addressId,
-				CouponId:this.couponId
+				CouponId:this.couponId,
+				ShopData:DataArr
 			  })
 			  if(result.code==0){
 				this.info=result.data;
+				if(result.data.CouponsList.length){
+					this.hasCouponpt=true;
+				}else{
+					this.hasCouponpt=false;
+				}
 				let countItem=0;
 				this.info.CartData.forEach(function(item){
 					countItem+=item.Total
@@ -364,12 +495,44 @@
 				Token: this.token,
 				AddressId:this.addressId,
 				CouponId:this.couponId,
+				ShopCouponId:this.popCouponIdArr[0],
 				data:dataArr,
 			  })
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+				if(result.data.CouponsList.length){
+					this.hasCouponpt=true;
+				}else{
+					this.hasCouponpt=false;
+				}
+				if(result.data.UseCouponList.length){
+					this.hasCoupon=true;
+				}else{
+					this.hasCoupon=false;
+				}
 				_this.$set(_this.info,"countItem",_this.infoAllNumber)
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
+			//拼团订单渲染
+			async BuyGroup(){
+			  let result=await post("GroupBuy/ConfirmationGroup",{
+				UserId: this.userId,
+				Token: this.token,
+				AddressId:this.addressId,
+				GroupId:this.GroupId,
+				Number:this.Total,//购买总数量
+				SpecText:this.SpecText//产品规格文本
+			  })
+			  if(result.code==0){
+				  let _this=this;
+				_this.info=result.data;
 			  }else{
 				uni.showToast({
 				  title: result.msg,
@@ -388,6 +551,7 @@
 				SpecText:this.SpecText,
 				AddressId:this.addressId,
 				CouponId:this.couponId,
+				ShopCouponId:this.popCouponIdArr[0],
 				InvoiceId:this.InvoiceIdArr[0],
 				Remark:this.remarkTxtArr[0]
 			  })
@@ -410,12 +574,46 @@
 				});
 			  }
 			},
+			//确认拼团
+			async CreateGroupOrder(){
+			  let result=await post("GroupBuy/CreateGroupOrder",{
+				UserId: this.userId,
+				Token: this.token,
+				GroupId:this.GroupId,//产品Id
+				Number:this.Total,
+				SpecText:this.SpecText,
+				AddressId:this.addressId,
+				InvoiceId:this.InvoiceIdArr[0],
+				Remark:this.remarkTxtArr[0]
+			  })
+			  if(result.code==0){
+				uni.showToast({
+				  title: '订单提交成功',
+				  success(){
+					setTimeout(res=>{
+						uni.redirectTo({
+							url: '/pages/pay/pay?orderNo='+result.data.OrderNo+'&source=1'
+						})
+					},1500)
+				  }
+				})
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
 			//提交订单
 			confirm(){
 				if(this.addrInfo){
-					if(this.orderSType==0){//立即购买
-					
-					  this.BuyNowSubmitOrder();
+					if(this.orderSType==0){
+					  if(this.GroupId>0){
+						  this.CreateGroupOrder();//确认拼团
+					  }else{
+						  this.BuyNowSubmitOrder();//立即购买
+					  }
 					}else{
 					  let DataArr = [];
 					  for (let i = 0; i < this.info.CartList.length; i++) {

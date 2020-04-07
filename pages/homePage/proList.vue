@@ -7,11 +7,11 @@
 				<view class="searchbox">
 					<view class="searchation" @click="onClassify">
 						<view class="searchboxl">{{classifyDefault}}</view>
-						<view class="searchboxr"><image class="uta" src="../../static/hpicons/uta.svg" mode=""></image></view>
+						<view class="searchboxr"><image class="uta" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg" mode=""></image></view>
 					</view>
 					<view class="searchico">
 						<view class="searchpole"></view>
-						<view class="searchimg"><image class="saarch" src="../../static/hpicons/search.svg"></image></view>
+						<view class="searchimg"><image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image></view>
 						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"/>
 					</view>
 				</view>
@@ -22,37 +22,37 @@
 				<view class="area" @click="showArea">
 					<view :class="{'sort_active':AreaCode}">区域</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+						<image class="utas" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(0)">
 					<view :class="{'sort_active':Sort===0}">默认</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(1)">
 					<view :class="{'sort_active':Sort===1}">人气</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(2)">
 					<view :class="{'sort_active':Sort===2}">价格</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="../../static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 列表 -->
-		<view class="trucklist">
+		<view class="trucklist uni-bg-white">
 			<view class="truckac"></view>
 			<block v-for="(item,index) in datalist" :key="index" v-show="hasData">
 				<view class="listbox" @click="navigate('homePage/details',{id:item.Id})">
 					<view class="listimg">
-						<image :src="item.PicNo" mode="widthFix"></image>
+						<image :src="item.PicNo" mode="aspectFill"></image>
 					</view>
 					<view class="listpt">
 						<view>
@@ -88,11 +88,11 @@
 		<view class="uni-tab-bar-loading" v-if="hasData">
 			<uni-load-more :loadingType="loadingType"></uni-load-more>
 		</view>
-		<wpicker 
+		<wpicker
 			mode="selector"
-    		:level="2" 
+			:level="2" 
 			:defaultVal="classifyDefault"
-			@confirm="pickerOk"
+			@confirm="pickerclassOk"
 			ref="selector"
 			:selectList="classifyList"
 			themeColor="#f00"
@@ -151,6 +151,7 @@
 				classifyList:[{label:"",value:""}],
 				areaDefault:['广东省','深圳市'],
 				areaList,
+				isClass:false
 			}
 		},
 		onLoad: function(options) {
@@ -161,7 +162,13 @@
 			this.keyWords="";
 			this.AreaCode="";
 			this.AreaType=0;
-			this.getClassify();
+			if(this.classId){
+				this.isClass=true;
+				this.getClassify();
+			}else{
+				this.isClass=false;
+				this.getTypeList();
+			}
 			this.init();
 		},
 		onShow(){
@@ -229,31 +236,57 @@
 					}
 				}
 			},
+			getTypeList(){
+				post('Goods/TypeList',{}).then(res=>{
+					if(res.code==0){
+						this.classifyList=[];
+						res.data.map(item=>{
+							if(this.typeId==item.Id){
+								this.classifyDefault=item.Name;
+							}
+							this.classifyList.push({
+								label:item.Name,
+								id:item.Id
+							});
+						})
+					}
+				})
+			},
 			// 获取分类
 			async getClassify(){
 				let result = await post("Goods/GetProductClass", {
 					TypeId: this.typeId
 				});
-				const data =  result.data;
-				this.classifyList=[];
-				data.map(item=>{
-					if(this.classId==item.Id){
-						this.classifyDefault=item.ClassName;
+				if(result.code==0){
+					let _this=this;
+					if(result.data.length){
+						const data =  result.data;
+						this.classifyList=[];
+						data.map(item=>{
+							if(_this.classId==item.Id){
+								_this.classifyDefault=item.ClassName;
+							}
+							_this.classifyList.push({
+								label:item.ClassName,
+								id:item.Id
+							});
+						})
+					}else{
+						this.hasclass=false;
 					}
-					this.classifyList.push({
-						label:item.ClassName,
-						id:item.Id
-					});
-				})
+				}
 			},
 			// 选择分类
 			onClassify(){
 				this.$refs['selector'].show();
 			},
-			// 选择分类值
-			pickerOk(e){
+			pickerclassOk(e){
 				this.classifyDefault=e.result;
-				this.classId=e.checkArr.id;
+				if(this.isClass){
+					this.classId=e.checkArr.id;
+				}else{
+					this.typeId=e.checkArr.id;
+				}
 				this.init();
 			},
 			// 地区
@@ -277,7 +310,6 @@
 			this.keyWords="";
 			this.AreaCode="";
 			this.AreaType=0;
-			this.getClassify();
 			this.init();
 		},
 		onReachBottom: function() {
@@ -293,10 +325,6 @@
 </script>
 
 <style scoped>
-	.truckspace{
-		background: #FFFFFF;
-		/* height: 100vh; */
-	}
 	.head_Screen{
 		position:fixed; 
 		width:100%;
@@ -415,6 +443,10 @@
 		background:#eee;
 		border-radius:12upx;
 		overflow: hidden;
+	}
+	.listimg image{
+		width:100%;
+		height:100%;
 	}
 	.listpt{
 		padding-left:30upx;

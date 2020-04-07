@@ -15,7 +15,7 @@
 		  <view class="for_bd">
 			<view class="proList flex flexWrap justifyContentBetween">
 				<view class="item" v-for="(item,index) in 6" :key="index">
-					<image src="../../static/of/4.png" class="item_img"></image>
+					<image src="http://ddyp.wtvxin.com/static/of/4.png" class="item_img"></image>
 					<view class="item_info flex flexColumn flexAlignCenter">
 						<view class="item_title">超越极限音波拉皮-颈部</view>
 						<view class="flex flexAlignEnd justifyContentBetween item_total">
@@ -99,11 +99,11 @@
   .for_hd .txt{ line-height: 1;font-size: 32upx; font-weight: 600; padding: 0 20upx}
   .for_hd .icon{ height: 32upx; width: 32upx;}
   .for_hd .icon_l {
-      background: url(../../static/icons/tit_l.png) center center no-repeat;
+      background: url(http://ddyp.wtvxin.com/static/icons/tit_l.png) center center no-repeat;
       background-size: cover;
   }
   .for_hd .icon_r {
-      background: url(../../static/icons/tit_r.png) center center no-repeat;
+      background: url(http://ddyp.wtvxin.com/static/icons/tit_r.png) center center no-repeat;
       background-size: cover;
   }
 </style>

@@ -18,20 +18,40 @@
 			<view class="streaming" v-if="false">
 				<image class="figure" src="" mode=""></image>
 				<view class="closes">
-					<image class="close" src="../../static/hpicons/close.svg" mode=""></image>
+					<image class="close" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
 				</view>
 				
 				<view class="broadcast">
-					<image class="litre" src="../../static/hpicons/close.svg" mode=""></image>
+					<image class="litre" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
 					<view class="">直播中</view>
 				</view>
 			</view>
 			<view class="pagination" v-if="hasBanner">{{bannerindex+1}}/{{proInfo.PicData.length}}</view>
 		</view>
+		<div v-if="isLimint==1" :class="['limitTiem jus-b ali-c',starTimetype!=1?'no':'']">
+			  <div class="limt-left">
+				<div class="active-price jus-a ali-c">
+					<h3><span>¥</span>{{proInfo.TimePrice}}</h3>
+					  <p>¥{{proInfo.Price}}</p>
+				</div>
+				<div class="percentage">
+				  <span :style="['width:'+proInfo.StockProportion+'%']"><i>已抢{{proInfo.SalesVolume}}件</i></span>
+				</div>
+			  </div>
+			  <div class="limt-right">
+				<div class="txt">限时秒杀</div>
+				<div class="time ali-c jus-b" >
+					<span class="timetxt">{{starTimetype==1?'距离结束':'距离开始'}}</span>
+					<div class="countDown" v-if="timeStr.length">
+					  <span>{{timeStr[1]}}</span>:<span>{{timeStr[2]}}</span>:<span>{{timeStr[3]}}</span>
+					</div>
+				</div>
+			  </div>
+		  </div>
 		<!-- 价格 位置 展示 -->
 		<view class="">
 			<view class="listpt">
-				<view class="listprice">
+				<view class="listprice" v-if="isLimint==0">
 					<view class="listm">
 						<view class="selling"><span>¥</span>{{proInfo.Price}}</view>
 						<view class="original" v-if="proInfo.MarketPrice>proInfo.Price">¥{{proInfo.MarketPrice}}</view>
@@ -57,13 +77,13 @@
 			<view class="purchase" style="display: none;">
 				<view class="picture">
 					<view class="portrait">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="../../static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 				</view>
 				<view class="screen">心善若水</view>
@@ -79,7 +99,7 @@
 					<view class="">快递</view>
 					<!-- <input class="province" type="text" placeholder="广东 广州" disabled> -->
 					<view class="">{{proInfo.Freight==0?'包邮':proInfo.Freight}}</view>
-					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="../../static/hpicons/arrows.svg" mode=""></image> -->
+					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image> -->
 				</view>
 			</view>
 			<view class="pick" @click="showSku(0)">
@@ -99,7 +119,7 @@
 		</view>
 		<!-- 品牌介绍 -->
 		<view class="needknow" v-if="isServiceInfo">
-			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="../../static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
+			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
 		</view>
 		<view class="pole"></view>
 		<!-- 商品评价 -->
@@ -115,7 +135,7 @@
 				<view class="comment-item" v-for="(item,index) in CommentList" :key="index">
 				  <view class="name ali-c jus-b">
 					<view class="ali-c">
-					  <img class="tx" :src="item.Avatar||'/static/default.png'" alt="">
+					  <img class="tx" :src="item.Avatar||'http://ddyp.wtvxin.com/static/default.png'" alt="">
 					  <view>{{item.NickName}}</view>
 					</view>
 					<view class="flex">
@@ -141,7 +161,7 @@
 		<!-- 商品特别说明 -->
 		<view class="explain">
 			<view class="pledge border_bottom">
-				<image class="safety" src="../../static/hpicons/safety.svg" mode=""></image>正品保证 
+				<image class="safety" src="http://ddyp.wtvxin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
 				<span>100%正品 品牌直采</span>
 			</view>
 			<view class="especially">
@@ -215,7 +235,7 @@
 		<view class="foot-fiexd">
 			<view class="dd-foot">
 				<view class="border-top"></view>
-				<view class="foot-item">
+				<view class="foot-item" @click="tolink('/pages/brand/shopIndex/shopIndex?ShopId='+proInfo.ShopData.ShopId)">
 					<view class="bd"><view class="iconfont icon-dianpu"></view>店铺</view>
 				</view>
 				<view class="foot-item" style="position: relative;">
@@ -231,14 +251,16 @@
 					<view class="bd"><view class="iconfont" :class="[IsCollect ? 'icon-collect' : 'icon-collect1']" @click="collect"></view>收藏</view>
 					<!-- 实心 icon-collect-->
 				</view>
-				<view class="foot-item foot-item-btns">
+				<!-- 有拼团样式 -->
+				<view class="foot-item foot-item-btns" v-if="GroupId>0">
 					<view class="btn btn_1 flex" @click="showSku(0)">
-						<view class="num">¥{{proInfo.Price}}</view>
+						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
+						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
 						<view class="txt">单独购买</view>
 					</view>
 					<view class="btn btn_2 flex" @click="showSku(1)">
 						<view>
-							<view class="num">¥126</view>
+							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
 						</view>
 						<view class="listm rt flex" v-if="proInfo.DistributionIncome>0">
@@ -247,11 +269,22 @@
 						</view>
 					</view>
 				</view>
+				<!-- 无拼团样式 -->
+				<view class="foot-item foot-item-btns" v-else>
+					<view class="btn btn_1 flex" @click="showSku(0)">
+						<view class="txt">加入购物车</view>
+					</view>
+					<view class="btn btn_2 flex" @click="showSku(0)">
+						<view>
+							<view class="txt">立即购买</view>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 详情底部 end -->
 		<view class="topbtn" @click="Top" v-if="isTop"></view>
-		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="0"></popupsku>
+		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" :fromPinTuan="fromPinTuan" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1"></popupsku>
 		<!-- 弹出产品参数 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupinfo" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Attr">
@@ -292,6 +325,8 @@
 				token: "",
 				isTop:false,//是否显示置顶
 				proId:'',//商品id
+				GroupId:0,//拼团id
+				GroupPrice:0,//拼团价格
 				proInfo:{},
 				IsCollect:false, //是否收藏该商品
 				bannerindex:0,//当前轮播图
@@ -301,6 +336,7 @@
 				attrArr:{},//产品参数
 				isServiceInfo:false,//服务
 				showbtntype:0,
+				fromPinTuan:false,//是否是拼团sku
 				isProData:false,
 				number:1,
 				SpecText:'',
@@ -309,6 +345,13 @@
 				plusprice:'',
 				hasComment:false,
 				CommentList:[],//评价列表
+				isLimint:0,//0非限时购产品，1限时购产品
+				timer:null,
+				timeStr:[],//倒计时
+				starTimetype:1,//0秒杀未开始，1一开始，2已结束
+				percentage:0,//已售百分比
+				GroupSku:[],//拼团商品Sku
+				ProSku:[],//普通商品Sku
 			}
 		},
 		onLoad() {
@@ -318,6 +361,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.proId=this.$root.$mp.query.id;
+			this.isLimint=this.$root.$mp.query.isLimint||0;
 			this.Goodsxq();
 			this.getCommentList();
 		},
@@ -362,7 +406,14 @@
 				});
 				if(result.code==0){
 					this.proInfo=result.data;
-					this.isProData = true;
+					this.ProSku=result.data.Sku;
+					this.GroupId=this.proInfo.GroupId;
+					if(this.proInfo.GroupId>0){//可以拼团
+						this.GroupProductInfo()
+						this.isProData = false;
+					}else{
+						this.isProData = true;
+					}
 					if(this.proInfo.PicData.length){
 						this.hasBanner=true;
 					}
@@ -373,13 +424,74 @@
 					if(this.proInfo.ParameterJson!=""&&this.proInfo.ParameterJson!="{}"){
 						this.attrArr=JSON.parse(this.proInfo.ParameterJson);
 					}
+					this.GetRTime(this.proInfo.FlashSaleEndTime);//限时商品倒计时
 				}
+			},
+			//拼团商品详情
+			async GroupProductInfo(){
+				let result = await post("GroupBuy/GroupProductInfo", {
+					userId:this.userId,
+					token:this.token,
+					GroupId: this.GroupId
+				});
+				if(result.code==0){
+					var _this=this;
+					this.GroupSku=result.data.Sku;
+					this.$set(_this.proInfo,'FightingPrice',result.data.FightingPrice);//在普通产品详情添加拼团商品信息，公用一套sku组件
+					this.$set(_this.proInfo,'OriginalPrice',result.data.OriginalPrice);
+					this.GroupPrice=result.data.FightingPrice;
+				}
+			},
+			//限时商品倒计时
+			GetRTime(endTime) {
+			  let _this = this;
+			  //倒计时
+			  let endtime=endTime.replace(/-/g, '/').replace(/T/g, ' ');
+			  let EndTime = new Date(endtime); //结束时间
+			  this.timer = setInterval(function() {
+			  let NowTime = new Date(); //当前时间
+			  let t = EndTime.getTime() - NowTime.getTime();
+			  if (t > 0) {
+				let d = Math.floor(t / 1000 / 60 / 60 / 24); //天
+				let h = Math.floor((t / 1000 / 60 / 60) % 24); //时
+				let m = Math.floor((t / 1000 / 60) % 60); //分
+				let s = Math.floor((t / 1000) % 60); //秒
+				if (parseInt(d) < 1) {
+				d = "";
+				} else {
+				d = d + "天";
+				}
+				if (parseInt(h) < 10) {
+				h = "0" + h;
+				}
+				if (parseInt(m) < 10) {
+				m = "0" + m;
+				}
+				if (parseInt(s) < 10) {
+				s = "0" + s;
+				}
+				_this.timeStr = [d,h,m,s];
+			  } else {
+				this.starTimetype=2;
+				clearInterval(this.timer);
+			  }
+			  }, 1000);
 			},
 			//展示底部 Sku
 			showSku: function(type) {
-				this.hidePopup();
+				this.isProData = false;
+				this.hidePopup();console.log(type)
+				var _this=this;
+				if(type==1){//替换传给sku组件的值
+					this.fromPinTuan=true
+					this.$set(_this.proInfo,'Sku',_this.GroupSku);
+				}else{
+					this.fromPinTuan=false
+					this.$set(_this.proInfo,'Sku',_this.ProSku);
+				}
 				this.showbtntype=type;
 				this.showPopupSku = true;
+				this.isProData = true;
 			},
 			//展示底部 参数
 			showInfo: function() {
@@ -388,6 +500,7 @@
 			},
 			//统一的关闭popup方法
 			hidePopup: function() {
+				this.isProData = false;
 				this.showPopupSku=false;
 				this.showPopupinfo = false;
 			},
@@ -497,4 +610,42 @@
 			margin-right:0
 		}
 	}
+	.limitTiem{
+	    background: #ff3333;
+	    color: #fff;
+	    padding: 20rpx 30rpx;
+	    .limt-left{
+	      .active-price{
+	        h3{ font-size: 40rpx; margin-right: 10rpx;
+	          span{ font-size: 28rpx !important}
+	        }
+	        p{text-decoration: line-through}
+	      } 
+	      .percentage{
+	          width:210rpx;
+	          height:24rpx;
+	          line-height:24rpx;
+	          font-size:24rpx;
+	          background:#ff747a;
+	          border-radius:20rpx;
+	          text-align:center;
+	          position:relative;
+	          overflow: hidden;
+	          span{
+	            position:absolute;
+	            top:0;
+	            left:0;
+	            height:100%;
+	            border-radius:20rpx;
+	            background:#ffaa01;
+	            display:block;
+	            i{ display: inline-block;width: 220rpx}
+	          }
+	        }
+	    }
+	    .limt-right .txt{ font-size: 40rpx; font-weight: bold;text-align: right;}
+	    .countDown span{
+	      background: #fff; color: #ff3333; border-radius: 4rpx; margin: 0 6rpx; padding: 0 4rpx;
+	    }
+	  }
 </style>

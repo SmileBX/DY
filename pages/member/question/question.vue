@@ -1,15 +1,17 @@
 <template>
 	<view class="question">
-		<view class="qu_list" >
+		<view class="qu_list uni-mt10">
 			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item,index)">
 				<view class="flex flexAlignCenter item_head bg_fff">
 					<view class="title flex flexAlignCenter flex1">
 						<span class="spill">{{index+1}}</span>
 						<view>{{item.Title}}</view>
 					</view>
-					<span class="iconfont icon-iconset0418" :class="item.isShow?'icon-arrow_r':''"></span>
+					<span class="iconfont fz12" :class="item.isShow?'icon-iconset0418':'icon-arrow_r'"></span>
 				</view>
-				<view class="content" v-if="item.isShow">{{item.Contents}}</view>
+				<view class="content" v-if="item.isShow">
+					<uParse :content="item.Contents" />
+				</view>
 			</view>
 			<!-- <view class="uni-tab-bar-loading">
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
@@ -23,8 +25,10 @@
 	import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
+	import uParse from '@/components/uParse/src/wxParse.vue';
 	export default{
 		components: {
+			uParse,
 			noData,
 			uniLoadMore
 		},

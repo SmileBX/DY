@@ -26,7 +26,7 @@
                 class="weui-input"
               >
             </div>
-            <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right mr1">
+            <view class="iconfont icon-arrow_r fz12"></view>
           </div>
           <div class="ipt flex flexAlignCenter">
             <div class="lab">银行卡号</div>
@@ -44,7 +44,7 @@
        
         <div class="select__weui-cells">
           <div class="ipt flex flexAlignCenter">
-            <div class="lab">银行预留手机号</div>
+            <div class="lab">已绑定手机号</div>
             <div class="flex1">
               <input type="text" placeholder="请输入手机号码" v-model="mobile" class="weui-input">
             </div>
@@ -160,6 +160,14 @@ export default {
         });
         return false;
       }
+	  if (this.bankAddress == "") {
+	    uni.showToast({
+	      title: "请输入支行名称!",
+	      icon: "none",
+	      duration: 1500
+	    });
+	    return false;
+	  }
       if (
         !/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/.test(
           this.bankCardNo

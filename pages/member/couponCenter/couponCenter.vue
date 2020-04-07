@@ -7,18 +7,23 @@
             {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
           </div>
           <div class="info">
-              <p v-if="item.DiscountType==1">满{{item.MeetConditions}}元减{{item.Denomination}}元券</p>
-              <p v-else>满{{item.MeetConditions}}元打{{item.Denomination*10}}折券</p>
+			  <P>{{item.Name}}</P>
               <span>有效期至{{item.EndTime}}</span>
           </div>
-          <div class="flexc back_col">{{item.DiscountType==1?'减满券':'折扣券'}}</div>
-          <div class="useinfo oneline" v-if="item.ScopeOfUse">{{item.ScopeOfUse}}</div>
+          <div class="coupoutag flexc back_col">{{item.DiscountType==1?'满减券':'折扣券'}}</div>
+		  <div class="useinfo oneline" v-if="item.ShopName&&item.ShopId!=0">仅可购买{{item.ShopName}}店铺商品</div>
+          <div class="useinfo oneline" v-else-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</div>
         </div>
-        <div class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
+        <div v-if="item.IsMyAlready==0" class="right flexc back_col" @click="ReceiveCoupon(item.Id)">
           <div>
             <p>立即领取</p>
           </div>
         </div>
+		<div v-else class="right flexc">
+		  <div>
+		   <image class="iconimg" src="http://ddyp.wtvxin.com/static/my/ylq.png" mode="widthFix"></image>
+		  </div>
+		</div>
       </div>
      </block>
       <noData :isShow="noDataIsShow"></noData>
@@ -141,7 +146,7 @@ export default {
   display: inline-block;
   position: absolute;
   top: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -152,7 +157,7 @@ export default {
   display: inline-block;
   position: absolute;
   bottom: -20upx;
-  left: 450upx;
+  left: 440upx;
   width: 40upx;
   height: 40upx;
   border-radius: 50%;
@@ -160,7 +165,7 @@ export default {
 }
 .list{
   width: 690upx;
-  height: 180upx;
+  height: 200upx;
   border-radius: 15upx;
   margin: 30upx;
   background-color: #fff;
@@ -183,6 +188,16 @@ export default {
         color: #f00;
       }
     }
+	.coupoutag{
+	  width: 128upx;
+	  height: 40upx;
+	  border-radius: 0 0 24px 0;
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  font-size: 24upx;
+	  color: #fff
+	}
     .info{
       line-height: 1.2;
       text-align: left;
@@ -216,8 +231,8 @@ export default {
   }
   .right{
     width: 230upx;
-    background-color: #d4d5d6;
     text-align: center;
+	border-left: 1px dashed #e5e5e5;
     p{
       color: #fff;
       font-size: 38upx;
@@ -230,6 +245,7 @@ export default {
       font-size: 20upx;
       color: #fff;
     }
+	.iconimg{ height: 100upx; width: 100upx;}
   }
 }
 .tab{
@@ -250,11 +266,7 @@ export default {
   }
 }
 .back_col{
-  background-color: #f00!important;
+  background-color: #FF3737!important;
 }
-.btn_de{
-  width:100%;position: fixed;bottom:0;
-  height:88upx;line-height: 88upx;background: #338afb;
-  color:#ffffff;text-align: center;
-}
+
 </style>

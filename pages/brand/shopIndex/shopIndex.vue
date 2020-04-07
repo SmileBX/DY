@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="BrandInfo" :style="{background: 'url('+BrandInfo.Backdrop+')'}">
+		<view class="BrandInfo" :style="{background: 'url('+ShopInfo.BannerPicNo+')'}">
 			<!-- #ifdef MP-WEIXIN -->
 			<view class="flex justifyContentBetween bb_mt">
 				<view class="menubtn iconfont icon-aixin"></view>
@@ -9,11 +9,11 @@
 			<!-- #endif -->
 			<view class="inner flex flex-start">
 				<view class="logoBox">
-					<image class="img" :src="BrandInfo.Logo" mode="widthFix"></image>
+					<image class="img" :src="ShopInfo.Logo" mode="widthFix"></image>
 				</view>
 				<view class="textbox">
-					<view class="name">{{BrandInfo.Name}}</view>
-					<view class="brand-desc">{{BrandInfo.Intro}}</view>
+					<view class="name">{{ShopInfo.ShopNick}}</view>
+					<view class="brand-desc">{{ShopInfo.Theme}}</view>
 				</view>
 			</view>
 		</view>
@@ -83,7 +83,7 @@
 			</view> -->
 			<view class="uni-mt10">
 				<view class="proList flex flexWrap justifyContentBetween">
-					<view class="item" v-for="(item,index) in datalist" :key="index" @click="goDetail(item.Id)">
+					<view class="item" v-for="(item,index) in datalist" :key="index">
 						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info flex flexColumn flexAlignCenter">
 							<view class="item_title">{{item.Name}}</view>
@@ -129,13 +129,13 @@
 		data() {
 			return {
 				proList:[],//推荐列表
-				BrandInfo:{},//品牌信息
+				ShopInfo:{},//品牌信息
 				navigate,
 				userId: "",
 				token: "",
 				page: 1,
 				pageSize: 12,
-				BrandId:'',
+				ShopId:'',
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				isLoad: false,
 				hasData: false,
@@ -158,38 +158,29 @@
 			}
 		},
 		onShow(){
-			this.BrandId = this.$root.$mp.query.BrandId
+			this.ShopId = this.$root.$mp.query.ShopId
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
 			this.AreaCode="";
 			this.AreaType=0;
 			this.init();
-			this.getBrandList()
+			this.getShop()
 			this.getPsoList()
 			this.getcommonProList()
 		},
 		methods: {
-			goDetail(id){
-				uni.navigateTo({
-					url:'/pages/homePage/details?id='+id
-				})
-			},
-			async getBrandList(){
-				const res = await post('Goods/BrandList',{})
+			async getShop(){
+				const res = await post('Shop/ReadShop',{ShopId:this.ShopId,})
 				if(res.code == 0){
-					res.data.forEach(item=>{console.log(this.BrandId,item.Id)
-						if(item.Id==this.BrandId){
-							this.BrandInfo=item
-						}
-					})
+					this.ShopInfo=res.data
 				}
 			},
 			async getPsoList(){
 				let res = await post("Goods/GoodsList", {
 					Page: 1,
 					PageSize: 8,
-					BrandId:this.BrandId,
+					ShopId:this.ShopId,
 					IsRecommend:1,//1推荐
 				});
 				if(res.code == 0){
@@ -217,7 +208,7 @@
 				let result = await post("Goods/GoodsList", {
 					Page: this.page,
 					PageSize: this.pageSize,
-					BrandId:this.BrandId,
+					ShopId:this.ShopId,
 					Sort:this.Sort,//0-默认1-人气2-价格
 					Order:this.Order,//排序方式0-升序，1-降序
 					IsRecommend:this.IsRecommend,//1推荐
@@ -268,36 +259,6 @@
 				this.AreaCode='';
 				this.init();
 			}
-			// shiftFilterTab(index) {
-			// 	let _this = this;
-			// 	_this.filterTab.forEach(function(item, subIndex) {
-			// 		if (subIndex === index) {
-			// 			_this.$set(item, 'active', true);
-			// 			if (item.isSortorder) {
-			// 				if (item.sortorder == "") {
-			// 					_this.$set(item, 'sortorder', "1");
-			// 					return false;
-			// 				} else if (item.sortorder == "0") {
-			// 					_this.$set(item, 'sortorder', "1");
-			// 					return false;
-			// 				} else {
-			// 					_this.$set(item, 'sortorder', "0");
-			// 					return false;
-			// 				}
-			// 			}
-			// 		} else {
-			// 			_this.$set(item, 'active', false);
-			// 			_this.$set(item, 'sortorder', "");
-			// 			return false;
-			// 		}
-			// 	});
-			// 	_this.sortname = _this.filterTab[index].sortname;
-			// 	if (_this.filterTab[index].isSortorder) {
-			// 		_this.sortorder = _this.filterTab[index].sortorder;
-			// 	} else {
-			// 		_this.sortorder = "";
-			// 	}
-			// },
 		},
 		onReachBottom: function() {
 			if (this.isLoad) {
@@ -312,7 +273,6 @@
 </script>
 
 <style scoped lang="scss">
-	@import './style';
 	/* 区域 */
 	.areabox{
 		margin-top: 40rpx;
@@ -343,5 +303,82 @@
 		transform:rotate(180deg);
 		-ms-transform:rotate(180deg); /* IE 9 */
 		-webkit-transform:rotate(180deg); /* Safari and Chrome */
+	}
+	.BrandInfo{
+		height: 360upx;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		.inner{
+			padding: 90upx 20upx 40upx;
+			.logoBox{
+				width: 120upx;
+				height: 120upx;
+				margin-right: 20upx;
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+			}
+			.name{ font-size: 32upx; font-weight:bold;}
+			.brand-desc{ font-size: 28upx;}
+		}
+	}
+	.baolist{
+		background: #ffffff;
+		border-radius:20upx 20upx 0 0;
+		margin-top: -40upx;
+		.title{
+			padding:20upx 20upx 0;
+			.name{
+				font-size:32upx;margin-right:10upx;
+			}
+			.subtitle{
+				font-size:24upx;color:#999;
+			}
+		}
+		.scroll-view_H {
+			white-space: nowrap;
+			width: 100%;
+		}
+		.scroll-view-item_H {
+			display: inline-block;
+		}
+		.HotsellList .uni-bd {
+			margin-right: -20upx;
+		}
+		
+		.Hotsell-list .itembox {
+			width: 280upx;
+			margin-right: 20upx;
+			overflow: hidden;
+		}
+		
+		.Hotsell-list .image-view {
+			width: 280upx;
+			height: 280upx;
+			margin: 0;
+		}
+		
+		.Hotsell-list .image-view .img {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.Hotsell-list .uni-product-price {
+			margin-top: 0;
+		}
+		
+		.Hotsell-list .uni-product-price .uni-product-price-favour {
+			font-size: 24upx;
+		}
+	}
+	.bb_mt{
+		padding:0 30upx;
+	}
+	.sharebtn{
+		width:50upx;height:50upx;border-radius:50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

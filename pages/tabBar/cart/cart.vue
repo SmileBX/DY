@@ -30,7 +30,7 @@
 								<view class="IconsCK IconsCK-radio" :class="{'disabled':item2.disBuy,'checked':item2.select}" @click="selectStyle(index,index2,item2.select,item2.disBuy,$event)"></view>
 								<view class="pictrueAll" @click="gotoDetail(item2.ProductId,item2.Isinvalid)">
 									<view class="pictrue">
-										<image :src="item2.PicNo" mode="widthFix"></image>
+										<image :src="item2.PicNo" mode="aspectFill"></image>
 									</view>
 								</view>
 								<view class="txtBox">
@@ -91,7 +91,7 @@
 		<view class="noConPage table bg_fff nodatalocal" v-if="noDataIsShow">
 			<view class="table-cell">
 				<view class="noDataImg">
-					<image src="../../../static/icons/nocart.png" mode="widthFix"></image>
+					<image src="http://ddyp.wtvxin.com/static/icons/nocart.png" mode="widthFix"></image>
 				</view>
 				<view class="tips">购物车空空如也~</view>
 				<view class="btnBox">
@@ -117,11 +117,11 @@
 								</view>
 								<view class="couponright">
 									<view class="couponname">{{item.Name}}</view>
-									<view class="coupontime">{{item.StartTime}}-{{item.EndTime}}</view>
+									<view class="coupontime">{{item.StartEndTimeStr}}</view>
 								</view>
 								<view class="couponbtn">
-									<view class="btn" v-if="item.IsMyAlready" @click="ReceiveCoupon(0,item.Id,index)">立即领取</view>
-									<view class="rightimg" v-else><image src="http://www.sc-mall.net/static/coupon5.png" mode=""></image></view>
+									<view class="btn" v-if="item.IsMyAlready==0" @click="ReceiveCoupon(item.Id,index)">立即领取</view>
+									<view class="rightimg" v-else><image src="http://ddyp.wtvxin.com/static/my/ylq.png" mode=""></image></view>
 								</view>
 							</view>
 						</view>
@@ -167,6 +167,7 @@
 				isEdit:false,//是否编辑购物车
 				isEdittxt:"管理",//是否编辑购物车按钮文字
 				allSelect:false,//判断是否全选
+				cartlen:0,//全部购物车数量
 				checklen:0,//有效产品数量
 				selectlen:0,//累计选中的产品
 				allPrice:0,//累计选中产品的金额
@@ -188,6 +189,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			//this.getMemberInfo();
+			this.allPrice=0;
 			this.cartlist=[];
 			this.getCartList();
 			this.isEdit=false;
@@ -302,6 +304,7 @@
 					this.cartinfo=result.data;
 					this.cartlist=result.data.CartList;
 					this.selectlen=0;
+					this.cartlen=0;
 					if(result.data.CartData.length>0){
 						this.checklen=result.data.CartData.length;
 						this.hascartlist=true;
@@ -313,6 +316,7 @@
 							_this.cartlist.forEach(function(item) {
 								_this.$set(item, "select", false);
 								item.ProData.forEach(function(item2){
+									_this.cartlen++;
 									_this.$set(item2, "select", false);
 									if(item2.Isinvalid!=0){//0-可以购买 1-售罄 2-下架 3-预售 4-库存不足 5-规格不存在
 										_this.$set(item2, "disBuy", true);
@@ -347,40 +351,70 @@
 			//合计 金额、数量
 			AllPrice(){
 				let _this = this;
-				let eaditallPrice =0;
-				let eaditnum =0;
-				let singelPrice=0;
-				_this.cartlist.forEach(function(item){
-					let singelnum=0,editsingelnum=0;
-					item.ProData.forEach(function(item2){
-						singelnum++;
-						if(item2.select==true){
+				let eaditallPrice =0;//全部合计
+				let eaditnum =0;//选中累计
+				let singelPrice=0;//单个合计
+				if(!this.isEdit){//未打开编辑按钮
+					_this.cartlist.forEach(function(item){
+						let singelnum=0,//店铺有效购物车数量
+							editsingelnum=0;//选中数量
+						item.ProData.forEach(function(item2){
 							if(item2.Isinvalid==0){
-								singelPrice =Number(item2.Price)*parseInt(item2.Number);
-								eaditallPrice += singelPrice;
+								singelnum++;
+								if(item2.select==true){
+									singelPrice =Number(item2.Price)*parseInt(item2.Number);
+									eaditallPrice += singelPrice;
+									eaditnum++;
+									editsingelnum++;
+								}
 							}
-							eaditnum++;
-							editsingelnum++;
+							
+						})
+						if(singelnum==editsingelnum){
+							 _this.$set(item, "select", true);	
+						}else{
+							 _this.$set(item, "select", false);
 						}
-					})
-					if(singelnum==editsingelnum){
-						 _this.$set(item, "select", true);	
+					});
+					this.selectlen=eaditnum;
+					if(eaditnum==this.checklen){
+							this.allSelect=true;
 					}else{
-						 _this.$set(item, "select", false);
+						this.allSelect=false;
 					}
-				});
-				this.selectlen=eaditnum;
-				if(eaditnum==this.checklen){
-						this.allSelect=true;
+					this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 				}else{
-					this.allSelect=false;
+					_this.cartlist.forEach(function(item){
+						let singelnum=0,//店铺购物车数量
+							editsingelnum=0;//选中数量
+						item.ProData.forEach(function(item2){
+							singelnum++;
+							if(item2.select==true){
+								if(item2.Isinvalid==0){
+									singelPrice =Number(item2.Price)*parseInt(item2.Number);
+									eaditallPrice += singelPrice;
+								}
+								eaditnum++;
+								editsingelnum++;
+							}
+						})
+						if(singelnum==editsingelnum){
+							 _this.$set(item, "select", true);	
+						}else{
+							 _this.$set(item, "select", false);
+						}
+					});
+					this.selectlen=eaditnum;
+					if(eaditnum==this.cartlen){
+							this.allSelect=true;
+					}else{
+						this.allSelect=false;
+					}
 				}
-				this.allPrice= parseFloat(eaditallPrice).toFixed(2);
 			},
 			//全选、反选
 			Allcheck() {
 				this.allSelect=!this.allSelect;
-				console.log("点击全选"+this.allSelect)
 				let _this = this;
 				if(!this.isEdit){//未打开编辑按钮的全选
 					if(this.allSelect){
@@ -423,6 +457,7 @@
 							})
 						}); 
 					} 
+					this.AllPrice();//合计  
 				} 
 			},
 			//单选
@@ -440,7 +475,6 @@
 						}else{
 							this.$set(item2, "select", true);
 						}
-						this.allSelect=this.Cknum();
 						this.AllPrice();//合计
 					}
 				}else{
@@ -449,7 +483,7 @@
 					}else{
 						this.$set(item2, "select", true);
 					}
-					this.allSelect=this.Cknum();
+					this.AllPrice();//合计
 				}
 			},
 			//店铺全选
@@ -457,78 +491,35 @@
 				let _this=this;
 				let item=_this.cartlist[index];
 				_this.$set(item, "select", !item.select);
-				if(item.select){
-					item.ProData.forEach(function(e){
-						_this.$set(e, "select", true);
-					})
-				}else{
-					item.ProData.forEach(function(e){
-						_this.$set(e, "select", false);
-					})
-				}
 				if(!_this.isEdit){//未打开编辑按钮的单选
+					if(item.select){
+						item.ProData.forEach(function(e){
+							if(e.Isinvalid==0){
+								_this.$set(e, "select", true);
+							}
+						})
+					}else{
+						item.ProData.forEach(function(e){
+							if(e.Isinvalid==0){
+								_this.$set(e, "select", false);
+							}
+						})
+					}
+					_this.AllPrice();//合计
+				}else{
+					if(item.select){
+						item.ProData.forEach(function(e){
+							_this.$set(e, "select", true);
+						})
+					}else{
+						item.ProData.forEach(function(e){
+							_this.$set(e, "select", false);
+						})
+					}
 					_this.AllPrice();//合计
 				}
-				_this.allSelect=_this.Cknum();
 			},
-			//累计选中
-			Cknum(){
-				console.log("累计")
-				let _this=this;
-				let cknum=0,cknumed=0,all=false;
-				if(_this.isEdit){
-					_this.cartlist.forEach(function(item){
-						let itemcknum=0,itemcknumed=0;
-						item.ProData.forEach(function(item2){
-							cknum++;
-							itemcknum++;
-							if(item2.select==true){
-								cknumed++;
-								itemcknumed++;
-							}
-						})
-						if(itemcknum==itemcknumed){
-							 _this.$set(item, "select", true);	
-						}else{
-							 _this.$set(item, "select", false);
-						}
-					})  
-					if(cknum==cknumed){
-						all=true;		   
-					}else{
-						  all=false;
-					}
-					return all
-				}else{
-					_this.cartlist.forEach(function(item){
-						let itemcknum=0,itemcknumed=0;
-						item.ProData.forEach(function(item2){
-							if(item2.Isinvalid==0){
-								cknum++;
-								itemcknum++;
-								if(item2.select==true){
-									cknumed++;
-									itemcknumed++;
-								}
-							}
-						})
-						console.log(itemcknum+','+itemcknumed)
-						if(itemcknum==itemcknumed){
-							 _this.$set(item, "select", true);	
-						}else{
-							 _this.$set(item, "select", false);
-						}
-					})  
-					if(cknum==cknumed){
-						all=true;		   
-					}else{
-						 all=false;
-					}
-					console.log(all)
-					return all
-				}
-			},
-			
+
 			//打开编辑购物车
 			ManageCart(){
 				this.isEdit=!this.isEdit;
@@ -641,8 +632,6 @@
 							if(item.DiscountType==2){
 								item.Denomination=item.Denomination*10;
 							}
-							item.StartTime=item.StartTime.split(" ")[0].replace(/\//g,".");
-							item.EndTime=item.EndTime.split(" ")[0].replace(/\//g,".");
 						})
 					}else{
 						uni.showToast({
@@ -658,27 +647,20 @@
 						success(res) {
 							if (res.confirm) {
 								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
+								  url: "/pages/login/login"
 								});
 							} else if (res.cancel) {
 							}
 						}
 					});
-				} else {
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
-					});
 				}
 
 			},
 			//领取优惠券
-			async ReceiveCoupon(utype,Couponid,index){
-				let result =await post("Coupon/ReceiveCoupon", {
+			async ReceiveCoupon(Couponid,index){
+				let result =await post("Coupon/GetCoupon", {
 					"UserId": this.userId,
 					"Token": this.token,
-					"UseType": utype,
 					"CouponId": Couponid
 				});
 				if (result.code === 0){
@@ -689,27 +671,8 @@
 					});
 					this.CouponList[index].Limit--;
 					if(this.CouponList[index].Limit==0){
-						this.CouponList[index].IsMyAlready=false;
+						this.$set(this.CouponList[index],'IsMyAlready',1);
 					}
-				}else if(result.code === 2){
-					let _this =this;
-					uni.showModal({
-						content: "您还没有登录，是否重新登录？",
-						success(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-								  url: "/pages/login/login?askUrl="+_this.curPage
-								});
-							} else if (res.cancel) {
-							}
-						}
-					});
-				}else{
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
-					});
 				}
 			},
 			//获取会员信息
@@ -738,251 +701,6 @@
 	}
 </script>
 
-<style>
-	.content {
-		height: 100%;
-	}
-	.content::before{
-		display: block;
-	    content: '';
-	    background: #ff3333;
-	    width: 150vw;
-	    height: 680upx;
-	    position: absolute;
-	    top: 50px;
-	    left: 50%;
-	    -webkit-transform: translate(-50%,-50%);
-	    transform: translate(-50%,-50%);
-	    border-radius: 50%;
-	}
-	.hasContentPage {
-		/* height: 100%; */
-		position: relative;
-		overflow-y: auto;
-	}
-/* #ifdef MP-WEIXIN */
-.hasContentPage {
-		height: calc(100% - 90upx);
-		overflow-y: auto;
-	}
-/* #endif */
-	.cartGroupList .item .outside {
-		padding: 20upx;
-	}
-
-	.btn_receive {
-		color: #FF3333;
-		font-size: 26upx;
-	}
-	.levelPanel{border-bottom: 1px dashed #f5f5f5;}
-	.levelPanel .item .outside .txtBox .skuBox .type {
-		display: inline-block;
-		background-color: #f6f6f6;
-		padding: 0 10upx;
-		position: relative;
-	}
-
-	.cartGroupList {
-		padding: 0 20upx 120upx;
-
-	}
-
-	.cartGroupList>.item {
-		overflow: hidden;
-	}
-	
-	.btnPay:after{
-		display: none;
-	}
-	.right .deletbox{
-  height: 74upx;
-		
-	}
-	.right .deletbox .delet{
-		padding: 0 20upx;
-		height: 60upx;
-		line-height: 60upx;
-		border-radius: 30upx;
-		border: #999 1upx solid;
-		color: #999;
-		font-size: 27upx;
-		display: inline-block;
-		margin-top: 8upx;
-		margin-left: 30upx;
-	}
-	.right .deletbox .delet2{
-		padding: 0 20upx;
-		height: 60upx;
-		line-height: 60upx;
-		border-radius: 30upx;
-		border: #FF3333 1upx solid;
-		color: #FF3333;
-		font-size: 27upx;
-		display: inline-block;
-		margin-top: 8upx;
-	}
-	.carthead{
-		background-color: #FF3333;
-		width: 750upx;
-		padding: 0 20upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 88upx;
-		z-index: 8;
-		position: fixed;
-		top: 0;
-		box-sizing: border-box;
-	}
-	.wxcarthead{
-		background-color: #FF3333;
-		width: 100%;
-		padding: 0 20upx;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		height: 88upx;
-		z-index: 8;
-		position: fixed;
-		top: 0;
-		/* left: 20upx; */
-	}
-	.wxcarthead text{color: #fff;}
-	.carthead text:nth-child(1){
-		font-size: 32upx;
-		font-weight: bold;
-		color: #fff;
-	}
-	.carthead text:nth-child(2){
-		position: absolute;
-		right: 20upx;
-		color: #fff;
-	}
-	.nodatalocal{
-		position: fixed;
-		top: 0;
-	}
-	.pictrue .mark{ position: absolute; left: 0; top: 10upx; z-index: 3; background: #ff6666; color: #fff; font-size: 24upx; padding: 2upx 16upx; border-radius: 0 100px 100px 0;}
-	/* 弹出优惠券 */
-	.uni-popup .bottom-title {
-		line-height: 60upx;
-		font-size: 32upx;
-	}
-	.uni-popup .bottom-btn {
-		height: 80upx;
-		line-height: 80upx;
-		background: #ff9800;
-		font-size: 32upx;
-		color: #fff;
-		border-radius: 40upx;
-	}
-	.uni-modal-Coupon{ background: #fff; padding: 20upx; border-radius: 6px 6px 0 0;}
-	.uni-modal-Coupon .bottom-content{ margin-bottom: 20upx; max-height: 800upx; overflow-y: auto;}
-	.saleScore{ text-align: left; margin-bottom: 20upx;}
-	.saleScore .txtbox .ico{ font-size: 24upx; color: #FF5722; background: #facec0; border-radius: 4px; margin-right: 6upx; padding: 2upx 8upx;}
-	
-	.uni-modal-Coupon .lab{ text-align: left; color: #999; margin-bottom: 16upx;}
-	.coupon1{
-		margin-bottom: 20upx;
-		background-image: url("/static/coupon2.png");
-		background-repeat:no-repeat;
-	  background-size:100% ;
-	}
-	.topbox{
-		display: flex;
-		position: relative;
-		width: 100%;
-		height: 203upx;
-	}
-	.coupontxt{
-		height: 58upx;
-		padding-top: 20upx;
-		padding-left: 16upx;
-		line-height: 58upx;
-		font-size: 23upx;
-		color: #999;
-	}
-	.couponbtn{
-		height: 200upx;
-		width: 220upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.couponbtn .btn{
-		width: 120upx;
-		height: 64upx;
-		border-radius: 8upx;
-		background-color: #ff6666;
-		color: #fff;
-		font-size: 24upx;
-		text-align: center;
-		line-height: 64upx;
-	}
-	.couponleft{
-		width: 210upx;
-		align-items: center;
-		color: #fff;
-	}
-	.couponleft .price{
-		margin: 0 auto;
-		margin-top: 50upx;
-		text-align: center;
-	}
-	.couponleft .price text{
-		font-size: 30upx;
-	}
-	.couponleft .price .num{
-		font-size: 54upx;
-		line-height: 60upx;
-	}
-	.lefttxt{
-		width: 100%;
-		text-align: center;
-		font-size: 23upx;
-	}
-	.couponright{
-		width: 280upx;
-		margin-left: 18upx;
-		color: #333;
-		text-align: left;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-	.couponbtn .rightimg{
-		width: 120upx;
-		height: 120upx;
-	}
-	.couponbtn .rightimg image{
-		width: 100%;
-		height: 100%;
-	}
-	.couponname{
-		line-height: 44upx;
-		margin-bottom: 10upx;
-		word-break: break-all;
-	    display: -webkit-box;
-	    overflow: hidden;
-	    -o-text-overflow: ellipsis;
-	    text-overflow: ellipsis;
-	    -webkit-box-orient: vertical;
-	    -webkit-line-clamp: 2;
-	}
-	.coupontime{
-		font-size: 19upx;
-		color: #999;
-	}
-	.btnBox .btn{
-		color: #FF3333;
-		border-color: #FF3333 !important;
-	}
-	.cartFoot .flexAlignCneter{
-		box-sizing: border-box;
-	}
-	/* #ifdef APP-PLUS */
-	.cartFoot .inner{
-		bottom:0
-	}
-	/* #endif */
+<style lang="scss" scoped>
+	@import './style';
 </style>

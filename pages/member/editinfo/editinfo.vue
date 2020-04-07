@@ -5,7 +5,7 @@
           <span>头像</span>
           <div class="avatar" @click="uplLoadImg">
               <image class="img" v-if="Avatar" :src="Avatar" mode="aspectFill"></image>
-              <image class="img" v-else src="/static/default.png" mode="aspectFill"></image>
+              <image class="img" v-else src="http://ddyp.wtvxin.com/static/default.png" mode="aspectFill"></image>
           </div>
         </div>
         <div class="list ali-c jus-b list_img flex" @click="switchPath('/pages/member/editNickName/editNickName?nick='+info.NickName)">

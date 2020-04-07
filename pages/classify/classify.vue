@@ -1,8 +1,12 @@
 <template>
 	<view class="content" style="height: 100%;">
 		<!-- 固定在顶部的导航栏 -->
-		<!--#ifdef H5 || APP-PLUS-->
-		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true" left-icon="arrowleft" @click-left="toback">
+		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true">
+			<!-- #ifndef MP-WEIXIN -->
+			<block slot="left">
+				<view class="uni-icon uni-icon-arrowleft" style="color: #333;" @click="toback"></view>
+			</block>
+			<!-- #endif -->
 			<view class="input-view">
 				<uni-icons type="search" size="22" color="#666666"></uni-icons>
 				<input confirm-type="search" disabled="true" class="input" @click="gotoProductList(0)" type="text"
@@ -12,16 +16,6 @@
 				<view class="iconfont icon-xiaoxi" style="color: #333;"><text class="uni-badge" v-if="newscount!=0">{{newscount}}</text></view>
 			</block> -->
 		</uni-nav-bar>
-		<!--#endif-->
-		<!--#ifdef MP-WEIXIN-->
-		<uni-nav-bar color="#333333" background-color="#f5f5f5" shadow="false" fixed="true">
-			<view class="input-view">
-				<uni-icons type="search" size="22" color="#666666"></uni-icons>
-				<input confirm-type="search" disabled="true" class="input" @click="gotoProductList(0)" type="text"
-				 placeholder="输入搜索关键词" />
-			</view>
-		</uni-nav-bar>
-		<!--#endif-->
 		<view  :style="{'height':barHeight+44+'px'}"></view>
 		<!-- 使用非原生导航栏后需要在页面顶部占位 -->
 		<view class="container">
@@ -39,17 +33,26 @@
 					</view>
 					<view class="nav-rightList" v-if="hasData">
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
-						 @click="navigate('homePage/proList',{typeId:item.TypeId,classId:item.Id})">
-							<image :src="item.PicUrl" v-if="item.PicUrl" mode="aspectFill" />
-							<image src="/static/noPicmin.png" v-else mode="widthFix"></image>
+						 @click="gotoProductList(1,item.Id)">
+							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="aspectFill" />
 							<view class="txt">{{item.ClassName}}</view>
 						</view>
 					</view>
 					<block v-if="hasProData">
-						<view class="uni-product-list level__product-list uni-mt10" style="padding-left: 20upx;">
-							<block v-for="(item,index) in prolist" :key="index">
-								<product :data="item" v-on:goDetail="goDetail"></product>
-							</block>
+						<view class="level__product-list uni-mt10" style="padding-left: 20upx;">
+							<view class="item flex" v-for="(item,index) in prolist" :key="index">
+								<image :src="item.PicNo" class="item_img"></image>
+								<view class="item_info">
+									<view class="item_title twoline">{{item.Name}}</view>
+									<view class="flex flex-between">
+										<view class="flex">
+											<span class="item_price red">￥{{item.Price}}</span>
+											<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+										</view>
+										<view class="fz12 c_999">已售{{item.SalesVolume}}</view>
+									</view>
+								</view>
+							</view>
 						</view>
 						<view class="uni-tab-bar-loading">
 							<uni-load-more :loadingType="loadingType"></uni-load-more>
@@ -63,17 +66,16 @@
 	</view>
 </template>
 <script>
-	import {post,get,navigate} from '@/common/util.js';
+	import {post,get} from '@/common/util.js';
 	import uniNavBar from '@/components/uni-nav-bar.vue';
 	import uniIcons from '@/components/uni-icon.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
-	// import product from '@/components/product.vue';
 	import '@/common/head.css';
-	import '@/common/dd_style.css';
+	// import '@/common/dd_style.css';
+	import '@/common/product.scss';
 	export default {
 		onLoad() {
-			// this.classifyNavList();
 			// #ifdef APP-PLUS
 			var height1 = plus.navigator.getStatusbarHeight();
 			this.barHeight = height1;console.log(this.barHeight)
@@ -88,21 +90,15 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			
-			//this.NewsCount();
-			// this.nweproList()
-			
 		},
 		components: {
 			uniNavBar,
 			uniIcons,
 			noData,
-			uniLoadMore,
-			// product
+			uniLoadMore
 		},
 		data() {
 			return {
-				navigate,
 				barHeight:0,
 				userId: "",
 				token: "",
@@ -147,11 +143,6 @@
 			getTypeList(){
 				post('Goods/TypeList',{}).then(res=>{
 					if(res.code==0){
-						res.data.forEach(function(item,index){
-							if(item.Id==70||item.Id==71){
-								res.data.splice(index,2)
-							}
-						})
 						this.categoryList=res.data;
 						this.typeId = res.data[0].Id;
 						this.categoryClickMain(this.typeId, this.categoryActive); //默认的第一条顶级分类(获取下级分类)
@@ -165,14 +156,13 @@
 				});
 				if (result.code === 0) {
 					if(result.data.length){
-						const data = result.data;
 						this.hasData=true;
 						this.hasProData=false;
 						this.noDataIsShow=false;
-						this.subCategoryList = data;
+						this.subCategoryList = result.data;
 					}else{
-						this.noDataIsShow=true;
 						this.hasData=false;
+						this.getprolist();
 					}
 					
 				}
@@ -181,12 +171,12 @@
 			gotoProductList(type, id) {
 				if (type === 0) {
 					uni.navigateTo({
-						url: "/pages/ProductList/ProductList?isfilter=true"
+						url: "/pages/homePage/proList"
 					}); //点击搜素页面跳转，不需要传入参数
 				}
 				if (type === 1) {
 					uni.navigateTo({
-						url: "/pages/ProductList/ProductList?id=" + id+"&typeId="+this.typeId
+						url: "/pages/homePage/proList?classId=" + id+"&typeId="+this.typeId
 					}); //点击分类跳转，需要传入参数
 				}
 			},
@@ -227,7 +217,7 @@
 			},
 			goDetail(id) {
 				uni.navigateTo({
-					url: '/pages/productDetail/productDetail?proId='+id
+					url: '/pages/homePage/details?id='+id
 				})
 			},
 			loadMore(){
@@ -244,6 +234,7 @@
 </script>
 <style scoped>
 	@import "./style";
+	.uni-navbar /deep/ .uni-navbar-header-btns .uni-icon{ line-height: 44px;}
 	.nav-right{
 		background: #fff!important;
 	}

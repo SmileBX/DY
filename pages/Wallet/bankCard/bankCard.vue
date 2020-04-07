@@ -23,14 +23,14 @@
         </div>
       </div>
       <div v-else class="no_cardList flex flexColumn flexAlignCenter">
-          <img src="/static/icons/nocr.png" alt="" class="no_c">
+          <img src="http://ddyp.wtvxin.com/static/icons/nocr.png" alt="" class="no_c">
           <p class="mt2 cg">您还未添加过银行卡</p>
       </div>
       <div class="ftBtn" style="height:100upx" @click="addBankCard">
         <div class="inner fixed bm0">
           <div class="btns">
             <div class="btn center bg_ff952e color_fff">
-              <img src="/static/icons/add.png" class="icon-add" alt>添加银行卡
+              <img src="http://ddyp.wtvxin.com/static/icons/add.png" class="icon-add" alt>添加银行卡
             </div>
           </div>
         </div>

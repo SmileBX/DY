@@ -44,7 +44,7 @@
 				</view>
 			</view>
 			<view style="height: 120upx;"></view>
-			<view class="popup-ft" style="margin-left:20upx;" v-if="showbtntype==1">
+			<view class="popup-ft" v-if="showbtntype==1">
 				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
 			<view class="popup-ft" v-if="showbtntype==0">
@@ -173,11 +173,12 @@
 					if (selectedSkuKeyLen === this.skuKey.length) {
 						let selectedSpeList = this.selectedAllMateSku();
 						this.stock = selectedSpeList.ProStock;
-						if(this.isLimint==1){
+						if(this.isLimint==1&&this.proInfo.IsSku==0){
 							this.price = this.proInfo.TimePrice;
 						}else{
 							if(this.fromPinTuan){
-								this.price=this.proInfo.FightingPrice;
+								// this.price=this.proInfo.FightingPrice;
+								this.price = selectedSpeList.GroupPrice;
 							}else{
 								this.price = selectedSpeList.Price;
 								this.plusprice=selectedSpeList.PlusPrice;
@@ -293,9 +294,9 @@
 				return obj;
 			},
 			goodsDetail() {
-				if(this.isLimint==1){
+				if(this.isLimint==1&&this.proInfo.IsSku==0){
 					this.price=this.proInfo.TimePrice;
-					this.oprice=this.proInfo.ProductPrice;
+					this.oprice=this.proInfo.Price;
 				}else{
 					if(this.fromPinTuan){
 						this.price=this.proInfo.FightingPrice;
@@ -361,6 +362,20 @@
 					else{
 						this.$emit('getsku',this.number,this.SpecText,this.price);
 						this.$emit('hidePopup');
+						if (toLogin()){
+							if(this.valSubmit()){
+								let money="";
+								if(this.isPlus==1&&this.IsPlusPrice==1&&this.isLimint!=1){
+									money=this.plusprice;
+								}else{
+									money=this.price;
+								}
+								let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&GroupId='+this.proInfo.GroupId;
+								uni.navigateTo({
+									url: objUrl
+								})
+							}
+						}
 					}
 				}else{
 					uni.showToast({
@@ -553,7 +568,7 @@
 		vertical-align: middle;
 		height: 16px;
 		width: 33px;
-		background: url(http://www.sc-mall.net/static/plus/plus_icon.png) right center no-repeat;
+		background: url(http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/plus/plus_icon.png) right center no-repeat;
 		background-size: 100%;
 	}
 	.pop-product .product-stock {

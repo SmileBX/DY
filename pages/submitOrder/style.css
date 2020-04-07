@@ -289,22 +289,29 @@
 .couponbox{
 	background-color: #fff;
 	width: 100%;
+	padding: 20upx; border-radius: 6px 6px 0 0;
 }
-.titlebox{
-	width: 100%;
-	height: 100upx;
-	border-bottom: 1upx #ECECEC solid;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
+.uni-popup .bottom-title {
+	line-height: 60upx;
+	font-size: 32upx;
 }
-.titlebox .title{
-	font-size: 34upx;
-	margin-left: 20upx;
+.uni-popup .bottom-btn {
+	height: 80upx;
+	line-height: 80upx;
+	background: #ff9800;
+	font-size: 32upx;
+	color: #fff;
+	border-radius: 40upx;
 }
-.coupon{
-	width: 690upx;
-	margin: 0 30upx;
+.uni-close-btn {
+    height: 60upx;
+    line-height: 60upx;
+    width: 60upx;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 30upx;
+    color: #999;
 }
 .couponitem{
 	width: 100%;

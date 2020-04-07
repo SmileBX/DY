@@ -2,7 +2,7 @@
 	<view>
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff mt2">
 			<view>
-				<image src="../../../static/my/wx.png" class="logo mr1"></image>
+				<image src="http://ddyp.wtvxin.com/static/my/wx.png" class="logo mr1"></image>
 				<text>绑定微信</text>
 			</view>
 			<view class="flex flexAlignCenter">
@@ -12,7 +12,7 @@
 		</view>
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>
-				<image src="../../../static/my/sj.png" class="logo mr1"></image>
+				<image src="http://ddyp.wtvxin.com/static/my/sj.png" class="logo mr1"></image>
 				<text>手机号更换</text>
 			</view>
 			<view class="flex flexAlignCenter">

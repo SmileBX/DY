@@ -3,8 +3,10 @@
 		{
 			"path": "pages/tabBar/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "大单易拼",
 				"enablePullDownRefresh" : false,
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor":"#ff3333",
 				"app-plus": {
 					"titleNView": false
 					//"bounce": "none",
@@ -20,8 +22,10 @@
 		{
 			"path": "pages/tabBar/discover/discover",
 			"style": {
-				"navigationBarTitleText": "推荐",
+				"navigationBarTitleText": "大单易拼推荐",
 				"enablePullDownRefresh" : true,
+				"navigationBarBackgroundColor":"#16a6fd",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
 				}
@@ -44,6 +48,8 @@
 			"style": {
 				"navigationBarTitleText": "购物车",
 				"enablePullDownRefresh" : true,
+				"navigationBarBackgroundColor":"#FF3333",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false
 				}
@@ -53,6 +59,8 @@
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor":"#ff4e4f",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航
 				}
@@ -71,15 +79,6 @@
 			"path": "pages/tabBar/my/wallet",
 			"style": {
 				"navigationBarTitleText": "我的钱包",  //我的页面里
-				"app-plus": {
-					// "titleNView": false //首页去除原生导航
-				}
-			}
-		},
-		{
-			"path": "pages/tabBar/my/withdrawal",
-			"style": {
-				"navigationBarTitleText": "余额提现",  //我的页面里
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 				}
@@ -332,6 +331,34 @@
 				"navigationBarTitleText": "忘记密码"
 			}
         }
+        ,{
+            "path" : "pages/brand/shopIndex/shopIndex",
+            "style" : {
+				"navigationBarTitleText": "店铺详情",
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"text": "\ue71a",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							},
+							{
+								"text": "\ue641",
+								"fontSrc": "/static/iconfont.ttf",
+								"fontSize": "20px",
+								"color": "#fff"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/livepush/livepush",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[
@@ -401,7 +428,7 @@
 				{
 					"path":"money/money",
 					"style": {
-						"navigationBarTitleText": "提现记录"
+						"navigationBarTitleText": "交易明细"
 					}
 				},
 				{

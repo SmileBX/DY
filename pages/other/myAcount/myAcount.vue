@@ -1,50 +1,54 @@
 <template>
   <div class="wallet">
       <div class="wa_bg">
-          <img src="../../../static/my/gao.png" alt="" class="qiao">
+          <img src="http://ddyp.wtvxin.com/static/my/gao.png" alt="" class="qiao">
           <div class="wa_mon flex flexColumn flexAlignCenter">
               <p>当前可提收益（元）</p>
               <p class="total_wa">{{info.KTAmount}}</p>
           </div>
       </div>
-      <!-- <div class="mm_btn" @click="switchPath('/pages/other/withdraw/withdraw/main',$event)">提现</div> -->
-      <div class="wa_list pw3">
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff">
-              <div class="flex flexAlignCenter">
-                  <img src="http://jyy.wtvxin.com/static/images/icons/w1.png" alt="" class="ww_wa">
-                  <span class="mr2">今日收益</span>
-              </div>
-              <span class="cr font30">{{info.JTAmount}}元</span>
-          </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff">
-              <div class="flex flexAlignCenter">
-                  <img src="http://jyy.wtvxin.com/static/images/icons/w2.png" alt="" class="ww_wa">
-                  <span class="mr2">昨日收益</span>
-              </div>
-              <span class="cr font30">{{info.ZTAmount}}元</span>
-          </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff">
-              <div class="flex flexAlignCenter">
-                  <img src="http://jyy.wtvxin.com/static/images/icons/w3.png" alt="" class="ww_wa">
-                  <span class="mr2">累计收益</span>
-              </div>
-              <span class="cr font30">{{info.LJAmount}}元</span>
-          </div>
-          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter mt2" @click="switchPath('/pages/other/getCome/getCome',$event)">
-              <div class="flex flexAlignCenter">
-                  <img src="http://jyy.wtvxin.com/static/images/icons/w2.png" alt="" class="ww_wa">
-                  <span class="mr2">收益明细</span>
-              </div>
-               <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
-          </div>
-<!--          <div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/other/money/money',$event)">
-              <div class="flex flexAlignCenter">
-                  <img src="http://jyy.wtvxin.com/static/images/icons/w3.png" alt="" class="ww_wa">
-                  <span class="mr2">提现记录</span>
-              </div>
-              <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
-          </div> -->
-      </div>
+      <div :class="['mm_btn',info.KTAmount>0?'':'disable']" @click="towithdraw">提现</div>
+	  <view class="pw3">
+	  	<div class="wa_list bg_fff">
+	  	    <div class="flex justifyContentBetween wa_item pp3">
+	  	        <div class="flex flexAlignCenter">
+	  	            <img src="http://jyy.wtvxin.com/static/images/icons/w1.png" alt="" class="ww_wa">
+	  	            <span class="mr2">今日收益</span>
+	  	        </div>
+	  	        <span class="cr font30">{{info.JTAmount}}元</span>
+	  	    </div>
+	  	    <div class="flex justifyContentBetween  wa_item pp3">
+	  	        <div class="flex flexAlignCenter">
+	  	            <img src="http://jyy.wtvxin.com/static/images/icons/w2.png" alt="" class="ww_wa">
+	  	            <span class="mr2">昨日收益</span>
+	  	        </div>
+	  	        <span class="cr font30">{{info.ZTAmount}}元</span>
+	  	    </div>
+	  	    <div class="flex justifyContentBetween  wa_item pp3">
+	  	        <div class="flex flexAlignCenter">
+	  	            <img src="http://jyy.wtvxin.com/static/images/icons/w3.png" alt="" class="ww_wa">
+	  	            <span class="mr2">累计收益</span>
+	  	        </div>
+	  	        <span class="cr font30">{{info.LJAmount}}元</span>
+	  	    </div>
+			<div class="flex justifyContentBetween  wa_item pp3 flexAlignCenter" @click="switchPath('/pages/other/getCome/getCome',$event)">
+				  <div class="flex flexAlignCenter">
+					  <img src="http://jyy.wtvxin.com/static/images/icons/w4.png" alt="" class="ww_wa">
+					  <span class="mr2">收益明细</span>
+				  </div>
+				  <view class="iconfont icon-arrow_r fz12"></view>
+			</div>
+	  	</div>
+	  	<div class="wa_list bg_fff uni-mt10">
+			<div class="flex justifyContentBetween  wa_item pp3 bg_fff flexAlignCenter" @click="switchPath('/pages/other/money/money??type=1',$event)">
+			  <div class="flex flexAlignCenter">
+				  <img src="http://jyy.wtvxin.com/static/images/icons/w5.png" alt="" class="ww_wa">
+				  <span class="mr2">提现记录</span>
+			  </div>
+			  <img src="http://jyy.wtvxin.com/static/images/icons/arrow.png" alt="" class="icon_right">
+		   </div>
+	  	</div>
+	  </view>
   </div>
 </template>
 
@@ -91,7 +95,14 @@ export default {
           Wallet:res.data.KTAmount
         });    
       })
-    }
+    },
+	towithdraw(){
+		if(this.info.KTAmount>0){
+			uni.navigateTo({
+				url:'/pages/other/withdraw/withdraw?type=1'
+			})
+		}
+	}
 
   },
 }
@@ -125,14 +136,20 @@ export default {
     border-radius:30upx;text-align: center;line-height: 70upx;
     position: relative;top:-50%;left:50%;transform: translate(-50%,-50%)
   }
+  .mm_btn.disable{
+	  background-color: #ccc;
+  }
   .wa_list{
-    margin-top:20upx;
+	border-radius: 12upx;
     .ww_wa{
       width:44upx;height:44upx;margin-right:20upx
     }
     .wa_item{
-        border-radius:25upx;border-bottom:1px dashed#f5f5f5;
+        border-bottom:1px dashed #f5f5f5;
     }
+	.wa_item::last-child{
+		 border-bottom:none
+	}
   }
   .icon_right{
 	  width:12upx;height:22upx;

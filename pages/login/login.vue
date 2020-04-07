@@ -3,7 +3,7 @@
 		<view class="regLoginBox" v-if="isShowMolie">
 			<view class="logo">
 				<view class="img">
-					<image class="logoimg" src="/static/logo.png" mode="widthFix"></image>
+					<image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
 					<view class="Title">大单易拼</view>
 				</view>
 			</view>
@@ -51,7 +51,7 @@
 		<!-- #ifdef MP-WEIXIN -->  
 		<view class="MP-login" v-if="isShowminiApp">
 		    <view class="logo">
-		        <image class="logoimg" src="/static/logo.png" mode="widthFix"></image>
+		        <image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
 				<view class="Title">大单易拼</view>
 		    </view> 
 		    <button class="login-btn btn_gree" open-type="getUserInfo" @click="oauth">微信登录</button>
