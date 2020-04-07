@@ -101,10 +101,6 @@
 			</view>
 			<view class="section__bd Sevice">
 				<view class="dd-list col__list li_25 center clear">
-					<view class="item" @click="golink('')">
-						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_pt.png" mode=""></image>
-						<view class="txt">拼团订单</view>
-					</view>
 					<view class="item" @click="golink('/pages/tabBar/my/wallet')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_qb.png" mode=""></image>
 						<view class="txt">我的钱包</view>
