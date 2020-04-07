@@ -317,7 +317,6 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import popupsku from '@/components/popupSku.vue';
 	import uniRate from '@/components/uni-rate.vue';
-	import "@/common/details.scss";
 	export default {
 		components: {
 			uParse,
@@ -360,14 +359,19 @@
 				ProSku:[],//普通商品Sku
 			}
 		},
-		onLoad() {
-			
+		onLoad(e) {
+			// #ifdef APP-PLUS
+			console.log(e.id)
+			this.proId=e.id
+			// #endif
 		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
+			// #endif
 			this.Goodsxq();
 			this.getCommentList();
 		},
@@ -608,6 +612,7 @@
 	}
 </script>
 <style scoped lang="scss">
+	@import "@/common/details.scss";
 	.bb_shop{
 		text-align: left;
 		padding:30upx;

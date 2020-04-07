@@ -1,6 +1,7 @@
 <template>
 	<view class="content myCollectPage">
-		<image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image>
+		<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
+		<video src="rtmp://push.wtvxin.com/live/test" controls></video>
 	</view>
 </template>
 

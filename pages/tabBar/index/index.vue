@@ -1,5 +1,6 @@
 <template>
 	<view class="home index" style="height: 100%;">
+		<view style="width: 100%;background:#ff3333;" :style="{'height':barHeight+'px'}"></view>
 		<!--顶部搜索导航-->
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
@@ -24,7 +25,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="index_Content uni-tab-bar">
+		<view class="index_Content uni-tab-bar" :style="{'height':headheight+'px'}">
 			<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab">
 				<swiper-item>
 					<scroll-view class="uni-index-wrap" scroll-y @scrolltolower="loadMore">
@@ -221,14 +222,25 @@
 				isLoad: false,
 				datalist:[],//顶部分类产品
 				newscount:0,
+				barHeight:0,
+				headheight:0,
 			}
 		},
 		onLoad() {
+			// #ifdef APP-PLUS
+			var height = plus.navigator.getStatusbarHeight();
+			this.barHeight = height;
+			// #endif
+			// #ifdef H5
+			this.barHeight = 0;
+			// #endif
 			this.banner();
 			this.typelist();
 			this.getBrandList() //品牌馆
 			this.Recprolist();//精选推荐
 			this.hand();//获取精选等分类列表
+			this.headheight=uni.getSystemInfoSync().windowHeight-this.barHeight-uni.upx2px(180);
+			console.log(this.headheight)
 		},
 		onShow(){
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){

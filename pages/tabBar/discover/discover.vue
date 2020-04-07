@@ -1,6 +1,6 @@
 <template>
 	<view class="content" style="height: 100%;">
-		<view class="head">
+		<view class="head" :style="{'padding-top':barHeight+'px','height':barHeight+swipertop+'px'}">
 			<!-- #ifdef H5||APP-PLUS -->
 			<view class="carthead">
 				<text >大单易拼推荐</text>
@@ -34,7 +34,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="main">
+		<view class="main" :style="{'padding-top':barHeight+swipertop+'px'}">
 			<view class="tui_bg">
 				<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
 					<swiper-item v-for="(banner,key) in bannerlist" :key="key" >
@@ -135,6 +135,7 @@
 	export default {
 		data() {
 			return {
+				swipertop:0,
 				navlist:[{id:1,title:'为您推荐'},{id:2,title:'精选推荐'}],
 				userId: "",
 				token: "",
@@ -156,6 +157,14 @@
 		},
 		components: {noData,uniLoadMore},
 		onLoad() {
+			this.swipertop=uni.upx2px(230)
+			// #ifdef APP-PLUS
+			var height = plus.navigator.getStatusbarHeight();
+			this.barHeight = height;
+			// #endif
+			// #ifdef H5
+			this.barHeight = 0;
+			// #endif
 		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
