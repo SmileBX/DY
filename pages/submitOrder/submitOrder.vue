@@ -59,18 +59,18 @@
 							<view class="orderright">￥{{item.TotalPrice}}</view>
 						</view>
 						<view class="orderinfo" v-if="item.UseCouponList.length" @click="openshopCoupon(item.UseCouponList,item.CouponId,index)">
-							<view class="orderleft">优惠券</view>
+							<view class="orderleft">店铺优惠</view>
 							<view class="orderright">
 								<block v-for="(e,i) in item.UseCouponList" :key="i">
-									<view class="infotxt">{{e.Id==item.CouponId?e.Title:'不使用'}}</view>
+									<view class="infotxt">{{e.Id==item.CouponId?'￥'+item.yhPrice:'不使用'}}</view>
 								</block>
 								<view class="uni-icon uni-icon-arrowright"></view>
 							</view>
 						</view>
-						<view class="orderinfo" v-if="item.yhPrice>0">
+						<!-- <view class="orderinfo" v-if="item.yhPrice>0">
 							<view class="orderleft">店铺优惠</view>
 							<view class="orderright">￥{{item.yhPrice}}</view>
-						</view>
+						</view> -->
 						<view class="orderinfo" v-if="item.zkPrice>0">
 							<view class="orderleft">折扣金额</view>
 							<view class="orderright">￥{{item.zkPrice}}</view>
@@ -127,21 +127,29 @@
 						<view class="orderright">￥{{info.TotalPrice}}</view>
 					</view>
 					<view class="orderinfo" v-if="hasCoupon" @click="openshopCoupon(info.UseCouponList,info.ShopCouponId,0)">
-						<view class="orderleft">优惠券</view>
+						<view class="orderleft">店铺优惠</view>
 						<view class="orderright">
 							<block v-for="(e,i) in info.UseCouponList" :key="i">
-								<view class="infotxt">{{e.Id==info.ShopCouponId?e.Title:'不使用'}}</view>
+								<view class="infotxt">{{e.Id==info.ShopCouponId?'￥'+info.yhPrice:'不使用'}}</view>
 							</block>
 							<view class="uni-icon uni-icon-arrowright"></view>
 						</view>
 					</view>
-					<view class="orderinfo" v-if="info.yhPrice>0">
+					<!-- <view class="orderinfo" v-if="info.yhPrice>0">
 						<view class="orderleft">店铺优惠</view>
 						<view class="orderright">￥{{info.yhPrice}}</view>
-					</view>
+					</view> -->
 					<view class="orderinfo" v-if="info.zkPrice>0">
 						<view class="orderleft">折扣金额</view>
 						<view class="orderright">￥{{info.zkPrice}}</view>
+					</view>
+					<!-- 使用平台券 (立即购买)-->
+					<view class="orderinfo" v-if="orderSType==0&&hasCouponpt" @click="openCoupon(info.CouponsList,info.CouponId)">
+						<view class="orderleft">平台优惠</view>
+						<view class="orderright">
+							<view class="infotxt">{{info.CouponId>0?'￥'+info.PlatDisPrice:'不使用'}}</view>
+							<view class="uni-icon uni-icon-arrowright"></view>
+						</view>
 					</view>
 					<view class="orderinfo" style="border: none;">
 						<view class="orderleft">订单备注</view>
@@ -212,7 +220,7 @@
 				</view>				
 			</view>
 			<!-- 使用平台券 (购物车)-->
-			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==1&&info.yhAmount>0">
+			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==1&&hasCouponpt">
 				<view class="orderinfo" @click="openCoupon(info.CouponsList,info.CouponId)">
 					<view class="orderleft">平台优惠</view>
 					<view class="orderright">
@@ -221,16 +229,7 @@
 					</view>
 				</view>
 			</view>
-			<!-- 使用平台券 (立即购买)-->
-			<view class="orderbox uni-bg-white b_radius uni-mb10" v-if="orderSType==0&&info.PlatDisPrice>0">
-				<view class="orderinfo" @click="openCoupon(info.CouponsList,info.CouponId)">
-					<view class="orderleft">平台优惠</view>
-					<view class="orderright">
-						<view class="infotxt">{{info.CouponId>0?'￥'+info.PlatDisPrice:'不使用'}}</view>
-						<view class="uni-icon uni-icon-arrowright"></view>
-					</view>
-				</view>
-			</view>
+			
 		</view>
 		<view style="width: 100%;height: 160upx;"></view>
 		<view class="footer flex flex-between">
@@ -292,6 +291,7 @@
 				isAddress:false,
 				addressId:0,//地址id
 				couponId:0,//平台优惠券id
+				hasCouponpt:false,
 				isPayWallet:0,//是否使用余额支付
 				isPayScore:0,//是否使用积分抵扣
 				shopIndex:0,
@@ -434,6 +434,11 @@
 			  })
 			  if(result.code==0){
 				this.info=result.data;
+				if(result.data.CouponsList.length){
+					this.hasCouponpt=true;
+				}else{
+					this.hasCouponpt=false;
+				}
 				let countItem=0;
 				this.info.CartData.forEach(function(item){
 					countItem+=item.Total
@@ -496,6 +501,11 @@
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+				if(result.data.CouponsList.length){
+					this.hasCouponpt=true;
+				}else{
+					this.hasCouponpt=false;
+				}
 				if(result.data.UseCouponList.length){
 					this.hasCoupon=true;
 				}else{
