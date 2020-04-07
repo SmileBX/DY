@@ -355,6 +355,10 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/livepush/livepush",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[

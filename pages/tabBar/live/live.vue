@@ -1,6 +1,6 @@
 <template>
 	<view class="content myCollectPage">
-		<image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix"></image>
+		<image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image>
 	</view>
 </template>
 
@@ -20,7 +20,11 @@
 			
 		},
 		methods: {
-			
+			goUrl(url){
+				uni.navigateTo({
+					url:url
+				})
+			}
 		},
 		onPullDownRefresh() { //下拉刷新
 		

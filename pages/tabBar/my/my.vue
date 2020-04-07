@@ -239,6 +239,7 @@
 </script>
 
 <style scoped>
+	@import '../../../common/dd_style.css';
 	.content{height: 100%;overflow-y: auto;}
 	.Sevice .dd-list{padding: 26upx 0 0;}
 	.Sevice .dd-list .item{ padding: 0; margin-bottom: 20upx;}
