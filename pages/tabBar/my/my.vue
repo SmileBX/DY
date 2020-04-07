@@ -101,6 +101,10 @@
 			</view>
 			<view class="section__bd Sevice">
 				<view class="dd-list col__list li_25 center clear">
+					<view class="item" @click="golink('')">
+						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_pt.png" mode=""></image>
+						<view class="txt">拼团订单</view>
+					</view>
 					<view class="item" @click="golink('/pages/tabBar/my/wallet')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_qb.png" mode=""></image>
 						<view class="txt">我的钱包</view>
@@ -112,10 +116,6 @@
 					<view class="item" @click="golink('/pages/other/myguest/myguest')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_team.png" mode=""></image>
 						<view class="txt">我的团队</view>
-					</view>
-					<view class="item" @click="golink('/pages/tabBar/my/browsing')">
-						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_zj.png" mode=""></image>
-						<view class="txt">浏览记录</view>
 					</view>
 					<view class="item" @click="golink('/pages/member/myAppraise/myAppraise')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_pj.png" mode=""></image>
@@ -133,13 +133,17 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_addr.png" mode=""></image>
 						<view class="txt">地址管理</view>
 					</view>
-					<view class="item">
-						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
-						<view class="txt">官方客服</view>
+					<view class="item" @click="golink('/pages/tabBar/my/browsing')">
+						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_zj.png" mode=""></image>
+						<view class="txt">浏览记录</view>
 					</view>
 					<view class="item" @click="golink('/pages/member/question/question')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_fk.png" mode=""></image>
 						<view class="txt">常见问题</view>
+					</view>
+					<view class="item">
+						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
+						<view class="txt">官方客服</view>
 					</view>
 					<view class="item" @click="golink('/pages/other/set/set')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_set.png" mode=""></image>

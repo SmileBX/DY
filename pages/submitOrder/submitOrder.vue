@@ -582,7 +582,7 @@
 				  success(){
 					setTimeout(res=>{
 						uni.redirectTo({
-							url: '/pages/pay/pay?orderNo='+result.data+'&source=1'
+							url: '/pages/pay/pay?orderNo='+result.data.OrderNo+'&source=1'
 						})
 					},1500)
 				  }
