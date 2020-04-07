@@ -83,7 +83,7 @@
 			</view> -->
 			<view class="uni-mt10">
 				<view class="proList flex flexWrap justifyContentBetween">
-					<view class="item" v-for="(item,index) in datalist" :key="index">
+					<view class="item" v-for="(item,index) in datalist" :key="index" @click="goDetail(item.Id)">
 						<image :src="item.PicNo" class="item_img"></image>
 						<view class="item_info flex flexColumn flexAlignCenter">
 							<view class="item_title">{{item.Name}}</view>
@@ -120,7 +120,6 @@
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import wpicker from "@/components/w-picker/w-picker.vue";
-	import "@/common/product.scss";
 	export default {
 		components: {
 			noData,
@@ -157,8 +156,17 @@
 				areaList,
 			}
 		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+			// console.log(e.BrandId)
+			this.BrandId = e.BrandId
+			// #endif
+			
+		},
 		onShow(){
+			// #ifndef APP-PLUS
 			this.BrandId = this.$root.$mp.query.BrandId
+			// #endif
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
@@ -170,6 +178,11 @@
 			this.getcommonProList()
 		},
 		methods: {
+			goDetail(id){
+				uni.navigateTo({
+					url:'/pages/homePage/details?id='+id
+				})
+			},
 			async getBrandList(){
 				const res = await post('Goods/BrandList',{})
 				if(res.code == 0){
@@ -307,6 +320,7 @@
 </script>
 
 <style scoped lang="scss">
+	@import "@/common/product.scss";
 	@import './style';
 	/* 区域 */
 	.areabox{

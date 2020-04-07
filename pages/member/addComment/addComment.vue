@@ -97,7 +97,7 @@
 		},
 		watch: {
 			imgList(e) {
-				console.log(e)
+				console.log(e,";;;;;;;;;;;;")
 			}
 		},
 		methods: {
@@ -137,14 +137,14 @@
 			},
 			changeImg() {
 				let _this = this
+				let count = 4 - this.imgList.length
 				uni.chooseImage({
-					count: 4 - this.imgList.length,
+					count: count,
 					sizeType: ['original', 'compressed'],
 					sourceType: ['album', 'camera'],
 					success(res) {
-						console.log(res.tempFilePaths)
 						res.tempFilePaths.map(item => {
-							_this.imgList = _this.imgList.concat(res.tempFilePaths);
+							_this.imgList.push(item);
 						})
 					}
 				})

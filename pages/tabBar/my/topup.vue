@@ -54,11 +54,17 @@
 				],
 				payType:0, //0微信支付
 				money:"",//充值金额
+				WxOpenid:'',//微信支付
+				WxCode:'',
 			}
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifdef  MP-WEIXIN
+			this.WxOpenid = uni.getStorageSync("openId");
+			this.WxCode = uni.getStorageSync('code')
+			// #endif
 		},
 		methods:{
 			// 判断浏览器环境
@@ -73,6 +79,7 @@
 			tabBtn(index){
 				this.payType=index;
 			},
+
 			Submit(){
 				if(this.money>0){
 					// #ifdef  H5
@@ -82,6 +89,7 @@
 						//this.H5AddRecharge();
 					}
 					// #endif
+					this.ConfirmWeiXinSmallPay()
 					
 				}else{
 					uni.showToast({
@@ -120,7 +128,7 @@
 					})
 				  }
 			},
-			
+
 		}
 	
 	}

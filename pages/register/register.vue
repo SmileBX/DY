@@ -142,8 +142,7 @@
 				let method = ''
 				if(this.type == 1){
 					objUrl = 'Login/GetMiniAppBindTelCode?Mobile='
-					method='get'
-					
+					method = 'get'
 				}else{
 					objUrl = 'Login/GetRegSMSCode?Mobile='
 					method='POST'
@@ -173,6 +172,7 @@
 					 			this.codeMsg = this.count + "s后重新获取";
 					 		} else {
 					 			clearInterval(this.timer);
+								this.has_click = false;
 					 			this.timer = null;
 					 			this.codeMsg = "获取验证码";
 					 		}

@@ -13,9 +13,9 @@
 					<uParse :content="item.Contents" />
 				</view>
 			</view>
-			<view class="uni-tab-bar-loading">
+			<!-- <view class="uni-tab-bar-loading">
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
-			</view>
+			</view> -->
 		</view>
 		<noData :isShow="noDataIsShow"></noData>
 	</view>
@@ -89,6 +89,7 @@
 							this.$set(item,"isShow",false)
 						})
 						this.hasData = true;
+						this.noDataIsShow = false
 					}else{
 						this.noDataIsShow = true;
 					}
@@ -109,7 +110,6 @@
 							result.data
 						);
 					}
-					console.log(this.datalist,"MMMMMMMMMMMMMMMMMMMMMMMMMMM")
 					if (this.allPage <= this.page) {
 						this.isLoad = false;
 						this.loadingType = 2;
