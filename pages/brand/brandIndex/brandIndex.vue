@@ -83,7 +83,7 @@
 			</view> -->
 			<view class="uni-mt10">
 				<view class="proList flex flexWrap justifyContentBetween">
-					<view class="item" v-for="(item,index) in datalist" :key="index">
+					<view class="item" v-for="(item,index) in datalist" :key="index" @click="goDetail(item.Id)">
 						<image src="../../../static/of/4.png" class="item_img"></image>
 						<view class="item_info flex flexColumn flexAlignCenter">
 							<view class="item_title">{{item.Name}}</view>
@@ -173,6 +173,11 @@
 			this.getcommonProList()
 		},
 		methods: {
+			goDetail(id){
+				uni.navigateTo({
+					url:'/pages/homePage/details?id='+id
+				})
+			},
 			async getPsoList(){
 				const res = await post('Goods/GetProductClass',{
 					TypeId:this.typeId,

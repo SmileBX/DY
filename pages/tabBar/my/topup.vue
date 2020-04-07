@@ -25,7 +25,7 @@
 							</view>
 						</block>
 			</view>
-			<view class="present">
+			<view class="present" @click="Submit">
 				<view class="recharge">确认充值</view>
 			</view>
 		</view>
@@ -52,15 +52,109 @@
 				}],
 				payType:0, //0微信支付
 				money:"",//充值金额
+				WxOpenid:'',//微信支付
+				WxCode:'',
 			}
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifdef  MP-WEIXIN
+			this.WxOpenid = uni.getStorageSync("openId");
+			this.WxCode = uni.getStorageSync('code')
+			// #endif
 		},
 		methods:{
 			tabBtn(index){
 				this.payType=index;
+			},
+			// 判断浏览器环境
+			isWeixin() {
+				var ua = navigator.userAgent.toLowerCase();
+				if (ua.match(/MicroMessenger/i)=="micromessenger") {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			//获取域名
+			GetUrlRelativePath() {
+				var urlStr = '';
+				var url = document.location.toString();
+				var arrUrl = url.split("//");
+				var start = arrUrl[1].split("/");
+				urlStr = arrUrl[0] + '//' + start[0];
+				return urlStr;
+			},
+			//非微信环境 使用微信支付H5
+			async H5AddRecharge(){
+				alert('暂无接口')
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/tabBar/my/topup';
+				let result= await post("Order/ConfirmWeiXinWapPay",{
+					UserId: this.userId,
+					Token: this.token,
+					RechargeAmount:this.money,
+					NewUrl: NewUrl
+				});
+				if (result.code == 201) {
+					window.location.href=result.data;
+				}else if(result.code == 0){
+					window.location.href = result.data.mweb_url;
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
+			Submit(){
+				// #ifdef  H5
+				if(this.isWeixin()){
+					this.AddRecharge();
+				}else{
+					this.H5AddRecharge();
+				}
+				// #endif
+				// #ifdef  MP-WEIXIN
+				// this.getcode();
+				this.ConfirmWeiXinSmallPay()
+				// #endif
+			},
+			async ConfirmWeiXinSmallPay(){
+				const res = await post('Order/WeiXinSmallRechAmount',{
+					UserId:this.userId,
+					Token:this.token,
+					RechargeAmount:this.money,
+					WxOpenid:this.WxOpenid,
+					WxCode:this.WxCode
+				})
+				if(res.code == 0){
+					let payData = JSON.parse(result.data.JsParam)
+					wx.requestPayment({
+						timeStamp: payData.timeStamp,
+						nonceStr: payData.nonceStr,
+						package: payData.package,
+						signType: payData.signType,
+						paySign: payData.paySign,
+						success(res) {
+							uni.showToast({
+								title: "支付成功",
+								duration: 1500
+							});
+							setTimeout(function(){
+								uni.switchTab({
+									url: "/pages/tabBar/my/my"
+								})
+							},1400)
+						},
+						fail(res) {
+							
+						}
+					})
+					
+				}
+				console.log('确认充值！')
 			},
 		}
 	

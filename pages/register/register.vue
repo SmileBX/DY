@@ -142,11 +142,10 @@
 				let method = ''
 				if(this.type == 1){
 					objUrl = 'Login/GetMiniAppBindTelCode?Mobile='
-					method:'get'
-					
+					method = 'get'
 				}else{
 					objUrl = 'Login/GetRegSMSCode?Mobile='
-					method:'POST'
+					method = 'post'
 				}
 				uni.request({
 				    url:host+ objUrl+this.tel, //仅为示例，并非真实的接口地址
@@ -172,6 +171,7 @@
 					 			this.codeMsg = this.count + "s后重新获取";
 					 		} else {
 					 			clearInterval(this.timer);
+								this.has_click = false;
 					 			this.timer = null;
 					 			this.codeMsg = "获取验证码";
 					 		}

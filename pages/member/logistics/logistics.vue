@@ -1,16 +1,20 @@
 <template>
 	<view class="content pw3">
 		<view class="postmas">
-			<view class="bg_fff flex flexAlignCenter info">
+			<!-- <view class="bg_fff flex flexAlignCenter info">
 				<image src="../../../static/of/yd.png"></image>
 				<view class="flex1">
-					<view class="uni-bold">韵达快递</view>
+					<view class="uni-bold">{{logistics.companyName}}</view>
 					<view class="font18">官方电话 95546 ></view>
 				</view>
-			</view>
+			</view> -->
 			<view class="flex flexAlignCenter posnum">
-				<span class="uni-bold font18 ">韵达快递 4300658514683 </span>
-				<span class="copy font18">复制</span>
+				<!-- #ifdef H5 -->
+				<input type="text" class="font20" @focus="blur()" :disabled="disabled" 
+				 v-model="logistics.nu" style="opacity: 0;position: fixed;top: -10000px;">
+				<!-- #endif -->
+				<span class="uni-bold font18 ">{{logistics.companyName}} {{logistics.nu}} </span>
+				<span class="copy font18" @click="copybtn">复制</span>
 			</view>
 		</view>
 		<view class="logistics">
@@ -75,6 +79,7 @@
 				});
 				if (result.code == 0) {
 					this.logistics = JSON.parse(result.data);
+					console.log(this.logistics,"/////////")
 				}
 			},
 			//订单信息
@@ -89,7 +94,7 @@
 					this.orderdetails = result.data.orderDetails;
 				}
 			},
-			copybtn(logNumber){
+			copybtn(){
 				if(this.logistics.nu){
 					// #ifdef  H5
 					let url = document.getElementsByTagName("input")[0];
@@ -102,13 +107,13 @@
 					// #endif
 					// #ifdef  MP-WEIXIN
 					uni.setClipboardData({
-							data: logNumber,
-							success: function () {
-								// uni.showToast({
-								// 	icon:"none",
-								// 	title:"复制成功"
-								// })
-							}
+						data: this.logistics.nu,
+						success: function () {
+							uni.showToast({
+								icon:"none",
+								title:"复制成功"
+							})
+						}
 					});
 					// #endif
 				}else{

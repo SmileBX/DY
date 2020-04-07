@@ -21,7 +21,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="text_right mt2">实付：¥<span class="font32 uni-bold">{{item.UnitPrice}}</span></view>
+				<view class="text_right mt2">实付：¥<span class="font32 uni-bold">{{item.RefundMoney}}</span></view>
 				<view class="btn flex justifyContentEnd">
 					<view class="btn_r"  @click.stop="goUrl('/pages/member/orderTuidetail/orderTuidetail?orderNo='+item.OrderNo+'&RefundId='+item.RefundId)">售后详情</view>
 					<view class="btn_c"  @click.stop="cancel(item)">取消售后</view>

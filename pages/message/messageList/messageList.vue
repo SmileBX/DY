@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view :class="['uni-mt10',Msgtype==1?'uni-list':'Messagelist']" v-if="hasData">
-			<block v-for="(item,index) in datalist" :key="index">
+			<block v-for="(item,index) in newslist" :key="index">
 				<view  v-if="Msgtype==1" class="uni-list-cell">
 					<view class="uni-media-list">
 						<view class="uni-media-list-logo">
@@ -79,7 +79,7 @@
 				pageSize: 10,
 				allPage: 0,
 				count: 0,
-				
+				newslist:[],
 				datalist:[{
 					title:'测试消息',
 					PubTime:'2019-07-02 18:07:56',
@@ -91,7 +91,7 @@
 				}]
 				
 			}
-		},
+		}, 
 		onLoad: function(e) {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -102,9 +102,9 @@
 		onShow(){
 			if (toLogin()) {
 				this.NoticeList();
-				uni.setNavigationBarTitle({
-					title: this.keyname
-				})
+				// uni.setNavigationBarTitle({
+				// 	title: this.keyname
+				// })
 			}
 		},
 		methods: {

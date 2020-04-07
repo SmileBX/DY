@@ -460,7 +460,7 @@
 					  let arr = []
 					  for(var i=0;i<item.PicData.length;i++){
 						arr.push(item.PicData[i].PicUrl)
-						console.log(arr)
+						// console.log(arr)
 					  }
 					  _this.$set(item, "imgArr",arr);
 					})
@@ -488,6 +488,13 @@
 		}
 	}
 </script>
-<style scoped>
+<style scoped lang="scss">
 	page{ background-color: #fff;}
+	.shop_pic{
+		width:160upx;height:160upx;
+		margin-right:14upx;
+		&:nth-child(4n){
+			margin-right:0
+		}
+	}
 </style>

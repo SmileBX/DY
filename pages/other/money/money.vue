@@ -9,9 +9,9 @@
            <img src="http://jyy.wtvxin.com/static/images/icons/sj.png" alt="" style="margin:0">
         </div>
         <p>
-          <!-- <span v-if="activeIndex == 0">消费</span>
-          <span v-else-if="activeIndex == 1">充值</span> -->
-          <span>提现</span>
+          <span v-if="activeIndex == 0">余额</span>
+          <span v-else-if="activeIndex == 1">充值</span>
+          <span v-else>提现</span>
           ￥{{RechargeNumber}}</p>
       </div>
       <div v-if="hasData">
