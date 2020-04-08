@@ -11,13 +11,14 @@
 			<text class="left_item">验证码</text>
 			<input type="text" placeholder="请输入验证码" class="flex1 font26" v-model="VerifyCode">
 		</view>
-		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
+		<view class="item bg_fff flex flexAlignCenter justifyContentBetween fa_pos">
 			<text class="left_item">登录密码</text>
-			<input type="text" placeholder="请输入登录密码" class="flex1 font26" v-model="SecondPassWord">
+			<input type="password" placeholder="请输入登录密码" class="flex1 font26"  v-model="SecondPassWord">
+			
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
 			<text class="left_item">确认密码</text>
-			<input type="text" placeholder="请输入输入密码" class="flex1 font26" v-model="Password">
+			<input type="password" placeholder="请输入输入密码" class="flex1 font26" v-model="Password">
 		</view>
 		<view class="btn_fix" @click="btnSubmit">确定</view>
 	</view>
@@ -177,5 +178,8 @@
 		height:88upx;line-height: 88upx;
 		width:690upx;margin:100upx auto;
 		color:#ffffff;border-radius:15upx;
+	}
+	.fa_pos{
+		position: relative;
 	}
 </style>

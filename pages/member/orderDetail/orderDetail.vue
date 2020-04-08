@@ -86,7 +86,7 @@
           <p class="btn btn_gray" v-if="info.StatusName=='已发货'||info.StatusName=='已收货'" @click="goUrl('/pages/member/logistics/logistics?orderNo='+info.OrderNumber)">查看物流</p>
           <p class="btn btn_gray" v-if="info.IsCancel==1" @click="chooseOrders(info.OrderNumber,1)">取消订单</p>
           <p class="btn btn_gray" v-if="info.IsDel==1" @click="chooseOrders(info.OrderNumber,2)">删除订单</p>
-          <p class="btn btn_red" v-if="info.Ispay==1" @click="goUrl('/pages/pay/pay?orderNo='+item.OrderNumber)">立即支付</p>
+          <p class="btn btn_red" v-if="info.Ispay==1" @click="goUrl('/pages/pay/pay?orderNo='+info.OrderNumber)">立即支付</p>
           <p class="btn btn_red" v-if="info.IsConfirmReceipt==1" @click="chooseOrders(info.OrderNumber,3)">确认收货</p>
       </div>
   </div>
