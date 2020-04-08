@@ -29,19 +29,19 @@
 				<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" @scrolltolower="loadMore" :style="'height:'+height+'px'"
 				 scroll-with-animation>
 					<view class="rightbanner" v-if="categoryList.length>0&&categoryList[bannerindex].Pic">
-						<image class="img" :src="categoryList[bannerindex].Pic" mode="aspectFill"></image>
+						<image class="img" :src="categoryList[bannerindex].Pic" mode="heightFix"></image>
 					</view>
 					<view class="nav-rightList" v-if="hasData">
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
 						 @click="gotoProductList(1,item.Id)">
-							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="aspectFill" />
+							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="aspectFit" />
 							<view class="txt">{{item.ClassName}}</view>
 						</view>
 					</view>
 					<block v-if="hasProData">
 						<view class="level__product-list uni-mt10" style="padding-left: 20upx;">
 							<view class="item flex" v-for="(item,index) in prolist" :key="index" @click="goDetail(item.Id)">
-								<image :src="item.PicNo" class="item_img"></image>
+								<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
 								<view class="item_info">
 									<view class="item_title twoline">{{item.Name}}</view>
 									<view class="flex flex-between">

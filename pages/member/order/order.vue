@@ -21,7 +21,7 @@
 					<view class="color_red font18">{{item.StatusName}}</view>
 				</view>
 				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind">
-					<image :src="ite.PicNo" class="img mr2"></image>
+					<image :src="ite.PicNo" mode="aspectFit" class="img mr2"></image>
 					<view class="flex1 order_info">
 						<view>{{ite.ProductName}}</view> 
 						<view class="color_gray font18">{{ite.SpecText}}</view> 
@@ -51,7 +51,7 @@
 			<view class="main">
 			  <view class="tit">请选择要操作的商品</view>
 			  <view class="list ali-c jus-b" v-for="(item, index) in needChangeGoods" @click.stop="changeGoods(item.Id)" :key="index">
-				<image :src="item.PicNo" alt=""></image>
+				<image :src="item.PicNo" mode="aspectFit" alt=""></image>
 				<view class="flex1 uni-ellipsis">{{item.ProductName}}ert士大夫电风扇广泛受到广泛受到</view>
 			  </view>
 			</view>
@@ -85,10 +85,18 @@
 				changeNumId:'',//评价多商品订单时选中的订单no
 			}
 		},
-		onShow() {
+		onLoad(e) {
+			console.log(e.tabIndex)
+			// #ifdef APP-PLUS
+			this.tabIndex =e.tabIndex
+			// #endif
+		},
+		onShow() {	
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.tabIndex = this.$mp.query.tabIndex
+			// #endif
 			this.list = []
 			this.page = 1
 			this.noDataIsShow = false;

@@ -57,7 +57,6 @@
 	import {host,post,get} from '@/common/util.js';
 	import mpvueCityPicker from '@/components/mpvue-citypicker/mpvueCityPicker.vue'
 	import cityData from '@/common/city.data.js';
-	import "@/common/dd_style.css";
 	export default {
 		components: {
 			mpvueCityPicker
@@ -90,10 +89,18 @@
 		  hasData:false,
 	    }
 	  },
+	  onLoad(e) {
+	  	// #ifdef APP-PLUS
+	  	console.log(e)
+	  	this.id=e.id
+	  	// #endif
+	  },
 	  onShow(){
 	    this.userId = uni.getStorageSync("userId");
 	    this.token = uni.getStorageSync("token");
+	    // #ifndef APP-PLUS
 	    this.id = this.$mp.query.id
+	    // #endif
 	    console.log(this.id,"idiiiii")
 	    // this.initData()
 		this.getprovinces();
@@ -264,6 +271,7 @@
 		      icon: "none",
 		      duration: 1000
 		    });
+			console.log(132131321313213)
 			setTimeout(function() {
 				uni.navigateBack({})
 			},1000)
@@ -274,6 +282,7 @@
 </script>
 
 <style lang="scss">
+	@import "@/common/dd_style.css";
 .content{
 	height: 100%;
 	.bg_89674c{

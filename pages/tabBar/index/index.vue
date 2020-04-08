@@ -48,7 +48,7 @@
 									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
 										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
 											<view>
-												<image :src="tab.Pic" class="tab_img"></image> 
+												<image :src="tab.Pic" class="tab_img" mode="aspectFill"></image> 
 											</view>
 											<view class="tab_name center"> {{tab.Name}} </view>
 										</view>
@@ -62,7 +62,7 @@
 							<view class="pin_list flex">
 								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="item_logo">
-										<image :src="item.Logo" mode="widthFix"></image>
+										<image :src="item.Logo" mode="aspectFit"></image>
 									</view>
 									<view class="flex justifyContentBetween item_info">
 										<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
@@ -78,7 +78,7 @@
 						</view>
 						<!--特惠-->
 						<view class="hui mt2">
-							<image src="http://ddyp.wtvxin.com/static/of/f2.png" class="hui_bg"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/f2.png" mode="aspectFill" class="hui_bg"></image>
 							<!-- <view class="flex hui_title">
 								<view class="mr2">全场4折封顶</view>
 								<view class="flex tile_time">
@@ -92,15 +92,15 @@
 							</view> -->
 							<view class="list flex justifyContentBetween">
 								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<block v-if="index==0"><image src="http://ddyp.wtvxin.com/static/of/1.png"></image></block>
-									<block v-if="index==1"><image src="http://ddyp.wtvxin.com/static/of/5.png"></image></block>
-									<block v-if="index==2"><image src="http://ddyp.wtvxin.com/static/of/6.png"></image></block>
+									<block v-if="index==0"><image src="http://ddyp.wtvxin.com/static/of/1.png" mode="aspectFill" ></image></block>
+									<block v-if="index==1"><image src="http://ddyp.wtvxin.com/static/of/5.png" mode="aspectFill" ></image></block>
+									<block v-if="index==2"><image src="http://ddyp.wtvxin.com/static/of/6.png" mode="aspectFill" ></image></block>
 								</view>
 							</view>
 						</view>
 						<!--推荐推荐-->
 						<view class="jian mt2" v-if="hasrec">
-							<image src="http://ddyp.wtvxin.com/static/of/f3.png" class="jian_bg"></image>
+							<image src="http://ddyp.wtvxin.com/static/of/f3.png" mode="aspectFill" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10">
@@ -108,7 +108,7 @@
 										<view class="scroll-view-item_H" v-for="(item,index) in recProductlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 											<view class="itembox">
 												<view class="image-view">
-													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
+													<image class="img" :src="item.PicNo" mode="aspectFit"></image>
 												</view>
 												<view class="txtbox">
 													<view class="txt uni-ellipsis">{{item.Name}}</view>
@@ -142,7 +142,7 @@
 							</view>
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
-									<image :src="item.PicNo" class="item_img"></image>
+									<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
 									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
@@ -164,7 +164,7 @@
 						<view class="menu">
 							<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
 								<view class="item" v-for="(item,index) in datalist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
-									<image :src="item.PicNo" class="item_img"></image>
+									<image :src="item.PicNo" mode="aspectFit" class="item_img"></image>
 									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
