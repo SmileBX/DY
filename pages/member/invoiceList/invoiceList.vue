@@ -196,7 +196,7 @@
 </script>
 
 <style>
-	@import "@/common/dd_style.css";
+	@import "../../../common/dd_style.css";
 	.content {
 		height: 100%;
 	}

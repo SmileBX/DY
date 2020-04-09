@@ -5,7 +5,11 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
+<<<<<<< HEAD
 					<video  @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
+=======
+					<video v-if="!mark" @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
+>>>>>>> a92e82e4e240f4d11e35f3d330f75fce873acd09
 					 :autoplay="true" controls ></video>
 					<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->

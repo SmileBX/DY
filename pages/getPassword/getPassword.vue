@@ -169,7 +169,7 @@
 </script>
 
 <style>
-	@import '@/common/login.css';
+	@import '../../common/login.css';
 .content{
 	height: 100%;
 	background: #fff;

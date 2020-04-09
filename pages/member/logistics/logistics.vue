@@ -130,7 +130,7 @@
 </script>
 
 <style lang="scss">
-	@import "@/common/dd_style.css";
+	@import "../../../common/dd_style.css";
 	.color_000000 * {
 		color: #000;
 	}

@@ -695,6 +695,8 @@
 </script>
 
 <style scoped>
+	
+	@import "../../common/dd_style.css";
 	@import "./style";
-	@import "@/common/dd_style.css";
+	@import "../../common/dd_style.css";
 </style>

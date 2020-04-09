@@ -1,7 +1,7 @@
 <template>
 	<!-- 浏览记录 -->
 	<view class="browsing">
-		<view class="nav">
+		<view class="nav" :style="{'padding-top':barHeight+'px'}">
 			<!-- #ifndef MP-WEIXIN -->
 			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">我的足迹</view>
@@ -9,11 +9,12 @@
 			<!-- #ifdef MP-WEIXIN -->
 			<view></view>
 			<view></view>
-			<!-- #endif -->
+			<!-- #endif --> 
 			<view class="redact" v-if="isShowDel" @click="ShowDel">完成</view>
 			<view class="redact" v-else @click="ShowDel">编辑</view>
-		</view>
-		<view  :style="{'height':barHeight+44+'px'}"></view>
+		</view> 
+		
+		<view :style="{'height':barHeight+44+'px'}"></view>
 		<view class="bb_pt">
 <!-- 			<view class="minbox">
 				<view class="min">今天</view>
@@ -236,15 +237,16 @@ export default {
 	background: #ffffff;
 }
 .nav {
-	height: 88rpx;
-	width: 100%;
+	height: 88upx;
+	width: 710upx;
+	padding: 0 20upx;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 30rpx;
 	position: fixed;
 	top: 0;
 	z-index: 12;
+	box-sizing: content-box;
 	background: #ffffff!important;
 }
 .back {

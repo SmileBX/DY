@@ -70,6 +70,9 @@
 			if(e.askUrl!=""){ 
 				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
 			}
+			if(e.isOk){
+				this.isRegister = e.isOk
+			}
 			// #endif
 		},
 		onShow(){
@@ -77,6 +80,9 @@
 			// #ifndef APP-PLUS
 			if(this.$root.$mp.query.askUrl){
 				this.askUrl = this.$root.$mp.query.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&');
+			}
+			if(this.$root.$mp.query.isOk){
+				this.isRegister = this.$root.$mp.query.isOk
 			}
 			// #endif
 			// #ifdef MP-WEIXIN
@@ -94,6 +100,7 @@
 				timer : null,
 				count:"",
 				has_click: false,
+				isRegister:false,
 				logintype:true,//true表示密码登录，false手机验证码登录
 				isShowMolie:true,//是否显示号登录界面
 				isShowminiApp:true//是否显示小程序登录
@@ -220,7 +227,14 @@
 					     duration: 2000,
 						 success:function(){
 							setTimeout(function() {
-								uni.navigateBack();
+								if(this.isRegister){
+									uni.switchTab({
+										url: "/pages/tabBar/my/my"
+									  });	
+								}else{
+									uni.navigateBack();
+								}
+								
 								// if(_this.askUrl){
 								//   if(_this.askUrl.indexOf("undefined")>-1){
 								// 	uni.switchTab({

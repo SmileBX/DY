@@ -35,7 +35,7 @@
 
 <script>
 	import {post,get} from '@/common/util.js';
-	import "@/common/product.scss";
+	
 	export default {
 		data() {
 			return {
@@ -81,6 +81,7 @@
 </script>
 
 <style scoped>
+	@import "../../common/product.scss";
   .payinfo{background: #ff3333; text-align: center; color: #fff; padding: 20upx 0 40upx;}
   .payinfo .p1{font-size: 44upx;}
   .payinfo .p1 .iconfont{ margin-right: 20upx;}

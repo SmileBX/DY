@@ -204,7 +204,7 @@
 						success: function() {
 							setTimeout(function() {
 								uni.navigateTo({
-									url: "/pages/login/login"
+									url: "/pages/login/login?isOk=true"
 								})
 							}, 2000);
 						}
@@ -261,7 +261,7 @@
 </script>
 
 <style>
-	@import '@/common/login.css';
+	@import '../../common/login.css';
 	.content{
 		  background:#fff/* url('http://wht.wtvxin.comhttp://ddyp.wtvxin.com/static/lz/logingif.gif') no-repeat */;
 		  background-size: 100% 100%;
