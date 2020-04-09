@@ -63,15 +63,22 @@
 
 <script>
 	import {host,post,get,valPhone,setRegular} from '@/common/util.js';
-	import '@/common/login.css';
 	export default {
-		onLoad(){
-			
+		onLoad(e){
+			// #ifdef APP-PLUS
+			console.log(e)
+			if(e.askUrl!=""){ 
+				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
+			}
+			// #endif
 		},
 		onShow(){
+			// console.log(this.$root.$mp,111) 
+			// #ifndef APP-PLUS
 			if(this.$root.$mp.query.askUrl){
 				this.askUrl = this.$root.$mp.query.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&');
 			}
+			// #endif
 			// #ifdef MP-WEIXIN
 			this.isShowMolie=false;
 			this.isShowminiApp = true;
@@ -79,8 +86,8 @@
 		},
 		data() {
 			return {
-				tel:"",
-				pwd:"",
+				tel:"13068949496",
+				pwd:"123456",
 				askUrl: "",
 				code:"",
 				codeMsg: "获取验证码",
@@ -378,6 +385,7 @@
 	}
 </script>
 <style>
+	@import '../../common/login.css';
   .content{
 	  background:#fff;
 	  background-size: 100% 100%;

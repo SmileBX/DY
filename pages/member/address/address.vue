@@ -56,10 +56,17 @@ export default {
       list:[]
     }
   },
+  onLoad(e) {
+  	// #ifdef APP-PLUS
+  	this.pagetype=e.pagetype
+  	// #endif
+  },
   onShow(){
     this.userId = uni.getStorageSync("userId");
     this.token = uni.getStorageSync("token");
+   // #ifndef APP-PLUS
     this.pagetype=this.$root.$mp.query.pagetype||'';
+   // #endif
     uni.setStorageSync("addressinfo",'');
     this.list = []
     this.page = 1

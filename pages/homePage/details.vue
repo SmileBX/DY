@@ -131,7 +131,7 @@
 		<!-- 商品评价 -->
 		<view class="comment">
 			<view class="comment_hd">
-			  <view class="tit_l">商品评价<span>({{CommentList.length}})</span></view>
+			  <view class="tit_l">商品评价<span>({{commentCount}})</span></view>
 			  <view class="tit_r flex flex-end" v-if="hasComment" @click="tolink('/pages/homePage/evaluation?id='+proId)">
 				<view class="red">查看全部</view>
 				<view class="iconfont icon-arrow_r"></view>
@@ -192,7 +192,8 @@
 			<view class="pole"></view>
 		</view>
 		<!-- 拼单流程 -->
-		<view class="flow">
+		<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image>
+		<!-- <view class="flow">
 			<view class="joint">
 				<view class="stream"></view>
 				<view class="process">拼单流程</view>
@@ -227,7 +228,8 @@
 					<view class="contract">审核通过后即可获取 大单易拼相关活动权。</view>
 				</view>
 			</view>
-		</view>
+		
+		</view> -->
 		<!-- 图片展砂 -->
 		<view class="pole"></view>
 		<view class="graphic">
@@ -350,6 +352,7 @@
 				price:'',
 				plusprice:'',
 				hasComment:false,
+				commentCount:0,//评价总数
 				CommentList:[],//评价列表
 				isLimint:0,//0非限时购产品，1限时购产品
 				timer:null,
@@ -580,6 +583,7 @@
 				let _this=this
 				if(res.data.length){
 					_this.hasComment=true;
+					this.commentCount = res.count
 					res.data.forEach(function(item) {
 					  let arr = []
 					  for(var i=0;i<item.PicData.length;i++){
@@ -609,6 +613,50 @@
 			}else{
 				this.isTop=false;
 			}
+		},
+		onUserOpStatistic: function(e) {
+			console.log("执行了嘛？")
+			if(e.op == 'share') {
+				console.log("hahhahhah转发啦！")
+				var path = e.path;
+			}
+		},
+		onShareAppMessage: function( options ){
+		　　var that = this;
+		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+		　　var shareObj = {
+		　　　　title: "转发的标题",        // 默认是小程序的名称(可以写slogan等)
+		　　　　path: '/pages/tabBar/index/index',        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　imageUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+		　　　　success: function(res){
+		　　　　　　// 转发成功之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+						console.log("1111111111111111")
+		　　　　　　}
+		　　　　},
+		　　　　fail: function(){
+				console.log("22222222222")
+		　　　　　　// 转发失败之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+		　　　　　　　　// 用户取消转发
+		　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+		　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+		　　　　　　}
+		　　　　},
+		　　　　complete: function(){
+		　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
+					console.log("33333333333333")
+		　　　　}
+		　　};
+		　　// 来自页面内的按钮的转发
+		// 　　if( options.from == 'button' ){
+		// 　　　　var eData = options.target.dataset;
+		// 　　　　console.log( eData.name );     // shareBtn
+		// 　　　　// 此处可以修改 shareObj 中的内容
+		// 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+		// 　　}
+		　　// 返回shareObj
+		　　return shareObj;
 		}
 	}
 </script>

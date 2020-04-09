@@ -33,4 +33,31 @@
 		background-color: #FF3333!important;
 		border-color: #FF3333!important;
 	}
+	.dot uni-radio .uni-radio-input{
+		height: 40rpx!important;
+		width: 40rpx!important;
+		border-radius: 50%!important;
+		border:1rpx solid #ececec!important;///替换边框 隐藏原有边框
+	}
+	.dot .uni-radio-input.uni-radio-input-checked{
+		background-color: #ffffff!important;
+		border-color: #FF3333!important;
+	}
+	.dot uni-radio .uni-radio-input.uni-radio-input-checked:before{
+		border-radius: 50%!important;
+		/* 圆角 */
+		width: 20rpx!important;
+		/* 选中后对勾大小，不要超过背景的尺寸 */
+		height: 20rpx!important;
+		/* 选中后对勾大小，不要超过背景的尺寸 */
+		text-align: center!important;
+		line-height:30rpx!important;
+		font-size: 0!important;
+		/* 对勾大小 30rpx */
+		color: #fff;
+		/* 对勾颜色 白色 */
+		background-color: #ff3333!important;
+		transform: translate(-50%, -50%) scale(1)!important;
+		-webkit-transform: translate(-50%, -50%) scale(1)!important;
+	}
 </style>

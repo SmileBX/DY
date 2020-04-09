@@ -52,7 +52,7 @@
 			<block v-for="(item,index) in datalist" :key="index" v-show="hasData">
 				<view class="listbox" @click="navigate('homePage/details',{id:item.Id})">
 					<view class="listimg">
-						<image :src="item.PicNo" mode="aspectFill"></image>
+						<image :src="item.PicNo" mode="aspectFit"></image>
 					</view>
 					<view class="listpt">
 						<view>

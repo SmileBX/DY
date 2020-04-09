@@ -39,7 +39,7 @@
 				<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
 					<swiper-item v-for="(banner,key) in bannerlist" :key="key" >
 						<view class="swiper-item" >
-							<image class="img" :src="banner.Pic" mode="aspectFill"></image>
+							<image class="img" :src="banner.Pic" mode="widthFix"></image>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -79,7 +79,7 @@
 									<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 										<view class="itembox">
 											<view class="image-view">
-												<image class="img" :src="item.PicNo" mode="aspectFill"></image>
+												<image class="img" :src="item.PicNo" mode="aspectFit"></image>
 											</view>
 											<view class="txtbox">
 												<view class="txt uni-ellipsis">{{item.Name}}</view>
@@ -104,7 +104,7 @@
 					</view>
 					<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
 						<view class="item" v-for="(item,index) in datalist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
-							<image :src="item.PicNo" class="item_img"></image>
+							<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
 							<view class="item_info">
 								<view class="item_title">{{item.Name}}</view>
 								<view class="flex flexAlignEnd justifyContentBetween item_total">

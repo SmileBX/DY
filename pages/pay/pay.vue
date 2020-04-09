@@ -252,6 +252,7 @@
 				})
 				if (result.code == 201) {
 					window.location.href=result.data;
+					console.log(result.data)
 				}else if(result.code == 0){
 					window.location.href = result.data.mweb_url;
 				}else {

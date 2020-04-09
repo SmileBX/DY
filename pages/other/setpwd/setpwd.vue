@@ -13,11 +13,11 @@
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
 			<text class="left_item">支付密码</text>
-			<input type="password" placeholder="请输入支付密码" class="flex1 font26" v-model="SecondPassWord">
+			<input type="password" placeholder="请输入支付密码" class="flex1 font26" maxlength="6" v-model="SecondPassWord">
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
 			<text class="left_item">确认密码</text>
-			<input type="password" placeholder="请输入输入密码" class="flex1 font26" v-model="Password">
+			<input type="password" placeholder="请确认支付密码" class="flex1 font26" maxlength="6" v-model="Password">
 		</view>
 		<view class="btn_fix" @click="btnSubmit">确定</view>
 	</view>
@@ -80,6 +80,7 @@
 							this.count--;
 							this.codeMsg = this.count + "s后重新获取";
 						} else {
+							this.has_click = false;
 							clearInterval(this.timer);
 							this.timer = null;
 							this.codeMsg = "获取验证码";

@@ -8,7 +8,7 @@
 				<text class="jiesu">结束直播</text>
 			</view>
 			<view class="arrow-boxs">
-				<image class="user-img" src="../../static/logo.png"></image>
+				<!-- <image class="user-img" src="../../static/logo.png"></image> -->
 				<view>
 					<text class="id">ID:1</text>
 					<text class="text-box">8 关注|热度 0</text>
@@ -31,16 +31,16 @@
 			<!-- 这是功能按钮 -->
 			<view :style="{width: width + 'px'}" class="but">
 				<view @click="openMark(0)" class="meiyanbut">
-					<image class="but-img" src="../../static/zhiboshop.png"></image>
+					<!-- <image class="but-img" src="../../static/zhiboshop.png"></image> -->
 					<text class="but-text">宝贝</text>
 				</view>
 				<view @click="openmeiyan" class="meiyanbut">
-					<image class="but-img" src="../../static/meiyan.png"></image>
+					<!-- <image class="but-img" src="../../static/meiyan.png"></image> -->
 					<text v-if="beauty == 0" class="but-text">开启美颜</text>
 					<text v-if="beauty == 9" class="but-text">关闭美颜</text>
 				</view>
 				<view @click="switchCamera" class="meiyanbut">
-					<image class="but-img" src="../../static/qiehuan.png"></image>
+					<!-- <image class="but-img" src="../../static/qiehuan.png"></image> -->
 					<text class="but-text">切换摄像头</text>
 				</view>
 			</view>
@@ -67,31 +67,31 @@
 				arr: [],
 				shopArr:[
 					{
-						img:'../../static/logo.png',
+						// img:'../../static/logo.png',
 						title:'测试商品',
 						price:'111',
 						num:'20',
 					},
 					{
-						img:'../../static/logo.png',
+						// img:'../../static/logo.png',
 						title:'测试商品',
 						price:'111',
 						num:'20',
 					},
 					{
-						img:'../../static/logo.png',
+						// img:'../../static/logo.png',
 						title:'测试商品',
 						price:'111',
 						num:'20',
 					},
 					{
-						img:'../../static/logo.png',
+						// img:'../../static/logo.png',
 						title:'测试商品',
 						price:'111',
 						num:'20',
 					},
 					{
-						img:'../../static/logo.png',
+						// img:'../../static/logo.png',
 						title:'测试商品',
 						price:'111',
 						num:'20',
