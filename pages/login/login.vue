@@ -66,8 +66,8 @@
 	export default {
 		onLoad(e){
 			// #ifdef APP-PLUS
-			console.log(e)
-			if(e.askUrl!=""){ 
+			console.log(e.askUrl)
+			if((e.askUrl!=undefined )&& (e.askUrl!="")&& (e.askUrl!=null)){   
 				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
 			}
 			if(e.isOk){
@@ -75,7 +75,7 @@
 			}
 			// #endif
 		},
-		onShow(){
+		onShow(){ 
 			// console.log(this.$root.$mp,111) 
 			// #ifndef APP-PLUS
 			if(this.$root.$mp.query.askUrl){
@@ -106,7 +106,7 @@
 				isShowminiApp:true//是否显示小程序登录
 			};
 		},
-		methods: {
+		methods: { 
 			changeWay(e){
 				if(e==1){
 					// #ifdef MP-WEIXIN

@@ -34,14 +34,14 @@
 					<view class="nav-rightList" v-if="hasData">
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
 						 @click="gotoProductList(1,item.Id)">
-							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="aspectFit" />
+							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="" /></image>
 							<view class="txt">{{item.ClassName}}</view>
 						</view>
 					</view>
 					<block v-if="hasProData">
 						<view class="level__product-list uni-mt10" style="padding-left: 20upx;">
 							<view class="item flex" v-for="(item,index) in prolist" :key="index" @click="goDetail(item.Id)">
-								<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
+								<image :src="item.PicNo" class="item_img" mode=""></image>
 								<view class="item_info">
 									<view class="item_title twoline">{{item.Name}}</view>
 									<view class="flex flex-between">
@@ -71,10 +71,7 @@
 	import uniIcons from '@/components/uni-icon.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
-	import "./style.css";
-	import '@/common/head.css';
-	 /* import '@/common/dd_style.css'; */
-	import '@/common/product.scss';
+	
 	export default {
 		onLoad() {
 			// #ifdef APP-PLUS
@@ -233,8 +230,11 @@
 		}
 	}
 </script>
-<style scoped>
-	
+<style scoped lang="scss">
+	@import "../classify/style.css";
+	@import '../../common/head.css';
+	// @import '../../common/dd_style.css';
+	@import '../../common/product.scss';
 	.uni-navbar /deep/ .uni-navbar-header-btns .uni-icon{ line-height: 44px;}
 	.nav-right{
 		background: #fff!important;
