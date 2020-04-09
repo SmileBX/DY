@@ -5,11 +5,7 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
-<<<<<<< HEAD
 					<video  @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
-=======
-					<video v-if="!mark" @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
->>>>>>> a92e82e4e240f4d11e35f3d330f75fce873acd09
 					 :autoplay="true" controls ></video>
 					<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
@@ -29,7 +25,9 @@
 				<!-- #endif -->
 			</swiper-item>
 		</swiper>
+		<!-- #ifndef APP-PLUS -->
 		<cover-view class="btn" @click.stop="tolink">开启直播</cover-view>
+		<!-- #endif -->
 		<!-- <button class="btn" @click.stop="tolink"></button> -->
 	</view>
 </template>
