@@ -158,6 +158,9 @@
 		components: {noData,uniLoadMore},
 		onLoad() {
 			this.swipertop=uni.upx2px(230)
+			// #ifdef MP-WEIXIN
+			this.swipertop=uni.upx2px(142)
+			// #endif
 			// #ifdef APP-PLUS
 			var height = plus.navigator.getStatusbarHeight();
 			this.barHeight = height;

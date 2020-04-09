@@ -1,26 +1,26 @@
 <template>
 	<view>
 		<view class="slider"></view>
-		<view class="bg_fff change_info flex flexColumn flexAlignCenter dot">
+		<view class="bg_fff change_info flex flexColumn flexAlignCenter dot" v-if="IsSalesOffice==1">
 			<view>本人或直属亲属是否有去过售楼处或电话咨询售楼处</view>
-			<radio-group class="flex justifyContentAround mt2">
+			<radio-group class="flex justifyContentAround mt2" @change=change>
 				<view class="">
-					<radio color="#ffffff"></radio>
-					<text>没有</text>
+					<radio color="#ffffff" value=1></radio>
+					<text>有</text>
 				</view>
 				<view class="">
-					<radio></radio>
+					<radio value=0 checked="true"></radio>
 					<text color="#ffffff">没有</text>
 				</view>
 			</radio-group>
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
-			<text class="left_item">{{infoName}}</text>
-			<input type="text" placeholder="请输入联系人姓名" class="flex1 font26 text_right">
+			<text class="left_item">业主姓名</text>
+			<input type="text" placeholder="请输入联系人姓名" class="flex1 font26 text_right" v-model="ContactName">
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
-			<text class="left_item">{{infoCall}}</text>
-			<input type="text" placeholder="请输入联系人手机号" class="flex1 font26 text_right">
+			<text class="left_item">业主电话</text>
+			<input type="text" placeholder="请输入联系人手机号" class="flex1 font26 text_right" v-model="Tel">
 		</view>
 		<view class="btn_fix" @click="btnSubmit">确定</view>
 	</view>
@@ -38,11 +38,13 @@
 			return {
 				userId: "",
 				token: "",
-				infoName:'业主姓名',
-				infoCall:'联系手机',
+				ContactName:'',
+				Tel:'',
+				IsSales:0,
 			}
 		},
-		onLoad(){
+		onLoad(e){
+			this.IsSalesOffice=e.IsSalesOffice;
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 		},
@@ -50,7 +52,41 @@
 			
 		},
 		methods:{
-			
+			change(e){
+				console.log(e)
+				this.IsSales=e.mp.detail.value
+			},
+			yeanheng(){console.log(this.ContactName)
+				if(this.IsSalesOffice==1&&this.IsSales==null){
+					uni.showToast({
+						title:"请选择是否去过售楼处",
+						icon:"none"
+					})
+					return false
+				}
+				if(this.ContactName==""){
+					uni.showToast({
+						title:"请输入业主姓名",
+						icon:"none"
+					})
+					return false
+				}
+				return true
+			},
+			btnSubmit(){			
+				if(this.yeanheng()&&valPhone(this.Tel)){
+					// 设置提交订单参数
+					let peopleInfo={ //业主信息
+						ContactName:this.ContactName,//业主姓名
+						Tel:this.Tel,//业主电话
+						IsSalesOffice:this.IsSales,//去过或咨询售楼处 1-有 0-没有
+					}
+					this.$store.commit("update", { peopleInfo });
+					// 跳转到上一页
+					uni.navigateBack({});
+				}
+			}
+				
 			
 		}
 	}

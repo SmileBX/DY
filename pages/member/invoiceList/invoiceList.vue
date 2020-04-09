@@ -50,7 +50,6 @@
 
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
-	import "@/common/dd_style.css";
 	export default {
 		data() {
 			return {
@@ -197,6 +196,7 @@
 </script>
 
 <style>
+	@import "../../../common/dd_style.css";
 	.content {
 		height: 100%;
 	}

@@ -617,14 +617,18 @@
 
 .dd-foot .foot-item-btns {
 	display: flex;
+	flex: 1;
 	justify-content: flex-end;
 	width: 60%;
 	overflow: hidden;
 	height: 80upx;
-	margin: 10upx 20upx 0 0;
+	margin: 10upx 20upx 0 20upx;
+	border-radius: 40upx;
+	overflow: hidden;
 }
 
 .foot-item-btns .btn {
+	flex: 1;
 	height: 100%;
 	line-height: 100upx;
 	min-width: 180upx;
@@ -638,14 +642,14 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	border-radius: 100px 0 0 100px;
+	// border-radius: 100px 0 0 100px;
 }
 
 .foot-item-btns .btn_2 {
 	background: #f63618;
 	justify-content: space-around;
 	align-items: center;
-	border-radius: 0 100px 100px 0;
+	// border-radius: 0 100px 100px 0;
 }
 .foot-item-btns .btn .num{
 	font-size: 28upx;

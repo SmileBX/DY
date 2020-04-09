@@ -14,11 +14,13 @@
 
 <style lang="scss">
 	/*每个页面公共css */
+/* #ifndef APP-NVUE */
 	@import './common/uni.css';
 	@import './common/iconfont.css';
 	@import './common/common.scss';
 	@import './common/lz.css';
 	@import './components/uParse/src/wxParse.css';
+/* #endif */
 	page{
 		background: #f5f5f5;
 		height: 100%;
@@ -37,7 +39,7 @@
 		height: 40rpx!important;
 		width: 40rpx!important;
 		border-radius: 50%!important;
-		border:1rpx solid #ececec!important;///替换边框 隐藏原有边框
+		border:1rpx solid #bbb!important;///替换边框 隐藏原有边框
 	}
 	.dot .uni-radio-input.uni-radio-input-checked{
 		background-color: #ffffff!important;

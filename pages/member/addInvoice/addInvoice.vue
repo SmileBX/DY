@@ -397,6 +397,6 @@
 	}
 </script>
 
-<style>
-@import "../../../common/dd_style.css";
+<style lang="scss">
+ @import "../../../common/dd_style.css";
 </style>

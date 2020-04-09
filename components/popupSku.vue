@@ -47,9 +47,9 @@
 			<view class="popup-ft" v-if="showbtntype==1">
 				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
-			<view class="popup-ft" v-if="showbtntype==0">
+			<view class="popup-ft" v-if="showbtntype==0||showbtntype==2">
 				<view class="bottom-btns">
-					<view class="btn addcart" @click="toAddcart">
+					<view class="btn addcart" @click="toAddcart" v-if="showbtntype==0">
 						加入购物车
 					</view>
 					<view class="btn buynow" @click="gouBuy">
@@ -95,7 +95,7 @@
 			},
 			couponid: String,
 		},
-		created: function(option) {
+		created: function(option) {console.log(this.showbtntype)
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.goodsDetail();
@@ -513,10 +513,11 @@
 		color: #fff;
 		border-radius: 40upx;
 		overflow: hidden;
+		display: flex;
 	}
 
 	.bottom-btns .btn {
-		width: 50%;
+		flex: 1;
 		line-height: 80upx;
 		float: left;
 	}

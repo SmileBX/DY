@@ -50,7 +50,6 @@
 
 <script>
 	import {post,get} from '@/common/util.js';
-	import "@/common/dd_style.css";
 	export default {
 		data() {
 			return {
@@ -131,6 +130,7 @@
 </script>
 
 <style lang="scss">
+	@import "../../../common/dd_style.css";
 	.color_000000 * {
 		color: #000;
 	}
