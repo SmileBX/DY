@@ -11,11 +11,11 @@
               </radio>
           </label> 
           <view class="ali-c flex justifyContentBetween flexAlignCenter">
-            <view class="ali-c btt flex flexAlignCenter" @tap="editSite(item.Id)">
+            <view class="ali-c btt flex flexAlignCenter" @click.stop="editSite(item.Id)">
               <image class="write" src="http://jyy.wtvxin.com/static/images/icons/write.png" alt=""></image>
               <span>编辑</span>
             </view>
-            <view class="ali-c btt flex flexAlignCenter" @tap="Delete(item.Id,index)">
+            <view class="ali-c btt flex flexAlignCenter" @click.stop="Delete(item.Id,index)">
               <img class="delete" src="http://jyy.wtvxin.com/static/images/icons/del.png" alt="">
               <span>删除</span>
             </view>

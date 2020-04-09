@@ -75,7 +75,7 @@
 				</view>
 			</view>
 			<view class="slider"></view>
-			<view class="flex justifyContentStart bb_shop">
+			<view class="flex justifyContentStart bb_shop" v-if="proInfo.ShopData">
 				<image :src="proInfo.ShopData.Logo" class="shop_bb_logo"></image>
 				<view class="uni-bold">{{proInfo.ShopData.ShopNick}}</view>
 			</view>
@@ -258,13 +258,16 @@
 					<!-- 实心 icon-collect-->
 				</view>
 				<!-- 有拼团样式 -->
-				<view class="foot-item foot-item-btns" v-if="GroupId>0">
-					<view class="btn btn_1 flex" @click="showSku(0)">
+				<view class="foot-item foot-item-btns">
+					<view class="btn btn_1 flex" @click="showSku(proInfo.IsAloneBuy==0?0:2)">
 						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
 						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
 						<view class="txt">单独购买</view>
 					</view>
-					<view class="btn btn_2 flex" @click="showSku(1)">
+					<view class="btn btn_2 flex" @click="showSku(0)" v-if="proInfo.IsAloneBuy==0">
+						<view class="txt">加入购物车</view>
+					</view>
+					<view class="btn btn_2 flex" @click="showSku(1)" v-if="GroupId>0">
 						<view>
 							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
@@ -276,16 +279,14 @@
 					</view>
 				</view>
 				<!-- 无拼团样式 -->
-				<view class="foot-item foot-item-btns" v-else>
-					<view class="btn btn_1 flex" @click="showSku(0)">
-						<view class="txt">加入购物车</view>
-					</view>
+<!-- 				<view class="foot-item foot-item-btns" v-else>
+					
 					<view class="btn btn_2 flex" @click="showSku(0)">
 						<view>
 							<view class="txt">立即购买</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 详情底部 end -->
@@ -340,7 +341,7 @@
 				showPopupinfo:false,//参数
 				attrArr:{},//产品参数
 				isServiceInfo:false,//服务
-				showbtntype:0,
+				showbtntype:0,//0:购物车+立即 1:拼团确定 2:立即
 				fromPinTuan:false,//是否是拼团sku
 				isProData:false,
 				number:1,
