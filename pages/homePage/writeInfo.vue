@@ -75,7 +75,7 @@
 			},
 			btnSubmit(){			
 				if(this.yeanheng()&&valPhone(this.Tel)){
-					// 设置提交订单参数
+					// 设置业主参数
 					let peopleInfo={ //业主信息
 						ContactName:this.ContactName,//业主姓名
 						Tel:this.Tel,//业主电话

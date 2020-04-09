@@ -283,7 +283,8 @@
 				showCoupon:false,//优惠券弹框
 				CartIds: "", //购物车提交的item的id
 				ProId:"",//产品Id(立即购买)
-				GroupId:0,
+				GroupId:0,//拼团产品id
+				GroupRecordId:0,//拼团记录id
 				Total:"",//购买总数量(立即购买)
 				SpecText:"",//产品规格文本(立即购买)
 				hasCoupon:false,//是否有店铺券（立即购买）
@@ -358,6 +359,7 @@
 			}else{
 				if(this.GroupId>0){
 					this.BuyGroup();//拼团确认订单
+					this.GetGroupRecordList()
 				}else{
 					this.BuyNowGoods();//立即购买确认订单
 				}
@@ -561,11 +563,30 @@
 				AddressId:this.addressId,
 				GroupId:this.GroupId,
 				Number:this.Total,//购买总数量
-				SpecText:this.SpecText//产品规格文本
+				SpecText:this.SpecText,//产品规格文本
 			  })
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+			  }else{
+				uni.showToast({
+				  title: result.msg,
+				  icon: "none",
+				  duration: 1000
+				});
+			  }
+			},
+			//获取拼团记录id
+			async GetGroupRecordList(){
+			  let result=await post("GroupBuy/GetGroupRecordList",{
+				UserId: this.userId,
+				Token: this.token,
+				GroupId:this.GroupId,
+			  })
+			  if(result.code==0){
+				  if(result.data.length>0){
+					  this.GroupRecordId=result.data[0].Id;
+				  }
 			  }else{
 				uni.showToast({
 				  title: result.msg,
@@ -586,7 +607,10 @@
 				CouponId:this.couponId,
 				ShopCouponId:this.popCouponIdArr[0],
 				InvoiceId:this.InvoiceIdArr[0],
-				Remark:this.remarkTxtArr[0]
+				Remark:this.remarkTxtArr[0],
+				ContactName:this.ContactName,
+				Tel:this.Tel,
+				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){
 				uni.showToast({
@@ -606,6 +630,13 @@
 				  duration: 1000
 				});
 			  }
+			  //初始化业主参数
+			  let peopleInfo={ //业主信息
+			  	ContactName:"",//业主姓名
+			  	Tel:"",//业主电话
+			  	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+			  }
+			  this.$store.commit("update", { peopleInfo });
 			},
 			//确认拼团
 			async CreateGroupOrder(){
@@ -617,7 +648,10 @@
 				SpecText:this.SpecText,
 				AddressId:this.addressId,
 				InvoiceId:this.InvoiceIdArr[0],
-				Remark:this.remarkTxtArr[0]
+				Remark:this.remarkTxtArr[0],
+				ContactName:this.ContactName,
+				Tel:this.Tel,
+				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){
 				uni.showToast({
@@ -643,7 +677,13 @@
 				if(this.addressId>0){
 					if(this.orderSType==0){
 					  if(this.GroupId>0){
-						  this.CreateGroupOrder();//确认拼团
+						  if(!this.yanzheng()){
+							  uni.navigateTo({
+								url:"/pages/homePage/writeInfo?IsSalesOffice="+this.info.IsSalesOffice
+							  })
+						  }else{
+							this.CreateGroupOrder();//确认拼团
+						  }
 					  }else{
 						  if(!this.yanzheng()){
 							  uni.navigateTo({
