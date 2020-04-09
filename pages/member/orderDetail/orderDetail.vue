@@ -100,17 +100,24 @@ export default {
     return {
       navigate,
       info:{},
+	  OrderNo:'',
     }
   },
   onShow(){
-    this.getDetail()
+	  this.OrderNo = this.$mp.query.id
+     this.getDetail()
+  },
+  onLoad(e){
+	  // #ifdef APP-PLUS
+		this.OrderNo = e.id
+	 // #endif
   },
   methods: {
     getDetail(){
       post('Order/OrderDetails',{
         UserId:uni.getStorageSync("userId"),
         Token:uni.getStorageSync("token"),
-        OrderNo:this.$mp.query.id
+        OrderNo:this.OrderNo
       }).then(res=>{
         this.info = res.data;
       })

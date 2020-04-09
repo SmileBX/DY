@@ -23,7 +23,7 @@
 			"path": "pages/tabBar/discover/discover",
 			"style": {
 				"navigationBarTitleText": "大单易拼推荐",
-				"enablePullDownRefresh" : true,
+				// "enablePullDownRefresh" : true,
 				"navigationBarBackgroundColor":"#16a6fd",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
@@ -47,7 +47,7 @@
 			"path": "pages/tabBar/cart/cart",
 			"style": {
 				"navigationBarTitleText": "购物车",
-				"enablePullDownRefresh" : true,
+				// "enablePullDownRefresh" : true,
 				"navigationBarBackgroundColor":"#FF3333",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
@@ -140,10 +140,20 @@
 			}
 		},
 		{
+			"path":"pages/homePage/writeInfo",
+			"style": {
+				"navigationBarTitleText": "填写信息",
+				"app-plus": {
+					// "titleNView": false //首页去除原生导航
+					// "scrollIndicator": "none" //不显示滚动条
+				}
+			}
+		},
+		{
 			"path":"pages/homePage/proList",
 			"style": {
 				"navigationBarTitleText": "列表",
-				"enablePullDownRefresh": true,
+				// "enablePullDownRefresh": true,
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 					// "scrollIndicator": "none" //不显示滚动条
@@ -154,7 +164,7 @@
 			"path":"pages/homePage/details",
 			"style": {
 				"navigationBarTitleText": "详情",
-				"enablePullDownRefresh" : true,
+				// "enablePullDownRefresh" : true,
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",

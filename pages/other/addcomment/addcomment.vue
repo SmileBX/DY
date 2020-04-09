@@ -62,7 +62,9 @@ export default {
       score:5,
       shopInfo:{},
       text:'',
-      imgList:[]
+      imgList:[],
+	  OrderNo:'',
+	  detailId:'',
     }
   },
   onLoad(){
@@ -70,7 +72,15 @@ export default {
   },
   onShow(){
     console.log(this.$mp.query) 
+	this.OrderNo = this.$mp.query.id
+	this.detailId = this.$mp.query.detailId
     this.getDetail()
+  },
+  onLoad(e){
+	  // #ifdef APP-PLUS
+	  this.OrderNo = e.id
+	  this.detailId = e.detailId
+	  //#endif
   },
   watch: {
     imgList(e){
@@ -83,9 +93,9 @@ export default {
         post('Order/OrderComment',{
           UserId:wx.getStorageSync("userId"),
           Token:wx.getStorageSync("token"),
-          OrderNo:this.$mp.query.id,
+          OrderNo:this.OrderNo,
           CommentList:[{
-            Id:this.$mp.query.detailId,
+            Id:this.detailId,
             Rank:this.score,
             ContentText:this.text,
             PicNo:JSON.stringify(this.imgList)
@@ -134,10 +144,10 @@ export default {
       post('Order/OrderDetails',{
         UserId:wx.getStorageSync("userId"),
         Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id,
+        OrderNo:this.OrderNo,
       }).then(res=>{
         res.data.OrderDetails.forEach(item=>{
-          if(item.Id==this.$mp.query.detailId){
+          if(item.Id==this.detailId){
             this.shopInfo = item
           }
         })

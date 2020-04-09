@@ -205,7 +205,7 @@ export default {
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		width: 100%;
+		width: 93%;
 		padding: 10upx 20upx;
 		font-size: 24upx;
 		color: #999;

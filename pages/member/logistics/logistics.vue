@@ -13,8 +13,8 @@
 				<input type="text" class="font20" @focus="blur()" :disabled="disabled" 
 				 v-model="logistics.nu" style="opacity: 0;position: fixed;top: -10000px;">
 				<!-- #endif -->
-				<span class="uni-bold font18 ">{{logistics.companyName}} {{logistics.nu}} </span>
-				<span class="copy font18" @click="copybtn">复制</span>
+				<span class="uni-bold font26 ">{{logistics.companyName}} {{logistics.nu}} </span>
+				<span class="copy font26" @click="copybtn">复制</span>
 			</view>
 		</view>
 		<view class="logistics">

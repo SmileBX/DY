@@ -97,6 +97,11 @@
 			    this.getList();
 			}
 		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+				 this.tabIndex = e.tabIndex
+			// #endif
+		},
 		methods:{
 			goUrl(url){
 			  uni.navigateTo({

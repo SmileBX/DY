@@ -75,6 +75,7 @@
 					"Token": this.token
 				});
 				if (result.code === 0) {
+					console.log(result,"news")
 					this.TypeList=result.data;
 					if (result.data.length > 0){
 						this.hasData = true;

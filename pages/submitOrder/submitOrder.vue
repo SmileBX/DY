@@ -308,8 +308,15 @@
 				CouponStr:'',
 			};
 		},
-		onLoad: function() {
-			
+		onLoad: function(e) {
+			//#ifdef APP-PLUS
+			this.orderSType= e.orderSType;
+			this.CartIds=e.cartItem;
+			this.ProId=e.id;
+			this.GroupId=e.GroupId||0;
+			this.Total=e.number;
+			this.SpecText=e.SpecText;
+			// #endif
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
@@ -395,6 +402,7 @@
 			},
 			selectCouponok(){
 				if(this.popCouponType==0){
+					// this.popCouponId=this.popCouponId;  2020-4-9
 					this.couponId=this.popCouponId;
 				}else{
 					this.popCouponIdArr[this.popshopCouponIndex]=this.popCouponId;
@@ -503,12 +511,15 @@
 				Token: this.token,
 				AddressId:this.addressId,
 				CouponId:this.couponId,
-				ShopCouponId:this.popCouponIdArr[0],
+				ShopCouponId:this.popCouponId,
 				data:dataArr,
 			  })
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
+				if(result.data.ShopCouponId>0){
+					this.popCouponIdArr.push(result.data.ShopCouponId)
+				}
 				if(result.data.yhPrice == 0){
 					this.CouponStr = '不使用'
 				}else{
@@ -620,7 +631,7 @@
 			},
 			//提交订单
 			confirm(){
-				if(this.addrInfo){
+				if(this.addressId>0){
 					if(this.orderSType==0){
 					  if(this.GroupId>0){
 						  this.CreateGroupOrder();//确认拼团

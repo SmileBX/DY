@@ -100,8 +100,17 @@
 	    if(this.$mp.query.id){
 	        this.buttonText= '确认修改';
 	        this.GetAddressInfo()
-	      }
+	     }
 	    
+	  },
+	  onLoad(e){
+		  // #ifdef APP-PLUS
+		   this.id = e.id
+		   if(e.id){
+		       this.buttonText= '确认修改';
+		       this.GetAddressInfo()
+		    }
+		   // #endif
 	  },
 	  methods:{
 	    initData(){
