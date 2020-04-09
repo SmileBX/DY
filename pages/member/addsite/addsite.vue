@@ -47,8 +47,7 @@
 			<view class="btnBox" style="padding:100upx 20upx">
 				<button type="primary" class="btn_bb" @click="submit">{{buttonText}}</button>
 			</view>
-			<mpvue-city-picker v-if="hasData" :province="province" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
-			 @onconfirm="onconfirm"></mpvue-city-picker>
+			<mpvue-city-picker v-if="hasData" :province="province" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault" @onconfirm="onconfirm"></mpvue-city-picker>
 		</view>
 	</view>
 </template>
@@ -90,9 +89,19 @@
 	    }
 	  },
 	  onLoad(e) {
+		  this.userId = uni.getStorageSync("userId");
+		  this.token = uni.getStorageSync("token");
 	  	// #ifdef APP-PLUS
 	  	console.log(e)
-	  	this.id=e.id
+		console.log('获得地址id')
+	  	this.id=parseInt(e.id)
+		
+		console.log(this.id)
+		this.getprovinces();
+		if(this.id){
+		    this.buttonText= '确认修改';
+		    this.GetAddressInfo()
+		  }
 	  	// #endif
 	  },
 	  onShow(){
@@ -100,24 +109,15 @@
 	    this.token = uni.getStorageSync("token");
 	    // #ifndef APP-PLUS
 	    this.id = this.$mp.query.id
+		console.log('获得地址id')
+		
 	    // #endif
-	    console.log(this.id,"idiiiii")
-	    // this.initData()
 		this.getprovinces();
-	    if(this.$mp.query.id){
-	        this.buttonText= '确认修改';
-	        this.GetAddressInfo()
-	     }
-	    
-	  },
-	  onLoad(e){
-		  // #ifdef APP-PLUS
-		   this.id = e.id
-		   if(e.id){
-		       this.buttonText= '确认修改';
-		       this.GetAddressInfo()
-		    }
-		   // #endif
+		if(this.$mp.query.id){
+		    this.buttonText= '确认修改';
+		    this.GetAddressInfo()
+		  }
+	    console.log(this.id,"idiiiii")
 	  },
 	  methods:{
 	    initData(){
@@ -281,9 +281,9 @@
 		      duration: 1000
 		    });
 			console.log(132131321313213)
-			setTimeout(function() {
-				uni.navigateBack({})
-			},1000)
+			// setTimeout(function() {
+			// 	uni.navigateBack({})
+			// },1000)
 		  }
 		},
 	  },
@@ -291,7 +291,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../../common/dd_style.css";
+	@import "@/common/dd_style.css";
 .content{
 	height: 100%;
 	.bg_89674c{

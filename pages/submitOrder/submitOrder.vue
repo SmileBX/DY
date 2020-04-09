@@ -271,7 +271,6 @@
 <script>
 	import {post,get} from '@/common/util.js';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
-	import "@/common/dd_style.css";
 	export default {
 		components: {
 			uniPopup
@@ -697,5 +696,5 @@
 
 <style scoped>
 	@import "./style";
-	
+	@import "@/common/dd_style.css";
 </style>

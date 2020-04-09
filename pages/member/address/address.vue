@@ -162,6 +162,7 @@ export default {
           });
     },
     editSite(id){
+		console.log(id)
        uni.navigateTo({
         url:'/pages/member/addsite/addsite?id='+id
       })
