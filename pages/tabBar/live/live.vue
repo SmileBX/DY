@@ -5,8 +5,8 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
-					<video v-if="!mark" @error="error" src="http://play.wtvxin.com/live/test.flv" webkit-playsinline,x5-playsinline,x5-video-player-type='h5' :style="{height : height + 'px'}"
-					 :autoplay="true" controls @play="play"></video>
+					<video  @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
+					 :autoplay="true" controls ></video>
 					<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
 					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.flv" ></live-player>
@@ -39,7 +39,32 @@
 				mark:false
 			};
 		},
+		onUnload(){
+		           //在app端不支持cover-view嵌套
+				// #ifdef APP-PLUS
+					var icon = plus.nativeObj.View.getViewById("icon");
+					icon.hide();
+				// #endif
+			},
+		onHide(){
+				// #ifdef APP-PLUS
+					var icon = plus.nativeObj.View.getViewById("icon");
+					icon.hide();
+				// #endif
+		},
 		onShow() {
+			// #ifdef APP-PLUS
+					var icon = plus.nativeObj.View.getViewById("icon");
+					//如果已经存在
+					if(icon){    
+			            //则显示
+						icon.show();
+					}else{
+			            //不存在  则创建
+						this.createtab();
+						console.log(icon)
+					}	
+					// #endif
 			let res = uni.getSystemInfoSync()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -49,6 +74,27 @@
 			
 		},
 		methods: {
+			createtab: function(){
+					        // 设置水平居中位置
+							var bitmap = new plus.nativeObj.Bitmap('bmp1');
+					        var view = new plus.nativeObj.View('icon', {
+					            top: '40px',
+					            left: '20px',
+					            width: '80px',
+					            height: '30px',
+								backgroundColor:'#ff3333',
+								
+					        });
+					       view.drawText('开始直播',{top:'0px',left:'0px',width:'100%',height:'100%'},{ size: '15px',color:'#fff',},'icon')
+							view.addEventListener("click", function(e) {
+								console.log(bitmap)
+					          uni.navigateTo({
+					          	url:"../../livepush/livepush"
+					          })
+					        }, false);
+					        view.show();
+					    },
+
 			goUrl(url){
 				uni.navigateTo({
 					url:url
@@ -67,8 +113,12 @@
 				if(e){
 					uni.showToast({
 						title:"直播结束！",
+						icon:'none',
 						success() { 
 							this.mark = true;
+							uni.switchTab({
+								url:'../index/index'
+							})
 						}
 					})
 				}
@@ -98,15 +148,16 @@
 	}
 	.btn{
 		position: fixed;
-		top: 20upx;
+		top: 40upx;
 		left: 20upx;
 		background-color: #ff3333;
 		color: #fff;
-		border-radius: 40upx;
-		width: 180upx;
+		// border-radius: 40upx;
+		width: 160upx;
 		height: 60upx;
 		text-align: center;
 		line-height: 60upx;
 		font-size: 30upx;
+		z-index: 200;
 	}
 </style>
