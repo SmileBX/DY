@@ -15,7 +15,7 @@
               <image class="write" src="http://jyy.wtvxin.com/static/images/icons/write.png" alt=""></image>
               <span>编辑</span>
             </view>
-            <view class="ali-c btt flex flexAlignCenter" @click="Delete(item.Id,index)">
+            <view class="ali-c btt flex flexAlignCenter" @click.stop="Delete(item.Id,index)">
               <img class="delete" src="http://jyy.wtvxin.com/static/images/icons/del.png" alt="">
               <span>删除</span>
             </view>

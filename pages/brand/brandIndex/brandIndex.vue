@@ -315,6 +315,12 @@
 			} else {
 				this.loadingType = 2;
 			}
+		},
+		onShareAppMessage: function() {
+		  return {
+		    title: "大单易拼", //转发页面的标题
+		    path: '/pages/tabBar/index/index?shareid='+this.info.ReferralCode
+		  }
 		}
 	}
 </script>

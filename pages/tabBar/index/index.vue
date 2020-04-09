@@ -22,8 +22,8 @@
 				<view v-for="(tab,index) in Typelist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
 				 :data-current="index" @click="tapTab(index,tab.Id)">
 					<view class="s"> {{tab.Name}} </view>
-				</view>
-			</scroll-view>
+				</view> 
+			</scroll-view> 
 		</view>
 		<view class="index_Content uni-tab-bar" :style="{'height':headheight+'px'}">
 			<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab">

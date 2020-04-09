@@ -366,7 +366,7 @@ export default {
   onShareAppMessage: function() {
     return {
       title: "大单易拼", //转发页面的标题
-      path: '/pages/index/main?shareid='+this.info.ReferralCode
+      path: '/pages/tabBar/index/index?shareid='+this.info.ReferralCode
     }
   }
 }

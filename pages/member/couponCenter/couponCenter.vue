@@ -2,14 +2,16 @@
   <div class="ticket">
      <block v-if="hasData">
       <div class="list jus-b" v-for="(item,index) in datalist" :key="index">
-        <div class="left flex">
-          <div class="price">
-            {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
-          </div>
-          <div class="info">
-			  <P>{{item.Name}}</P>
-              <span>有效期至{{item.EndTime}}</span>
-          </div>
+        <div class="left flex flexColumn">
+			<div class="flex">
+				<div class="price">
+				  {{item.DiscountType==1?item.Denomination:item.Denomination*10}}<span>{{item.DiscountType==1?'元':'折'}}</span>
+				</div>
+				<div class="info flex flexColumn">
+					<P>{{item.Name}}</P>
+				    <span class="mt1">有效期至{{item.EndTime}}</span>
+				</div>
+			</div>
           <div class="coupoutag flexc back_col">{{item.DiscountType==1?'满减券':'折扣券'}}</div>
 		  <div class="useinfo oneline" v-if="item.ShopName&&item.ShopId!=0">仅可购买{{item.ShopName}}店铺商品</div>
           <div class="useinfo oneline" v-else-if="item.ScopeOfUse">说明：{{item.ScopeOfUse}}</div>
@@ -176,13 +178,13 @@ export default {
   }
   .left{
     width: 460upx;
-    padding: 50upx 0 0 35upx;
+    padding: 50upx 0 0 25upx;
     position: relative;
     .price{
       color: #f00;
       font-size: 48upx;
       margin-right: 20upx;
-      min-width: 100upx;
+      width:35%;
       span{
         font-size: 30upx!important;
         color: #f00;

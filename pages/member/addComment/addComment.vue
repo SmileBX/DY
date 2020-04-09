@@ -24,11 +24,11 @@
 				<div class="p3" style="padding-bottom: 30upx;">
 					<!-- <div>上传图片（不超过5张）</div> -->
 					<div class="fed_pic flex flexWrap">
-						<div v-for="(item,index) in imgList" :key="index" class="picbox">
-							<span class="" @click="deleteImg(index)">×</span>
+						<div v-for="(item,index) in imageList" :key="index" class="picbox">
+							<span class="" @click="delImg(index)">×</span>
 							<image :src="item" alt="" class="pic_itim"></image>
 						</div>
-						<div class="picbox upBtnImg" @click="changeImg()" v-if="imgList.length<4">
+						<div class="picbox upBtnImg" @click="chooseImage()" v-if="isShowBtnUpload">
 							<img src="http://jyy.wtvxin.com/static/images/icons/add2.png" alt="" class="pic_itim">
 						</div>
 					</div>
@@ -72,6 +72,16 @@
 		base64ToPath
 	} from '@/common/image-tools.js';
 	import uniRate from '@/components/uni-rate.vue';
+	var sourceType = [
+		['camera'],
+		['album'],
+		['camera', 'album']
+	]
+	var sizeType = [
+		['compressed'],
+		['original'],
+		['compressed', 'original']
+	]
 	export default {
 		components: {
 			uniRate
@@ -81,19 +91,42 @@
 				// plist:[{id:1,name:'商品问题'},{id:1,name:'客服问题'},{id:1,name:'包装问题'},{id:1,name:'物流问题'},{id:1,name:'其他'}],
 				shopInfo: {},
 				text: '',
-				imgList: [],
+				imageList: [],
+				sourceTypeIndex: 2,
+				sourceType: ['拍照', '相册', '拍照或相册'],
+				sizeTypeIndex: 2,
+				sizeType: ['压缩', '原图', '压缩或原图'],
+				countIndex: 8,
+				imgs:[],
+				isShowBtnUpload:true,
+				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 				proRank: 5, //产品评价等级
 				serRank: 5, //服务评价等级
 				logRank: 5, //物流评价等级
 				inputTxtLength: 0, //当前输入字数
+				OrderNo:'',
+				OrderDetailId:''
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			this.imgList = []
+			// #ifdef APP-PLUS
+			 this.OrderNo = e.id
+			 this.OrderDetailId  = e.detailId
+			 // #endif
 		},
 		onShow() {
 			console.log(this.$mp.query)
 			this.getDetail()
+			this.sourceTypeIndex = 2;
+			this.sourceType = ['拍照', '相册', '拍照或相册'];
+			this.sizeTypeIndex = 2;
+			this.sizeType = ['压缩', '原图', '压缩或原图'];
+			this.countIndex = 8;
+			// #ifdef MP-WEIXIN  || H5
+			this.OrderNo = this.$mp.query.id,
+			this.OrderDetailId  = this.$mp.query.detailId
+			// #endif
 		},
 		watch: {
 			imgList(e) {
@@ -107,8 +140,8 @@
 					post('Order/CommentProduct', {
 						"UserId": uni.getStorageSync("userId"),
 						"Token": uni.getStorageSync("token"),
-						"OrderNo": this.$mp.query.id,
-						"OrderDetailId": this.$mp.query.detailId,
+						"OrderNo": this.OrderNo,
+						"OrderDetailId": this.OrderDetailId,
 						"Content": this.text,
 						"PicList": JSON.stringify(imgList),
 						"ProductStarNum": this.proRank,
@@ -132,21 +165,61 @@
 					})
 				}
 			},
-			deleteImg(index) {
-				this.imgList.splice(index, 1)
+			//删除图片
+			delImg(index){  
+				  this.imageList.splice(index,1);
+				  this.imgs.splice(index,1);
+				  if(this.imageList.length<9){
+					this.isShowBtnUpload = true;
+				  }
 			},
-			changeImg() {
-				let _this = this
-				let count = 4 - this.imgList.length
-				uni.chooseImage({
-					count: count,
-					sizeType: ['original', 'compressed'],
-					sourceType: ['album', 'camera'],
-					success(res) {
-						res.tempFilePaths.map(item => {
-							_this.imgList.push(item);
-						})
+			chooseImage: async function() {
+				if (this.imageList.length >= 9) {
+					let isContinue = await this.isFullImg();
+					console.log("是否继续?", isContinue);
+					if (!isContinue) {
+						return;
 					}
+				}
+				uni.chooseImage({
+					sourceType: sourceType[this.sourceTypeIndex],
+					sizeType: sizeType[this.sizeTypeIndex],
+					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					success: (res) => {
+						this.imageList = this.imageList.concat(res.tempFilePaths);
+						if (this.imageList.length >= 9) {
+						  this.isShowBtnUpload = false;
+						  this.imageList.splice(9);
+						}
+					}
+				})
+			},
+			async base64Img(arr) {
+				let base64Arr = [];
+				for (let i = 0; i < arr.length; i += 1) {
+				const res = await pathToBase64(arr[i]);
+				base64Arr.push({
+				  PicUrl: res
+				});
+			  }
+			  return base64Arr;
+			},
+			isFullImg: function() {
+				return new Promise((res) => {
+					uni.showModal({
+						content: "已经有9张图片了,是否清空现有图片？",
+						success: (e) => {
+							if (e.confirm) {
+								this.imageList = [];
+								res(true);
+							} else {
+								res(false)
+							}
+						},
+						fail: () => {
+							res(false)
+						}
+					})
 				})
 			},
 			limitInput() {
@@ -164,25 +237,15 @@
 					this.logRank = e.value;
 				}
 			},
-			async base64Img(arr) {
-				let base64Arr = [];
-				for (let i = 0; i < arr.length; i += 1) {
-					const res = await pathToBase64(arr[i]);
-					base64Arr.push({
-						PicUrl: res
-					});
-				}
-				return base64Arr;
-			},
 
 			getDetail() {
 				post('Order/OrderDetails', {
 					UserId: uni.getStorageSync("userId"),
 					Token: uni.getStorageSync("token"),
-					OrderNo: this.$mp.query.id,
+					OrderNo: this.OrderNo,
 				}).then(res => {
 					res.data.OrderDetails.forEach(item => {
-						if (item.Id == this.$mp.query.detailId) {
+						if (item.Id == this.OrderDetailId) {
 							this.shopInfo = item
 						}
 					})

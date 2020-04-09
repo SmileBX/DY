@@ -110,16 +110,14 @@
 	    // #ifndef APP-PLUS
 	    this.id = this.$mp.query.id
 		console.log('获得地址id')
+		
+	    // #endif
 		this.getprovinces();
 		if(this.$mp.query.id){
 		    this.buttonText= '确认修改';
 		    this.GetAddressInfo()
 		  }
-	    // #endif
 	    console.log(this.id,"idiiiii")
-	    // this.initData()
-		
-	    
 	  },
 	  methods:{
 	    initData(){

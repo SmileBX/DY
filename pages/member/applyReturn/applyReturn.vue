@@ -77,6 +77,13 @@ export default {
     this.getDetail();
     this.getCancelReason()
   },
+  onLoad(e){
+	 // #ifdef APP-PLUS
+		 this.type = e.type
+		 this.indexId  = e.indexId
+		 this.OrderNumber  = e.id
+	// #endif
+	},
   methods: {
     gettype(e){
       if(e.code){
@@ -91,9 +98,9 @@ export default {
     },
     getDetail(){
       post('Order/OrderDetails',{
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id
+        UserId:uni.getStorageSync("userId"),
+        Token:uni.getStorageSync("token"),
+        OrderNo:this.OrderNumber
       }).then(res=>{
         this.info = res.data.OrderDetails[this.indexId];
       })
@@ -107,15 +114,15 @@ export default {
         var url='Order/ApplicationRefund'
       }
       post(url,{
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id,
+        UserId:uni.getStorageSync("userId"),
+        Token:uni.getStorageSync("token"),
+        OrderNo:this.OrderNumber,
         OrderItemId:this.info.Id,
         RefundContent:this.RefundContent,
         RefundReasonId: this.RefundReasonId,
       }).then(res=>{
         if(res.code===0){
-          wx.showToast({
+          uni.showToast({
             title:res.msg
           })
           setTimeout(()=>{
@@ -125,7 +132,7 @@ export default {
       })
     },
     goUrl(url){
-      wx.navigateTo({
+      uni.navigateTo({
         url:url
       })
     },

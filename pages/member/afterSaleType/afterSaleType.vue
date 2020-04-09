@@ -55,6 +55,12 @@ export default {
     this.OrderNumber=this.$mp.query.id
     this.getDetail();
   },
+  onLoad(e){
+	  // #ifdef APP-PLUS
+	   this.indexId = e.indexId
+	   this.OrderNumber  = e.id
+	   // #endif
+  },
   methods: {
     getDetail(){
       post('Order/OrderDetails',{

@@ -75,7 +75,7 @@
 				</view>
 			</view>
 			<view class="slider"></view>
-			<view class="flex justifyContentStart bb_shop">
+			<view class="flex justifyContentStart bb_shop" v-if="proInfo.ShopData">
 				<image :src="proInfo.ShopData.Logo" class="shop_bb_logo"></image>
 				<view class="uni-bold">{{proInfo.ShopData.ShopNick}}</view>
 			</view>
@@ -131,7 +131,7 @@
 		<!-- 商品评价 -->
 		<view class="comment">
 			<view class="comment_hd">
-			  <view class="tit_l">商品评价<span>({{CommentList.length}})</span></view>
+			  <view class="tit_l">商品评价<span>({{commentCount}})</span></view>
 			  <view class="tit_r flex flex-end" v-if="hasComment" @click="tolink('/pages/homePage/evaluation?id='+proId)">
 				<view class="red">查看全部</view>
 				<view class="iconfont icon-arrow_r"></view>
@@ -260,13 +260,16 @@
 					<!-- 实心 icon-collect-->
 				</view>
 				<!-- 有拼团样式 -->
-				<view class="foot-item foot-item-btns" v-if="GroupId>0">
-					<view class="btn btn_1 flex" @click="showSku(0)">
+				<view class="foot-item foot-item-btns">
+					<view class="btn btn_1 flex" @click="showSku(proInfo.IsAloneBuy==0?0:2)">
 						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
 						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
 						<view class="txt">单独购买</view>
 					</view>
-					<view class="btn btn_2 flex" @click="showSku(1)">
+					<view class="btn btn_2 flex" @click="showSku(0)" v-if="proInfo.IsAloneBuy==0">
+						<view class="txt">加入购物车</view>
+					</view>
+					<view class="btn btn_2 flex" @click="showSku(1)" v-if="GroupId>0">
 						<view>
 							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
@@ -278,16 +281,14 @@
 					</view>
 				</view>
 				<!-- 无拼团样式 -->
-				<view class="foot-item foot-item-btns" v-else>
-					<view class="btn btn_1 flex" @click="showSku(0)">
-						<view class="txt">加入购物车</view>
-					</view>
+<!-- 				<view class="foot-item foot-item-btns" v-else>
+					
 					<view class="btn btn_2 flex" @click="showSku(0)">
 						<view>
 							<view class="txt">立即购买</view>
 						</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 详情底部 end -->
@@ -342,7 +343,7 @@
 				showPopupinfo:false,//参数
 				attrArr:{},//产品参数
 				isServiceInfo:false,//服务
-				showbtntype:0,
+				showbtntype:0,//0:购物车+立即 1:拼团确定 2:立即
 				fromPinTuan:false,//是否是拼团sku
 				isProData:false,
 				number:1,
@@ -351,6 +352,7 @@
 				price:'',
 				plusprice:'',
 				hasComment:false,
+				commentCount:0,//评价总数
 				CommentList:[],//评价列表
 				isLimint:0,//0非限时购产品，1限时购产品
 				timer:null,
@@ -581,6 +583,7 @@
 				let _this=this
 				if(res.data.length){
 					_this.hasComment=true;
+					this.commentCount = res.count
 					res.data.forEach(function(item) {
 					  let arr = []
 					  for(var i=0;i<item.PicData.length;i++){
@@ -610,6 +613,50 @@
 			}else{
 				this.isTop=false;
 			}
+		},
+		onUserOpStatistic: function(e) {
+			console.log("执行了嘛？")
+			if(e.op == 'share') {
+				console.log("hahhahhah转发啦！")
+				var path = e.path;
+			}
+		},
+		onShareAppMessage: function( options ){
+		　　var that = this;
+		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+		　　var shareObj = {
+		　　　　title: "转发的标题",        // 默认是小程序的名称(可以写slogan等)
+		　　　　path: '/pages/tabBar/index/index',        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　imageUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+		　　　　success: function(res){
+		　　　　　　// 转发成功之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+						console.log("1111111111111111")
+		　　　　　　}
+		　　　　},
+		　　　　fail: function(){
+				console.log("22222222222")
+		　　　　　　// 转发失败之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+		　　　　　　　　// 用户取消转发
+		　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+		　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+		　　　　　　}
+		　　　　},
+		　　　　complete: function(){
+		　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
+					console.log("33333333333333")
+		　　　　}
+		　　};
+		　　// 来自页面内的按钮的转发
+		// 　　if( options.from == 'button' ){
+		// 　　　　var eData = options.target.dataset;
+		// 　　　　console.log( eData.name );     // shareBtn
+		// 　　　　// 此处可以修改 shareObj 中的内容
+		// 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+		// 　　}
+		　　// 返回shareObj
+		　　return shareObj;
 		}
 	}
 </script>

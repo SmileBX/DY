@@ -385,7 +385,7 @@
 	}
 </script>
 <style>
-	@import '@/common/login.css';
+	@import '../../common/login.css';
   .content{
 	  background:#fff;
 	  background-size: 100% 100%;

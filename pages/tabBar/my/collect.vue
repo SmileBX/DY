@@ -1,20 +1,19 @@
 <template>
 	<view class="content myCollectPage">
-		<!-- 		<view class="carthead"  :style="{'padding-top':barHeight+'px'}">
+		<!-- <view class="carthead"  :style="{'padding-top':barHeight+'px'}">
 			<text>收藏</text>
 		</view> -->
+		<view class="uni-tab-bar bg_fff">
+			<scroll-view id="tab-bar" :class="['uni-swiper-tab tabList li_50',isMultipleStore>0?'':'w50']">
+				<view :class="['swiper-tab-list',tabIndex==0 ? 'active' : '']" id="list0" @click="tapTab(0)">
+					<view class="s">商品</view>
+				</view>
+				<view v-if="isMultipleStore>0" :class="['swiper-tab-list',tabIndex==1 ? 'active' : '']" id="list1" @click="tapTab(1)">
+					<view class="s">店铺</view>
+				</view>
+			</scroll-view>
+		</view>
 		<view class="hasContentPage">
-			<view class="uni-tab-bar bg_fff">
-				<scroll-view id="tab-bar" :class="['uni-swiper-tab tabList li_50',isMultipleStore>0?'':'w50']">
-					<view :class="['swiper-tab-list',tabIndex==0 ? 'active' : '']" id="list0" @click="tapTab(0)">
-						<view class="s">商品</view>
-					</view>
-					<view v-if="isMultipleStore>0" :class="['swiper-tab-list',tabIndex==1 ? 'active' : '']" id="list1" @click="tapTab(1)">
-						<view class="s">店铺</view>
-					</view>
-				</scroll-view>
-			</view>
-
 			<view class="collect_list uni-mt10" v-if="hasData">
 				<!--店铺收藏-->
 				<view class="list" v-if="tabIndex==1">
@@ -97,7 +96,7 @@
 		getCurrentPageUrlWithArgs
 	} from '@/common/util.js';
 	export default {
-		onLoad() {
+		onLoad() { 
 			// #ifdef APP-PLUS
 			var height = plus.navigator.getStatusbarHeight();
 			this.barHeight = height;
@@ -323,22 +322,26 @@
 </script>
 
 <style scoped lang="scss">
+
 	@import "@/common/dd_style.css";
+
+	@import "../../../common/dd_style.css"; 
+
 	.hasContentPage {
 		position: relative;
+		top:88upx;
 		height: calc(100% - 88upx);
 		overflow-y: auto;
 	}
 
 	.uni-tab-bar {
 		height: 80upx;
+		position: fixed;
+		width:100%;
+		z-index: 9;
 		.tabList{
-			position: fixed;
 			width: 100%;
-			left: 0;
-			top: 44px;
 			height: 80upx;
-			z-index: 9;
 		}
 	}
 
