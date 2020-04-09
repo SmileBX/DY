@@ -306,6 +306,9 @@
 				popCouponIdArr:[],
 				popshopCouponIndex:0,
 				CouponStr:'',
+				ContactName:"",//业主姓名
+				Tel:"",//业主电话
+				IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
 			};
 		},
 		onLoad: function(e) {
@@ -321,6 +324,9 @@
 			// #endif
 		},
 		onShow() {
+			this.ContactName = this.$store.state.peopleInfo.ContactName;console.log(this.$store.state.peopleInfo)
+			this.Tel = this.$store.state.peopleInfo.Tel;
+			this.IsSalesOffice = this.$store.state.peopleInfo.IsSalesOffice;
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			// #ifndef APP-PLUS
@@ -634,13 +640,19 @@
 			  }
 			},
 			//提交订单
-			confirm(){
+			confirm(){console.log(this.yanzheng())
 				if(this.addressId>0){
 					if(this.orderSType==0){
 					  if(this.GroupId>0){
 						  this.CreateGroupOrder();//确认拼团
 					  }else{
-						  this.BuyNowSubmitOrder();//立即购买
+						  if(!this.yanzheng()){
+							  uni.navigateTo({
+							  	url:"/pages/homePage/writeInfo?IsSalesOffice="+this.info.IsSalesOffice
+							  })
+						  }else{
+							  this.BuyNowSubmitOrder();//立即购买
+						  }
 					  }
 					}else{
 					  let DataArr = [];
@@ -661,6 +673,24 @@
 					})
 				}
 			},
+			//验证是否提交业主信息
+			yanzheng(){
+				if(this.info.IsAloneBuy==1||this.info.IsSalesOffice==1){console.log()
+					if(this.Tel==""||this.Tel==undefined){
+						return false
+					}
+					if(this.ContactName==""||this.ContactName==undefined){
+						return false
+					}
+					if(this.info.IsSalesOffice==1){
+						if(this.IsSalesOffice==null||this.IsSalesOffice==undefined){
+							return false
+						}
+					}
+					return true
+				}
+				return true
+			}
 		}
 	}
 </script>

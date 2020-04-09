@@ -37,7 +37,7 @@
 		height: 40rpx!important;
 		width: 40rpx!important;
 		border-radius: 50%!important;
-		border:1rpx solid #ececec!important;///替换边框 隐藏原有边框
+		border:1rpx solid #bbb!important;///替换边框 隐藏原有边框
 	}
 	.dot .uni-radio-input.uni-radio-input-checked{
 		background-color: #ffffff!important;
