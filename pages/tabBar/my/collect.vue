@@ -131,11 +131,18 @@
 			noData,
 			uniLoadMore
 		},
+		onLoad(e) {
+			// #ifdef APP-PLUS
+			this.tabIndex=e.index
+			// #endif
+		},
 		onShow() {
 			this.initData();
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.tabIndex = this.$root.$mp.query.index;
+			// #endif
 			this.collectionsList();
 		},
 		methods: {

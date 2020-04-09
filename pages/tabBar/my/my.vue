@@ -146,6 +146,10 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_set.png" mode=""></image>
 						<view class="txt">设置</view>
 					</view>
+					<view class="item" @click="golink('/pages/livepush/livepush')">
+						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
+						<view class="txt">开启直播</view>
+					</view>
 				</view>
 			</view>
 		</view>

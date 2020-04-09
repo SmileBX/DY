@@ -157,8 +157,15 @@
 				IsCollect:false, //是否收藏该商品
 			}
 		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+			this.ShopId=e.ShopId
+			// #endif
+		},
 		onShow(){
+			// #ifndef APP-PLUS
 			this.ShopId = this.$root.$mp.query.ShopId
+			// #endif
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";

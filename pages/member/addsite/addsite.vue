@@ -110,13 +110,13 @@
 	    // #ifndef APP-PLUS
 	    this.id = this.$mp.query.id
 		console.log('获得地址id')
-		
-	    // #endif
 		this.getprovinces();
 		if(this.$mp.query.id){
 		    this.buttonText= '确认修改';
 		    this.GetAddressInfo()
 		  }
+	    // #endif
+		
 	    console.log(this.id,"idiiiii")
 	  },
 	  methods:{
@@ -291,7 +291,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../../common/dd_style.css";
+	@import "@/common/dd_style.css";
 .content{
 	height: 100%;
 	.bg_89674c{

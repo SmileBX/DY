@@ -69,12 +69,20 @@
 				WxCode:"",
 			}
 		},
+		// #ifdef APP-PLUS
+		onLoad(e) {
+			this.orderNo=e.orderNo;
+			this.source=e.source||0;
+		},
+		// #endif
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.WxOpenid=uni.getStorageSync("openId");
+			// #ifndef APP-PLUS
 			this.orderNo=this.$root.$mp.query.orderNo;
 			this.source=this.$root.$mp.query.source||0;
+			// #endif
 			this.PayOrderDetails();
 			this.GetMemInfo();
 			// #ifdef  MP-WEIXIN

@@ -76,12 +76,19 @@
 			pickerTime,
 			uniLoadMore
 		},
+		// #ifdef APP-PLUS
+		onLoad(e) {
+			this.wType = e.type||0
+		},
+		// #endif
 		onShow() {
 			//设置当前时间
 			this.setDate()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.wType = this.$root.$mp.query.type || 0;
+			// #endif
 			if (this.wType == 1) {
 				this.TypeId = 6;
 				uni.setNavigationBarTitle({
