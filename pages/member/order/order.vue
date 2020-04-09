@@ -18,7 +18,7 @@
 						<text class="shopName uni-ellipsis">{{item.ShopName}}</text>
 						<view class="iconfont icon-arrow_r"></view>
 					</view>
-					<view class="color_red font18">{{item.StatusName}}</view>
+					<view class="color_red font26">{{item.StatusName}}</view>
 				</view>
 				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind">
 					<image :src="ite.PicNo" mode="aspectFit" class="img mr2"></image>

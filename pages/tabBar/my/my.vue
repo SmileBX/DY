@@ -79,11 +79,12 @@
 							<image class="icon" src="http://ddyp.wtvxin.com/static/icons/u_order4.png" mode="widthFix"></image>
 							<view class="circleNum" v-if="memberInfo.num_dpj>0">{{memberInfo.num_dpj}}</view>
 						</view>
-						<view class="txt">待评价</view>
+						<view class="txt">待评价</view> 
 					</view>
 					<view class="item" @click="golink('/pages/member/orderTui/orderTui')">
 						<view class="iconImg">
 							<image class="icon" src="http://ddyp.wtvxin.com/static/icons/u_order5.png" mode="widthFix"></image>
+							<view class="circleNum" v-if="memberInfo.num_sale>0">{{memberInfo.num_sale}}</view>
 						</view>
 						<view class="txt">退款/售后</view>
 					</view>

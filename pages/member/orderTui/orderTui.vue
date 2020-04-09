@@ -105,7 +105,9 @@
 										title:'取消成功！'
 									})
 									setTimeout(()=>{
-										that.init();
+										uni.redirectTo({
+											url:'/pages/member/order/order'
+										})
 									},1500)
 								}
 							})

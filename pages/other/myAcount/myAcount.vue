@@ -101,6 +101,11 @@ export default {
 			uni.navigateTo({
 				url:'/pages/other/withdraw/withdraw?type=1'
 			})
+		}else{
+			uni.showToast({
+				title:'您当前的收益无法提现！',
+				icon:'none'
+			})
 		}
 	}
 
