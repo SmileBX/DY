@@ -112,7 +112,7 @@
 		getCurrentPageUrlWithArgs,
 		toLogin
 	} from '@/common/util.js';
-	import "@/common/dd_style.css";
+	
 	export default {
 		onLoad(e){
 			if(e.id){
@@ -398,5 +398,5 @@
 </script>
 
 <style>
-
+@import "../../../common/dd_style.css";
 </style>

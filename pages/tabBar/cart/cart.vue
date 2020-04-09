@@ -10,7 +10,7 @@
 		<view class="wxcarthead" v-if="hascartlist">
 			<text @click="ManageCart">{{isEdittxt}}</text>
 		</view>
-		<!--  #endif -->
+		<!--  #endif --> 
 		<view  :style="{'height':barHeight+44+'px'}"></view>
 		<view class="hasContentPage" v-if="hascartlist">
 			<view class="cartGroupList">

@@ -1,7 +1,7 @@
 <template>
   <div class="pageContent">
-    <scroll-view scroll-y @scrolltolower="loadMore" style="height:100%;">
-      <div class="cardList" v-if="hasData">
+    <scroll-view scroll-y @scrolltolower="loadMore" class="scroll_bb"  v-if="hasData">
+      <div class="cardList">
         <div
           class="item flex"
           v-for="(item,index) in cardList"
@@ -22,20 +22,14 @@
           </div>
         </div>
       </div>
-      <div v-else class="no_cardList flex flexColumn flexAlignCenter">
-          <img src="http://ddyp.wtvxin.com/static/icons/nocr.png" alt="" class="no_c">
-          <p class="mt2 cg">您还未添加过银行卡</p>
-      </div>
-      <div class="ftBtn" style="height:100upx" @click="addBankCard">
-        <div class="inner fixed bm0">
-          <div class="btns">
-            <div class="btn center bg_ff952e color_fff">
-              <img src="http://ddyp.wtvxin.com/static/icons/add.png" class="icon-add" alt>添加银行卡
-            </div>
-          </div>
-        </div>
-      </div>
     </scroll-view>
+	<div v-else class="no_cardList flex flexColumn flexAlignCenter">
+	    <img src="http://ddyp.wtvxin.com/static/icons/nocr.png" alt="" class="no_c">
+	    <p class="mt2 cg">您还未添加过银行卡</p>
+	</div>
+	<div class="bb_btn" style="height:100upx" @click="addBankCard">
+		<img src="http://ddyp.wtvxin.com/static/icons/add.png" class="icon-add" alt>添加银行卡
+	</div>
   </div>
 </template>
 <script>
@@ -173,19 +167,41 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+	page{
+		background: #ffffff!important;
+	}
 .pageContent {
-  height: calc(100vh - 20upx - 44px);
-  background: #fff;
-  position: relative;
-  top: 20upx;
-  overflow: hidden;
-  overflow-y: auto;
+  min-height: 100vh;
+  background: #ffffff;
 }
+/* #ifdef APP-PLUS  || MP-WEIXIN */
+.scroll_bb{
+	height: calc(100vh - 130upx)!important;
+}
+/* #endif */
+/* #ifdef H5*/
+.scroll_bb{
+	height: calc(100vh - 200upx)!important;
+}
+/* #endif */
 
 .cardList {
   padding: 30upx;
 }
-
+.bb_btn{
+	position: fixed;
+	bottom:0;
+	left:0;
+	z-index:9999999;
+	background: #ffffff;
+	width:750upx;
+	height:100upx;
+	background: #ff3333;
+	line-height: 100upx;
+	color:#ffffff;
+	text-align: center;
+	
+}
 .cardList .item {
   color: rgba(255, 255, 255, 0.8);
   height: 260upx;
@@ -277,21 +293,5 @@ export default {
     width:144upx;height:100upx;
   }
 }
-.bg_ff952e{
-  background: #FF3333;
-}
-.btns{
-	width: 100%;
-	height: 88upx;
-	position: fixed;
-	bottom: 12upx;
-}
-.btns .btn{
-	width: 690upx;
-	margin: 0 auto;
-	height: 88upx;
-	border-radius: 12upx;
-	line-height: 88upx;
-	color: #fff;
-}
+
 </style>

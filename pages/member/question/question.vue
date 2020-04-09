@@ -1,6 +1,6 @@
 <template>
 	<view class="question">
-		<view class="qu_list uni-mt10">
+		<view class="qu_list uni-mt10" v-if="hasData">
 			<view class="qu_item" v-for="(item,index) in datalist" :key="index" @click="showDetail(item,index)">
 				<view class="flex flexAlignCenter item_head bg_fff">
 					<view class="title flex flexAlignCenter flex1">
@@ -89,13 +89,13 @@
 							this.$set(item,"isShow",false)
 						})
 						this.hasData = true;
-						this.noDataIsShow = false
-					}else{
-						this.noDataIsShow = true;
+						this.noDataIsShow = false;
 					}
 					this.count = result.count;
-					if (this.count == 0) {
-						
+					
+					if (result.data.length == 0&&this.page==1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
 					}
 					if (parseInt(this.count) % this.pageSize === 0) {
 						this.allPage = this.count / this.pageSize;

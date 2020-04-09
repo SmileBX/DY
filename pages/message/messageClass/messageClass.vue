@@ -26,7 +26,7 @@
 </template>
 
 <script>
-	import {host,post,get,dateUtils,toLogin,SEOTitle,getCurrentPageUrlWithArgs} from '@/common/util.js';
+	import {host,post,get,dateUtils,toLogin,getCurrentPageUrlWithArgs} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	export default {
 		components: {
@@ -62,11 +62,11 @@
 		},
 		onShow() {
 			// #ifndef MP-WEIXIN
-			   SEOTitle('');
+			   // SEOTitle('');
 			// #endif
-			if (toLogin(this.curPage)) {
+			// if (toLogin(this.curPage)) {
 				this.NoticeTypeList();
-			}
+			// }
 		},
 		methods:{
 			async NoticeTypeList() {
