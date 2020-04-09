@@ -61,12 +61,20 @@
 				shopIndex:0,
 			};
 		},
+		// #ifdef APP-PLUS
+		onLoad(e){
+			this.pagetype=e.pagetype||'';
+			this.shopIndex=e.shopIndex||0;
+		},
+		// #endif
 		onShow() {
 			this.list = [];
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.pagetype=this.$root.$mp.query.pagetype||'';
 			this.shopIndex=this.$root.$mp.query.shopIndex||0;
+			// #endif
 			this.getInvoice();
 		},
 		methods: {

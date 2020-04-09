@@ -88,7 +88,7 @@ export default {
   background: #fff;
   display: flex;
   justify-content: space-between;
-  padding: 0 20rpx;
+  padding:20rpx;
   color: #999;
   line-height: 80rpx;
   font-size: 30rpx;

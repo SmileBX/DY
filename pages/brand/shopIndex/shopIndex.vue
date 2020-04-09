@@ -3,7 +3,7 @@
 		<view class="BrandInfo" :style="{background: 'url('+ShopInfo.BannerPicNo+')'}">
 			<!-- #ifdef MP-WEIXIN -->
 			<view class="flex justifyContentBetween bb_mt">
-				<view class="menubtn iconfont icon-aixin"></view>
+				<view class="menubtn iconfont" :class="[IsCollect ? 'icon-collect' : 'icon-aixin']" @click="collect"></view> <!--收藏店铺 -->
 				<button class="sharebtn" open-type="share"><view class="iconfont icon-fenxiang1"></view></button>
 			</view>
 			<!-- #endif -->
@@ -154,10 +154,18 @@
 				classifyList:[{label:"",value:""}],
 				areaDefault:['广东省','深圳市'],
 				areaList,
+				IsCollect:false, //是否收藏该商品
 			}
 		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+			this.ShopId=e.ShopId
+			// #endif
+		},
 		onShow(){
+			// #ifndef APP-PLUS
 			this.ShopId = this.$root.$mp.query.ShopId
+			// #endif
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
@@ -169,6 +177,52 @@
 			this.getcommonProList()
 		},
 		methods: {
+			//添加取消收藏
+			async collect(){
+				let objUrl = ''
+				if(this.IsCollect){
+					objUrl = "User/ReCollections"
+				}else{
+					objUrl = "User/AddCollections"
+				}
+				let result = await post(objUrl, {
+					Id: this.BrandId,
+					Type:1, //0:产品 1:商家 3:品牌资源
+					userId:this.userId,
+					token:this.token,
+				  });
+				if(result.code==0){
+					if(this.IsCollect){
+						uni.showToast({
+							title: "已取消收藏！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=false;
+					}else{
+						uni.showToast({
+							title: "添加收藏成功！",
+							icon:"none",
+							duration: 1500
+						});
+						this.IsCollect=true;
+					}
+				};
+				if(result.code==2){
+					let _this =this;
+					uni.showModal({
+						content: "您当前未登录，无法收藏，是否登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login"
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				} 
+			},
 			goDetail(id){
 				uni.navigateTo({
 					url:'/pages/homePage/details?id='+id
@@ -178,6 +232,7 @@
 				const res = await post('Shop/ReadShop',{ShopId:this.ShopId,})
 				if(res.code == 0){
 					this.ShopInfo=res.data
+					this.IsCollect=res.data.IsCollection.Value;
 				}
 			},
 			async getPsoList(){

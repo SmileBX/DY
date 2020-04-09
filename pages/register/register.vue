@@ -204,7 +204,7 @@
 						success: function() {
 							setTimeout(function() {
 								uni.navigateTo({
-									url: "/pages/login/login"
+									url: "/pages/login/login?isOk=true"
 								})
 							}, 2000);
 						}

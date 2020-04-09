@@ -281,6 +281,7 @@ export default {
  }
   .icon_ch{
     width:34upx;height:34upx;margin-right:15upx;
+	margin-left:0
   }
   .btn_menu{
     height:80upx;
