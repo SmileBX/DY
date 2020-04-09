@@ -6,7 +6,7 @@
       </div>
       <div class="or_list">
         <!-- <div class="pp2 flex justifyContentBetween  bg_fff bor_tit flexAlignEnd">
-            <img src="http://jyy.wtvxin.com/static/images/icons/kc.png" alt="" class="kc_icon">
+            <image src="http://jyy.wtvxin.com/static/images/icons/kc.png" alt="" class="kc_icon">
             <div class="flex flex1 flexAlignCenter">
                 <div class="flex1">
                     <p class="cr">
@@ -14,11 +14,11 @@
                     </p>
                     <p class=" cg mt1">2019-09-26 18:52:10</p>
                 </div>
-                <img src="http://jyy.wtvxin.com/static/images/icons/right.png" alt="" class="icon_right mr2">
+                <image src="http://jyy.wtvxin.com/static/images/icons/right.png" alt="" class="icon_right mr2">
             </div>
         </div> -->
         <div class="pp2 flex justifyContentBetween radius flexWrap flexAlignEnd bg_fff ">
-            <img src="http://jyy.wtvxin.com/static/images/icons/lc.png" alt="" class="icon_lc">
+            <image src="http://jyy.wtvxin.com/static/images/icons/lc.png" mode="aspectFit" alt="" class="icon_lc"></image>
             <div class="flex1">
                 <p>
                     <span>{{info.ContactName}}</span><span class="mr5">{{info.Tel}}</span>
@@ -28,7 +28,7 @@
         </div>
         <div class="or_item bg_fff radius">
             <div class="pp3 flex bor_tit" v-for="(item, index) in info.OrderDetails" :key="index">
-                <img :src="item.PicNo" alt="" class="shop">
+                <image mode="aspectFit" :src="item.PicNo" alt="" class="shop"></iamge>
                 <div class="flex1 flex  mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <p>{{item.ProductName}}</p>
@@ -79,7 +79,7 @@
           </div>
       </div>
       <div class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi">
-          <img src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch">
+          <image src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch" mode="aspectFit"></iamge>
           <span>联系客服</span>
       </div>
       <div class="flex justifyContentEnd bg_fff mt2 bb_fix btnbox">

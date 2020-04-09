@@ -12,7 +12,7 @@
 		<view class="list" v-if="hasData">
 			<view class="item flex" v-for="(item,index) in datalist" :key="index">
 				<view class="item_left">
-					<image :src="item.PicNo" class="img" mode="aspectFill"></image>
+					<image :src="item.PicNo" class="img" mode="aspectFit"></image>
 					<image :src="'http://ddyp.wtvxin.com/static/icons/b'+[index+1]+'.png'" class="tip" v-if="index<3"></image>
 				</view>
 				<view class="item_content flex1" @click="tolink('/pages/homePage/details?id='+item.Id)">

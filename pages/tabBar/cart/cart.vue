@@ -17,7 +17,7 @@
 				<view class="item" v-for="(item,index) in cartlist" :key="index">
 					<view class="item__hd flex flex-start">
 						<view :class="['IconsCK IconsCK-radio',item.select?'checked':'']" @click="shopcheck(index)"></view>
-						<view class="shop flex flex-start" @click="golink('/pages/store/storeIndex/storeIndex?shopId='+item.ShopId)">
+						<view class="shop flex flex-start" @click="golink('/pages/brand/shopIndex/shopIndex?shopId='+item.ShopId)">
 							<view class="iconfont icon-dianpu"></view>
 							<view class="shopName uni-ellipsis">{{item.ShopName}}</view>
 							<view class="uni-icon uni-icon-arrowright"></view>
@@ -80,7 +80,7 @@
 							<button type="primary" size="middle" class="btnPay radius100" @click="settle">结算({{selectlen}})</button>
 						</view>
 						<view class="deletbox" v-else>
-							<button class="delet2" @click="golink('/pages/member/myCollect/myCollect')">我的收藏</button>
+							<button class="delet2" @click="golink('/pages/tabBar/my/collect')">我的收藏</button>
 							<button class="delet" @click="DelCartBtn">删除</button>
 						</view>
 					</view>

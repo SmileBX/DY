@@ -35,7 +35,7 @@
           <block v-if="hasData">
             <div class="p3 flex stu_item justifyContentBetween flexAlignCenter pw3" v-for="(item,index) in datalist" :key="index">
               <div class="flex flexAlignCenter">
-                <img :src="item.Avatar" alt="" class="ava">
+                <img :src="item.Avatar" alt=""  class="ava">
                 <span class="mr2 font30">{{item.NickName}}</span>
               </div>
               <span class="cg font22">{{item.CreateTime}}</span>

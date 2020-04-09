@@ -309,24 +309,28 @@
 			};
 		},
 		onLoad: function(e) {
-			//#ifdef APP-PLUS
-			this.orderSType= e.orderSType;
-			this.CartIds=e.cartItem;
-			this.ProId=e.id;
-			this.GroupId=e.GroupId||0;
-			this.Total=e.number;
-			this.SpecText=e.SpecText;
+
+			console.log(e)
+			// #ifdef APP-PLUS
+			this.orderSType=e.orderSType
+			this.CartIds=e.cartItem
+			this.ProId=e.id
+			this.GroupId=e.GroupId||0
+			this.Total=e.number
+			this.SpecText=e.SpecText
 			// #endif
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.orderSType= this.$root.$mp.query.orderSType;
 			this.CartIds=this.$root.$mp.query.cartItem;
 			this.ProId=this.$root.$mp.query.id;
 			this.GroupId=this.$root.$mp.query.GroupId||0;
 			this.Total=this.$root.$mp.query.number;
 			this.SpecText=this.$root.$mp.query.SpecText;
+			// #endif
 			if(uni.getStorageSync("addressinfo")){
 			  this.addrInfo=uni.getStorageSync("addressinfo");
 			  uni.setStorageSync("addressinfo",null)

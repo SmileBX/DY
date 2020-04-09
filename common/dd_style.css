@@ -1398,7 +1398,12 @@ button.fill {
 
 .addAddress__weui-cells .weui-label {
 	width: 170upx;
+	/* #ifndef APP-PLUS */
 	display: block;
+	/* #endif */
+	/* #ifdef APP-PLUS */
+	display: flex;
+	/* #endif */
 }
 
 .addAddress__weui-cells .weui-Area {
