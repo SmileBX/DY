@@ -248,7 +248,7 @@
 </script>
 
 <style lang="scss">
-	@import "@/common/dd_style.css";
+	@import "../../../common/dd_style.css";
 	.comment-head .tx{ margin-right: 20upx;}
 	.comment-head .name{ display: inline-block;vertical-align: middle; max-width: 60%;}
 	.levelPanel .item .outside {

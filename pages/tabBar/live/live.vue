@@ -5,8 +5,8 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
-					<video v-if="!mark" @error="error" src="http://play.wtvxin.com/live/test.flv" webkit-playsinline,x5-playsinline,x5-video-player-type='h5' :style="{height : height + 'px'}"
-					 :autoplay="true" controls @play="play"></video>
+					<video v-if="!mark" @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
+					 :autoplay="true" controls ></video>
 					<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
 					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.flv" ></live-player>
