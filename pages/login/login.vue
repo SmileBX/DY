@@ -92,8 +92,8 @@
 		},
 		data() {
 			return {
-				tel:"13068949496",
-				pwd:"123456",
+				tel:"",
+				pwd:"",
 				askUrl: "",
 				code:"",
 				codeMsg: "获取验证码",
