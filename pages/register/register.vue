@@ -49,7 +49,6 @@
 		get,
 		valPhone
 	} from '@/common/util.js';
-	import '@/common/login.css';
 	export default {
 		onLoad(e) {
 			this.inviteCode=e.inviteCode;
@@ -262,6 +261,7 @@
 </script>
 
 <style>
+	@import '@/common/login.css';
 	.content{
 		  background:#fff/* url('http://wht.wtvxin.comhttp://ddyp.wtvxin.com/static/lz/logingif.gif') no-repeat */;
 		  background-size: 100% 100%;

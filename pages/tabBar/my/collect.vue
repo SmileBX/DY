@@ -96,7 +96,6 @@
 		toLogin,
 		getCurrentPageUrlWithArgs
 	} from '@/common/util.js';
-	import "@/common/dd_style.css";
 	export default {
 		onLoad() {
 			// #ifdef APP-PLUS
@@ -324,6 +323,7 @@
 </script>
 
 <style scoped lang="scss">
+	@import "@/common/dd_style.css";
 	.hasContentPage {
 		position: relative;
 		height: calc(100% - 88upx);

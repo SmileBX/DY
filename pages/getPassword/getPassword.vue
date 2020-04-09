@@ -29,7 +29,6 @@
 
 <script>
 	import {post,get,valPhone} from '@/common/util.js';
-	import '@/common/login.css';
 	export default {
 		onLoad() {
 			
@@ -170,6 +169,7 @@
 </script>
 
 <style>
+	@import '@/common/login.css';
 .content{
 	height: 100%;
 	background: #fff;

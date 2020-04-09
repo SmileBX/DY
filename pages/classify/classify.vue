@@ -71,8 +71,9 @@
 	import uniIcons from '@/components/uni-icon.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
+	import "./style.css";
 	import '@/common/head.css';
-	// import '@/common/dd_style.css';
+	 /* import '@/common/dd_style.css'; */
 	import '@/common/product.scss';
 	export default {
 		onLoad() {
@@ -233,7 +234,7 @@
 	}
 </script>
 <style scoped>
-	@import "./style";
+	
 	.uni-navbar /deep/ .uni-navbar-header-btns .uni-icon{ line-height: 44px;}
 	.nav-right{
 		background: #fff!important;

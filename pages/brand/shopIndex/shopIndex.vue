@@ -120,7 +120,6 @@
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	import wpicker from "@/components/w-picker/w-picker.vue";
-	import "@/common/product.scss";
 	export default {
 		components: {
 			noData,
@@ -278,6 +277,7 @@
 </script>
 
 <style scoped lang="scss">
+	@import "@/common/product.scss";
 	/* 区域 */
 	.areabox{
 		margin-top: 40rpx;

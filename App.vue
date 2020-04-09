@@ -14,11 +14,13 @@
 
 <style lang="scss">
 	/*每个页面公共css */
+/* #ifndef APP-NVUE */
 	@import './common/uni.css';
 	@import './common/iconfont.css';
 	@import './common/common.scss';
 	@import './common/lz.css';
 	@import './components/uParse/src/wxParse.css';
+/* #endif */
 	page{
 		background: #f5f5f5;
 		height: 100%;
