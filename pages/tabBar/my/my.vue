@@ -150,7 +150,7 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
 						<view class="txt">开启直播</view>
 					</view>
-					<view class="item" @click="golink('/pages/tabBar/live/live')">
+					<view class="item" @click="golink('/pages/tabBar/my/anchor')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
 						<view class="txt">直播</view>
 					</view>
