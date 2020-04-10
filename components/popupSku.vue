@@ -45,7 +45,7 @@
 			</view>
 			<view style="height: 120upx;"></view>
 			<view class="popup-ft" v-if="showbtntype==1">
-				<view class="bottom-btns" style="line-height: 80upx;" @click="sureSku">确定</view>
+				<view class="bottom-sure" style="line-height: 80upx;" @click="sureSku">确定</view>
 			</view>
 			<view class="popup-ft" v-if="showbtntype==0||showbtntype==2">
 				<view class="bottom-btns">
@@ -514,8 +514,17 @@
 		border-radius: 40upx;
 		overflow: hidden;
 		display: flex;
+		text-align: center;
 	}
-
+	.bottom-sure{
+		height: 80upx;
+		background: #f63517;
+		font-size: 32upx;
+		color: #fff;
+		border-radius: 40upx;
+		overflow: hidden;
+		text-align: center;
+	}
 	.bottom-btns .btn {
 		flex: 1;
 		line-height: 80upx;

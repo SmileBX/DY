@@ -370,6 +370,10 @@
             "path" : "pages/livepush/livepush",
             "style" : {}
         }
+        ,{
+            "path" : "pages/pintuanOrder/pintuanOrder",
+            "style" : {}
+        }
     ],
 
 	"subPackages":[

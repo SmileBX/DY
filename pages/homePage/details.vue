@@ -192,9 +192,10 @@
 			<view class="pole"></view>
 		</view>
 		<!-- 拼单流程 -->
-		<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image>
-		<!-- <view class="flow">
-			<view class="joint">
+		
+		<view class="flow">
+			<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image>
+			<!-- <view class="joint">
 				<view class="stream"></view>
 				<view class="process">拼单流程</view>
 				<view class="stream"></view>
@@ -227,9 +228,8 @@
 					<view class="once">5</view>
 					<view class="contract">审核通过后即可获取 大单易拼相关活动权。</view>
 				</view>
-			</view>
-		
-		</view> -->
+			</view> -->
+		</view>
 		<!-- 图片展砂 -->
 		<view class="pole"></view>
 		<view class="graphic">
@@ -266,10 +266,10 @@
 						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
 						<view class="txt">单独购买</view>
 					</view>
-					<view class="btn btn_2 flex" @click="showSku(0)" v-if="proInfo.IsAloneBuy==0">
+					<view class="btn btn_2 flex" @click="showSku(0)" v-if="proInfo.IsAloneBuy==0&&GroupId==0">
 						<view class="txt">加入购物车</view>
 					</view>
-					<view class="btn btn_2 flex" @click="showSku(1)" v-if="GroupId>0">
+					<view class="btn btn_2 flex" style="flex:1.4" @click="showSku(1)" v-if="GroupId>0">
 						<view>
 							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
