@@ -361,6 +361,7 @@
 				percentage:0,//已售百分比
 				GroupSku:[],//拼团商品Sku
 				ProSku:[],//普通商品Sku
+				hasData:false,//是否渲染页面
 			}
 		},
 		onLoad(e) {
@@ -370,6 +371,7 @@
 			// #endif
 		},
 		onShow(){
+			this.hasData = false
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			// #ifndef APP-PLUS
@@ -419,6 +421,7 @@
 					Id: this.proId
 				});
 				if(result.code==0){
+					this.hasData = true
 					this.proInfo=result.data;
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;

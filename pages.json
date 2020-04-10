@@ -69,7 +69,7 @@
 		{
 			"path": "pages/tabBar/my/anchor",
 			"style": {
-				"navigationBarTitleText": "关注主播",  //我的页面里
+				"navigationBarTitleText": "直播",  //我的页面里
 				"app-plus": {
 					// "titleNView": false //首页去除原生导航
 				}
