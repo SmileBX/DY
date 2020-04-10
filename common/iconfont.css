@@ -12,6 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-sousuo1:before {
+  content: "\e60c";
+}
 
 .icon-aixin2:before {
   content: "\e602";
