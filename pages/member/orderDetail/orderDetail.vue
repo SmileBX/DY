@@ -82,10 +82,20 @@
               <p>成交时间：{{info.Paytime}}</p>
           </div>
       </div>
-      <div class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi">
+	  <!-- #ifndef MP-WEIXIN -->
+      <div class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi" @click="goUrl('/pages/other/kefu/kefu?qqnum=996889692')">
           <image src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch" mode="aspectFit"></iamge>
           <span>联系客服</span>
       </div>
+	  <!-- #endif -->
+	  <!-- #ifdef MP-WEIXIN -->
+	  <button open-type="concat" class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi"
+	   style="border:0!important;padding:0;background: #ffffff;line-height:1.9">
+	      <image src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch" mode="aspectFit"></iamge>
+	      <span class="font26">联系客服</span>
+	  </button>
+	  <!-- <button open-type="contact" class="WEIXIN_btn"></button> -->
+	  <!-- #endif -->
       <div class="flex justifyContentEnd bg_fff mt2 bb_fix btnbox">
           <p class="btn btn_gray" v-if="info.StatusName=='已发货'||info.StatusName=='已收货'" @click="goUrl('/pages/member/logistics/logistics?orderNo='+info.OrderNumber)">查看物流</p>
           <p class="btn btn_gray" v-if="info.IsCancel==1" @click="chooseOrders(info.OrderNumber,1)">取消订单</p>
@@ -334,5 +344,8 @@ export default {
   }
   .order_posi{
     position: relative;top:180upx;left:0;
+  }
+  button::after{
+  		border:none;
   }
 </style>

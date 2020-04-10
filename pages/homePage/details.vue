@@ -242,17 +242,24 @@
 		<view style="height: 100upx;"></view>
 		<view class="foot-fiexd">
 			<view class="dd-foot">
-				<view class="border-top"></view>
-				<view class="foot-item" @click="tolink('/pages/brand/shopIndex/shopIndex?ShopId='+proInfo.ShopData.ShopId)">
+				<view class="border-top"></view> 
+				<view class="foot-item"  @click="tolink('/pages/brand/shopIndex/shopIndex?ShopId='+proInfo.ShopData.ShopId)">
 					<view class="bd"><view class="iconfont icon-dianpu"></view>店铺</view>
 				</view>
 				<view class="foot-item" style="position: relative;">
-					<view class="bd"><view class="iconfont icon-kefu"></view>客服</view>
 					<!-- #ifndef MP-WEIXIN -->
-					<a class="WEIXIN_btn" href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=996889692&card_type=group&source=qrcode"></a>
+					<view class="bd" @click="tolink('/pages/other/kefu/kefu?qqnum=996889692')">
+						<view class="iconfont icon-kefu"></view>
+					客服</view>
+					<!-- <view class="WEIXIN_btn" style="border:1px solid red" @click="tolink('/pages/other/kefu/kefu?qqnum=996889692')"></view> -->
+					<!-- <a class="WEIXIN_btn" href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=996889692&card_type=group&source=qrcode" 
+					></a> -->
 					<!-- #endif -->
-					<!-- #ifdef MP-WEIXIN -->
-					<button open-type="contact" class="WEIXIN_btn"></button>
+					<!-- #ifdef MP-WEIXIN --> 
+					<button class="bd" open-type="concat" style="border:0!important;padding:0;background: #ffffff;line-height:1.9">
+						<view class="iconfont icon-kefu"></view>
+					客服</button>
+					<!-- <button open-type="contact" class="WEIXIN_btn"></button> -->
 					<!-- #endif -->
 				</view>
 				<view class="foot-item">
@@ -393,6 +400,7 @@
 		methods: {
 			//跳转
 			tolink(Url,tabBar) {
+				console.log(Url,"mmmmmmmmmmmm")
 				if(tabBar){
 					uni.switchTab({
 						url: Url
@@ -720,5 +728,8 @@
 	    .countDown span{
 	      background: #fff; color: #ff3333; border-radius: 4rpx; margin: 0 6rpx; padding: 0 4rpx;
 	    }
+	  }
+	  button::after{
+		border:none;
 	  }
 </style>

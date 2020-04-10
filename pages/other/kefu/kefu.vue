@@ -21,7 +21,13 @@
 				qqnum:""
 			}
 		},
+		onLoad(e){
+			// #ifdef H5
+			this.qqnum = e.qqnum
+			// #endif
+		},
 		onShow() {
+			this.qqnum = this.$mp.query.qqnum
 			this.getinfo()
 		},
 		methods: {
