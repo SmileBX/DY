@@ -24,11 +24,11 @@
 					</view>
 					<view class="flowdata flex flex-center">
 						<view class="item">
-							<view class="title" @click="golink('/pages/tabBar/my/collect?index=0')">收藏商品</view>
+							<view class="title" @click="gotab('/pages/tabBar/my/collect')">收藏商品</view>
 							<view class="num">{{memberInfo.GoodsCollectNum||0}}</view>
 						</view>
 						<view class="item">
-							<view class="title" @click="golink('/pages/tabBar/my/collect?index=1')">收藏店铺</view>
+							<view class="title" @click="gotab('/pages/tabBar/my/collect')">收藏店铺</view>
 							<view class="num">{{memberInfo.ShopFollowNum||0}}</view>
 						</view>
 						<view class="item">
@@ -150,6 +150,10 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
 						<view class="txt">开启直播</view>
 					</view>
+					<view class="item" @click="golink('/pages/tabBar/live/live')">
+						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
+						<view class="txt">直播</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -192,6 +196,13 @@
 			golink(url){
 				if(toLogin()){
 					uni.navigateTo({
+						url:url
+					})
+				}
+			},
+			gotab(url){
+				if(toLogin()){
+					uni.switchTab({
 						url:url
 					})
 				}
