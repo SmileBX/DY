@@ -2,7 +2,7 @@
   <view class="invite bg_fff" style="padding-bottom: 30upx;">
 	  <view id="bb_canvas">
 		  <view class="inn_bg ">
-			  <image src="http://jyy.wtvxin.com/static/images/icons/inn.png" alt="" class=" invite"></image>
+			  <image src="http://ddyp.wtvxin.com/static/icons/inn.png" alt="" class=" invite"></image>
 		  </view>
 		  <view class=" flex bg_fff pp3 flexAlignCenter">
 			  <view class=" flex flexColumn flex1 justifyContentStart">

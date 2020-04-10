@@ -14,20 +14,18 @@
           </div>
         </div>
         <div class="tuan">
-          <p class="one">还差{{data.RemainingNum}}人即可成团</p>
+          <p class="one">还差{{data.MaxPeopleNum-data.CurrentPeople}}人即可成团</p>
           <p class="two flexc" v-if="timeEnd&&data.GroupStatus!==2">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
             <div v-for="(item, index) in data.MemberList" :key="index">
               <img  :src="item.MemberAvatar||'http://jd.wtvxin.com/images/images/index/defute.png'" alt="">
             </div>
-            <div v-for="(item, index) in data.RemainingNum" :key="index">
+            <div v-for="(item, index) in data.MaxPeopleNum-data.CurrentPeople>4?4:data.MaxPeopleNum-data.CurrentPeople" :key="index">
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
-		  <!-- #ifdef MP-WEIXIN -->
 		  <button class="fou flexc" open-type="share">邀请好友参团</button>
-		  <!-- #endif -->
           <p class="fiv">请尽快成团，否则就被抢光了哦！</p>
         </div>
       </div>
@@ -295,7 +293,7 @@ export default {
     }
     .tit{
       font-weight: bold;
-      margin: 20rpx 0 50rpx;
+      margin: 20rpx 0 20rpx;
     }
     .price span:nth-child(1){
       color: #ff3333;
