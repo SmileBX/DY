@@ -191,6 +191,7 @@
 			async wxBand(){
 				let result = await post("Login/BindOrRegister", {
 					"mobile": this.tel,
+					"unionid":uni.getStorageSync("unionid"),
 					"openId": uni.getStorageSync("openId"),
 					"yzcode": this.code,
 					"InviteCode": this.inviteCode

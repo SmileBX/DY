@@ -5,11 +5,11 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
-					<video  @error="error" src="http://play.wtvxin.com/live/test.flv" :style="{height : height + 'px'}"
+					<video  @error="error" src="http://play.wtvxin.com/live/test.m3u8" :style="{height : height + 'px'}"
 					 :autoplay="true" controls ></video>
 					<!-- #endif -->
 						<!-- #ifdef MP-WEIXIN -->
-					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.flv" ></live-player>
+					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
 					<!-- #endif -->
 				<!-- </view> -->
 			</swiper-item>
@@ -17,11 +17,11 @@
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
 					<!-- #ifndef MP-WEIXIN -->
-					<video  src="http://play.wtvxin.com/live/test.flv"  ></video>
+					<video  src="http://play.wtvxin.com/live/test.m3u8"  ></video>
 					<!-- #endif -->
 				<!-- </view> -->
 					<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.flv" ></live-player>
+				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
 				<!-- #endif -->
 			</swiper-item>
 		</swiper>

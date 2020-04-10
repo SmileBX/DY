@@ -133,7 +133,7 @@
 		},
 		onLoad(e) {
 			// #ifdef APP-PLUS
-			this.tabIndex=e.index
+			this.tabIndex=e.index||0
 			// #endif
 		},
 		onShow() {
@@ -141,7 +141,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			// #ifndef APP-PLUS
-			this.tabIndex = this.$root.$mp.query.index;
+			this.tabIndex = this.$root.$mp.query.index||0;
 			// #endif
 			this.collectionsList();
 		},

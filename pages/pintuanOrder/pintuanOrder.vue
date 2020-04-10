@@ -3,7 +3,7 @@
       <div class="pin-box">
         <div class="goods ali-c">
           <img :src="data.GroupImage" alt="" @click="goUrl('team/teamDetail')">
-          <div>
+          <div class="flex1">
             <p class="flexc status">{{data.GroupStatusStr}}</p>
             <p class="tit oneline">{{data.GroupTitle}}</p>
             <p class="price">

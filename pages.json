@@ -299,14 +299,14 @@
 				"navigationBarBackgroundColor":"#fe6d36",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [
-							{
-								"text": "\ue605",
-								"fontSrc": "/static/iconfont.ttf",
-								"fontSize": "20px",
-								"color": "#000"
-							}
-						]
+						// "buttons": [
+						// 	{
+						// 		"text": "\ue605",
+						// 		"fontSrc": "/static/iconfont.ttf",
+						// 		"fontSize": "20px",
+						// 		"color": "#000"
+						// 	}
+						// ]
 					}
 				}
 			}
@@ -646,7 +646,7 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "pages/tabBar/live/live",
+				"pagePath": "pages/tabBar/my/collect",
 				"iconPath": "static/foot/live.png",
 				"selectedIconPath": "static/foot/live.png",
 				"text": ""
