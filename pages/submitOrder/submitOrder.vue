@@ -420,7 +420,7 @@
 					
 				}else{  
 					if(this.orderSType ==  0){ //0立即购买，1购物车
-						this.popCouponIdArr.push(this.popCouponId)
+						this.popCouponIdArr[0] = this.popCouponId
 					}else{
 						this.shopDataArr[this.popshopCouponIndex].CouponId=this.popCouponId;
 						// console.log(this.shopDataArr[this.popshopCouponIndex].CouponId,"999999999999")
@@ -553,7 +553,7 @@
 				  let _this=this;
 				_this.info=result.data;
 				//店铺优惠券
-				this.popCouponIdArr.push(result.data.ShopCouponId) 
+				this.popCouponIdArr[0] = result.data.ShopCouponId
 				//平台优惠券
 				this.couponId = result.data.CouponId
 				if(result.data.ShopCouponId == -1){
