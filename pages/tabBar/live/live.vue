@@ -118,9 +118,7 @@
 						icon:'none',
 						success() { 
 							this.mark = true;
-							uni.switchTab({
-								url:'../index/index'
-							})
+							uni.navigateBack({})
 						}
 					})
 				}

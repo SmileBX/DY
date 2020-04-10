@@ -31,7 +31,7 @@
 			</view>
 			<!--直播列表-->
 			<view class="list_zb">
-				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in 5" :key="index">
+				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in 5" :key="index" @click="goUrl('/pages/tabBar/live/live')">
 					<view class="le_img">
 						<image src="../../../static/1.png" class="shop"></image>
 						<image src="../../../static/zb.png" class="tip"></image>
@@ -54,6 +54,26 @@
 </template>
 
 <script>
+	import {host,post,get,toLogin} from '@/common/util.js';
+	export default {
+		data(){
+			return{
+				wallet:0,//余额
+			}
+		},
+		onShow() {
+			this.wallet=this.$store.state.Wallet;
+			//this.wallet=Number(this.wallet).toFixed(2)
+		},
+		methods:{
+			goUrl(url){
+				uni.navigateTo({
+					url:url
+				})
+			},
+		}
+	
+	}
 </script>
 
 <style scoped lang="scss">
@@ -74,7 +94,7 @@
 		top:200upx;
 	}
 	/* #endif */
-	/* #ifdef MP-WEIXIN */
+	/* #ifdef MP-WEIXIN||APP-PLUS */
 	.head_anch{
 		position: fixed;
 		top:0upx;
