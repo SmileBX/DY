@@ -669,6 +669,7 @@
 				UserId: this.userId,
 				Token: this.token,
 				GroupId:this.GroupId,//产品Id
+				GroupRecordId:this.GroupRecordId,
 				Number:this.Total,
 				SpecText:this.SpecText,
 				AddressId:this.addressId,
