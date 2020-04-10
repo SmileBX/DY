@@ -12,20 +12,22 @@
 			<view>设置支付密码</view>
 			<view class="iconfont icon-arrow_r font26"></view>
 		</view>
-		<!-- #ifdef APP-PLUS -->
-		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
+		
+		<!-- <view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>清理缓存</view>
 			<view>63.25M</view>
-		</view>
-		<!-- #endif -->
+		</view> -->
+		
 		<!-- <view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>关于我们</view>
 			<view class="iconfont icon-arrow_r font26"></view>
 		</view> -->
+		<!-- #ifdef APP-PLUS -->
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>软件版本</view>
-			<view>63.25.3</view>
+			<view>{{version}}</view>
 		</view>
+		<!-- #endif -->
 		<view class="btn_fix" @click="logOut">退出登录</view>
 	</view>
 </template>
@@ -35,8 +37,13 @@
 	export default{
 		data(){
 			return{
-				
+				version:''
 			}
+		},
+		onShow(){
+			// #ifdef APP-PLUS
+			this.version = plus.runtime.version
+			// #endif
 		},
 		methods:{
 			golink(url){

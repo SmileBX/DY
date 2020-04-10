@@ -13,14 +13,15 @@
 			-->
 			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNumber)">
 				<view class="flex justifyContentBetween flexAlignCenter">
-					<view class="shopbox flex flex-start">
+					<view class="shopbox flex flex-start" @click.stop="goUrl('/pages/brand/shopIndex/shopIndex?ShopId='+item.ShopId)">
 						<view class="iconfont icon-dianpu"></view>
 						<text class="shopName uni-ellipsis">{{item.ShopName}}</text>
 						<view class="iconfont icon-arrow_r"></view>
 					</view>
 					<view class="color_red font26">{{item.StatusName}}</view>
 				</view>
-				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind">
+				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind" 
+				@click.stop="goUrl('/pages/homePage/details?id='+ite.ProductId)">
 					<image :src="ite.PicNo" mode="aspectFit" class="img mr2"></image>
 					<view class="flex1 order_info">
 						<view>{{ite.ProductName}}</view> 

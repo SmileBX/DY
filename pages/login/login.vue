@@ -65,26 +65,25 @@
 	import {host,post,get,valPhone,setRegular} from '@/common/util.js';
 	export default {
 		onLoad(e){
-			// #ifdef APP-PLUS
+			// #ifndef MP-WEIXIN
 			console.log(e.askUrl)
 			if((e.askUrl!=undefined )&& (e.askUrl!="")&& (e.askUrl!=null)){   
 				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
 			}
-			if(e.isOk){
-				this.isRegister = e.isOk
+			if(e.isResgister){
+				this.isRegister = e.isResgister
 			}
 			// #endif
 		},
 		onShow(){ 
 			// console.log(this.$root.$mp,111) 
-			// #ifndef APP-PLUS
 			if(this.$root.$mp.query.askUrl){
 				this.askUrl = this.$root.$mp.query.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&');
 			}
-			if(this.$root.$mp.query.isOk){
-				this.isRegister = this.$root.$mp.query.isOk
+			if(this.$root.$mp.query.isResgister){
+				this.isRegister = this.$root.$mp.query.isResgister
 			}
-			// #endif
+			console.log(this.isRegister)
 			// #ifdef MP-WEIXIN
 			this.isShowMolie=false;
 			this.isShowminiApp = true;
@@ -226,8 +225,9 @@
 					     icon: "none",
 					     duration: 2000,
 						 success:function(){
+							 console.log(_this.isRegister,"////////_this.isRegister")
 							setTimeout(function() {
-								if(this.isRegister){
+								if(_this.isRegister){
 									uni.switchTab({
 										url: "/pages/tabBar/my/my"
 									  });	

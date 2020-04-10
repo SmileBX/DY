@@ -19,7 +19,7 @@
 		  	          <p v-for="(item,oll) in plist" :key="oll" class="pp_item" :class="{'active':oll==1}">{{item.name}}</p>
 		  	      </div>
 		  	  </div> -->
-				<textarea cols="30" rows="10" maxlength="300" @input="limitInput" class="com_text" v-model="text" placeholder="填写您对商品的评价~"></textarea>
+				<textarea cols="30" rows="10" maxlength="299" @input="limitInput" class="com_text" v-model="text" placeholder="填写您对商品的评价~"></textarea>
 				<view class="counter"><text class="num">{{inputTxtLength}}</text>/300</view>
 				<div class="p3" style="padding-bottom: 30upx;">
 					<!-- <div>上传图片（不超过5张）</div> -->
@@ -116,17 +116,16 @@
 			 // #endif
 		},
 		onShow() {
-			console.log(this.$mp.query)
-			this.getDetail()
 			this.sourceTypeIndex = 2;
 			this.sourceType = ['拍照', '相册', '拍照或相册'];
 			this.sizeTypeIndex = 2;
 			this.sizeType = ['压缩', '原图', '压缩或原图'];
 			this.countIndex = 8;
-			// #ifdef MP-WEIXIN  || H5
 			this.OrderNo = this.$mp.query.id,
 			this.OrderDetailId  = this.$mp.query.detailId
-			// #endif
+			console.log(this.$mp.query)
+			this.getDetail()
+			
 		},
 		watch: {
 			imgList(e) {

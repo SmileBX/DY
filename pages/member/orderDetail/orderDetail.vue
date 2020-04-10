@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="or_item bg_fff radius">
-            <div class="pp3 flex bor_tit" v-for="(item, index) in info.OrderDetails" :key="index">
+            <div class="pp3 flex bor_tit" v-for="(item, index) in info.OrderDetails" :key="index" @click.stop="goUrl('/pages/homePage/details?id='+item.ProductId)">
                 <image mode="aspectFit" :src="item.PicNo" alt="" class="shop"></iamge>
                 <div class="flex1 flex  mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="mr3 flex flexColumn flexAlignEnd">
                       <span>x{{item.Number}}</span>
-                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click="navigate('member/afterSaleType/afterSaleType',{indexId:index,id:info.OrderNumber})">退款</span>
+                      <span class="tui_pill mt2" v-if="item.IsRefund!==0" @click.stop="navigate('member/afterSaleType/afterSaleType',{indexId:index,id:info.OrderNumber})">退款</span>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,11 @@
               <span class="order_title">订单信息</span>
           </div>
           <div class="cg mt2 order_info font24">
-              <p>订单编号：{{info.OrderNumber}} <span class="copy" @click="cop(info.OrderNumber)">复制</span> </p>
+			  <!-- #ifdef H5 -->
+			  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
+			   v-model="info.OrderNumber" style="opacity: 0;position: fixed;top: -10000px;">
+			  <!-- #endif -->
+              <p>订单编号：{{info.OrderNumber}} <span class="copy" @click="cop()">复制</span> </p>
               <p>创建时间：{{info.OrderTime}}</p>
               <!-- <p>取消时间：2019-12-20 09:18:30</p>
               <p>发货时间：2019-12-20 09:18:30</p> -->
@@ -101,6 +105,7 @@ export default {
       navigate,
       info:{},
 	  OrderNo:'',
+	  disabled:false,
     }
   },
   onShow(){
@@ -186,8 +191,32 @@ export default {
           }
         }
       })
-    },
-    cop(dataNo){
+    }, 
+	blur() {
+		this.disabled = true;
+	},
+    cop(){
+		// #ifdef  H5
+		let url = document.getElementsByTagName("input")[0];
+		url.select(); // 选择对象
+		document.execCommand("Copy");
+		uni.showToast({
+			icon: "none",
+			title: "复制成功"
+		})
+		// #endif
+		// #ifdef  MP-WEIXIN
+		let _this = this;
+		uni.setClipboardData({
+			data: _this.info.ReferralCode,
+			success: function() {
+				uni.showToast({
+					icon: 'none',
+					title: "复制成功"
+				})
+			}
+		});
+		// #endif
         uni.showToast({
           icon:'none',
           title: '复制成功',

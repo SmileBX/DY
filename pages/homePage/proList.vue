@@ -469,14 +469,15 @@
 	}
 	.listplace{
 		display: flex;
-		font-size:26upx;
+		flex-wrap:wrap;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(153,153,153,1);
 		line-height:156upx;
 	}
 	.listplace span{
-		font-size:14upx;
+		font-size:24upx;
 		font-family:PingFang;
 		font-weight:500;
 		color:rgba(153,153,153,1);
@@ -513,12 +514,12 @@
 	}
 	.rt{
 		height:42upx;
-		border:1upx solid rgba(255,51,51,1);
 		border-radius:4upx;
 	}
 	.cash{
 		width:38upx;
-		height:100%;
+		height:42upx;
+		line-height:42upx;
 		background:rgba(255,51,51,1);
 		border-radius:4upx 0upx 0upx 4upx;
 		font-size:24upx;
@@ -528,12 +529,14 @@
 		text-align: center;
 	}
 	.cashm{
-		height:21upx;
+		height:42upx;
+		line-height:42upx;
 		font-size:24upx;
 		font-family:PingFang;
 		font-weight:bold;
+		padding:0 5upx;
+		border:1upx solid rgba(255,51,51,1);
 		color:rgba(255,51,51,1);
-		margin-left: 10upx;
 	}
 	.lp{
 		font-family:PingFang;
@@ -542,7 +545,7 @@
 		padding-top: 10upx;
 	}
 	.listkey{
-		font-size:24upx;
+		font-size:24upx!important;
 		line-height:30upx;
 		padding: 0 10upx;
 		height:32upx;
@@ -550,6 +553,7 @@
 		border-radius:16upx;
 		text-align: center;
 		margin-right: 10upx;
+		margin-top:10upx;
 		box-sizing: content-box;
 	}
 	.rotate180{
