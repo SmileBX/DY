@@ -2,7 +2,7 @@
 	<view class="comment">
 		<view class="newsInfo">
 			<view class="title">
-				{{datainfo.Title}}
+				{{datainfo.Title}} 
 			</view>
 			<view class="desc">
 				<uParse :content="datainfo.Memo" />
@@ -58,9 +58,17 @@
 </script>
 
 <style scoped>
+
 .comment{ padding: 0; margin: 0 auto; background: #fff; min-height: 100%;}
 .newsInfo{ padding: 30upx;}
 .newsInfo .title{ font-size: 30upx;}
 .newsInfo .desc{ color: #666; margin: 20upx 0;}
 .newsInfo .time{ color: #999; font-size: 26upx;}
+.comment {
+	height: 100%;
+	width: 750upx;
+	overflow-x: hidden!important;
+	position:relative;
+	word-break:break-all; 
+}
 </style>

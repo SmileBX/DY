@@ -291,7 +291,7 @@
 </script>
 
 <style lang="scss">
-	@import "@/common/dd_style.css";
+	@import "../../../common/dd_style.css";
 .content{
 	height: 100%;
 	.bg_89674c{

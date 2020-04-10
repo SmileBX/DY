@@ -2,10 +2,11 @@
 	<view>
 		<view class="BrandInfo" :style="{background: 'url('+BrandInfo.Backdrop+')'}">
 			<!-- #ifdef MP-WEIXIN -->
-			<view class="flex justifyContentBetween bb_mt">
-				<view class="menubtn iconfont" :class="[IsCollect ? 'icon-collect' : 'icon-aixin']" @click="collect"></view> <!--收藏品牌 -->
+			<!-- <view class="flex justifyContentBetween bb_mt">
+				<view class="menubtn iconfont" :class="[IsCollect ? 'icon-collect' : 'icon-aixin']" ></view>
+				收藏品牌@click="collect"
 				<button class="sharebtn" open-type="share"><view class="iconfont icon-fenxiang1"></view></button>
-			</view>
+			</view> -->
 			<!-- #endif -->
 			<view class="inner flex flex-start">
 				<view class="logoBox">

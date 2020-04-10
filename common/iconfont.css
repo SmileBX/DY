@@ -13,6 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-aixin2:before {
+  content: "\e602";
+}
+
+.icon-aixin1:before {
+  content: "\e85c";
+}
+
 .icon-gou2:before {
   content: "\e63b";
 }

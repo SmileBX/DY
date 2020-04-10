@@ -412,25 +412,29 @@
 			
 			},
 			selectCouponok(){
-				if(this.popCouponType==0){//立即购买
-					// this.popCouponId=this.popCouponId;  2020-4-9
+				if(this.popCouponType==0){//0平台券，1店铺券
+				console.log(this.popCouponId,"11111111111")
 					this.couponId=this.popCouponId;
-				}else{  //多店铺购物车
-					this.shopDataArr[this.popshopCouponIndex].CouponId=this.popCouponId;
-					// console.log(this.shopDataArr[this.popshopCouponIndex].CouponId,"999999999999")
-					if(this.popCouponId == -1){
-						this.$set(this.info.CartList[this.popshopCouponIndex],'yhPrice','不使用')
-					}else{
-						// console.log(this.popcouponData,"****************")
-						// console.log(this.popshopCouponIndex,"//////////")
-						this.popcouponData.map(item=>{
-							if(item.Id == this.popshopCouponIndex){
-								this.$set(this.info.CartList[this.popshopCouponIndex],'yhPrice',item.Denomination)
-							}
-						})
-						
-					}
 					
+				}else{  
+					if(this.orderSType ==  0){ //0立即购买，1购物车
+						this.popCouponIdArr.push(this.popCouponId)
+					}else{
+						this.shopDataArr[this.popshopCouponIndex].CouponId=this.popCouponId;
+						// console.log(this.shopDataArr[this.popshopCouponIndex].CouponId,"999999999999")
+						if(this.popCouponId == -1){
+							this.$set(this.info.CartList[this.popshopCouponIndex],'yhPrice','不使用')
+						}else{
+							// console.log(this.popcouponData,"****************")
+							// console.log(this.popshopCouponIndex,"//////////")
+							this.popcouponData.map(item=>{
+								if(item.Id == this.popshopCouponIndex){
+									this.$set(this.info.CartList[this.popshopCouponIndex],'yhPrice',item.Denomination)
+								}
+							})
+							
+						}
+					}
 				}
 				if(this.orderSType==1){ //购物车
 					for (let i = 0; i < this.info.CartList.length; i++) {
@@ -546,10 +550,11 @@
 			  if(result.code==0){
 				  let _this=this;
 				_this.info=result.data;
-				if(result.data.ShopCouponId>0){
-					this.popCouponIdArr.push(result.data.ShopCouponId)
-				}
-				if(result.data.yhPrice == 0){
+				//店铺优惠券
+				this.popCouponIdArr.push(result.data.ShopCouponId) 
+				//平台优惠券
+				this.couponId = result.data.CouponId
+				if(result.data.ShopCouponId == -1){
 					this.CouponStr = '不使用'
 				}else{
 					this.CouponStr = '￥' + result.data.yhPrice

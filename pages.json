@@ -274,18 +274,19 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
-						"buttons": [{
-								"text": "\ue71a",
-								"fontSrc": "/static/iconfont.ttf",
-								"fontSize": "20px",
-								"color": "#fff"
-							},
-							{
-								"text": "\ue641",
-								"fontSrc": "/static/iconfont.ttf",
-								"fontSize": "20px",
-								"color": "#fff"
-							}
+						"buttons": [
+							// {
+							// 	"text": "\ue71a",
+							// 	"fontSrc": "/static/iconfont.ttf",
+							// 	"fontSize": "20px",
+							// 	"color": "#fff"
+							// }
+							// {
+							// 	"text": "\ue641",
+							// 	"fontSrc": "/static/iconfont.ttf",
+							// 	"fontSize": "20px",
+							// 	"color": "#fff"
+							// }
 						]
 					}
 				}
@@ -347,18 +348,18 @@
 				"navigationBarTitleText": "店铺详情",
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent",
+						// "type": "transparent",
 						"buttons": [{
 								"text": "\ue71a",
 								"fontSrc": "/static/iconfont.ttf",
-								"fontSize": "20px",
-								"color": "#fff"
+								"fontSize": "20px"
+								// "color": "#fff"
 							},
 							{
-								"text": "\ue641",
+								"text": "\ue602",
 								"fontSrc": "/static/iconfont.ttf",
-								"fontSize": "20px",
-								"color": "#fff"
+								"fontSize": "20px"
+								// "color": "#ff3333"
 							}
 						]
 					}
@@ -465,7 +466,7 @@
 					"path":"question/question",
 					"style": {
 						"navigationBarTitleText": "常见问题",
-						"enablePullDownRefresh" : true
+						"enablePullDownRefresh" : false
 					}
 				},
 				{

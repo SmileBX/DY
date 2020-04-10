@@ -177,6 +177,45 @@
 			this.getcommonProList()
 		},
 		methods: {
+			onNavigationBarButtonTap(e) {
+				if(e.index===0){
+					//分享
+				}else{
+					// var currentWebview = this.$mp.page.$getAppWebview();
+					this.collect()
+				}
+			},
+			async getShop(){
+				const res = await post('Shop/ReadShop',{
+					ShopId:this.ShopId,
+					userId:this.userId,
+					token:this.token,
+				})
+				if(res.code == 0){
+					this.ShopInfo=res.data
+					this.IsCollect=res.data.IsCollection.Value;
+					// #ifdef APP-PLUS
+					let text = ''
+					let color = ''
+					if(this.IsCollect){
+						text = '\ue641'
+						color = '#1a1a1a'
+					}else{
+						text = '\ue602'
+						color:'#ff3333'
+					}
+					var currentWebview = this.$mp.page.$getAppWebview();
+					    console.log(currentWebview)
+					    var tn = currentWebview.getStyle().titleNView;   
+					    tn.buttons[1].text = text;     //[0] 按钮的下标
+						 tn.buttons[1].color = color;
+					    currentWebview.setStyle({  
+							titleNView: tn  
+						});
+					
+					//#endif
+				}
+			},
 			//添加取消收藏
 			async collect(){
 				let objUrl = ''
@@ -186,18 +225,28 @@
 					objUrl = "User/AddCollections"
 				}
 				let result = await post(objUrl, {
-					Id: this.BrandId,
+					ShopId: this.ShopId,
 					Type:1, //0:产品 1:商家 3:品牌资源
 					userId:this.userId,
 					token:this.token,
 				  });
 				if(result.code==0){
+					// #ifdef APP-PLUS
+					let text = ''
+					let color = ''
+					
+					//#endif
 					if(this.IsCollect){
 						uni.showToast({
 							title: "已取消收藏！",
 							icon:"none",
 							duration: 1500
 						});
+						// #ifdef APP-PLUS
+							text = '\ue602'
+							color = '#1a1a1a'
+						//#endif
+						
 						this.IsCollect=false;
 					}else{
 						uni.showToast({
@@ -205,8 +254,23 @@
 							icon:"none",
 							duration: 1500
 						});
+						// #ifdef APP-PLUS
+							text = '\ue641' 
+							color:'#ff3333'
+						
+						//#endif
 						this.IsCollect=true;
 					}
+					// #ifdef APP-PLUS
+						var currentWebview = this.$mp.page.$getAppWebview();
+					    var tn = currentWebview.getStyle().titleNView;   
+					    tn.buttons[1].text = text;     //[0] 按钮的下标
+						 tn.buttons[1].color = color;
+					    currentWebview.setStyle({  
+							titleNView: tn  
+						});
+					
+					//#endif
 				};
 				if(result.code==2){
 					let _this =this;
@@ -228,13 +292,7 @@
 					url:'/pages/homePage/details?id='+id
 				})
 			},
-			async getShop(){
-				const res = await post('Shop/ReadShop',{ShopId:this.ShopId,})
-				if(res.code == 0){
-					this.ShopInfo=res.data
-					this.IsCollect=res.data.IsCollection.Value;
-				}
-			},
+			
 			async getPsoList(){
 				let res = await post("Goods/GoodsList", {
 					Page: 1,

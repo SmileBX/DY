@@ -204,7 +204,7 @@
 						success: function() {
 							setTimeout(function() {
 								uni.navigateTo({
-									url: "/pages/login/login?isOk=true"
+									url: "/pages/login/login?isResgister=1"
 								})
 							}, 2000);
 						}
@@ -233,7 +233,7 @@
 						success: function() {
 							setTimeout(function() {
 								uni.navigateTo({
-									url: "/pages/login/login"
+									url: "/pages/login/login?isResgister=1"
 								})
 							}, 2000);
 						}
