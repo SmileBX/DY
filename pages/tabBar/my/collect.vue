@@ -17,19 +17,19 @@
 			<view class="collect_list uni-mt10" v-if="hasData">
 				<!--店铺收藏-->
 				<view class="list" v-if="tabIndex==1">
-					<view class="item mt10" v-for="(item,index) in list" :key="index">
+					<view class="item mt10" v-for="(item,index) in list" :key="index" @click="tolink('/pages/brand/shopIndex/shopIndex?ShopId='+item.ShopId)">
 						<view class="flex item_shop flexAlignCenter">
-							<image src="http://ddyp.wtvxin.com/static/of/shop.png" class="shop_logo"></image>
-							<view class="flex1 uni-bold">雅邦美妆旗舰店</view>
+							<image :src="item.Logo" class="shop_logo"></image>
+							<view class="flex1 uni-bold">{{item.Name}}</view>
 						</view>
-						<view class="item_list flex mt2">
+						<!-- <view class="item_list flex mt2">
 							<view class="flex flexColumn flexAlignCenter item_list_fill" v-for="(item,index) in 3" :key="index">
 								<view class="img flex flexAlignCenter justifyContentCenter">
 									<image src="http://ddyp.wtvxin.com/static/of/car.png"></image>
 								</view>
 								<view>¥33万</view>
 							</view>
-						</view>
+						</view> -->
 					</view>
 				</view>
 				<!--商品收藏-->
@@ -96,16 +96,6 @@
 		getCurrentPageUrlWithArgs
 	} from '@/common/util.js';
 	export default {
-		onLoad() { 
-			// #ifdef APP-PLUS
-			var height = plus.navigator.getStatusbarHeight();
-			this.barHeight = height;
-			// #endif
-			// #ifdef H5
-			this.barHeight = 0;
-			// #endif
-
-		},
 		data() {
 			return {
 				barHeight: 0,
@@ -131,19 +121,22 @@
 			noData,
 			uniLoadMore
 		},
-		onLoad(e) {
+		onLoad() {
 			// #ifdef APP-PLUS
-			this.tabIndex=e.index||0
+			var height = plus.navigator.getStatusbarHeight();
+			this.barHeight = height;
 			// #endif
+			// #ifdef H5
+			this.barHeight = 0;
+			// #endif
+			this.tabIndex = uni.getStorageSync("collectIndex")
 		},
 		onShow() {
 			this.initData();
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			// #ifndef APP-PLUS
-			this.tabIndex = this.$root.$mp.query.index||0;
-			// #endif
 			this.collectionsList();
+			
 		},
 		methods: {
 			//跳转
@@ -324,7 +317,7 @@
 			} else {
 				this.loadingType = 2;
 			}
-		}
+		},
 	}
 </script>
 
