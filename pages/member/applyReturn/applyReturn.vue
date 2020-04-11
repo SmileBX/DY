@@ -19,18 +19,18 @@
           </view>
           
           <view class="menu_item flex justifyContentBetween flexAlignCenter">
-              <view>退款原因</view>
+              <view>{{type==1?'换货':'退款'}}原因</view>
               <view class="flex flex1 flexAlignCenter"  @click="showEdit=true">
                   <input type="text" placeholder="请选择" disabled class="flex1 text_right font26" v-model="typeTxt">
                   <text class="iconfont icon-arrow_r"></text>
               </view>
           </view>
-          <view class="menu_item flex justifyContentBetween flexAlignCenter">
+          <view class="menu_item flex justifyContentBetween flexAlignCenter" v-if="type!=1">
               <view>退款金额</view>
               <view class="cr">¥{{info.ActualPay}}</view>
           </view>
           <view class="mt2">
-              <view>退款说明</view>
+              <view>{{type==1?'换货':'退款'}}说明</view>
 			  <p class="sign" v-if="!showTextArea"  @tap="showTextArea = true" :class="RefundContent.length>0?'well_color1':'well_color2'">{{RefundContent || '请输入说明详情'}}</p>
               <textarea name="" id="" cols="30" rows="10" class="sign font26" style="padding:10upx 3upx;" placeholder="请输入说明详情" auto-focus v-model="RefundContent" @blur="showTextArea = false" v-else></textarea>
           </view>
@@ -108,30 +108,38 @@ export default {
       })
     },
     submitSerty(){
-      if(this.type==1){
-        var url='Order/ApplicationBarter'
-      }else if(this.type==2){
-        var url='Order/ApplicationReturn'
-      }else{
-        var url='Order/ApplicationRefund'
-      }
-      post(url,{
-        UserId:uni.getStorageSync("userId"),
-        Token:uni.getStorageSync("token"),
-        OrderNo:this.OrderNumber,
-        OrderItemId:this.info.Id,
-        RefundContent:this.RefundContent,
-        RefundReasonId: this.RefundReasonId,
-      }).then(res=>{
-        if(res.code===0){
-          uni.showToast({
-            title:res.msg
-          })
-          setTimeout(()=>{
-            uni.navigateBack();
-          },1500)
-        }
-      })
+		if(this.RefundReasonId == 0){
+			uni.showToast({
+				title:'请选择退款原因!',
+				icon:'none'
+			})
+			return false;
+		}else{
+			if(this.type==1){
+			  var url='Order/ApplicationBarter'
+			}else if(this.type==2){
+			  var url='Order/ApplicationReturn'
+			}else{
+			  var url='Order/ApplicationRefund'
+			}
+			post(url,{
+			  UserId:uni.getStorageSync("userId"),
+			  Token:uni.getStorageSync("token"),
+			  OrderNo:this.OrderNumber,
+			  OrderItemId:this.info.Id,
+			  RefundContent:this.RefundContent,
+			  RefundReasonId: this.RefundReasonId,
+			}).then(res=>{
+			  if(res.code===0){
+			    uni.showToast({
+			      title:res.msg
+			    })
+			    setTimeout(()=>{
+			      uni.navigateBack();
+			    },1500)
+			  }
+			})
+		}
     },
     goUrl(url){
       uni.navigateTo({

@@ -323,7 +323,7 @@
 	}
 
 	.picbox {
-		width: 25%;
+		width: 33%;
 		box-sizing: border-box;
 		display: flex;
 		justify-content: center;
@@ -350,8 +350,8 @@
 	}
 
 	.pic_itim {
-		width: 144upx;
-		height: 144upx;
+		width: 220upx;
+		height: 220upx;
 	}
 
 	.porela {

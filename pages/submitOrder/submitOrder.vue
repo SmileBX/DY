@@ -313,7 +313,6 @@
 			};
 		},
 		onLoad: function(e) {
-
 			console.log(e)
 			// #ifdef APP-PLUS
 			this.orderSType=e.orderSType

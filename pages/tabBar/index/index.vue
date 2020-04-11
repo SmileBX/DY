@@ -11,7 +11,7 @@
 				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList')">
 					<view class="iconfont icon-sousuo"></view>
 					<input type="text" placeholder="请输入关键字">
-					<view class="iconfont icon-xiangji"></view>
+					<!-- <view class="iconfont icon-xiangji"></view> -->
 				</view>
 				<view class="head_r flex flexAlignCenter">
 					<view class="iconfont icon-xiaoxi mr2" @click="tolink('/pages/message/messageClass/messageClass','login')"><view class="num" v-if="newscount!=0">{{newscount}}</view></view>

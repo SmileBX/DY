@@ -51,7 +51,9 @@
 		<!-- #ifdef MP-WEIXIN -->  
 		<view class="MP-login" v-if="isShowminiApp">
 		    <view class="logo">
-		        <image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+				<view class="logoimg">
+					<image class="img_bb" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+				</view>
 				<view class="Title">大单易拼</view>
 		    </view> 
 		    <button class="login-btn btn_gree" open-type="getUserInfo" @click="oauth">微信登录</button>

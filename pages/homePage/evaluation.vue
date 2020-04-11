@@ -83,6 +83,11 @@
 				datalist:[]
 			}
 		},
+		onLoad(e){
+			// #ifndef APP-PLUS
+			this.proId=e.id;
+			// #endif
+		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");

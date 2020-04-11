@@ -703,4 +703,5 @@
 <style lang="scss" scoped>
 	@import './style';
 	@import '../../../common/dd_style.css';
+	
 </style>
