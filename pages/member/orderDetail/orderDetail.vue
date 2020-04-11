@@ -120,7 +120,9 @@ export default {
     }
   },
   onShow(){
+	  // #ifndef APP-PLUS
 	  this.OrderNo = this.$mp.query.id
+	  // #endif
      this.getDetail()
   },
   onLoad(e){

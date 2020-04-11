@@ -389,6 +389,7 @@
 			// #ifdef APP-PLUS
 			console.log(e.id)
 			this.proId=e.id
+			this.isLimint=e.isLimint||0;
 			// #endif
 		},
 		onShow(){

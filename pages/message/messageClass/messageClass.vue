@@ -61,9 +61,6 @@
 			this.curPage = getCurrentPageUrlWithArgs().replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 		},
 		onShow() {
-			// #ifndef MP-WEIXIN
-			   // SEOTitle('');
-			// #endif
 			// if (toLogin(this.curPage)) {
 				this.NoticeTypeList();
 			// }

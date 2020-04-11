@@ -121,8 +121,10 @@
 			this.sizeTypeIndex = 2;
 			this.sizeType = ['压缩', '原图', '压缩或原图'];
 			this.countIndex = 8;
+			// #ifndef APP-PLUS
 			this.OrderNo = this.$mp.query.id,
 			this.OrderDetailId  = this.$mp.query.detailId
+			// #endif
 			console.log(this.$mp.query)
 			this.getDetail()
 			

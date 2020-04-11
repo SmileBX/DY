@@ -169,7 +169,7 @@
 			gotoProductList(type, id) {
 				if (type === 0) {
 					uni.navigateTo({
-						url: "/pages/homePage/proList"
+						url: "/pages/homePage/proList?typeId="+this.categoryList[0].Id
 					}); //点击搜素页面跳转，不需要传入参数
 				}
 				if (type === 1) {

@@ -96,8 +96,8 @@ export default {
     
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
+    this.userId = uni.getStorageSync("userId");
+    this.token = uni.getStorageSync("token");
     this.hasimg=false;
     this.showImg=false;
     this.isShowShare=false;
@@ -200,16 +200,16 @@ export default {
 	},
 	// Wxshare() {
 	// 		let _this = this
-	// 		let aa = wx.getFileSystemManager();
+	// 		let aa = uni.getFileSystemManager();
 	// 		 aa.writeFile({
-	// 		   filePath:wx.env.USER_DATA_PATH+'/test.png',
+	// 		   filePath:uni.env.USER_DATA_PATH+'/test.png',
 	// 		   data: _this.qrimg.slice(22),
 	// 		   encoding:'base64',
 	// 		   success: res => {
-	// 		     wx.saveImageToPhotosAlbum({
-	// 		       filePath: wx.env.USER_DATA_PATH + '/test.png',
+	// 		     uni.saveImageToPhotosAlbum({
+	// 		       filePath: uni.env.USER_DATA_PATH + '/test.png',
 	// 		       success: function (res) {
-	// 		         wx.showToast({
+	// 		         uni.showToast({
 	// 		           title: '保存成功',
 	// 		         })
 	// 		       },
@@ -218,22 +218,22 @@ export default {
 	// 				if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
 	// 					console.log('用户一开始拒绝了，我们想再次发起授权')
 	// 					// 用户授权设置
-	// 					wx.showModal({
+	// 					uni.showModal({
 	// 						title: '提示',
 	// 						content: '需要您授权保存相册',
 	// 						showCancel: false,
 	// 						success:modalSuccess=>{
-	// 						  wx.openSetting({
+	// 						  uni.openSetting({
 	// 							success(settingdata) {
 	// 							  console.log("settingdata", settingdata)
 	// 							  if (settingdata.authSetting['scope.writePhotosAlbum']) {
-	// 								wx.showModal({
+	// 								uni.showModal({
 	// 								  title: '提示',
 	// 								  content: '获取权限成功,再次点击图片即可保存',
 	// 								  showCancel: false,
 	// 								})
 	// 							  } else {
-	// 								wx.showModal({
+	// 								uni.showModal({
 	// 								  title: '提示',
 	// 								  content: '获取权限失败，将无法保存到相册哦~',
 	// 								  showCancel: false,
@@ -261,7 +261,7 @@ export default {
 	// 	},
 	drawCanvas() {
       if(!this.hasimg){
-        const ctx = wx.createCanvasContext('myCanvas');
+        const ctx = uni.createCanvasContext('myCanvas');
         //背景图片
         var codeurl = this.codeurl
         var bgurl = this.bgurl
@@ -294,7 +294,7 @@ export default {
     },
     Wxshare(){
       var _this=this
-      wx.canvasToTempFilePath({     //将canvas生成图片
+      uni.canvasToTempFilePath({     //将canvas生成图片
         canvasId: 'myCanvas',
         x: 0,
         y: 0,
@@ -305,15 +305,15 @@ export default {
         success: function (res) {console.log(res)
           _this.hasimg=true
           _this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl)
-          wx.saveImageToPhotosAlbum({  //保存图片到相册
+          uni.saveImageToPhotosAlbum({  //保存图片到相册
             filePath: res.tempFilePath,
             success: function () {
-              wx.showToast({
+              uni.showToast({
                 title: "图片保存成功！",
                 duration: 2000
               })
               setTimeout(() => {
-                wx.navigateBack({})
+                uni.navigateBack({})
               }, 2000);
             }
           })
@@ -347,7 +347,7 @@ export default {
         this.tel = res.data.Mobile;
         this.Avatar=res.data.Avatar
         var _this=this
-         wx.getImageInfo({
+         uni.getImageInfo({
             src: "http://jyy.wtvxin.com/static/images/icons/inn.png",//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
@@ -357,7 +357,7 @@ export default {
             //失败回调
             }
         });
-        wx.getImageInfo({
+        uni.getImageInfo({
             src: this.Avatar,//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
@@ -376,7 +376,7 @@ export default {
       }).then(res=>{
         this.info=res.data;
         var _this=this
-        wx.getImageInfo({
+        uni.getImageInfo({
             src: this.info.InviteQRcode,//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
@@ -389,12 +389,12 @@ export default {
       })
     },
     copy(str){
-      wx.showModal({
+      uni.showModal({
         title:'复制邀请码？',
         content:str,
         success(res){
           if(res.confirm){
-           wx.setClipboardData({
+           uni.setClipboardData({
               data: str,
               success (res) {
               

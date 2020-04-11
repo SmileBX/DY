@@ -55,8 +55,8 @@ export default {
     }
   },
   onShow(){
-    this.userId = wx.getStorageSync("userId")
-    this.token = wx.getStorageSync("token")
+    this.userId = uni.getStorageSync("userId")
+    this.token = uni.getStorageSync("token")
     this.CouponCenter()
   },
   components: {
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     goUrl(url){
-      wx.navigateTo({
+      uni.navigateTo({
         url:url
       })
     },
@@ -117,7 +117,7 @@ export default {
           Token:this.token,
           CouponId:id
       }).then(res=>{
-         wx.showToast({
+         uni.showToast({
             title: res.msg,
             icon: 'none',
           })

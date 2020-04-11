@@ -25,10 +25,10 @@ export default {
       userNick:""
     }
   },
-  onLoad(){
+  onLoad(e){
     this.userId = uni.getStorageSync("userId")
     this.token = uni.getStorageSync("token")
-    this.userNick=this.$root.$mp.query.nick;
+    this.userNick=e.nick;
   },
   methods: {
     //编辑昵称

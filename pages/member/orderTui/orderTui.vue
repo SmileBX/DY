@@ -64,14 +64,14 @@
 				this.isnNoData = false
 			},
 			goUrl(url){
-			  wx.navigateTo({
+			  uni.navigateTo({
 				url:url
 			  })
 			},
 			getList(){
 			  post('Order/RefundOrderList',{
-				UserId:wx.getStorageSync("userId"),
-				Token:wx.getStorageSync("token"),
+				UserId:uni.getStorageSync("userId"),
+				Token:uni.getStorageSync("token"),
 				Page:this.page,
 				PageSize:this.pagesize,
 			  }).then(res=>{

@@ -84,14 +84,16 @@
 			}
 		},
 		onLoad(e){
-			// #ifndef APP-PLUS
+			// #ifdef APP-PLUS
 			this.proId=e.id;
 			// #endif
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
+			// #endif
 			this.GetEvaluate();
 		},
 		methods:{
