@@ -1,14 +1,15 @@
 <template>
 	<view>
 		<view class="payinfo">
-		  <view class="p1 flex flex-center"><view class="iconfont icon-gou2"></view>支付成功</view>
+		  <view class="p1 flex flex-center" v-if="GroupId>0"><view class="iconfont icon-gou2"></view>恭喜您参团成功</view>
+		  <view class="p1 flex flex-center" v-else><view class="iconfont icon-gou2"></view>支付成功</view>
 		  <view class="p2"></view>
 		  <view class="btns">
 			<view class="btn toindex" @click="tolink('/pages/tabBar/index/index',true)">返回首页</view>
 			<view class="btn todetail" @click="toOrder">查看订单</view>
 		  </view>
 		</view>
-		<view class="foryouCon">
+<!-- 		<view class="foryouCon">
 		  <view class="for_hd">
 			<view class="icon icon_l"></view><view class="txt">为你推荐</view><view class="icon icon_r"></view>
 		  </view>
@@ -29,7 +30,7 @@
 				</view>
 			</view>
 		  </view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -42,12 +43,22 @@
 				token: "",
 				orderNo:"",
 				Noarr:[],
+				GroupId:0,//大于0 是拼团
 			}
+		},
+		onLoad(e) {
+			// #ifdef APP-PLUS
+			this.orderNo=e.orderNo;
+			this.GroupId=e.query.GroupId;
+			// #endif
 		},
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
 			this.orderNo=this.$root.$mp.query.orderNo;
+			this.GroupId=this.$root.$mp.query.GroupId;
+			// #endif
 			this.Noarr=this.orderNo.split(",");
 		},
 		methods: {

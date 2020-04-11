@@ -12,7 +12,7 @@
 					<view class="searchico">
 						<view class="searchpole"></view>
 						<view class="searchimg"><image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image></view>
-						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"/>
+						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"  focus=true/>
 					</view>
 				</view>
 				<view class="abrogate" @click="init">搜索</view>

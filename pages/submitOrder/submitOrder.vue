@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap">
 		<view class="uni-pd10 p_re">
-			<view class="addrbox uni-bg-white b_radius uni-mb10">
+			<view class="addrbox uni-bg-white b_radius uni-mb10" v-if="this.info.IsAloneBuy==0&&this.info.IsSalesOffice==0">
 				<view class="address flex flex-between" v-if="isAddress" @click="golink('/pages/member/address/address?pagetype=confirm&checkId='+addrInfo.Id)">
 					<view class="local">
 						<view class="iconfont icon-dizhi"></view>
@@ -117,7 +117,7 @@
 					</view>
 				</view>
 				<view class="orderbox">
-					<view class="orderinfo">
+					<view class="orderinfo" v-if="this.info.IsAloneBuy==0&&this.info.IsSalesOffice==0">
 						<view class="orderleft">运费</view>
 						<view class="orderright">
 							{{info.Freight>0?'￥'+info.Freight:'免邮'}}
@@ -193,7 +193,7 @@
 					</view>
 				</view>
 				<view class="orderbox">
-					<view class="orderinfo">
+					<view class="orderinfo" v-if="this.info.IsAloneBuy==0&&this.info.IsSalesOffice==0">
 						<view class="orderleft">运费</view>
 						<view class="orderright">
 							{{info.Freight>0?'￥'+info.Freight:'免邮'}}
@@ -655,13 +655,6 @@
 				  duration: 1000
 				});
 			  }
-			  //初始化业主参数
-			  let peopleInfo={ //业主信息
-			  	ContactName:"",//业主姓名
-			  	Tel:"",//业主电话
-			  	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
-			  }
-			  this.$store.commit("update", { peopleInfo });
 			},
 			//确认拼团
 			async CreateGroupOrder(){
@@ -680,12 +673,13 @@
 				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){
+				  var _this=this
 				uni.showToast({
 				  title: '订单提交成功',
 				  success(){
 					setTimeout(res=>{
 						uni.redirectTo({
-							url: '/pages/pay/pay?orderNo='+result.data.OrderNo+'&source=1'
+							url: '/pages/pay/pay?orderNo='+result.data.OrderNo+'&source=1&GroupId='+_this.GroupId
 						})
 					},1500)
 				  }
@@ -697,10 +691,17 @@
 				  duration: 1000
 				});
 			  }
+			  //初始化业主参数
+			  let peopleInfo={ //业主信息
+			  	ContactName:"",//业主姓名
+			  	Tel:"",//业主电话
+			  	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+			  }
+			  this.$store.commit("update", { peopleInfo });
 			},
 			//提交订单
 			confirm(){console.log(this.yanzheng())
-				if(this.addressId>0){
+				if(this.addressId>0||(this.addressId==0&&(this.info.IsSalesOffice==1||this.info.IsAloneBuy==1))){
 					if(this.orderSType==0){
 					  if(this.GroupId>0){
 						  if(!this.yanzheng()){

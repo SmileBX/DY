@@ -28,7 +28,7 @@
         </div>
         <div class="or_item bg_fff radius">
             <div class="pp3 flex bor_tit" v-for="(item, index) in info.OrderDetails" :key="index" @click.stop="goUrl('/pages/homePage/details?id='+item.ProductId)">
-                <image mode="aspectFit" :src="item.PicNo" alt="" class="shop"></iamge>
+                <image mode="aspectFit" :src="item.PicNo" alt="" class="shop mr2"></iamge>
                 <div class="flex1 flex  mr2">
                     <div class="or_left flex flexColumn justifyContentBetween">
                       <p>{{item.ProductName}}</p>
@@ -54,7 +54,7 @@
                     <span>优惠</span>
                     <span>¥{{info.DiscountedAmount}}</span>
                 </p>
-                <p class="flex justifyContentBetween mt1">
+                <p class="flex justifyContentBetween mt1" v-if="info.IsNeedAudit==0">
                     <span>运费</span>
                     <span>¥{{info.ExpressPrice}}</span>
                 </p>
@@ -80,6 +80,7 @@
               <!-- <p>取消时间：2019-12-20 09:18:30</p>
               <p>发货时间：2019-12-20 09:18:30</p> -->
               <p>成交时间：{{info.Paytime}}</p>
+			  <p v-if="info.OrderDetails[0].ConsumeCode">特 权 码  ：{{info.OrderDetails[0].ConsumeCode}}</p>
           </div>
       </div>
 	  <!-- #ifndef MP-WEIXIN -->

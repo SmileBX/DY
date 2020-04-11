@@ -67,12 +67,14 @@
 				disable:false,
 				WxOpenid:"",
 				WxCode:"",
+				GroupId:0,//大于0 是拼团产品
 			}
 		},
 		// #ifdef APP-PLUS
 		onLoad(e) {
 			this.orderNo=e.orderNo;
 			this.source=e.source||0;
+			this.GroupId=e.GroupId||0;
 		},
 		// #endif
 		onShow(){
@@ -82,6 +84,7 @@
 			// #ifndef APP-PLUS
 			this.orderNo=this.$root.$mp.query.orderNo;
 			this.source=this.$root.$mp.query.source||0;
+			this.GroupId=this.$root.$mp.query.GroupId||0;
 			// #endif
 			this.PayOrderDetails();
 			this.GetMemInfo();
@@ -187,7 +190,7 @@
 				if (result.code === 0) {
 					this.showPay=false;
 					uni.redirectTo({
-						url: "/pages/payresult/payresult?allprice="+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo
+						url: "/pages/payresult/payresult?allprice="+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo+"&GroupId="+this.GroupId
 					})
 				}else if(result.code === 102){
 					uni.showModal({
