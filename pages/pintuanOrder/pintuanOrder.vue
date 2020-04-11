@@ -14,20 +14,22 @@
           </div>
         </div>
         <div class="tuan">
-          <p class="one" v-if="data.GroupStatusStr=='拼团中'">还差{{data.MaxPeopleNum-data.CurrentPeople}}人即可成团</p>
+          <p class="one" v-if="data.GroupStatusStr=='拼团中'">还差{{needpeople}}人即可成团</p>
           <p class="two flexc" v-if="timeEnd&&data.GroupStatusStr=='拼团中'">剩余<span>{{timeEnd}}</span>结束</p>
           <p class="two flexc" v-else><span>已结束</span></p>
           <div class="flexc thr">
             <div v-for="(item, index) in data.MemberList" :key="index">
               <img  :src="item.MemberAvatar||'http://jd.wtvxin.com/images/images/index/defute.png'" alt="">
             </div>
-            <div v-for="(item, index) in data.MaxPeopleNum-data.CurrentPeople>4?4:data.MaxPeopleNum-data.CurrentPeople" :key="index">
+            <div v-for="(item1, index1) in needpeople" :key="index1">
               <img src="http://jd.wtvxin.com/images/images/index/defute.png" alt="">
             </div>
           </div>
+		  <!-- #ifndef H5 -->
 		  <block v-if="data.GroupStatusStr=='拼团中'">
 		  <button class="fou flexc" open-type="share">邀请好友参团</button>
 		  </block>
+		  <!-- #endif -->
           <p class="fiv">请尽快成团，否则就被抢光了哦！</p>
         </div>
       </div>
@@ -67,6 +69,7 @@ export default {
       rule:[],//规则内容
       timeEnd:'',//时间倒计时
       interval:null,//倒计时函数
+	  needpeople:0,//拼团还差人数
     }
   },
   onLoad(options){
@@ -81,6 +84,9 @@ export default {
   onShow(){
     
   },
+  onUnload(){
+	  clearInterval(this.interval);
+  },
   methods: {
     async getData(){
       const res = await post('GroupBuy/GroupMemberInfo',{
@@ -89,6 +95,8 @@ export default {
         GroupRecordId:this.GroupRecordId
       });
       this.data = res.data;
+	  var num=res.data.MaxPeopleNum - res.data.CurrentPeople
+	  this.needpeople=num>4?4:(num<0?0:num)
       this.timeEnds();
     },
     timeEnds(){

@@ -1,7 +1,7 @@
 <template>
 	<view class="order">
 		<view class="bg_fff tabList flex">
-			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{'active':index==tabIndex}"  @click="cliTab(index)">{{item.name}}</view>
+			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{'active':item.id==tabIndex}"  @click="cliTab(item.id)">{{item.name}}</view>
 		</view>
 		<view class="list pw3" style="padding-top: 80upx;" v-if="hasData">
 			<!--
@@ -72,7 +72,7 @@
 		},
 		data(){
 			return{
-				tabList:[{id:0,name:'全部'},{id:1,name:'待付款'},{id:2,name:'待发货'},{id:3,name:'待收货'},{id:4,name:'待评价'}],
+				tabList:[{id:0,name:'全部'},{id:1,name:'待付款'},{id:6,name:'待审核'},{id:2,name:'待发货'},{id:3,name:'待收货'},{id:4,name:'待评价'}],
 				tabIndex:0,
 				page:1,
 				pagesize:3,

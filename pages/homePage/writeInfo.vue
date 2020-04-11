@@ -49,9 +49,31 @@
 			this.token = uni.getStorageSync("token");
 		},
 		onShow(){
-			
+			this.getMemberInfo()
 		},
 		methods:{
+			async getMemberInfo() {
+				let result = await post("User/GetMemInfo", {
+					"UserId": this.userId,
+					"Token": this.token
+				})
+				if (result.code === 0) {
+					this.Tel = result.data.Mobile;
+				} else if (result.code === 2) {
+					let _this = this;
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login"
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
+				}
+			},
 			change(e){
 				console.log(e)
 				this.IsSales=e.mp.detail.value
@@ -75,15 +97,26 @@
 			},
 			btnSubmit(){			
 				if(this.yeanheng()&&valPhone(this.Tel)){
-					// 设置业主参数
-					let peopleInfo={ //业主信息
-						ContactName:this.ContactName,//业主姓名
-						Tel:this.Tel,//业主电话
-						IsSalesOffice:this.IsSales,//去过或咨询售楼处 1-有 0-没有
+					if(this.IsSales==1&&this.IsSalesOffice==1){
+						uni.showToast({
+							title:"只有未去过售楼处才能购买享受优惠",
+							icon:"none",
+							duration:2000
+						})
+						setTimeout(res=>{
+							uni.navigateBack({});
+						},2000)
+					}else{
+						// 设置业主参数
+						let peopleInfo={ //业主信息
+							ContactName:this.ContactName,//业主姓名
+							Tel:this.Tel,//业主电话
+							IsSalesOffice:this.IsSales,//去过或咨询售楼处 1-有 0-没有
+						}
+						this.$store.commit("update", { peopleInfo });
+						// 跳转到上一页
+						uni.navigateBack({});						
 					}
-					this.$store.commit("update", { peopleInfo });
-					// 跳转到上一页
-					uni.navigateBack({});
 				}
 			}
 				

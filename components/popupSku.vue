@@ -404,6 +404,7 @@
 				if (result.code === 0) {
 					uni.showToast({
 						title: "加入购物车成功！",
+						icon:"none",
 						duration: 2000
 					});
 					this.$emit('hidePopup');

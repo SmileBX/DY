@@ -81,8 +81,21 @@
 			<view class="flex justifyContentStart bb_shop" v-if="proInfo.ShopData">
 				<image :src="proInfo.ShopData.Logo" class="shop_bb_logo"></image>
 				<view class="uni-bold">{{proInfo.ShopData.ShopNick}}</view>
+			</view> 
+			<!--2020-4-11新增拼团显示-->
+			<view class="swiper_bb flex justifyContentBetween" v-if="recordList.length>0">
+				<swiper class="swiper_pt" vertical="false" circular  :autoplay="true" interval="3000" :duration='5000'>
+					<swiper-item class="swiper_item_box" v-for="(item,sindex) in recordList" :key="sindex">
+						<view class="swiper_inner flex flexAlignCenter">
+							<image :src="item.MemberHeadImg"></image>
+							<view class="nick_name">{{item.MemberHeadNick}}</view>
+							<view class="sub_nick">刚刚这些人拼团成功！</view>
+						</view>
+					</swiper-item>
+				</swiper>
+				<view class="swiper_btn"  @click="showSku(1)">去拼单</view>
 			</view>
-			
+			<!--end!!!!!!!!!!!!!!!!!!-->
 			<view class="purchase" style="display: none;">
 				<view class="picture">
 					<view class="portrait">
@@ -410,6 +423,7 @@
 				hasComment:false,
 				commentCount:0,//评价总数
 				CommentList:[],//评价列表
+				recordList:[],//拼团记录列表
 				isLimint:0,//0非限时购产品，1限时购产品
 				timer:null,
 				timeStr:[],//倒计时
@@ -454,6 +468,7 @@
 		onNavigationBarButtonTap(e) {
 			if(e.index===0){
 				//分享
+				this.sharePlus()
 			}else{
 				uni.reLaunch({
 					url: '/pages/tabBar/cart/cart'
@@ -461,6 +476,23 @@
 			}
 		},
 		methods: {
+			sharePlus(){
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSceneSession",
+				    type: 0,
+				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId,
+				    title: "大单易拼等你来！",
+				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
+				    imageUrl: this.proInfo.PicData[0].PicUrl,
+				    success: function (res) {
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
+			},
 			//跳转
 			tolink(Url,tabBar) {
 				console.log(Url,"mmmmmmmmmmmm")
@@ -513,7 +545,8 @@
 						}
 					}
 					if(this.proInfo.GroupId>0){//可以拼团
-						this.GroupProductInfo()
+						this.GroupProductInfo()//拼团商品详情
+						this.getGroupRecordList() //拼团记录
 						this.isProData = false;
 					}else{
 						this.isProData = true;
@@ -602,6 +635,19 @@
 					}
 				}
 			},
+			//拼团记录
+			async getGroupRecordList(){
+				const res = await post('GroupBuy/GetGroupRecordList',{
+					userId:this.userId,
+					token:this.token,
+					GroupId: this.GroupId,
+					TopNum:9,//查询前几条数据
+					Type:1,//1://最新拼团记录 0://默认，拼团中
+				})
+				if(res.code == 0){
+					this.recordList = res.data
+				}
+			}, 
 			//拼团商品详情
 			async GroupProductInfo(){
 				let result = await post("GroupBuy/GroupProductInfo", {
@@ -823,6 +869,45 @@
 </script>
 <style scoped lang="scss">
 	@import "@/common/details.scss";
+	.swiper_bb{
+		padding:30upx;
+		box-sizing: content-box;
+		height:100upx;
+		.swiper_pt{
+			flex:1;
+			height:80upx;
+			border-radius:  15upx 0  0 15upx;
+			background: #ffeaea;
+			padding:0 20upx;
+		}
+		.swiper_item_box{
+			height:80upx!important;
+		}
+		.swiper_btn{
+			width:20%;
+			background:#ffd0d0 ;
+			height:80upx;
+			line-height: 80upx;
+			text-align: center;
+			color:#ff3333;
+			border-radius: 0 15upx 15upx 0;
+		}
+		.swiper_inner{	
+			height:80upx;
+			image{
+				width:60upx;height:60upx;
+				margin:0;border-radius: 50%;
+			}
+			.nick_name{
+				font-size:24upx;
+				font-weight:bold;
+				margin:0 60upx 0 20upx;
+			}
+			.sub_nick{
+				font-size:24upx;color:#999999;
+			}
+		}
+	}
 	.bb_shop{
 		text-align: left;
 		padding:30upx;

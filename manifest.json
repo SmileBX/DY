@@ -62,7 +62,8 @@
                 },
                 "payment" : {},
                 "ad" : {},
-                "maps" : {}
+                "maps" : {},
+                "share" : {}
             },
             "icons" : {
                 "android" : {
