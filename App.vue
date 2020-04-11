@@ -27,6 +27,9 @@
 		font-size: 28upx;
 		line-height: 1.8;
 	}
+	.uni-numbox__minus,.uni-numbox__plus{
+		height:56upx!important;line-height: 56upx!important;
+	}
 	.uni-radio-input.uni-radio-input-checked{
 		background-color: #FF3333!important;
 		border-color: #FF3333!important;

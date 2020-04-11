@@ -129,6 +129,7 @@
 			return {
 				proList:[],//推荐列表
 				ShopInfo:{},//品牌信息
+				shopLogo:'',//店铺图标
 				navigate,
 				userId: "",
 				token: "",
@@ -176,14 +177,32 @@
 			this.getPsoList()
 			this.getcommonProList()
 		},
+		onNavigationBarButtonTap(e) {
+			if(e.index===0){
+				//分享
+				this.sharePlus()
+			}else{
+				this.collect()
+			}
+		},
 		methods: {
-			onNavigationBarButtonTap(e) {
-				if(e.index===0){
-					//分享
-				}else{
-					// var currentWebview = this.$mp.page.$getAppWebview();
-					this.collect()
-				}
+			sharePlus(){
+				console.log(this.shopLogo,"app分享微信好友拉ffafa！")
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSceneSession",
+				    type: 0,
+				    href: "http://ddyp.wtvxin.com/#/pages/brand/shopIndex/shopIndex?ShopId="+this.ShopId,
+				    title: "大单易拼等你来！",
+				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
+				    imageUrl: this.shopLogo,
+				    success: function (res) { 
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
 			},
 			async getShop(){
 				const res = await post('Shop/ReadShop',{
@@ -191,8 +210,9 @@
 					userId:this.userId,
 					token:this.token,
 				})
-				if(res.code == 0){console.log(res.data)
+				if(res.code == 0){
 					this.ShopInfo=res.data
+					this.shopLogo = res.data.Logo
 					this.IsCollect=res.data.IsCollection.Value;
 					// #ifdef APP-PLUS
 					let text = ''

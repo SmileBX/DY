@@ -13,8 +13,9 @@
 				<input type="text" class="font20" @focus="blur()" :disabled="disabled" 
 				 v-model="logistics.nu" style="opacity: 0;position: fixed;top: -10000px;">
 				<!-- #endif -->
-				<span class="uni-bold font26 ">{{logistics.companyName}} {{logistics.nu}} </span>
-				<span class="copy font26" @click="copybtn">复制</span>
+				<span class="uni-bold font26 " v-if="logistics.companyName&&logistics.nu">{{logistics.companyName}} {{logistics.nu}} </span>
+				<span class="uni-bold font26 " v-else>暂无物流信息 </span>
+				<span class="copy font26" @click="copybtn" v-if="logistics.nu">复制</span>
 			</view>
 		</view>
 		<view class="logistics">

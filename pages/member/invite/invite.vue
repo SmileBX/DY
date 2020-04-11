@@ -31,14 +31,22 @@
               <view class="mt1 flex1 font18">分享微信好友</view>
           </button>
 		  <!-- #endif -->
-          <view class="flex flexColumn flexAlignCenter" @click="saveImg">
-              <image src="http://jyy.wtvxin.com/static/images/icons/quan.png" alt="" class="circle_img"></image>
-              <view class="mt1 flex1 font18">分享到朋友圈</view>
-          </view>
+		  <!-- #ifdef APP-PLUS -->
+		 <view class="flex flexColumn flexAlignCenter" @click="sharePlus">
+		      <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
+		      <view class="mt1 flex1 font18">分享微信好友</view>
+		  </view>
+		  <!-- #endif -->
+		
+			<view class="flex flexColumn flexAlignCenter" @click="saveImg">
+			    <image src="http://jyy.wtvxin.com/static/images/icons/quan.png" alt="" class="circle_img"></image>
+			    <view class="mt1 flex1 font18">分享到朋友圈</view>
+			</view>
+		 
       </view>
       <!-- 保存海报 -->
       <view class="mask" v-if="showImg"></view>
-	  <!-- #ifdef MP-WEIXIN-->
+	  <!-- #ifndef H5-->
       <view class="imgbox" v-if="showImg">
         <canvas canvas-id="myCanvas" class="share-canvas" v-if="!hasimg"></canvas>
         <image :src="saveImgurl" alt="" v-else></image>
@@ -53,7 +61,7 @@
 	   <!-- #ifdef H5-->
 	   <view class="saveBtn" v-if="showImg" @click="H5share">长按二维码保存</view>
 	   <!-- #endif -->
-	   <!-- #ifdef MP-WEIXIN-->
+	   <!-- #ifndef H5-->
 	   <view class="saveBtn" v-if="showImg" @click="Wxshare">保存相册分享到朋友圈</view>
 	   <!-- #endif -->
   </view>
@@ -104,15 +112,49 @@ export default {
     cancelShare(){
       this.isShowShare=false;
     },
+	sharePlus(){
+		console.log("app分享微信好友拉！！！！！！")
+		uni.share({
+		    provider: "weixin",
+		    scene: "WXSceneSession",
+		    type: 0,
+		    href: "http://uniapp.dcloud.io/",
+		    title: "uni-app分享",
+		    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+		    imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
+		    success: function (res) {
+		        console.log("success:" + JSON.stringify(res));
+		    },
+		    fail: function (err) {
+		        console.log("fail:" + JSON.stringify(err));
+		    }
+		});
+		// uni.share({
+		//     provider: 'weixin',
+		//     scene: "WXSceneSession",
+		//     type: 5,
+		//     imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/app/share-logo@3.png',
+		//     title: '欢迎体验uniapp',
+		//     miniProgram: {
+		//         id: 'gh_abcdefg',
+		//         path: 'pages/index/index',
+		//         type: 0,
+		//         webUrl: 'http://uniapp.dcloud.io'
+		//     },
+		//     success: ret => {
+		//         console.log(JSON.stringify(ret));
+		//     }
+		// });
+	},
     saveImg(){
       this.showImg=true
       this.isShowShare=false
-	  //#ifdef MP-WEIXIN
+	  //#ifndef H5
 	  let tempTimeOut = setTimeout(()=>{
 		  this.drawCanvas()
 		  clearTimeout(tempTimeOut)
 	  },100)
-      //#endif
+	  //#endif
 	  //#ifdef H5
 	  html2canvas(document.getElementById("bb_canvas"), {
 	  	allowTaint: true,
@@ -156,67 +198,67 @@ export default {
 			title: "请长按保存图片"
 		})
 	},
-	Wxshare() {
-			let _this = this
-			let aa = wx.getFileSystemManager();
-			 aa.writeFile({
-			   filePath:wx.env.USER_DATA_PATH+'/test.png',
-			   data: _this.qrimg.slice(22),
-			   encoding:'base64',
-			   success: res => {
-			     wx.saveImageToPhotosAlbum({
-			       filePath: wx.env.USER_DATA_PATH + '/test.png',
-			       success: function (res) {
-			         wx.showToast({
-			           title: '保存成功',
-			         })
-			       },
-			       fail: function (err) {
-			         //需要用户授权设置
-					if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
-						console.log('用户一开始拒绝了，我们想再次发起授权')
-						// 用户授权设置
-						wx.showModal({
-							title: '提示',
-							content: '需要您授权保存相册',
-							showCancel: false,
-							success:modalSuccess=>{
-							  wx.openSetting({
-								success(settingdata) {
-								  console.log("settingdata", settingdata)
-								  if (settingdata.authSetting['scope.writePhotosAlbum']) {
-									wx.showModal({
-									  title: '提示',
-									  content: '获取权限成功,再次点击图片即可保存',
-									  showCancel: false,
-									})
-								  } else {
-									wx.showModal({
-									  title: '提示',
-									  content: '获取权限失败，将无法保存到相册哦~',
-									  showCancel: false,
-									})
-								  }
-								},
-								fail(failData) {
-								  console.log("failData",failData)
-								},
-								complete(finishData) {
-								  console.log("finishData", finishData)
-								}
-							  })
-							}
-						  })
-			       }
+	// Wxshare() {
+	// 		let _this = this
+	// 		let aa = wx.getFileSystemManager();
+	// 		 aa.writeFile({
+	// 		   filePath:wx.env.USER_DATA_PATH+'/test.png',
+	// 		   data: _this.qrimg.slice(22),
+	// 		   encoding:'base64',
+	// 		   success: res => {
+	// 		     wx.saveImageToPhotosAlbum({
+	// 		       filePath: wx.env.USER_DATA_PATH + '/test.png',
+	// 		       success: function (res) {
+	// 		         wx.showToast({
+	// 		           title: '保存成功',
+	// 		         })
+	// 		       },
+	// 		       fail: function (err) {
+	// 		         //需要用户授权设置
+	// 				if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+	// 					console.log('用户一开始拒绝了，我们想再次发起授权')
+	// 					// 用户授权设置
+	// 					wx.showModal({
+	// 						title: '提示',
+	// 						content: '需要您授权保存相册',
+	// 						showCancel: false,
+	// 						success:modalSuccess=>{
+	// 						  wx.openSetting({
+	// 							success(settingdata) {
+	// 							  console.log("settingdata", settingdata)
+	// 							  if (settingdata.authSetting['scope.writePhotosAlbum']) {
+	// 								wx.showModal({
+	// 								  title: '提示',
+	// 								  content: '获取权限成功,再次点击图片即可保存',
+	// 								  showCancel: false,
+	// 								})
+	// 							  } else {
+	// 								wx.showModal({
+	// 								  title: '提示',
+	// 								  content: '获取权限失败，将无法保存到相册哦~',
+	// 								  showCancel: false,
+	// 								})
+	// 							  }
+	// 							},
+	// 							fail(failData) {
+	// 							  console.log("failData",failData)
+	// 							},
+	// 							complete(finishData) {
+	// 							  console.log("finishData", finishData)
+	// 							}
+	// 						  })
+	// 						}
+	// 					  })
+	// 		       }
 			     
-				    }
-				 })
-			     console.log(res)
-			   }, fail: err => {
-			     console.log(err)
-			   }
-			 })
-		},
+	// 			    }
+	// 			 })
+	// 		     console.log(res)
+	// 		   }, fail: err => {
+	// 		     console.log(err)
+	// 		   }
+	// 		 })
+	// 	},
 	drawCanvas() {
       if(!this.hasimg){
         const ctx = wx.createCanvasContext('myCanvas');
@@ -226,6 +268,7 @@ export default {
         var avaurl = this.avaurl
         var tel=this.tel
         var code="邀请码："+this.info.ReferralCode
+		console.log(codeurl,bgurl,tel,code)
         //画布背景填色
         ctx.setFillStyle('#ffffff')
         ctx.fillRect(0, 0, 300, 500);
@@ -249,7 +292,7 @@ export default {
         ctx.draw()
       }
     },
-    savebtn(){
+    Wxshare(){
       var _this=this
       wx.canvasToTempFilePath({     //将canvas生成图片
         canvasId: 'myCanvas',
