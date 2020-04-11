@@ -17,7 +17,7 @@
 				<view class="item" v-for="(item,index) in cartlist" :key="index">
 					<view class="item__hd flex flex-start">
 						<view :class="['IconsCK IconsCK-radio',item.select?'checked':'']" @click="shopcheck(index)"></view>
-						<view class="shop flex flex-start" @click="golink('/pages/brand/shopIndex/shopIndex?shopId='+item.ShopId)">
+						<view class="shop flex flex-start" @click="golink('/pages/brand/shopIndex/shopIndex?ShopId='+item.ShopId)">
 							<view class="iconfont icon-dianpu"></view>
 							<view class="shopName uni-ellipsis">{{item.ShopName}}</view>
 							<view class="uni-icon uni-icon-arrowright"></view>

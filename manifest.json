@@ -61,7 +61,8 @@
                     "ifly" : {}
                 },
                 "payment" : {},
-                "ad" : {}
+                "ad" : {},
+                "maps" : {}
             },
             "icons" : {
                 "android" : {
