@@ -352,7 +352,7 @@
 				}
 				return isSubmit;
 			},
-			//购物车拼团选择SKU
+			//购物车/拼团选择SKU
 			sureSku(){
 				if(this.valSubmit()){
 					if(this.fromcart){

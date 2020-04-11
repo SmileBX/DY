@@ -1,6 +1,6 @@
 <template>
 	<!-- 家居详情 -->
-	<view class="details">
+	<view class="details uni-bg-white">
 		<!-- 首图展示 -->
 		<view class="productBanner">
 			
@@ -56,7 +56,7 @@
 						<view class="selling"><span>¥</span>{{proInfo.Price}}</view>
 						<view class="original" v-if="proInfo.MarketPrice>proInfo.Price">¥{{proInfo.MarketPrice}}</view>
 					</view>
-					<view class="listm rt" v-if="proInfo.DistributionIncome>0">
+					<view class="listm rt" v-if="proInfo.DistributionIncome!=0">
 						<view class="cash">返</view>
 						<view class="cashm">¥{{proInfo.DistributionIncome}}</view>
 					</view>
@@ -72,6 +72,9 @@
 				<view class="slogan">{{proInfo.Name}}</view>
 				<view class="area">
 					{{proInfo.Synopsis}}
+				</view>
+				<view class="Keyword flex flex-start" v-if="proInfo.KeywordName">
+					<view class="item" v-for="(e,i) in proInfo.KeywordName.split(',')" :key="i">{{e}}</view>
 				</view>
 			</view>
 			<view class="slider"></view>
@@ -99,7 +102,7 @@
 		</view>
 		<view class="pole"></view>
 		<!-- 发货选择 -->
-		<view class="shipments">
+		<view class="shipments" v-if="proInfo.IsAloneBuy==0">
 			<view class="pick">
 				<view class="shipmentsbox">
 					<view class="">快递</view>
@@ -123,7 +126,39 @@
 				</view>
 			</view>
 		</view>
-		<!-- 品牌介绍 -->
+		<view v-if="proInfo.IsAloneBuy==1&&hasSKU" class="proguige">
+			<block v-for="(item, index) in specList" :key="index">
+			<view class="comment_hd">
+			  <view class="tit_l">选择所需{{index}}</view>
+			  <view class="tit_r flex flex-end" v-if="item.length>15">
+				<view class="flex search flexAlignCenter">
+					<view class="iconfont icon-sousuo" @click="searchSKU(index)"></view>
+					<input type="text" :placeholder="'请输入'+index" v-model.trim="inputSKU">
+				</view>
+			  </view>
+			</view>
+			<view class="box_bd">
+				<view class="guige">
+					<view class="guigelist flex-wrap">
+						<block v-for="(ite, ind) in item" :key="ind">
+							<block v-if="skuall">
+								<view :class="{'active':ite.name==SpecValue[index]}" @click="cliTag(index,ite.name)" class="skuitem ali-c jus-c">{{ite.name}}</view>
+							</block>
+							<block v-else>
+								<view v-if="ind<15" :class="{'active':ite.name==SpecValue[index]}" @click="cliTag(index,ite.name)" class="skuitem ali-c jus-c">{{ite.name}}</view>
+							</block>
+						</block>
+					</view>
+					<view class="more flex flex-center" v-if="item.length>15" @click="showskuAll">
+						{{skuall?'收起':'查看全部'}}
+						<view :class="['iconfont icon-shuangjiantouxia',skuall?'all':'']"></view>
+					</view>
+				</view>
+			</view>
+			</block>
+			<view class="pole"></view>
+		</view>
+		<!-- 服务介绍 -->
 		<view class="needknow" v-if="isServiceInfo">
 			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
 		</view>
@@ -165,28 +200,18 @@
 		</view>
 		<view class="pole"></view>
 		<!-- 商品特别说明 -->
-		<view class="explain">
-			<view class="pledge border_bottom">
-				<image class="safety" src="http://ddyp.wtvxin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
-				<span>100%正品 品牌直采</span>
+		<view class="attrbox" v-if="proInfo.IsAloneBuy==1&&proInfo.ParameterJson!=='{}'&&proInfo.ParameterJson!==''">
+			<view class="comment_hd">
+			  <view class="tit_l">商品属性</view>
 			</view>
-			<view class="especially">
-				<view class="especiallys">特别说明</view>
-				<view class="activity">
-					<view class="">1.</view>
-					<view class="">	本次活动的六重豪礼仅限在活动期间下订，并成功购买车位用户享有，权益限量100名，以实际拼付订单的顺序为准;</view>
-				</view>
-				<view class="activity">
-					<view class="">2.</view>
-					<view class="">活动权益方法时间:电商礼一价值1000元大单易拼电子消费券将在用户购买车位发票至旗舰店在线客服处审核后2-3个月内,发放至用户钱包;</view>
-				</view>
-				<view class="activity">
-					<view class="">3.</view>
-					<view class="">其他豪礼以线下销售客服为准;</view>
-				</view>
-				<view class="activity">
-					<view class="">4.</view>
-					<view class="">详情请咨询万科云子代销商在线客服。</view>
+			<view class="box_bd">
+				<view class="uni-list flex flex-wrap">
+					<view class="uni-list-cell" v-for="(item,index) in attrArr" :key="index">
+						<view class="uni-list-cell-navigate">
+							<text class="list-cell-l">{{index}}</text>
+							<text class="list-cell-r">{{item}}</text>
+						</view>
+					</view>
 				</view>
 			</view>
 			<view class="pole"></view>
@@ -267,7 +292,7 @@
 					<!-- 实心 icon-collect-->
 				</view>
 				<!-- 有拼团样式 -->
-				<view class="foot-item foot-item-btns">
+				<view class="foot-item foot-item-btns" v-if="proInfo.IsAloneBuy==0">
 					<view class="btn btn_1 flex" @click="showSku(proInfo.IsAloneBuy==0?0:2)">
 						<view class="num" v-if="isLimint==0">¥{{proInfo.Price}}</view>
 						<view class="num" v-else>¥{{proInfo.TimePrice}}</view>
@@ -281,11 +306,35 @@
 							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
 						</view>
-						<view class="listm rt flex" v-if="proInfo.DistributionIncome>0">
+						<view class="listm rt flex" v-if="proInfo.DistributionIncome!=0">
 							<view class="cash fa" >返</view>
 							<view class="cashm fas">¥{{proInfo.DistributionIncome}}</view>
 						</view>
 					</view>
+				</view>
+				
+				<view class="foot-item foot-item-btns" v-else>
+					<block v-if="reStock>0">
+					<view class="btn btn_1 flex" @click="gouBuy(0)">
+						<view class="num">¥{{alonePrice}}</view>
+						<view class="txt">单独购买</view>
+					</view>
+					<view class="btn btn_2 flex" style="flex:1.4" v-if="GroupId>0" @click="gouBuy(1)">
+						<view>
+							<view class="num">¥{{GroupPrice}}</view>
+							<view class="txt">我要拼团</view>
+						</view>
+						<view class="listm rt flex" v-if="proInfo.DistributionIncome!=0">
+							<view class="cash fa" >返</view>
+							<view class="cashm fas">¥{{proInfo.DistributionIncome}}</view>
+						</view>
+					</view>
+					</block>
+					<block v-else>
+						<view class="btn btn_1 flex" style="background-color: #C9C9C9;">
+							<view class="txt" style="font-size: 30upx;">已售罄</view>
+						</view>
+					</block>
 				</view>
 				<!-- 无拼团样式 -->
 <!-- 				<view class="foot-item foot-item-btns" v-else>
@@ -322,7 +371,7 @@
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,toLogin} from '@/common/util.js';
 	import uParse from '@/components/uParse/src/wxParse.vue';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import popupsku from '@/components/popupSku.vue';
@@ -369,6 +418,15 @@
 				GroupSku:[],//拼团商品Sku
 				ProSku:[],//普通商品Sku
 				hasData:false,//是否渲染页面
+				//特殊产品
+				alonePrice:0,
+				hasSKU: false, //产品是否含有sku
+				specList:[],//规格总列表
+				SpecValue:{},//当前选择规格的对象
+				SpecInfo:{},//当前选择规格的信息--图片，价钱
+				reStock:0,//库存
+				skuall:false,//是否展示全部sku
+				inputSKU:"",//输入搜索的sku
 			}
 		},
 		onLoad(e) {
@@ -385,6 +443,11 @@
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
 			// #endif
+			this.specList=[];
+			this.SpecText="";
+			this.SpecValue={};
+			this.SpecInfo={};
+			this.canaddcar=false;
 			this.Goodsxq();
 			this.getCommentList();
 		},
@@ -433,6 +496,22 @@
 					this.proInfo=result.data;
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;
+					if(result.data.IsAloneBuy==1){
+						if(this.isLimint==0){
+							this.alonePrice=this.proInfo.Price;
+						}else{
+							this.alonePrice=this.proInfo.TimePrice;
+						}
+						if (this.ProSku.length > 0) {
+							this.hasSKU = true;
+							this.specList = JSON.parse(result.data.SpecificationValue);
+							
+							this.reStock=result.data.Stock;
+						} else {
+							//如果没有含有sku，则只按照单价来计算商品价格
+							this.hasSKU = false;
+						}
+					}
 					if(this.proInfo.GroupId>0){//可以拼团
 						this.GroupProductInfo()
 						this.isProData = false;
@@ -450,6 +529,77 @@
 						this.attrArr=JSON.parse(this.proInfo.ParameterJson);
 					}
 					this.GetRTime(this.proInfo.FlashSaleEndTime);//限时商品倒计时
+				}
+			},
+			cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
+			  this.$set(this.SpecValue,name,value)
+			  let skulist=[];
+			  if(this.GroupId>0){
+				  skulist=this.GroupSku;
+			  }else{
+				  skulist=this.ProSku;
+			  }
+			  skulist.map((item,index)=>{
+				const please = JSON.parse(item.SpecValue)
+				if(this.isObjectValueEqual(please,this.SpecValue)){
+				  this.SpecInfo = item//匹配到的sku
+				  this.reStock=item.ProStock;
+				  if(this.reStock==0){
+					console.log("库存不足")
+				  }
+				  this.SpecText = this.SpecInfo.SpecText;
+				  if(this.isLimint==0){
+				  	this.alonePrice=this.SpecInfo.Price;
+				  }else{
+				  	this.alonePrice=this.SpecInfo.TimePrice;
+				  } 
+				  if(this.GroupId>0){
+					 this.GroupPrice=this.SpecInfo.GroupPrice; 
+				  }
+				  this.canaddcar=true;
+				}
+			  })
+			},
+			isObjectValueEqual(a, b) {//判断两个对象里面属性值是否相等
+				var aProps = Object.keys(a);
+				var bProps = Object.keys(b);
+				if (aProps.length != bProps.length) {return false;}
+				for (var i = 0; i < aProps.length; i++) {
+					var propName = aProps[i];
+					if (a[propName] !== b[propName]) {
+						return false;
+					}
+				}
+				return true;
+			},
+			showskuAll(){
+				this.skuall=!this.skuall;
+			},
+			searchSKU(name){
+				let _this=this;
+				this.cliTag(name,_this.inputSKU)
+			},
+			//特殊产品购买
+			gouBuy(e){
+				if (toLogin()){
+					if(this.canaddcar){
+						let gid=0;
+						if(e==1){
+							gid=this.GroupId
+						}else{
+							gid=0;
+						}
+						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid;
+						uni.navigateTo({
+							url: objUrl
+						})
+					}else{
+						uni.showToast({
+							title: "请选择规格！",
+							icon:"none",
+							duration: 2000
+						});
+					}
 				}
 			},
 			//拼团商品详情
