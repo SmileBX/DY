@@ -191,7 +191,7 @@
 					userId:this.userId,
 					token:this.token,
 				})
-				if(res.code == 0){
+				if(res.code == 0){console.log(res.data)
 					this.ShopInfo=res.data
 					this.IsCollect=res.data.IsCollection.Value;
 					// #ifdef APP-PLUS
@@ -217,7 +217,7 @@
 				}
 			},
 			//添加取消收藏
-			async collect(){
+			async collect(){console.log(this.ShopId)
 				let objUrl = ''
 				if(this.IsCollect){
 					objUrl = "User/ReCollections"
@@ -229,7 +229,7 @@
 					Type:1, //0:产品 1:商家 3:品牌资源
 					userId:this.userId,
 					token:this.token,
-				  });
+				  });console.log(result)
 				if(result.code==0){
 					// #ifdef APP-PLUS
 					let text = ''

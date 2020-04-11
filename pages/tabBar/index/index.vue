@@ -1,12 +1,12 @@
 <template>
-	<view class="home index" style="height: 100%;">
+	<view class="home index" style="height: 100%;" id="allmap">
 		<view style="width: 100%;background:#ff3333;" :style="{'height':barHeight+'px'}"></view>
 		<!--顶部搜索导航-->
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
 				<view class="flex flexAlignCenter">
 					<view class="locale uni-ellipsis" @click="typelist">深圳</view>
-					<view class="iconfont icon-arrow_down-copy font12"></view>
+					<view class="iconfont icon-shouhuodizhi font12"></view>
 				</view>
 				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList')">
 					<view class="iconfont icon-sousuo"></view>
@@ -190,6 +190,7 @@
 
 <script>
 	import {post,get,toLogin} from '@/common/util.js';
+	import {MP} from '@/common/map.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
@@ -241,11 +242,29 @@
 			this.hand();//获取精选等分类列表
 			this.headheight=uni.getSystemInfoSync().windowHeight-this.barHeight-uni.upx2px(180);
 			console.log(this.headheight)
+			// uni.getLocation({
+			//     type: 'wgs84',
+			// 	// geocode: true,
+			//     success: function (res) {
+			//         console.log('当前位置的经度：' + res.longitude);
+			//         console.log('当前位置的纬度：' + res.latitude);
+			//     },
+			// 	fail: function (ret) {
+			// 	    console.log(ret);
+			// 	}
+			// });
+			
 		},
 		onShow(){
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}
+			MP().then(BMap => {
+				  let myCity = new BMap.LocalCity()
+				  myCity.get(function (res) {
+				  console.log(res)
+				  })
+			  })
 		},
 		components:{noData,uniLoadMore},
 		methods:{
