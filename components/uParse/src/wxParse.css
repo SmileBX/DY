@@ -231,5 +231,17 @@
 }
 .wxParse .th {
   background: #f0f0f0;
+  
   border-top: 2upx solid #e0e0e0;
+}
+.wxParse .li{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.wxParse .list-left *{
+	display: inline;
+}
+.wxParse .list-left{
+	
 }

@@ -163,7 +163,7 @@ image{ width: 100%; margin: 0 auto;}
 .c_blue{color: #5e729a;}
 .fz12{ font-size: 24upx !important;}
 .fz12 span{font-size: 24upx !important;}
-.b_radius{ border-radius: 16upx;}
+.b_radius{ border-radius: 16upx; overflow: hidden;}
 .p_re{position: relative;}
 .line-through{ text-decoration: line-through;}
 /* 文本溢出隐藏 */
