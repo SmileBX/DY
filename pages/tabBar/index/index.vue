@@ -4,8 +4,8 @@
 		<!--顶部搜索导航-->
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
-				<view class="flex flexAlignCenter">
-					<view class="locale uni-ellipsis" @click="typelist">{{cityname}}</view>
+				<view class="flex flexAlignCenter" @click="tolink('/pages/other/chooseCity/chooseCity')">
+					<view class="locale uni-ellipsis">{{cityname}}</view>
 					<view class="iconfont icon-shouhuodizhi font12"></view>
 				</view>
 				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList?typeId='+menubarlist[0][0].Id)">
@@ -245,12 +245,14 @@
 			this.hand();//获取精选等分类列表
 			this.headheight=uni.getSystemInfoSync().windowHeight-this.barHeight-uni.upx2px(180);
 			var _this=this
+			// #ifdef APP-PLUS||MP-WEIXIN
 			uni.getLocation({
 			    type: 'wgs84',
 				geocode: true,
 			    success: function (res) {
 					// #ifdef APP-PLUS
-					_this.cityname=res.address.city.replace(/市/,'')
+					var cityname=res.address.city.replace(/市/,'')
+					uni.setStorageSync('cityname',cityname)
 					// #endif
 					// #ifdef MP-WEIXIN
 					_this.wxGetCity(res.longitude,res.latitude)
@@ -258,23 +260,27 @@
 			        console.log(res);
 			    }
 			});
-			
-		},
-		onShow(){
-			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
-				this.NewsCount();
-			}
+			// #endif
 			//百度定位
 			// #ifdef H5
 			MP().then(BMap => {
 				var _this=this
 				let myCity = new BMap.LocalCity()
 				myCity.get(function (res) {
-					_this.cityname=res.name.replace(/市/,'')
-				console.log(res)
+					var cityname=res.name.replace(/市/,'')
+					uni.setStorageSync('cityname',cityname)
+					_this.cityname=cityname
+				console.log(cityname)
 				})
 			})
 			// #endif
+			
+		},
+		onShow(){
+			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
+				this.NewsCount();
+			}
+			this.cityname=uni.getStorageSync("cityname");console.log(this.cityname+'222222')
 		},
 		components:{noData,uniLoadMore},
 		methods:{
@@ -290,7 +296,8 @@
 					},
 					success (res) {
 					    console.log(res)
-						_this.cityname=res.data.result.addressComponent.city.replace(/市/,'')
+						var cityname=res.data.result.addressComponent.city.replace(/市/,'')
+						uni.setStorageSync('cityname',cityname)
 					}
 				})
 			},

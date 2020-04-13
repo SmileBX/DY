@@ -472,6 +472,14 @@
 						// "enablePullDownRefresh" : true
 						
 					}
+				},
+				{
+					"path":"chooseCity/chooseCity",
+					"style": {
+						"navigationBarTitleText": "城市选择"
+						// "enablePullDownRefresh" : true
+						
+					}
 				}
 			]
 		},
@@ -641,6 +649,12 @@
 						"path" : "msgDetail/msgDetail",
 						"style" : {
 							"navigationBarTitleText": "详情"
+						}
+					},
+					{
+						"path" : "agreement/agreement",
+						"style" : {
+							"navigationBarTitleText": "用户协议"
 						}
 					}
 			]

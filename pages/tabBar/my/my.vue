@@ -23,12 +23,12 @@
 						</view>
 					</view>
 					<view class="flowdata flex flex-center">
-						<view class="item">
-							<view class="title" @click="gotab('/pages/tabBar/my/collect',0)">收藏商品</view>
+						<view class="item" @click="gotab('/pages/tabBar/my/collect',0)">
+							<view class="title">收藏商品</view>
 							<view class="num">{{memberInfo.GoodsCollectNum||0}}</view>
 						</view>
-						<view class="item">
-							<view class="title" @click="gotab('/pages/tabBar/my/collect',1)">收藏店铺</view>
+						<view class="item" @click="gotab('/pages/tabBar/my/collect',1)">
+							<view class="title">收藏店铺</view>
 							<view class="num">{{memberInfo.ShopFollowNum||0}}</view>
 						</view>
 						<view class="item">

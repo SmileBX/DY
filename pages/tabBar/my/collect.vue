@@ -129,9 +129,9 @@
 			// #ifdef H5
 			this.barHeight = 0;
 			// #endif
-			this.tabIndex = uni.getStorageSync("collectIndex")
 		},
 		onShow() {
+			this.tabIndex = uni.getStorageSync("collectIndex")
 			this.initData();
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -152,6 +152,7 @@
 				}
 			},
 			tapTab(index) { //点击tab-bar
+				uni.setStorageSync('collectIndex',index)
 				this.tabIndex = index;
 				this.initData();
 				this.collectionsList();

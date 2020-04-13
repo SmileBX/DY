@@ -32,7 +32,7 @@
 				</view> -->
 				<view class="from-txt">
 					<view  @click="shiftAgree" style="display: inline-block;vertical-align: middle;"><view class="IconsCK IconsCK-radio" :class="{'checked':isAgree}" style="margin-right: 8upx;"></view><text>我已阅读并同意</text></view>
-					<navigator url="" class="inline-block" style="color:#004098;">《用户协议》</navigator>
+					<navigator url="/pages/message/agreement/agreement" class="inline-block" style="color:#004098;">《用户协议》</navigator>
 				</view>
 				<view class="ftbtn" style="padding:40upx 0 20upx 0;">
 					<button type="primary" class="btn" @click="btnSubmit">{{type==1?'确认绑定':'确认注册'}}</button>

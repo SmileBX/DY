@@ -22,12 +22,14 @@
 			}
 		},
 		onLoad(e){
-			// #ifdef H5
+			// #ifdef APP-PLUS
 			this.qqnum = e.qqnum
 			// #endif
 		},
 		onShow() {
+			// #ifdef APP-PLUS
 			this.qqnum = this.$mp.query.qqnum
+			// #endif
 			this.getinfo()
 		},
 		methods: {
