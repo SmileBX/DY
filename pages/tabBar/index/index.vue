@@ -324,7 +324,7 @@
 					PageSize: this.pageSize,
 					TypeId:this.tid,
 					ClassId:this.cid
-				});
+				}); 
 				if (result.code === 0) {
 					let _this=this;
 					if (result.data.length > 0) {
@@ -497,6 +497,7 @@
 			},
 			// 获取类型(商品)
 			async typelist(){
+				this.menubarlist = []
 				let result = await post("Goods/TypeList", {
 					Type:0
 				});

@@ -100,7 +100,7 @@
 				imgs:[],
 				isShowBtnUpload:true,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-				proRank: 5, //产品评价等级
+				proRank: 5, //产品评价等级 
 				serRank: 5, //服务评价等级
 				logRank: 5, //物流评价等级
 				inputTxtLength: 0, //当前输入字数
@@ -137,7 +137,7 @@
 		methods: {
 			async pub() {
 				if (this.text) {
-					let imgList = await this.base64Img(this.imgList);
+					let imgList = await this.base64Img(this.imageList);
 					post('Order/CommentProduct', {
 						"UserId": uni.getStorageSync("userId"),
 						"Token": uni.getStorageSync("token"),
