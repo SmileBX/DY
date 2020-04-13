@@ -4,11 +4,16 @@
 			<swiper-item >
 				<!-- <view class="content myCollectPage"> -->
 					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
-					<!-- #ifndef MP-WEIXIN -->
+					<!-- #ifdef APP-PLUS -->
 					<video  @error="error" src="http://play.wtvxin.com/live/test.m3u8" :style="{height : height + 'px'}"
 					 :autoplay="true" controls ></video>
 					<!-- #endif -->
-						<!-- #ifdef MP-WEIXIN -->
+					<!-- #ifdef H5 -->
+					<view class="H5video" id="H5video" :style="{height : height + 'px'}">
+						
+					</view>
+					<!-- #endif -->
+					<!-- #ifdef MP-WEIXIN -->
 					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
 					<!-- #endif -->
 				<!-- </view> -->
@@ -34,6 +39,7 @@
 
 <script>
 	import {host,post,get,toLogin,} from '@/common/util.js';
+	import {TPlay} from '@/common/TcPlayer.js';
 	export default {
 		data() {
 			return {
@@ -56,47 +62,60 @@
 		},
 		onShow() {
 			// #ifdef APP-PLUS
-					var icon = plus.nativeObj.View.getViewById("icon");
-					//如果已经存在
-					if(icon){    
-			            //则显示
-						icon.show();
-					}else{
-			            //不存在  则创建
-						this.createtab();
-						console.log(icon)
-					}	
-					// #endif
+			var icon = plus.nativeObj.View.getViewById("icon");
+			//如果已经存在
+			if(icon){    
+				//则显示
+				icon.show();
+			}else{
+				//不存在  则创建
+				this.createtab();
+				console.log(icon)
+			}	
+			// #endif
 			let res = uni.getSystemInfoSync()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.height=res.windowHeight
+			// #ifdef H5
+			this.playH5()
+			// #endif
 		},
 		components:{
 			
 		},
 		methods: {
 			createtab: function(){
-					        // 设置水平居中位置
-							var bitmap = new plus.nativeObj.Bitmap('bmp1');
-					        var view = new plus.nativeObj.View('icon', {
-					            top: '40px',
-					            left: '20px',
-					            width: '80px',
-					            height: '30px',
-								backgroundColor:'#ff3333',
-								
-					        });
-					       view.drawText('开始直播',{top:'0px',left:'0px',width:'100%',height:'100%'},{ size: '15px',color:'#fff',},'icon')
-							view.addEventListener("click", function(e) {
-								console.log(bitmap)
-					          uni.navigateTo({
-					          	url:"../../livepush/livepush"
-					          })
-					        }, false);
-					        view.show();
-					    },
-
+				// 设置水平居中位置
+				var bitmap = new plus.nativeObj.Bitmap('bmp1');
+				var view = new plus.nativeObj.View('icon', {
+					top: '40px',
+					left: '20px',
+					width: '80px',
+					height: '30px',
+					backgroundColor:'#ff3333',
+					
+				});
+			   view.drawText('开始直播',{top:'0px',left:'0px',width:'100%',height:'100%'},{ size: '15px',color:'#fff',},'icon')
+				view.addEventListener("click", function(e) {
+					console.log(bitmap)
+				  uni.navigateTo({
+					url:"../../livepush/livepush"
+				  })
+				}, false);
+				view.show();
+			},
+			playH5(){
+				TPlay().then(TcPlayer => {
+					  var player = new TcPlayer('H5video', {
+					  "m3u8": "http://play.wtvxin.com/live/test.m3u8", //请替换成实际可用的播放地址
+					  "autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+					  "poster" : "http://ddyp.wtvxin.com/static/logo.png",
+					  "width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
+					  "height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
+					  });
+				  })
+			},
 			goUrl(url){
 				uni.navigateTo({
 					url:url
@@ -118,7 +137,9 @@
 						icon:'none',
 						success() { 
 							this.mark = true;
-							uni.navigateBack({})
+							setTimeout(res=>{
+								uni.navigateBack({})
+							},1500)
 						}
 					})
 				}
@@ -159,5 +180,8 @@
 		line-height: 60upx;
 		font-size: 30upx;
 		z-index: 200;
+	}
+	.H5video{
+		width: 100%;
 	}
 </style>

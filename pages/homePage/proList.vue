@@ -239,6 +239,9 @@
 			getTypeList(){
 				post('Goods/TypeList',{}).then(res=>{
 					if(res.code==0){
+						if(!this.typeId){
+							this.typeId=res.data[0].Id
+						}
 						this.classifyList=[];
 						res.data.map(item=>{
 							if(this.typeId==item.Id){

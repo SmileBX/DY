@@ -139,9 +139,6 @@
 			let res = uni.getSystemInfoSync()
 			this.width = res.windowWidth;
 			this.height = res.windowHeight;
-			// #ifdef H5
-			this.height=this.height+108
-			// #endif
 			uni.hideTabBar()
 		},
 		onReady() {

@@ -5,7 +5,7 @@
 		<view class="index_nav uni-tab-bar">
 			<view class="flex justifyContentBetween">
 				<view class="flex flexAlignCenter">
-					<view class="locale uni-ellipsis" @click="typelist">深圳</view>
+					<view class="locale uni-ellipsis" @click="typelist">{{cityname}}</view>
 					<view class="iconfont icon-shouhuodizhi font12"></view>
 				</view>
 				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList?typeId='+menubarlist[0][0].Id)">
@@ -190,12 +190,15 @@
 
 <script>
 	import {post,get,toLogin} from '@/common/util.js';
-	import {MP} from '@/common/map.js';
+	// #ifdef H5
+	import {MP} from '@/common/map.js';//h5百度定位
+	// #endif
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default{
 		data(){
 			return{
+				cityname:"",//定位城市
 				bannerlist:[{Pic:""}], // 轮播图
 				Typelist:[],           // 头部
 				menubarlist:[],        // 菜单
@@ -241,33 +244,57 @@
 			this.Recprolist();//精选推荐
 			this.hand();//获取精选等分类列表
 			this.headheight=uni.getSystemInfoSync().windowHeight-this.barHeight-uni.upx2px(180);
-			console.log(this.headheight)
-			// uni.getLocation({
-			//     type: 'wgs84',
-			// 	// geocode: true,
-			//     success: function (res) {
-			//         console.log('当前位置的经度：' + res.longitude);
-			//         console.log('当前位置的纬度：' + res.latitude);
-			//     },
-			// 	fail: function (ret) {
-			// 	    console.log(ret);
-			// 	}
-			// });
+			var _this=this
+			uni.getLocation({
+			    type: 'wgs84',
+				geocode: true,
+			    success: function (res) {
+					// #ifdef APP-PLUS
+					_this.cityname=res.address.city.replace(/市/,'')
+					// #endif
+					// #ifdef MP-WEIXIN
+					_this.wxGetCity(res.longitude,res.latitude)
+					// #endif
+			        console.log(res);
+			    }
+			});
 			
 		},
 		onShow(){
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}
+			//百度定位
+			// #ifdef H5
 			MP().then(BMap => {
-				  let myCity = new BMap.LocalCity()
-				  myCity.get(function (res) {
-				  console.log(res)
-				  })
-			  })
+				var _this=this
+				let myCity = new BMap.LocalCity()
+				myCity.get(function (res) {
+					_this.cityname=res.name.replace(/市/,'')
+				console.log(res)
+				})
+			})
+			// #endif
 		},
 		components:{noData,uniLoadMore},
 		methods:{
+			//小程序解析经纬度获取城市
+			// #ifdef MP-WEIXIN
+			wxGetCity(lon,lat){
+				var _this=this
+				wx.request({
+					url:'https://api.map.baidu.com/reverse_geocoding/v3/?ak=thbHKWI9ZZtgGYxwGFbKSolcNe9gCZKG&location=' + lat + ',' + lon + '&output=json&coordtype=wgs84ll',
+					data: {},
+					header: {
+						'content-type': 'application/json' // 默认值
+					},
+					success (res) {
+					    console.log(res)
+						_this.cityname=res.data.result.addressComponent.city.replace(/市/,'')
+					}
+				})
+			},
+			// #endif
 			async getBrandList(){
 				let res = await post('Goods/BrandList',{})
 				if(res.code == 0){
