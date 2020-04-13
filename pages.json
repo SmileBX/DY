@@ -380,6 +380,12 @@
             "path" : "pages/pintuanOrder/pintuanOrder",
             "style" : {}
         }
+		,{
+		    "path" : "pages/map/map",
+		    "style" : {
+				"navigationBarTitleText":"地理位置"
+			}
+		}
     ],
 
 	"subPackages":[

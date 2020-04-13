@@ -824,7 +824,9 @@
 		padding: 0 10upx;
 		.iconfont{ margin-right: 10upx;}
 		.uni-input-placeholder{ font-size: 24upx;}
+		.icon-cha{ font-size: 28upx; color: #c6c6c6 !important;}
 	}
+	.selectedSKU{ padding: 0 30upx;}
 	.guige{
 		padding: 20upx;
 		.skuitem{
@@ -869,6 +871,19 @@
 					padding: 0 0 0 30upx;
 				}
 			}
+		}
+	}
+}
+.Position{
+	.box_bd{
+		padding: 30upx;
+		.txtbox{
+			width: 600upx;
+			.addr{ font-size: 30upx;}
+		}
+		.iconfont{
+			font-size: 40upx;
+			color: #348ff3;
 		}
 	}
 }
