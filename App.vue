@@ -46,7 +46,7 @@
 	}
 	.dot .uni-radio-input.uni-radio-input-checked{
 		background-color: #ffffff!important;
-		border-color: #FF3333!important;
+		border-color: #FF3333!important; 
 	}
 	.dot uni-radio .uni-radio-input.uni-radio-input-checked:before{
 		border-radius: 50%!important;

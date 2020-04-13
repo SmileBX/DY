@@ -879,7 +879,7 @@
 			height:80upx;
 			border-radius:  15upx 0  0 15upx;
 			background: #ffeaea;
-			padding:0 20upx;
+			padding:0 15upx;
 		}
 		.swiper_item_box{
 			height:80upx!important;
@@ -902,7 +902,10 @@
 			.nick_name{
 				font-size:24upx;
 				font-weight:bold;
-				margin:0 60upx 0 20upx;
+				width:35%;text-align: center;
+				text-overflow :ellipsis;
+				white-space :nowrap; 
+				overflow : hidden;
 			}
 			.sub_nick{
 				font-size:24upx;color:#999999;

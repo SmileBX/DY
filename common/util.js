@@ -72,7 +72,7 @@ var dateUtils = {
 
 
 // 判断是否登录了
-function toLogin(objUrl) {
+function toLogin(objUrl) { 
   // const userInfo = wx.getStorageSync('userInfo');
   const userId = uni.getStorageSync('userId');
   const token = uni.getStorageSync('token');

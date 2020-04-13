@@ -16,9 +16,9 @@
     <div class="widthdrawBox bg_fff mt10">
       <div class="charge">
         <p class="apoint" style="padding-top:20upx;">提现金额</p>
-        <p class="flex flexAlignBaseline" style="padding-top:10upx;padding-bottom:20upx;">
+        <p class="flex flexAlignCenter" style="padding-top:10upx;padding-bottom:20upx;">
           <span class="fh">￥</span>
-          <input v-model="amount" type="number" class="inputPrice flex1">
+          <input v-model="amount" type="digit" class="inputPrice flex1">
         </p>
       </div>
       <div class="tips" style="padding:20upx 0;border-top:1px solid #f2f2f2;">可提现余额：{{Wallet}}
@@ -33,10 +33,10 @@
 <script>
 import { post} from "@/common/util.js";
 export default {
-  onLoad() {
+  onLoad(e) {
+	  this.wType=e.type||0;
   },
   onShow() {
-	 
     this.Wallet = this.$store.state.Wallet;
 	this.wType=this.$root.$mp.query.type||0;
 	if(this.wType==1){
@@ -46,15 +46,22 @@ export default {
 	}
     this.amount = '';
     //  console.log("余额"+this.Wallet);
-    this.bankCardId = this.$store.state.myCardInfo.id;
-    this.bankLogo = this.$store.state.myCardInfo.bankLogo;
-    this.bankCardName = this.$store.state.myCardInfo.bankCardName;
-    this.bankCardNo = this.$store.state.myCardInfo.bankCardNo.substring(
-      this.$store.state.myCardInfo.bankCardNo.length - 4,
-      this.$store.state.myCardInfo.bankCardNo.length
-    );
+	if(this.$store.state.myCardInfo.id){
+		this.hasData = true
+		this.bankCardId = this.$store.state.myCardInfo.id;
+		this.bankLogo = this.$store.state.myCardInfo.bankLogo;
+		this.bankCardName = this.$store.state.myCardInfo.bankCardName;
+		this.bankCardNo = this.$store.state.myCardInfo.bankCardNo.substring(
+		  this.$store.state.myCardInfo.bankCardNo.length - 4,
+		  this.$store.state.myCardInfo.bankCardNo.length
+		);
+	}
+   
     this.userId = uni.getStorageSync("userId");
     this.token = uni.getStorageSync("token");
+	// console.log(this.$store.state.selectMyCard.status,"this.$store.state.selectMyCard.status")
+	console.log(this.hasDefaultCard,"this.hasDefaultCard")
+	
     if (this.hasDefaultCard) {
       this.getBankList();
     }
@@ -73,7 +80,7 @@ export default {
       bankLogo: "",
       bankCardName: "",
       bankCardNo: "",
-      hasDefaultCard: true,
+      hasDefaultCard: false,
       amount: "" ,//提现的金额
       MinWithdrawal:'',	//每次提现最小额度
       MaxWithdrawal:'',	//每次提现最大额度
@@ -101,14 +108,23 @@ export default {
     },
     shiftCardList() {
       this.hasDefaultCard = false;
+	  console.log(this.hasDefaultCard,"shiftCardList")
       this.$store.commit("setSelectMyCard", {
-        url: "/pages/other/withdraw/withdraw",
+        url: "/pages/other/withdraw/withdraw?type=1",
         status: true
       });
-      uni.navigateTo({ url: "/pages/Wallet/bankCard/bankCard" });
+      uni.redirectTo({ url: "/pages/Wallet/bankCard/bankCard" });
     },
     valOther() {
       let price = Number(this.amount);
+	  if(price == ''){
+		  uni.showToast({
+		  	tile:'请输入提现金额！',
+			icon: "none",
+			duration: 1500
+		  })
+		   return false;
+	  }
       if (price < this.MinWithdrawal) {
         uni.showToast({
           title: `最低提现金额为${this.MinWithdrawal}元!`,
@@ -146,7 +162,9 @@ export default {
     submitWithdraw() {
       //提现
       if (this.valOther()) {
+		  console.log("55555555555")
 		  if(this.wType==1){
+			  console.log("66666666")
 			  this.DrawMoneyApply();
 		  }
       }
@@ -196,7 +214,7 @@ export default {
         if (result.code === 0) {
           //提现成功
           uni.showToast({
-            title: "提现申请成功！",
+            title: "申请成功！",
             icon: "none",
             duration: 1500,
             success: function() {
