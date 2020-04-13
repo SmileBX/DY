@@ -101,8 +101,8 @@ export default {
     },
     timeEnds(){
 		var _this=this
-      const timeend = new Date(_this.editTime(_this.data.EndTime,'time')).getTime();
-      const diff = timeend - new Date().getTime();console.log(diff)
+      const timeend = new Date(_this.editTime(_this.data.EndTime,'time').replace(/-/g,'/')).getTime();
+      const diff = timeend - new Date().getTime();console.log(diff,"hahhah")
       // 小于0，已过时间
       if(diff<0){ 
         this.timeEnd ='';
@@ -150,7 +150,8 @@ export default {
           timeText+=this.formatNumber(m)+':'
         }
         timeText+=this.formatNumber(s);
-        this.timeEnd =timeText;console.log(this.timeEnd)
+        this.timeEnd =timeText;
+		// console.log(this.timeEnd)
         timeText = '';
       },1000) 
     },
@@ -158,7 +159,7 @@ export default {
 	  let newTime = ''
 	  if (type === 'time') {
 	    newTime = time.substr(0, time.lastIndexOf(':'))
-	    newTime = newTime.replace('T', ' ')
+	    newTime = newTime.replace('T', ' ')+':00'
 	  }
 	  if (type === 's') {
 	    newTime = time.substr(0, time.lastIndexOf('.'))
@@ -168,7 +169,6 @@ export default {
 	  if (type === "date") {
 	    newTime = time.substr(0, time.lastIndexOf('T'))
 	  }
-	  console.log(newTime, 'time')
 	  return newTime;
 	},
     // 时间格式化工具
