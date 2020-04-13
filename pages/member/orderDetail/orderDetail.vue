@@ -91,7 +91,7 @@
 	  <!-- #endif -->
 	  <!-- #ifdef MP-WEIXIN -->
 	  <button open-type="concat" class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi"
-	   style="border:0!important;padding:0;background: #ffffff;line-height:1.9">
+	   style="border:0!important;padding:20upx 0;background: #ffffff;line-height:1.9">
 	      <image src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch" mode="aspectFit"></iamge>
 	      <span class="font26">联系客服</span>
 	  </button>

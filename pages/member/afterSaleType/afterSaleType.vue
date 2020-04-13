@@ -12,24 +12,33 @@
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
 		  @click="goUrl(1)">
               <view class="flex flexAlignCenter">
-                  <image src="http://jyy.wtvxin.com/static/images/icons/huan.png" alt="" class="huan"></image>
-                  <view class="mr2">申请换货</view>
+                  <image src="http://jyy.wtvxin.com/static/images/icons/huan.png" alt="" class="huan mr2"></image>
+				  <view>
+					   <view >申请换货</view>
+					   <view style="font-size: 24upx;" class="color_gray">已收到货，需要更换已收到的货物</view>
+				  </view>
               </view>
                <span class="iconfont icon-arrow_r"></span>
           </view>
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
 		  @click="goUrl(2)">
               <view class="flex flexAlignCenter">
-                  <image src="http://jyy.wtvxin.com/static/images/icons/tui.png" alt="" class="huan"></image>
-                  <view class="mr2">申请退货退款</view>
+                  <image src="http://jyy.wtvxin.com/static/images/icons/tui.png" alt="" class="huan mr2"></image>
+				  <view>
+					   <view >申请退货退款</view>
+					   <view style="font-size: 24upx;" class="color_gray">已收到货，需要更换已收到的货物</view>
+				  </view>
               </view>
              <span class="iconfont icon-arrow_r"></span>
           </view>
           <view class="menu_item flex justifyContentBetween flexAlignCenter" 
 		  @click="goUrl(3)">
               <view class="flex flexAlignCenter">
-                  <image src="http://jyy.wtvxin.com/static/images/icons/tuiq.png" alt="" class="huan"></image>
-                  <view class="mr2">仅退款（无需退货）</view>
+                  <image src="http://jyy.wtvxin.com/static/images/icons/tuiq.png" alt="" class="huan mr2"></image>
+				  <view>
+					   <view>仅退款（无需退货）</view>
+					   <view style="font-size: 24upx;" class="color_gray">未收到货（包含未签收）或卖家协商同意前提下</view>
+				  </view>
               </view>
                <span class="iconfont icon-arrow_r"></span>
           </view>

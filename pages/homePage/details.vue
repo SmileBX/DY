@@ -77,8 +77,7 @@
 					<view class="item" v-for="(e,i) in proInfo.KeywordName.split(',')" :key="i">{{e}}</view>
 				</view>
 			</view>
-			<view class="slider"></view>
-			<view class="flex justifyContentStart bb_shop" v-if="proInfo.ShopData">
+			<view class="flex justifyContentStart bb_shop" v-if="false">
 				<image :src="proInfo.ShopData.Logo" class="shop_bb_logo"></image>
 				<view class="uni-bold">{{proInfo.ShopData.ShopNick}}</view>
 			</view> 
@@ -139,18 +138,22 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="proInfo.IsAloneBuy==1&&hasSKU" class="proguige">
+		<view v-if="proInfo.IsAloneBuy==1&&proInfo.IsSku==1" class="proguige">
 			<block v-for="(item, index) in specList" :key="index">
 			<view class="comment_hd">
 			  <view class="tit_l">选择所需{{index}}</view>
 			  <view class="tit_r flex flex-end" v-if="item.length>15">
 				<view class="flex search flexAlignCenter">
 					<view class="iconfont icon-sousuo" @click="searchSKU(index)"></view>
-					<input type="text" :placeholder="'请输入'+index" v-model.trim="inputSKU">
+					<input type="text" @confirm="searchSKU(index)" @input="onInput" :placeholder="'请输入'+index" v-model.trim="inputSKU">
+					<view class="iconfont icon-cha" v-if="inputSKU" @click="delInput"></view>
 				</view>
 			  </view>
 			</view>
 			<view class="box_bd">
+				<view class="selectedSKU" v-if="showsearchres">
+					搜索结果：{{showsearchtext}}
+				</view>
 				<view class="guige">
 					<view class="guigelist flex-wrap">
 						<block v-for="(ite, ind) in item" :key="ind">
@@ -229,6 +232,22 @@
 			</view>
 			<view class="pole"></view>
 		</view>
+		<!-- 地理位置 -->
+		<view class="Position" v-if="proInfo.IsAloneBuy==1&&proInfo.Lat&&proInfo.Lng">
+			<view class="comment_hd">
+			  <view class="tit_l">地理位置</view>
+			</view>
+			<view class="box_bd flex flex-between" @click="lookmap(proInfo.Lat,proInfo.Lng)">
+				<view class="txtbox">
+					<view class="addr">
+						{{proInfo.Address}}
+					</view>
+				</view>
+				<view class="iconfont icon-shouhuodizhi"></view>
+			</view>
+			<view class="pole"></view>
+		</view>
+		
 		<!-- 拼单流程 -->
 		
 		<view class="flow">
@@ -434,13 +453,14 @@
 				hasData:false,//是否渲染页面
 				//特殊产品
 				alonePrice:0,
-				hasSKU: false, //产品是否含有sku
 				specList:[],//规格总列表
 				SpecValue:{},//当前选择规格的对象
 				SpecInfo:{},//当前选择规格的信息--图片，价钱
 				reStock:0,//库存
 				skuall:false,//是否展示全部sku
 				inputSKU:"",//输入搜索的sku
+				showsearchres:false,//搜索结果
+				showsearchtext:"",
 			}
 		},
 		onLoad(e) {
@@ -463,6 +483,9 @@
 			this.SpecValue={};
 			this.SpecInfo={};
 			this.canaddcar=false;
+			this.inputSKU="";
+			this.showsearchres=false;
+			this.showsearchtext="";
 			this.Goodsxq();
 			this.getCommentList();
 		},
@@ -530,19 +553,17 @@
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;
 					if(result.data.IsAloneBuy==1){
+						this.reStock=result.data.Stock;
 						if(this.isLimint==0){
 							this.alonePrice=this.proInfo.Price;
 						}else{
 							this.alonePrice=this.proInfo.TimePrice;
 						}
-						if (this.ProSku.length > 0) {
-							this.hasSKU = true;
+						if (this.proInfo.IsSku==1) {
 							this.specList = JSON.parse(result.data.SpecificationValue);
-							
-							this.reStock=result.data.Stock;
 						} else {
 							//如果没有含有sku，则只按照单价来计算商品价格
-							this.hasSKU = false;
+							this.canaddcar=true;
 						}
 					}
 					if(this.proInfo.GroupId>0){//可以拼团
@@ -565,7 +586,8 @@
 					this.GetRTime(this.proInfo.FlashSaleEndTime);//限时商品倒计时
 				}
 			},
-			cliTag(name,value){//点击选择规格标签--name:规格名称 value:所选规格值
+			cliTag(name,value,isSearch){//点击选择规格标签--name:规格名称 value:所选规格值
+			  let _this=this;
 			  this.$set(this.SpecValue,name,value)
 			  let skulist=[];
 			  if(this.GroupId>0){
@@ -573,24 +595,38 @@
 			  }else{
 				  skulist=this.ProSku;
 			  }
+			  if(isSearch==1){
+			  		this.showsearchres=true;
+			   }
+			   let num=0;
 			  skulist.map((item,index)=>{
 				const please = JSON.parse(item.SpecValue)
-				if(this.isObjectValueEqual(please,this.SpecValue)){
-				  this.SpecInfo = item//匹配到的sku
-				  this.reStock=item.ProStock;
-				  if(this.reStock==0){
+				if(_this.isObjectValueEqual(please,_this.SpecValue)){
+				  _this.SpecInfo = item//匹配到的sku
+				  _this.reStock=item.ProStock;
+				  if(_this.reStock==0){
 					console.log("库存不足")
 				  }
-				  this.SpecText = this.SpecInfo.SpecText;
-				  if(this.isLimint==0){
-				  	this.alonePrice=this.SpecInfo.Price;
+				  _this.SpecText = _this.SpecInfo.SpecText;
+				  if(_this.isLimint==0){
+				  	_this.alonePrice=_this.SpecInfo.Price;
 				  }else{
-				  	this.alonePrice=this.SpecInfo.TimePrice;
+				  	_this.alonePrice=_this.SpecInfo.TimePrice;
 				  } 
-				  if(this.GroupId>0){
-					 this.GroupPrice=this.SpecInfo.GroupPrice; 
+				  if(_this.GroupId>0){
+					 _this.GroupPrice=_this.SpecInfo.GroupPrice; 
 				  }
-				  this.canaddcar=true;
+				  _this.canaddcar=true;
+				  if(isSearch==1){
+				  	_this.showsearchtext=_this.SpecText;
+				  }
+				}else{
+					if(isSearch==1){
+						num++
+						if(num==skulist.length){
+							_this.showsearchtext="抱歉，没有搜到相关内容~"
+						}
+					}
 				}
 			  })
 			},
@@ -611,7 +647,26 @@
 			},
 			searchSKU(name){
 				let _this=this;
-				this.cliTag(name,_this.inputSKU)
+				if(_this.inputSKU){
+					_this.cliTag(name,_this.inputSKU,1)
+				}else{
+					uni.showToast({
+						title: "请输入搜索内容",
+						icon:"none",
+						duration: 1500
+					});
+				}
+			},
+			delInput(){
+				this.inputSKU="";
+				//this.SpecText="";
+				this.showsearchres=false;
+				this.showsearchtext="";
+			},
+			onInput(e){
+				if(e.detail.value==""){
+					this.delInput();
+				}
 			},
 			//特殊产品购买
 			gouBuy(e){
@@ -635,6 +690,12 @@
 						});
 					}
 				}
+			},
+			// 查看地图
+			lookmap(Lat,Lng){
+				uni.navigateTo({
+					url: '/pages/map/map?Lat='+Lat+'&Lng='+Lng
+				})
 			},
 			//拼团记录
 			async getGroupRecordList(){
@@ -871,7 +932,7 @@
 <style scoped lang="scss">
 	@import "@/common/details.scss";
 	.swiper_bb{
-		padding:30upx;
+		padding: 0 30upx;
 		box-sizing: content-box;
 		height:100upx;
 		.swiper_pt{
@@ -879,7 +940,7 @@
 			height:80upx;
 			border-radius:  15upx 0  0 15upx;
 			background: #ffeaea;
-			padding:0 20upx;
+			padding:0 15upx;
 		}
 		.swiper_item_box{
 			height:80upx!important;
@@ -902,7 +963,10 @@
 			.nick_name{
 				font-size:24upx;
 				font-weight:bold;
-				margin:0 60upx 0 20upx;
+				width:35%;text-align: center;
+				text-overflow :ellipsis;
+				white-space :nowrap; 
+				overflow : hidden;
 			}
 			.sub_nick{
 				font-size:24upx;color:#999999;

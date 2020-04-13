@@ -177,6 +177,7 @@
 			this.getPsoList()
 			this.getcommonProList()
 		},
+		// #ifdef APP-PLUS
 		onNavigationBarButtonTap(e) {
 			if(e.index===0){
 				//分享
@@ -185,6 +186,15 @@
 				this.collect()
 			}
 		},
+		// #endif
+		// #ifdef H5
+		onNavigationBarButtonTap(e) {
+			if(e.index===0){
+				//分享
+				this.collect()
+			}
+		},
+		// #endif
 		methods: {
 			sharePlus(){
 				console.log(this.shopLogo,"app分享微信好友拉ffafa！")
