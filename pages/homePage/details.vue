@@ -217,7 +217,7 @@
 		<view class="pole"></view>
 		<!-- 商品特别说明 -->
 		<view class="attrbox" v-if="proInfo.IsAloneBuy==1&&proInfo.ParameterJson!=='{}'&&proInfo.ParameterJson!==''">
-			<view class="comment_hd">
+			<view class="comment_hd" style="border-bottom: none;">
 			  <view class="tit_l">商品属性</view>
 			</view>
 			<view class="box_bd">
@@ -454,6 +454,7 @@
 				//特殊产品
 				alonePrice:0,
 				specList:[],//规格总列表
+				specListname:"",
 				SpecValue:{},//当前选择规格的对象
 				SpecInfo:{},//当前选择规格的信息--图片，价钱
 				reStock:0,//库存
@@ -561,6 +562,9 @@
 						}
 						if (this.proInfo.IsSku==1) {
 							this.specList = JSON.parse(result.data.SpecificationValue);
+							for(let i in this.specList){
+								this.specListname=i
+							}
 						} else {
 							//如果没有含有sku，则只按照单价来计算商品价格
 							this.canaddcar=true;
@@ -683,8 +687,9 @@
 							url: objUrl
 						})
 					}else{
+						var tit= '请选择'+this.specListname
 						uni.showToast({
-							title: "请选择规格！",
+							title: tit,
 							icon:"none",
 							duration: 2000
 						});

@@ -60,7 +60,7 @@
 						<view class="list flex justifyContentBetween">
 							<view class="item" v-for="(item,index) in Hitslist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 								<view class="brand">{{index+1}}</view>
-								<image :src="item.PicNo"></image>
+								<image :src="item.PicNo" mode="aspectFill"></image>
 								<view class="item_title">{{item.Name}}</view>
 							</view>
 						</view>
@@ -79,7 +79,7 @@
 									<view class="scroll-view-item_H" v-for="(item,index) in promotelist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 										<view class="itembox">
 											<view class="image-view">
-												<image class="img" :src="item.PicNo" mode="aspectFit"></image>
+												<image class="img" :src="item.PicNo" mode="aspectFill"></image>
 											</view>
 											<view class="txtbox">
 												<view class="txt uni-ellipsis">{{item.Name}}</view>
@@ -104,7 +104,7 @@
 					</view>
 					<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
 						<view class="item" v-for="(item,index) in datalist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
-							<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
+							<image :src="item.PicNo" class="item_img" mode="aspectFill"></image>
 							<view class="item_info">
 								<view class="item_title">{{item.Name}}</view>
 								<view class="flex flexAlignEnd justifyContentBetween item_total">

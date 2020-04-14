@@ -83,7 +83,7 @@
 							<image src="http://ddyp.wtvxin.com/static/of/f2.png" mode="aspectFill" class="hui_bg"></image>
 							<view class="flex hui_title">
 								<view class="mr2">{{system.Pp_Desc}}</view>
-								<view class="flex tile_time">
+								<view class="flex tile_time" v-if="timeStr.length>0">
 									<view class="mr1">仅剩</view>
 									<view class="flex justifyContentCenter flexAlignCneter">
 										<span class="time_span">{{timeStr[0]}}</span>:
@@ -574,7 +574,7 @@
 				_this.timeStr=[h,m,s];console.log(_this.timeStr)
 				// timeStr=h+":"+m+":"+s;
 			  } else {
-				_this.timeStr=['00','00','00'];
+				_this.timeStr=[];
 				clearInterval(timer);
 			  }
 			  }, 1000);
