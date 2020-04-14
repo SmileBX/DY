@@ -12,7 +12,7 @@
 					<view class="searchico">
 						<view class="searchpole"></view>
 						<view class="searchimg"><image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image></view>
-						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"  focus=true/>
+						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"  :focus="isOpen==1"/>
 					</view>
 				</view>
 				<view class="abrogate" @click="init">搜索</view>
@@ -151,12 +151,14 @@
 				classifyList:[{label:"",value:""}],
 				areaDefault:['广东省','深圳市'],
 				areaList,
-				isClass:false
+				isClass:false,
+				isOpen:0,//是否自动获取输入焦点
 			}
 		},
 		onLoad: function(options) {
 			this.typeId = options.typeId||'';
 			this.classId = options.classId||'';
+			this.isOpen = options.isOpen||0;console.log(this.isOpen)
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.keyWords="";
