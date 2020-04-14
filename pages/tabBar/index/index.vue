@@ -60,18 +60,20 @@
 						<view class="index_pin">
 							<image src="http://ddyp.wtvxin.com/static/of/f1.png" mode="widthFix"></image>
 							<view class="pin_list flex">
-								<view class="pin_item" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
-									<view class="item_logo">
-										<image :src="item.Logo" mode="aspectFit"></image>
+								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
+									<view class="flex flexColumn flexAlignStart pp_left flex1">
+										<view class="item_logo">
+											<image :src="item.Logo" mode="aspectFit"></image>
+										</view>
+										<view class="flex justifyContentBetween item_info">
+											<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
+												<!-- <view class="item_info_title">{{item.Name}}</view> -->
+												<view class="item_sige">{{item.Intro}}</view>
+											</view>
+										</view>
 									</view>
-									<view class="flex justifyContentBetween item_info">
-										<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
-											<!-- <view class="item_info_title">{{item.Name}}</view> -->
-											<view class="item_sige">{{item.Intro}}</view>
-										</view>
-										<view class="right_img">
-											<image :src="item.Pic" mode="aspectFill"></image>
-										</view>
+									<view class="right_img">
+										<image :src="item.Pic" mode="aspectFill"></image>
 									</view>
 								</view>
 							</view>

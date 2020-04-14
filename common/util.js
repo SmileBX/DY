@@ -84,6 +84,7 @@ function toLogin(objUrl) {
 			strUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
 		}
 		uni.showModal({
+			title:'登录提示',
 			content: "您还没有登录，是否重新登录？",
 			success(res) {
 				if (res.confirm) {

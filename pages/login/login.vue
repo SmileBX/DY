@@ -402,6 +402,23 @@
 </script>
 <style>
 	@import '../../common/login.css';
+	.logo {
+		padding: 0 0 80upx;
+	}
+	
+	.logo .img {
+		width: 200upx;
+		height:200upx;
+		margin: 0 auto;
+		
+	}
+	
+	.logo .img image {
+		width: 100%;
+		height: 100%;
+		margin:0 auto;
+		/* border-radius: 25upx; */
+	}
   .content{
 	  background:#fff;
 	  background-size: 100% 100%;

@@ -250,8 +250,8 @@
 		
 		<!-- 拼单流程 -->
 		
-		<view class="flow">
-			<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image>
+		<!-- <view class="flow">
+			<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image> -->
 			<!-- <view class="joint">
 				<view class="stream"></view>
 				<view class="process">拼单流程</view>
@@ -286,7 +286,7 @@
 					<view class="contract">审核通过后即可获取 大单易拼相关活动权。</view>
 				</view>
 			</view> -->
-		</view>
+		<!-- </view> -->
 		<!-- 图片展砂 -->
 		<view class="pole"></view>
 		<view class="graphic">
