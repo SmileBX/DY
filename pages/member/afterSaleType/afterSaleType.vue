@@ -62,6 +62,7 @@ export default {
   onShow(){
     this.indexId=this.$mp.query.indexId
     this.OrderNumber=this.$mp.query.id
+	console.log(uni.getStorageSync("token"),"token")
     this.getDetail();
   },
   onLoad(e){
