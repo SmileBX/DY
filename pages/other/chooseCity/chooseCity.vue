@@ -86,7 +86,7 @@
 	transform: translateY(-50%);
 }
 .zimuname{
-	margin: 20upx;
+	margin:10upx 20upx;
 	width: 40upx;
 	line-height: 40upx;
 	text-align: center;

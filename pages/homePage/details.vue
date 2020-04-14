@@ -57,7 +57,7 @@
 						<view class="original" v-if="proInfo.MarketPrice>proInfo.Price">¥{{proInfo.MarketPrice}}</view>
 					</view>
 					<view class="listm rt" v-if="proInfo.DistributionIncome!=0">
-						<view class="cash">返</view>
+						<view class="cash">补贴</view>
 						<view class="cashm">¥{{proInfo.DistributionIncome}}</view>
 					</view>
 				</view>
@@ -333,13 +333,13 @@
 					<view class="btn btn_2 flex" @click="showSku(0)" v-if="proInfo.IsAloneBuy==0&&GroupId==0">
 						<view class="txt">加入购物车</view>
 					</view>
-					<view class="btn btn_2 flex" style="flex:1.4" @click="showSku(1)" v-if="GroupId>0">
+					<view class="btn btn_2 flex" style="flex:1.5" @click="showSku(1)" v-if="GroupId>0">
 						<view>
 							<view class="num">¥{{GroupPrice}}</view>
 							<view class="txt">我要拼团</view>
 						</view>
 						<view class="listm rt flex" v-if="proInfo.DistributionIncome!=0">
-							<view class="cash fa" >返</view>
+							<view class="cash fa" >补贴</view>
 							<view class="cashm fas">¥{{proInfo.DistributionIncome}}</view>
 						</view>
 					</view>
@@ -357,7 +357,7 @@
 							<view class="txt">我要拼团</view>
 						</view>
 						<view class="listm rt flex" v-if="proInfo.DistributionIncome!=0">
-							<view class="cash fa" >返</view>
+							<view class="cash fa" >补贴</view>
 							<view class="cashm fas">¥{{proInfo.DistributionIncome}}</view>
 						</view>
 					</view>

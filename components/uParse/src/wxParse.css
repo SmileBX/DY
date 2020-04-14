@@ -74,7 +74,7 @@
 .wxParse .p {
   /* margin: 1em 0; */
   margin:0;
-  text-indent: 2em;
+  /* text-indent: 2em; */
 }
 .wxParse .p view{
 	display: inline;
@@ -149,14 +149,14 @@
 }
 
 .wxParse .img {
- display: inline-block;
+ display: block;
   width: 0;
   height: 0;
   max-width: 100%;
   overflow: hidden;
 }
 .wxParse .p .img{
-	margin-left: -2em;
+	/* margin-left: -2em; */
 }
 .wxParse .blockquote {
   margin: 10upx 0;
@@ -245,4 +245,14 @@
 }
 .wxParse .list-left{
 	
+}
+.wxParse uni-image>img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
 }

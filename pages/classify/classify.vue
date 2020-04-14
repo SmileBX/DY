@@ -28,9 +28,9 @@
 				</scroll-view>
 				<scroll-view class="nav-right" scroll-y :scroll-top="scrollTop" @scroll="scroll" @scrolltolower="loadMore" :style="'height:'+height+'px'"
 				 scroll-with-animation>
-					<view class="rightbanner" v-if="categoryList.length>0&&categoryList[bannerindex].Pic">
+<!-- 					<view class="rightbanner" v-if="categoryList.length>0&&categoryList[bannerindex].Pic">
 						<image class="img" :src="categoryList[bannerindex].Pic" mode="heightFix"></image>
-					</view>
+					</view> -->
 					<view class="nav-rightList" v-if="hasData">
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
 						 @click="gotoProductList(1,item.Id)">
