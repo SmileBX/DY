@@ -32,7 +32,7 @@
 						<!--轮播图-->
 						<view class="page-section swiper">
 							<view class="page-section-spacing">
-								<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+								<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500" indicator-color="#fff" indicator-active-color="#ff3333">
 									<swiper-item v-for="(banner,key) in bannerlist" :key="key">
 										<view class="swiper-item">
 											<image class="img" :src="banner.Pic" mode="aspectFill"></image>
@@ -44,7 +44,7 @@
 						<!--菜单栏-->
 						<view class="page-section swiper" style="height: 400upx;">
 							<view class="page-section-spacing">
-								<swiper class="swiper" style="height: 400upx;" :indicator-dots="menubarlist.length>1" :autoplay="false" :interval="5000" :duration="500">
+								<swiper class="swiper" style="height: 400upx;" :indicator-dots="showdots" :autoplay="false" :interval="5000" :duration="500" indicator-color="#fff" indicator-active-color="#ff3333">
 									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
 										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
 											<view>
@@ -63,7 +63,7 @@
 								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="flex flexColumn flexAlignStart pp_left flex1">
 										<view class="item_logo">
-											<image :src="item.Logo" mode="aspectFit"></image>
+											<image :src="item.Logo" mode="aspectFill"></image>
 										</view>
 										<view class="flex justifyContentBetween item_info">
 											<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
@@ -108,7 +108,7 @@
 										<view class="scroll-view-item_H" v-for="(item,index) in recProductlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 											<view class="itembox">
 												<view class="image-view">
-													<image class="img" :src="item.PicNo" mode="aspectFit"></image>
+													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
 												</view>
 												<view class="txtbox">
 													<view class="txt uni-ellipsis">{{item.Name}}</view>
@@ -142,7 +142,7 @@
 							</view>
 							<view class="list flex flexWrap justifyContentBetween">
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
-									<image :src="item.PicNo" class="item_img" mode="aspectFit"></image>
+									<image :src="item.PicNo" class="item_img" mode="aspectFill"></image>
 									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
@@ -164,7 +164,7 @@
 						<view class="menu">
 							<view class="list flex flexWrap justifyContentBetween" v-if="hasData">
 								<view class="item" v-for="(item,index) in datalist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
-									<image :src="item.PicNo" mode="aspectFit" class="item_img"></image>
+									<image :src="item.PicNo" mode="aspectFill" class="item_img"></image>
 									<view class="item_info">
 										<view class="item_title">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
@@ -231,6 +231,7 @@
 				newscount:0,
 				barHeight:0,
 				headheight:0,
+				showdots:false,
 			}
 		},
 		onLoad() {
@@ -302,6 +303,7 @@
 					    console.log(res)
 						var cityname=res.data.result.addressComponent.city.replace(/市/,'')
 						uni.setStorageSync('cityname',cityname)
+						_this.cityname=cityname
 					}
 				})
 			},
@@ -534,6 +536,11 @@
 					hand = result.data.slice(0,3)
 					hand.unshift(pick,picks)
 					this.handpick = hand
+					if(this.menubarlist.length>1){
+						this.showdots=true
+					}else{
+						this.showdots=false
+					}
 				}
 			},
 			async getsystem(){
@@ -547,7 +554,7 @@
 			GetRTime(overTime) {
 			  let _this = this;
 			  var arr=overTime.split(":")
-			  var t=arr[0]*3600+arr[1]*60+arr[2]*1;
+			  var t=arr[0]*3600+arr[1]*60+arr[2]*1;console.log(t)
 			  var timer = setInterval(function() {
 			  t--
 			  if (t > 0) {
@@ -567,7 +574,7 @@
 				_this.timeStr=[h,m,s];console.log(_this.timeStr)
 				// timeStr=h+":"+m+":"+s;
 			  } else {
-				_this.timeStr="00:00:00";
+				_this.timeStr=['00','00','00'];
 				clearInterval(timer);
 			  }
 			  }, 1000);

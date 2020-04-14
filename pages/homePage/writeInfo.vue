@@ -1,16 +1,15 @@
 <template>
 	<view>
-		<view class="slider"></view>
 		<view class="bg_fff change_info flex flexColumn flexAlignCenter dot" v-if="IsSalesOffice==1">
 			<view>本人或直属亲属是否有去过售楼处或电话咨询售楼处</view>
-			<radio-group class="flex justifyContentAround mt2" @change=change>
+			<radio-group class="flex justifyContentAround mt2" @change="change">
 				<view class="">
-					<radio color="#ffffff" value=1></radio>
+					<radio color="#ff3333" value=1 :checked="IsSales==1"></radio>
 					<text>有</text>
 				</view>
 				<view class="">
-					<radio value=0 checked="true"></radio>
-					<text color="#ffffff">没有</text>
+					<radio  color="#ff3333" value=0 :checked="IsSales==0"></radio>
+					<text>没有</text>
 				</view>
 			</radio-group>
 		</view>
@@ -41,10 +40,11 @@
 				ContactName:'',
 				Tel:'',
 				IsSales:0,
+				IsSalesOffice:0,//是否是房屋类型显示是否去过售楼部按钮
 			}
 		},
 		onLoad(e){
-			this.IsSalesOffice=e.IsSalesOffice;
+			this.IsSalesOffice=e.IsSalesOffice;console.log(this.IsSalesOffice)
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 		},
@@ -75,7 +75,7 @@
 				}
 			},
 			change(e){
-				console.log(e)
+				console.log(e,e.mp.detail.value)
 				this.IsSales=e.mp.detail.value
 			},
 			yeanheng(){console.log(this.ContactName)
@@ -99,7 +99,7 @@
 				if(this.yeanheng()&&valPhone(this.Tel)){
 					if(this.IsSales==1&&this.IsSalesOffice==1){
 						uni.showModal({
-						    title: '本产品仅限未去过售楼处的客户购买',
+						    content: '本产品仅限未去过售楼处的客户购买',
 							showCancel: false,
 						    success: function (res) {
 						        if (res.confirm) {
