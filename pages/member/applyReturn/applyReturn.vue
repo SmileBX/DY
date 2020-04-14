@@ -66,7 +66,7 @@ export default {
       RefundContent:"",//退款说明
       RefundReasonId:0,//退原因id
       showEdit:false,
-      list:[{code: 0,message: "请选择"}],
+      list:[],
       // type:"",
       typeTxt:"请选择",
     }
@@ -110,7 +110,7 @@ export default {
     submitSerty(){
 		if(this.RefundReasonId == 0){
 			uni.showToast({
-				title:'请选择退款原因!',
+				title:'请选择原因!',
 				icon:'none'
 			})
 			return false;

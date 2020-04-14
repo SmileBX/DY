@@ -113,38 +113,22 @@ export default {
       this.isShowShare=false;
     },
 	sharePlus(){
-		console.log("app分享微信好友拉！！！！！！")
+		console.log(this.codeurl,"app分享微信好友拉！！！！！！")
 		uni.share({
 		    provider: "weixin",
 		    scene: "WXSceneSession",
 		    type: 0,
-		    href: "http://uniapp.dcloud.io/",
-		    title: "uni-app分享",
-		    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-		    imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
-		    success: function (res) {
+		    href: "http://ddyp.wtvxin.com/#/pages/tabBar/index/index?shareid="+this.info.ReferralCode,
+		    title: "大单易拼等你来！",
+		    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
+		    imageUrl: this.codeurl,
+		    success: function (res) { 
 		        console.log("success:" + JSON.stringify(res));
 		    },
 		    fail: function (err) {
 		        console.log("fail:" + JSON.stringify(err));
 		    }
 		});
-		// uni.share({
-		//     provider: 'weixin',
-		//     scene: "WXSceneSession",
-		//     type: 5,
-		//     imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/app/share-logo@3.png',
-		//     title: '欢迎体验uniapp',
-		//     miniProgram: {
-		//         id: 'gh_abcdefg',
-		//         path: 'pages/index/index',
-		//         type: 0,
-		//         webUrl: 'http://uniapp.dcloud.io'
-		//     },
-		//     success: ret => {
-		//         console.log(JSON.stringify(ret));
-		//     }
-		// });
 	},
     saveImg(){
       this.showImg=true

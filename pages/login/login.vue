@@ -75,6 +75,8 @@
 			if(e.isResgister){
 				this.isRegister = e.isResgister
 			}
+			this.isShowMolie=false;
+			this.isShowminiApp = true;
 			// #endif
 		},
 		onShow(){ 
@@ -90,6 +92,10 @@
 			this.isShowMolie=false;
 			this.isShowminiApp = true;
 			// #endif
+			// #ifndef MP-WEIXIN
+			this.isShowMolie=true;
+			this.isShowminiApp = false;
+			// #endif
 		},
 		data() {
 			return {
@@ -104,7 +110,7 @@
 				isRegister:false,
 				logintype:true,//true表示密码登录，false手机验证码登录
 				isShowMolie:true,//是否显示号登录界面
-				isShowminiApp:true//是否显示小程序登录
+				isShowminiApp:false//是否显示小程序登录
 			};
 		},
 		methods: { 
@@ -382,8 +388,11 @@
 			},
 			//微信跳转登录
 			loginTel(){
-				this.isShowMolie=true;
 				this.isShowminiApp=false;
+				// setTimeout(()=>{
+				this.isShowMolie=true;
+				// },5)
+				
 			},
 			//注册
 			register(){
