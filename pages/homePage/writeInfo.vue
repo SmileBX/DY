@@ -88,7 +88,7 @@
 				}
 				if(this.ContactName==""){
 					uni.showToast({
-						title:"请输入业主姓名",
+						title:"请输入姓名",
 						icon:"none"
 					})
 					return false

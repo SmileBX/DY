@@ -96,10 +96,10 @@
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
-				countIndex: 8,
+				countIndex: 5,
 				imgs:[],
 				isShowBtnUpload:true,
-				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+				count: [1, 2, 3, 4, 5],
 				proRank: 5, //产品评价等级 
 				serRank: 5, //服务评价等级
 				logRank: 5, //物流评价等级
@@ -120,7 +120,7 @@
 			this.sourceType = ['拍照', '相册', '拍照或相册'];
 			this.sizeTypeIndex = 2;
 			this.sizeType = ['压缩', '原图', '压缩或原图'];
-			this.countIndex = 8;
+			this.countIndex = 5;
 			// #ifndef APP-PLUS
 			this.OrderNo = this.$mp.query.id,
 			this.OrderDetailId  = this.$mp.query.detailId
@@ -170,12 +170,12 @@
 			delImg(index){  
 				  this.imageList.splice(index,1);
 				  this.imgs.splice(index,1);
-				  if(this.imageList.length<9){
+				  if(this.imageList.length<5){
 					this.isShowBtnUpload = true;
 				  }
 			},
 			chooseImage: async function() {
-				if (this.imageList.length >= 9) {
+				if (this.imageList.length >= 5) {
 					let isContinue = await this.isFullImg();
 					console.log("是否继续?", isContinue);
 					if (!isContinue) {
@@ -185,12 +185,12 @@
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
-					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					count: this.imageList.length + this.count[this.countIndex] > 5 ? 5 - this.imageList.length : this.count[this.countIndex],
 					success: (res) => {
 						this.imageList = this.imageList.concat(res.tempFilePaths);
-						if (this.imageList.length >= 9) {
+						if (this.imageList.length >= 5) {
 						  this.isShowBtnUpload = false;
-						  this.imageList.splice(9);
+						  this.imageList.splice(5);
 						}
 					}
 				})
