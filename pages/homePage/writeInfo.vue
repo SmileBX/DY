@@ -15,11 +15,11 @@
 			</radio-group>
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
-			<text class="left_item">业主姓名</text>
+			<text class="left_item">{{IsSalesOffice==1?'会员姓名':'业主姓名'}}</text>
 			<input type="text" placeholder="请输入联系人姓名" class="flex1 font26 text_right" v-model="ContactName">
 		</view>
 		<view class="item bg_fff flex flexAlignCenter justifyContentBetween">
-			<text class="left_item">业主电话</text>
+			<text class="left_item">{{IsSalesOffice==1?'会员电话':'业主电话'}}</text>
 			<input type="text" placeholder="请输入联系人手机号" class="flex1 font26 text_right" v-model="Tel">
 		</view>
 		<view class="btn_fix" @click="btnSubmit">确定</view>
@@ -98,14 +98,24 @@
 			btnSubmit(){			
 				if(this.yeanheng()&&valPhone(this.Tel)){
 					if(this.IsSales==1&&this.IsSalesOffice==1){
-						uni.showToast({
-							title:"只有未去过售楼处才能购买享受优惠",
-							icon:"none",
-							duration:2000
-						})
-						setTimeout(res=>{
-							uni.navigateBack({});
-						},2000)
+						uni.showModal({
+						    title: '本产品仅限未去过售楼处的客户购买',
+							showCancel: false,
+						    success: function (res) {
+						        if (res.confirm) {
+									uni.navigateBack({delta: 2});
+						            console.log('用户点击确定');
+						        }
+						    }
+						});
+						// uni.showToast({
+						// 	title:"本产品仅限未去过售楼处的客户购买",
+						// 	icon:"none",
+						// 	duration:2000
+						// })
+						// setTimeout(res=>{
+						// 	uni.navigateBack({});
+						// },2000)
 					}else{
 						// 设置业主参数
 						let peopleInfo={ //业主信息

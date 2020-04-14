@@ -39,8 +39,21 @@
 			};
 		},
 		watch: {
-			Password(newVal) {
+			Password(newVal) {console.log(newVal)
 				this.PasswordArr=newVal.split("");
+				if(this.PasswordArr[0]==undefined){//app兼容
+					this.PasswordArr[0]=''
+				}else if(this.PasswordArr[1]==undefined){
+					this.PasswordArr[1]=''
+				}else if(this.PasswordArr[2]==undefined){
+					this.PasswordArr[2]=''
+				}else if(this.PasswordArr[3]==undefined){
+					this.PasswordArr[3]=''
+				}else if(this.PasswordArr[4]==undefined){
+					this.PasswordArr[4]=''
+				}else if(this.PasswordArr[5]==undefined){
+					this.PasswordArr[5]=''
+				}
 			},
 			allprice(newVal) {
 				console.log(newVal)
@@ -87,7 +100,7 @@
 }
 .dialog-title{
     height: 120upx;
-    line-height: 100upx;
+    line-height: 120upx;
     color: #333333;
     font-size: 40upx;
     border-bottom: 1px solid #f2f2f2;

@@ -8,9 +8,9 @@
 					<view class="locale uni-ellipsis">{{cityname}}</view>
 					<view class="iconfont icon-shouhuodizhi font12"></view>
 				</view>
-				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList?typeId='+menubarlist[0][0].Id)">
+				<view class="flex search flexAlignCenter pw2" @click="tolink('/pages/homePage/proList?typeId='+menubarlist[0][0].Id+'&isOpen=1')">
 					<view class="iconfont icon-sousuo"></view>
-					<input type="text" placeholder="请输入关键字">
+					<input type="text" placeholder="请输入关键字" disabled="true">
 					<!-- <view class="iconfont icon-xiangji"></view> -->
 				</view>
 				<view class="head_r flex flexAlignCenter">
@@ -44,7 +44,7 @@
 						<!--菜单栏-->
 						<view class="page-section swiper" style="height: 400upx;">
 							<view class="page-section-spacing">
-								<swiper class="swiper" style="height: 400upx;" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500">
+								<swiper class="swiper" style="height: 400upx;" :indicator-dots="menubarlist.length>1" :autoplay="false" :interval="5000" :duration="500">
 									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
 										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
 											<view>
@@ -79,22 +79,20 @@
 						<!--特惠-->
 						<view class="hui mt2">
 							<image src="http://ddyp.wtvxin.com/static/of/f2.png" mode="aspectFill" class="hui_bg"></image>
-							<!-- <view class="flex hui_title">
-								<view class="mr2">全场4折封顶</view>
+							<view class="flex hui_title">
+								<view class="mr2">{{system.Pp_Desc}}</view>
 								<view class="flex tile_time">
 									<view class="mr1">仅剩</view>
 									<view class="flex justifyContentCenter flexAlignCneter">
-										<span class="time_span">18</span>:
-										<span class="time_span">56</span>:
-										<span class="time_span">34</span>
+										<span class="time_span">{{timeStr[0]}}</span>:
+										<span class="time_span">{{timeStr[1]}}</span>:
+										<span class="time_span">{{timeStr[2]}}</span>
 									</view>
 								</view>
-							</view> -->
+							</view>
 							<view class="list flex justifyContentBetween">
-								<view v-for="(item,index) in 3" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
-									<block v-if="index==0"><image src="http://ddyp.wtvxin.com/static/of/1.png" mode="aspectFill" ></image></block>
-									<block v-if="index==1"><image src="http://ddyp.wtvxin.com/static/of/5.png" mode="aspectFill" ></image></block>
-									<block v-if="index==2"><image src="http://ddyp.wtvxin.com/static/of/6.png" mode="aspectFill" ></image></block>
+								<view v-for="(item,index) in PPbannerlist" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
+									<image :src="item.Pic" mode="aspectFill" v-if="index<3"></image>
 								</view>
 							</view>
 						</view>
@@ -199,7 +197,10 @@
 		data(){
 			return{
 				cityname:"",//定位城市
-				bannerlist:[{Pic:""}], // 轮播图
+				bannerlist:[], // 轮播图
+				PPbannerlist:[],//品牌馆特惠banner
+				system:{},//平台信息
+				timeStr:[],//特惠倒计时
 				Typelist:[],           // 头部
 				menubarlist:[],        // 菜单
 				hasrec:false,
@@ -240,6 +241,7 @@
 			// #endif
 			this.banner();
 			this.typelist();
+			this.getsystem();//平台设置
 			this.getBrandList() //品牌馆
 			this.Recprolist();//精选推荐
 			this.hand();//获取精选等分类列表
@@ -305,7 +307,7 @@
 			async getBrandList(){
 				let res = await post('Goods/BrandList',{})
 				if(res.code == 0){
-					this.brandList = res.data
+					this.brandList = res.data.slice(0,4)
 				}
 			},
 			async NewsCount() {
@@ -491,8 +493,14 @@
 				let result = await post("Banner/BannerList", {
 					Cid:1
 				});
+				let res = await post("Banner/BannerList", {
+					Cid:4
+				});
 				if (result.code === 0) {
 					this.bannerlist = result.data
+				}
+				if (res.code === 0) {
+					this.PPbannerlist = res.data.slice(0,3)
 				}
 			},
 			// 获取类型(商品)
@@ -525,6 +533,42 @@
 					hand.unshift(pick,picks)
 					this.handpick = hand
 				}
+			},
+			async getsystem(){
+				let res=await get('system/GetWebConfiguration',{})
+				if(res.code==0){
+					this.system=res.data;
+					this.GetRTime(res.data.Pp_ExpireTime)
+				}
+			},
+			//倒计时
+			GetRTime(overTime) {
+			  let _this = this;
+			  var arr=overTime.split(":")
+			  var t=arr[0]*3600+arr[1]*60+arr[2]*1;
+			  var timer = setInterval(function() {
+			  t--
+			  if (t > 0) {
+				let min = Math.floor(t % 3600)
+				let h = Math.floor(t / 3600);//时
+				let m = Math.floor(min / 60); //分
+				let s = Math.floor(t % 60); //秒
+				if (parseInt(h) < 10) {
+				h = "0" + h;
+				}
+				if (parseInt(m) < 10) {
+				m = "0" + m;
+				}
+				if (parseInt(s) < 10) {
+				s = "0" + s;
+				}
+				_this.timeStr=[h,m,s];console.log(_this.timeStr)
+				// timeStr=h+":"+m+":"+s;
+			  } else {
+				_this.timeStr="00:00:00";
+				clearInterval(timer);
+			  }
+			  }, 1000);
 			},
 			loadMore(e) {
 				if (this.isLoad) {
