@@ -158,7 +158,7 @@
     border: 0;
     border-right: 1upx solid #999999;
     color: #333333;
-    font-size: 80upx;
+    font-size: 40upx;
     text-align: center;
     padding: 0;
 }
