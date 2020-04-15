@@ -457,6 +457,7 @@
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
+		background-size: cover!important;
 		.inner{
 			padding: 90upx 20upx 40upx;
 			.logoBox{
@@ -467,8 +468,8 @@
 				justify-content: center;
 				flex-direction: column;
 			}
-			.name{ font-size: 32upx; font-weight:bold;}
-			.brand-desc{ font-size: 28upx;}
+			.name{ font-size: 32upx; font-weight:bold;color: #fff;}
+			.brand-desc{ font-size: 28upx;color: #fff;}
 		}
 	}
 	.baolist{

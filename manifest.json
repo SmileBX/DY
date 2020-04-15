@@ -21,7 +21,8 @@
             "LivePusher" : {},
             "VideoPlayer" : {},
             "Speech" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Share" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -55,7 +56,16 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "修改用户修改头像和上传产品评价从用户相册选取照片",
+                    "NSPhotoLibraryAddUsageDescription" : "保存用户喜欢的图片到自己的相册",
+                    "NSCameraUsageDescription" : "用户修改头像时使用摄像头拍摄图片",
+                    "NSMicrophoneUsageDescription" : "用户开启直播时录入音频",
+                    "NSLocationWhenInUseUsageDescription" : "获取当前位置为用户优先展示附近的商品",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取当前位置为用户优先展示附近的商品"
+                }
+            },
             /* SDK配置 */
             "sdkConfigs" : {
                 "speech" : {
