@@ -63,12 +63,12 @@
 								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="flex flexColumn flexAlignStart pp_left flex1">
 										<view class="item_logo">
-											<image :src="item.Logo" mode="aspectFill"></image>
+											<image :src="item.Logo"></image>
 										</view>
 										<view class="flex justifyContentBetween item_info">
 											<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
 												<!-- <view class="item_info_title">{{item.Name}}</view> -->
-												<view class="item_sige">{{item.Intro}}</view>
+												<view class="text_flow item_sige">{{item.Intro}}</view>
 											</view>
 										</view>
 									</view>
@@ -258,6 +258,7 @@
 					// #ifdef APP-PLUS
 					var cityname=res.address.city.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
+					_this.cityname=cityname
 					// #endif
 					// #ifdef MP-WEIXIN
 					_this.wxGetCity(res.longitude,res.latitude)
@@ -294,7 +295,7 @@
 			wxGetCity(lon,lat){
 				var _this=this
 				wx.request({
-					url:'https://api.map.baidu.com/reverse_geocoding/v3/?ak=thbHKWI9ZZtgGYxwGFbKSolcNe9gCZKG&location=' + lat + ',' + lon + '&output=json&coordtype=wgs84ll',
+					url:'https://api.map.baidu.com/reverse_geocoding/v3/?ak=3wwDKCk09o6hU0PK1605QUXOCBqGVHGx&location=' + lat + ',' + lon + '&output=json&coordtype=wgs84ll',
 					data: {},
 					header: {
 						'content-type': 'application/json' // 默认值
@@ -571,7 +572,7 @@
 				if (parseInt(s) < 10) {
 				s = "0" + s;
 				}
-				_this.timeStr=[h,m,s];console.log(_this.timeStr)
+				_this.timeStr=[h,m,s];
 				// timeStr=h+":"+m+":"+s;
 			  } else {
 				_this.timeStr=[];

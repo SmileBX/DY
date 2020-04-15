@@ -7,7 +7,7 @@
 			</view>
 			<!-- #endif -->
 			<view class="flex justifyContentBetween serch_box">
-				<view class="flex search flexAlignCenter pw2 flex1" @click="goUrl('/pages/homePage/proList')">
+				<view class="flex search flexAlignCenter pw2 flex1" @click="goUrl('/pages/homePage/proList?isOpen=1')">
 					<view class="iconfont icon-sousuo"></view>
 					<input type="text" placeholder="请输入关键字" class="flex1">
 				</view>

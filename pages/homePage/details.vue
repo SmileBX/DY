@@ -64,7 +64,7 @@
 			</view>
 			<view class="discount flex flex-between">
 				<view class="discount_l" v-if="proInfo.ServiceKeys">
-					<view class="merging" v-for="(e,i) in proInfo.ServiceKeys.split(',')" :key="i">{{e}}</view>
+					<view class="merging" v-for="(e,i) in proInfo.ServiceKeys" :key="i">{{e}}</view>
 				</view>
 				<view class="payment">{{proInfo.SalesVolume}}人付款</view>
 			</view>
@@ -74,7 +74,7 @@
 					{{proInfo.Synopsis}}
 				</view>
 				<view class="Keyword flex flex-start" v-if="proInfo.KeywordName">
-					<view class="item" v-for="(e,i) in proInfo.KeywordName.split(',')" :key="i">{{e}}</view>
+					<view class="item" v-for="(e,i) in proInfo.KeywordName" :key="i">{{e}}</view>
 				</view>
 			</view>
 			<view class="flex justifyContentStart bb_shop" v-if="false">
@@ -551,6 +551,8 @@
 				if(result.code==0){
 					this.hasData = true
 					this.proInfo=result.data;
+					this.proInfo.KeywordName=this.proInfo.KeywordName.split(',')
+					this.proInfo.ServiceKeys=this.proInfo.ServiceKeys.split(',')
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;
 					if(result.data.IsAloneBuy==1){

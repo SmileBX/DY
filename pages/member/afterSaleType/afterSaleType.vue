@@ -58,18 +58,19 @@ export default {
       info:{}
     }
   },
- 
+ onLoad(e){
+ 	  // #ifdef APP-PLUS
+ 	   this.indexId = e.indexId
+ 	   this.OrderNumber  = e.id
+ 	   // #endif
+ },
   onShow(){
-    this.indexId=this.$mp.query.indexId
-    this.OrderNumber=this.$mp.query.id
+	// #ifndef APP-PLUS
+	this.indexId=this.$mp.query.indexId
+	this.OrderNumber=this.$mp.query.id
+	// #endif
 	console.log(uni.getStorageSync("token"),"token")
     this.getDetail();
-  },
-  onLoad(e){
-	  // #ifdef APP-PLUS
-	   this.indexId = e.indexId
-	   this.OrderNumber  = e.id
-	   // #endif
   },
   methods: {
     getDetail(){

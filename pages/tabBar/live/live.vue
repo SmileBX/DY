@@ -61,18 +61,6 @@
 				// #endif
 		},
 		onShow() {
-			// #ifdef APP-PLUS
-			var icon = plus.nativeObj.View.getViewById("icon");
-			//如果已经存在
-			if(icon){    
-				//则显示
-				icon.show();
-			}else{
-				//不存在  则创建
-				this.createtab();
-				console.log(icon)
-			}	
-			// #endif
 			let res = uni.getSystemInfoSync()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -85,26 +73,6 @@
 			
 		},
 		methods: {
-			createtab: function(){
-				// 设置水平居中位置
-				var bitmap = new plus.nativeObj.Bitmap('bmp1');
-				var view = new plus.nativeObj.View('icon', {
-					top: '40px',
-					left: '20px',
-					width: '80px',
-					height: '30px',
-					backgroundColor:'#ff3333',
-					
-				});
-			   view.drawText('开始直播',{top:'0px',left:'0px',width:'100%',height:'100%'},{ size: '15px',color:'#fff',},'icon')
-				view.addEventListener("click", function(e) {
-					console.log(bitmap)
-				  uni.navigateTo({
-					url:"../../livepush/livepush"
-				  })
-				}, false);
-				view.show();
-			},
 			playH5(){
 				TPlay().then(TcPlayer => {
 					  var player = new TcPlayer('H5video', {

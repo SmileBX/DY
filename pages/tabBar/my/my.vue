@@ -164,13 +164,15 @@
 			</view>
 		</view>
 		<!-- 我的服务  end-->
-		
+		<notlogin :showtype="1" v-if="false"></notlogin>
 	</view>
 </template>
 
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
+	import notlogin from '@/components/notlogin.vue'; 
 	export default {
+		components: {notlogin},
 		data() {
 			return {
 				barHeight:0,//app端增加状态栏高度

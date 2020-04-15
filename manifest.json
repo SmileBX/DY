@@ -73,7 +73,12 @@
                 },
                 "payment" : {},
                 "ad" : {},
-                "maps" : {},
+                "maps" : {
+                    "baidu" : {
+                        "appkey_ios" : "",
+                        "appkey_android" : "0tNSPesHSDwBSpBRd3ZDIRgc7Hi2qo99"
+                    }
+                },
                 "share" : {}
             },
             "icons" : {

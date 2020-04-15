@@ -71,21 +71,22 @@ export default {
       typeTxt:"请选择",
     }
   },
- 
-  onShow(){
-    this.indexId=this.$mp.query.indexId
-    this.OrderNumber=this.$mp.query.id
-    this.type=this.$mp.query.type
-    this.getDetail();
-    this.getCancelReason()
-  },
-  onLoad(e){
+	onLoad(e){
 	 // #ifdef APP-PLUS
 		 this.type = e.type
 		 this.indexId  = e.indexId
 		 this.OrderNumber  = e.id
 	// #endif
 	},
+  onShow(){
+	// #ifndef APP-PLUS
+	this.indexId=this.$mp.query.indexId
+	this.OrderNumber=this.$mp.query.id
+	this.type=this.$mp.query.type
+	// #endif
+    this.getDetail();
+    this.getCancelReason()
+  },
   methods: {
     gettype(e){
       if(e.code){
