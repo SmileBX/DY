@@ -571,7 +571,8 @@
 				if (parseInt(s) < 10) {
 				s = "0" + s;
 				}
-				_this.timeStr=[h,m,s];console.log(_this.timeStr)
+				_this.timeStr=[h,m,s];
+				// console.log(_this.timeStr)
 				// timeStr=h+":"+m+":"+s;
 			  } else {
 				_this.timeStr=['00','00','00'];

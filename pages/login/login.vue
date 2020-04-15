@@ -68,7 +68,7 @@
 	export default {
 		onLoad(e){
 			// #ifndef MP-WEIXIN
-			console.log(e.askUrl)
+			console.log(e.askUrl,"99999999999999")
 			if((e.askUrl!=undefined )&& (e.askUrl!="")&& (e.askUrl!=null)){   
 				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
 			}
@@ -81,21 +81,23 @@
 		},
 		onShow(){ 
 			// console.log(this.$root.$mp,111) 
+			
+			// #ifdef MP-WEIXIN
+			this.isShowMolie=false;
+			this.isShowminiApp = true;
+			// #endif
+			// #ifndef MP-WEIXIN
+			console.log("7777777777777")
+			this.isShowMolie=true;
+			this.isShowminiApp = false;
+			// #endif
 			if(this.$root.$mp.query.askUrl){
 				this.askUrl = this.$root.$mp.query.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&');
 			}
 			if(this.$root.$mp.query.isResgister){
 				this.isRegister = this.$root.$mp.query.isResgister
 			}
-			console.log(this.isRegister)
-			// #ifdef MP-WEIXIN
-			this.isShowMolie=false;
-			this.isShowminiApp = true;
-			// #endif
-			// #ifndef MP-WEIXIN
-			this.isShowMolie=true;
-			this.isShowminiApp = false;
-			// #endif
+			console.log(this.isRegister,"8888888888")
 		},
 		data() {
 			return {

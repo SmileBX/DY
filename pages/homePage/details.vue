@@ -500,23 +500,7 @@
 			}
 		},
 		methods: {
-			sharePlus(){
-				uni.share({
-				    provider: "weixin",
-				    scene: "WXSceneSession",
-				    type: 0,
-				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId,
-				    title: "大单易拼等你来！",
-				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
-				    imageUrl: this.proInfo.PicData[0].PicUrl,
-				    success: function (res) {
-				        console.log("success:" + JSON.stringify(res));
-				    },
-				    fail: function (err) {
-				        console.log("fail:" + JSON.stringify(err));
-				    }
-				});
-			},
+			
 			//跳转
 			tolink(Url,tabBar) {
 				console.log(Url,"mmmmmmmmmmmm")
@@ -867,6 +851,24 @@
 				}
 			   }
 			},
+			 //分享app
+			sharePlus(){
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSceneSession",
+				    type: 0,
+				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId,
+				    title: this.proInfo.Name,
+				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
+				    imageUrl: this.proInfo.PicData[0].PicUrl,
+				    success: function (res) {
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
+			}, 
 			 //预览图片
 			previewImg(imgurls,index){
 			  uni.previewImage({
@@ -894,9 +896,9 @@
 		　　var that = this;
 		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
 		　　var shareObj = {
-		　　　　title: "转发的标题",        // 默认是小程序的名称(可以写slogan等)
-		　　　　path: '/pages/tabBar/index/index',        // 默认是当前页面，必须是以‘/’开头的完整路径
-		　　　　imageUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+		　　　　title: this.proInfo.Name,        // 默认是小程序的名称(可以写slogan等)
+		　　　　path: "/pages/homePage/details?id="+this.proId,        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　imageUrl:  this.proInfo.PicData[0].PicUrl,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 		　　　　success: function(res){
 		　　　　　　// 转发成功之后的回调
 		　　　　　　if(res.errMsg == 'shareAppMessage:ok'){

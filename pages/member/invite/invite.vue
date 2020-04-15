@@ -1,69 +1,69 @@
 <template>
   <view class="invite bg_fff" style="padding-bottom: 30upx;">
-	  <view id="bb_canvas">
-		  <view class="inn_bg ">
-			  <image src="http://ddyp.wtvxin.com/static/icons/inn.png" alt="" class=" invite"></image>
-		  </view>
-		  <view class=" flex bg_fff pp3 flexAlignCenter">
-			  <view class=" flex flexColumn flex1 justifyContentStart">
-				  <view class=" flex flexAlignCenter">
-					  <image :src="Avatar" alt="" class="ava mr2"></image>
-					  <view class="mr2" style="margin-left:20upx;">
-						  <view>{{tel}}</view>
-						  <!-- #ifdef H5 -->
-						  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
-						   v-model="info.ReferralCode" style="opacity: 0;position: fixed;top: -10000px;">
-						  <!-- #endif -->
-						  <view class="font20 yy_ma mt1" @click="copybtn()">邀请码：{{info.ReferralCode}}</view>
+		<view id="bb_canvas">
+			  <view class="inn_bg ">
+				  <image src="http://ddyp.wtvxin.com/static/icons/inn.png" alt="" class="invite"></image>
+			  </view>
+			  <view class=" flex bg_fff pp3 flexAlignCenter">
+				  <view class=" flex flexColumn flex1 justifyContentStart">
+					  <view class=" flex flexAlignCenter">
+						  <image :src="Avatar" alt="" class="ava mr2"></image>
+						  <view class="mr2" style="margin-left:20upx;">
+							  <view>{{tel}}</view>
+							  <!-- #ifdef H5 -->
+							  <input type="text" class="font20 yy_ma mt1" @focus="blur()" :disabled="disabled" 
+							   v-model="info.ReferralCode" style="opacity: 0;position: fixed;top: -10000px;">
+							  <!-- #endif -->
+							  <view class="font20 yy_ma mt1" @click="copybtn()">邀请码：{{info.ReferralCode}}</view>
+						  </view>
 					  </view>
 				  </view>
+				  <image :src="info.InviteQRcode" alt="" class="code_img"></image>
 			  </view>
-			  <image :src="info.InviteQRcode" alt="" class="code_img"></image>
+		</view>
+		  <view class="yy_scan font30 " @click="showShare">点击分享</view>
+		  <!--分享-->
+		  <view class="mask" v-if="isShowShare" @click="cancelShare"></view>
+		  <view class="modal_mask flex justifyContentAround pp3" v-if="isShowShare">
+			  <!-- #ifdef MP-WEIXIN-->
+			  <button open-type="share" class="flex flexColumn flexAlignCenter">
+				  <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
+				  <view class="mt1 flex1 font18">分享微信好友</view>
+			  </button>
+			  <!-- #endif -->
+			  <!-- #ifdef APP-PLUS -->
+			 <view class="flex flexColumn flexAlignCenter" @click="sharePlus">
+				  <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
+				  <view class="mt1 flex1 font18">分享微信好友</view>
+			  </view>
+			  <!-- #endif -->
+			
+				<view class="flex flexColumn flexAlignCenter" @click="saveImg">
+					<image src="http://jyy.wtvxin.com/static/images/icons/quan.png" alt="" class="circle_img"></image>
+					<view class="mt1 flex1 font18">分享到朋友圈</view>
+				</view>
+			 
 		  </view>
-	  </view>
-	  <view class="yy_scan font30 " @click="showShare">点击分享</view>
-      <!--分享-->
-      <view class="mask" v-if="isShowShare" @click="cancelShare"></view>
-      <view class="modal_mask flex justifyContentAround pp3" v-if="isShowShare">
-		  <!-- #ifdef MP-WEIXIN-->
-          <button open-type="share" class="flex flexColumn flexAlignCenter">
-              <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
-              <view class="mt1 flex1 font18">分享微信好友</view>
-          </button>
-		  <!-- #endif -->
-		  <!-- #ifdef APP-PLUS -->
-		 <view class="flex flexColumn flexAlignCenter" @click="sharePlus">
-		      <image src="http://jyy.wtvxin.com/static/images/icons/vy.png" alt="" class="circle_img"></image>
-		      <view class="mt1 flex1 font18">分享微信好友</view>
+		  <!-- 保存海报 -->
+		  <view class="mask" v-if="showImg"></view>
+		  <!-- #ifndef H5-->
+		  <view class="imgbox" v-if="showImg">
+			<canvas canvas-id="myCanvas" class="share-canvas" style="width:100%;height:100%" v-if="!hasimg"></canvas>
+			<image :src="saveImgurl" alt="" v-else></image>
 		  </view>
 		  <!-- #endif -->
-		
-			<view class="flex flexColumn flexAlignCenter" @click="saveImg">
-			    <image src="http://jyy.wtvxin.com/static/images/icons/quan.png" alt="" class="circle_img"></image>
-			    <view class="mt1 flex1 font18">分享到朋友圈</view>
-			</view>
-		 
-      </view>
-      <!-- 保存海报 -->
-      <view class="mask" v-if="showImg"></view>
-	  <!-- #ifndef H5-->
-      <view class="imgbox" v-if="showImg">
-        <canvas canvas-id="myCanvas" class="share-canvas" v-if="!hasimg"></canvas>
-        <image :src="saveImgurl" alt="" v-else></image>
-      </view>
-	  <!-- #endif -->
-	 <!-- #ifdef H5-->
-	  <view class="imgbox" v-if="showImg">
-	    <image :src="shareImgUrl" alt=""></image>
-	  </view>
-	  <!-- #endif -->
-	  
-	   <!-- #ifdef H5-->
-	   <view class="saveBtn" v-if="showImg" @click="H5share">长按二维码保存</view>
-	   <!-- #endif -->
-	   <!-- #ifndef H5-->
-	   <view class="saveBtn" v-if="showImg" @click="Wxshare">保存相册分享到朋友圈</view>
-	   <!-- #endif -->
+		 <!-- #ifdef H5-->
+		  <view class="imgbox" v-if="showImg">
+			<image :src="shareImgUrl" alt="" style="height:100%;width:100%;"></image>
+		  </view>
+		  <!-- #endif -->
+		  
+		   <!-- #ifdef H5-->
+		   <view class="saveBtn" v-if="showImg" @click="H5share">长按图片保存</view>
+		   <!-- #endif -->
+		   <!-- #ifndef H5-->
+		   <view class="saveBtn" v-if="showImg" @click="Wxshare">保存相册分享到朋友圈</view>
+		   <!-- #endif -->
   </view>
 </template>
 
@@ -252,7 +252,7 @@ export default {
         var avaurl = this.avaurl
         var tel=this.tel
         var code="邀请码："+this.info.ReferralCode
-		console.log(codeurl,bgurl,tel,code)
+		console.log(codeurl)
         //画布背景填色
         ctx.setFillStyle('#ffffff')
         ctx.fillRect(0, 0, 300, 500);
@@ -260,10 +260,8 @@ export default {
         ctx.fillRect(0, 0, 300, 32);
         //图片
         ctx.drawImage(bgurl, 0, 32, 300,348);
-        // ctx.drawImage(avaurl, 12, 410, 50,50); //头像没有路径
-		ctx.rect(200, 400, 64,64)
-		ctx.stroke()
-        ctx.drawImage(codeurl, 200, 400, 64,64);
+        ctx.drawImage(avaurl, 12, 410, 50,50); //头像没有路径
+		
         //说明文字
         ctx.setFontSize(12)
         ctx.setFillStyle('#333333')
@@ -273,6 +271,11 @@ export default {
 		this.drawRoundedRect(ctx,"#7364ca","#7364ca",74,435,90,18,9);
         ctx.setFillStyle('#ffffff')
         ctx.fillText(code, 84, 447.5)
+		
+		ctx.rect(200, 400, 64,64)
+		ctx.stroke()
+		ctx.drawImage(codeurl, 200, 400, 64,64);
+		
         ctx.draw()
       }
     },
@@ -282,10 +285,12 @@ export default {
         canvasId: 'myCanvas',
         x: 0,
         y: 0,
-        width: 256,
-        height: 403,
-        destWidth: 512,     //截取canvas的宽度
-        destHeight: 806,   //截取canvas的高度
+        width: 300, //截取canvas的宽度
+        height: 500, //截取canvas的高度
+        destWidth: 300,    
+        destHeight: 500,
+		quality:1,
+		fileType:'jpg',
         success: function (res) {console.log(res)
           _this.hasimg=true
           _this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl)
@@ -360,10 +365,12 @@ export default {
       }).then(res=>{
         this.info=res.data;
         var _this=this
+		console.log(this.info.InviteQRcode,"999999999999")
         uni.getImageInfo({
             src: this.info.InviteQRcode,//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
+			console.log(res.path,"/////////////")
             _this.codeurl = res.path;
             },
             fail: function (err) {
