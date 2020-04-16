@@ -1,15 +1,17 @@
 <template>
 	<view>
 		<view class="kefu_top">
-			<view class="kefu_img">
+			<!-- <view class="kefu_img">
 				<image src="/static/qq.png"></image>
-			</view>
+			</view> -->
 			<view class="kefu_detail">在线客服<view>(09:00~22:00)</view></view>
 		</view>
 		<view class="kefu_desc">所有常见问题都有相应的解决方案，请参考常见问题自主解决，如 果常见问题无法解决您的问题在咨询客服，由于客服咨询量较大， 请尽可能的描述清楚您的问题，以便快速解决</view>
 		<view class="kefu_btn" @click="gokefu()">
-			QQ咨询
+			在线客服
 		</view>
+	
+	
 	</view>
 </template>
 
@@ -18,34 +20,36 @@
 	export default {
 		data() {
 			return {
-				qqnum:""
+				qqnum:"",
+				
 			}
 		},
 		onLoad(e){
 			// #ifdef APP-PLUS
-			this.qqnum = e.qqnum
+			// this.qqnum = e.qqnum
 			// #endif
 		},
 		onShow() {
-			// #ifdef APP-PLUS
-			this.qqnum = this.$mp.query.qqnum
+			// #ifndef APP-PLUS
+			// this.qqnum = this.$mp.query.qqnum
 			// #endif
-			this.getinfo()
+			// this.getinfo()
 		},
 		methods: {
-			async getinfo(){
-				let res=await get('system/GetWebConfiguration',{})
-				if(res.code==0){
-					this.qqnum=res.data.WebQQ
-				}
-			},
+			
+			// async getinfo(){
+			// 	let res=await get('system/GetWebConfiguration',{})
+			// 	console.log(res)
+			// 		if(res.code==0){
+			// 			this.qqnum=res.data.WebQQ
+			// 		}
+			
+				
+			// },
 			gokefu(){
-				// #ifdef H5
-				window.location.href ="http://wpa.qq.com/msgrd?v=3&uin="+this.qqnum+"&site=qq&menu=yes"
-				// #endif
-				// #ifdef APP-PLUS
-				plus.runtime.openURL('mqq://im/chat?chat_type=wpa&uin=' + this.qqnum + '&version=1&src_type=web ');
-				// #endif
+				uni.navigateTo({
+					url:'../kefuDeatil/kefuDeatil'
+				})
 			}
 		}
 	}

@@ -409,6 +409,13 @@
 					}
 				},
 				{
+					"path":"kefuDeatil/kefuDeatil",
+					"style": {
+						"navigationBarTitleText": "在线客服",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
 					"path":"set/set",
 					"style": {
 						"navigationBarTitleText": "设置",
