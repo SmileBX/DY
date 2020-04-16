@@ -2,20 +2,20 @@
 	<!-- 关注主播 -->
 	<view class="anchor">
 		<view class="head_anch">
-			<view class="sear_head">
+			<view class="sear_head" v-if="false">
 				<view class="flex search flexAlignCenter">
 					<text class="iconfont icon-sousuo1"></text>
 					<input type="text" placeholder="请输入商品名称/主播" class="font26">
 				</view>
 			</view>
 			<view class="flex justifyContentAround tab_arch">
-				<view>关注</view><view class="active">直播间</view>
+				<view :class="[tabIndex==0 ? 'active' : '']" @click="tapTab(0)">关注</view><view :class="[tabIndex==1 ? 'active' : '']" @click="tapTab(1)">直播间</view>
 			</view>
 			<view class="slider"></view>
 		</view>
 		<view class="anch_view">
 			<!--关注-->
-			<view class="list" style="display: none;">
+			<view class="list" v-if="tabIndex==0">
 				<view class="anchorbox" v-for="(item,index) in 5" :key="index">
 					<view class="photos">
 						<image class="photo" src="" mode=""></image>
@@ -30,16 +30,16 @@
 				</view>
 			</view>
 			<!--直播列表-->
-			<view class="list_zb">
-				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in 5" :key="index" @click="goUrl('/pages/tabBar/live/live')">
+			<view class="list_zb" v-else>
+				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live')">
 					<view class="le_img">
 						<image src="../../../static/1.png" class="shop"></image>
 						<image src="../../../static/zb.png" class="tip"></image>
 					</view>
-					<view class="flex flexColumn">
-						<view class="title_anch">家居定制整体衣柜定做推拉门 卧室家具</view>
+					<view class="flex flexColumn flex1">
+						<view class="title_anch">{{item.ShopNick}}</view>
 						<view class="flex mt2">
-							<image src="../../../static/qq.png" class="ava"></image>
+							<image :src="item.Logo" class="ava"></image>
 							<view>
 								<view class=" color_gray">山大王家居</view>
 								<view class="font26 color_gray">佛山</view>
@@ -48,6 +48,11 @@
 					</view>
 				</view>
 			</view>
+			<!-- 没有更多数据了 -->
+			<view class="uni-tab-bar-loading" v-if="hasData">
+				<uni-load-more :loadingType="loadingType"></uni-load-more>
+			</view>
+			<noData :isShow="noDataIsShow"></noData>
 		</view>
 		
 	</view>
@@ -55,21 +60,86 @@
 
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
+	import noData from '@/components/noData.vue'; //暂无数据
+	import uniLoadMore from '@/components/uni-load-more.vue'; //加载更多
 	export default {
+		components: {noData,uniLoadMore},
 		data(){
 			return{
-				wallet:0,//余额
+				tabIndex:1,
+				userId: "",
+				token: "",
+				list: [],
+				ShopList:[],
+				page: 1,
+				pageSize: 10,
+				isLoad: false,
+				isShowDel: false, //是否显示删除的底部
+				hasData: false,
+				noDataIsShow: false,
+				loadingType: 0, //0加载前，1加载中，2没有更多了
 			}
 		},
 		onShow() {
-			this.wallet=this.$store.state.Wallet;
-			//this.wallet=Number(this.wallet).toFixed(2)
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
+			this.getShopList()
 		},
 		methods:{
+			tapTab(index) { //点击tab-bar
+				this.tabIndex = index;
+			},
 			goUrl(url){
 				uni.navigateTo({
 					url:url
 				})
+			},
+			async getShopList() {
+				let res = await post("Shop/ShopList", {
+					UserId: this.userId,
+					Token: this.token,
+				});
+				this.ShopList=res.data
+			},
+			async collectionsList() {
+				let result = await post("User/MemberCollections", {
+					UserId: this.userId,
+					Token: this.token,
+					Type: 2,
+					Page: this.page,
+					PageSize: this.pageSize,
+				});
+				if (result.code === 0) {
+					let _this = this;
+					if (result.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+						result.data.forEach(function(item) {
+							_this.$set(item, "checked", false);
+							_this.$set(item, "collectTxt", true);
+						})
+					}
+					if (result.data.length == 0 && this.page == 1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (this.page === 1) {
+						this.list = result.data;
+					}
+					if (this.page > 1) {
+						this.list = this.list.concat(
+							result.data
+						);
+					}
+					if (result.data.length < this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+					this.listLength = this.list.length;
+				}
 			},
 		}
 	
@@ -91,7 +161,7 @@
 	}
 	.anch_view{
 		position: relative;
-		top:200upx;
+		top:44px;
 	}
 	/* #endif */
 	/* #ifdef MP-WEIXIN||APP-PLUS */
@@ -160,7 +230,7 @@
 		}
 		.ava{
 			width:80upx;height:80upx;
-			
+			margin-right: 20upx;
 		}
 	}
 	.anchor{

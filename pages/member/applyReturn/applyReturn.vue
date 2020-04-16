@@ -31,8 +31,8 @@
           </view>
           <view class="mt2">
               <view>{{type==1?'换货':'退款'}}说明</view>
-			  <p class="sign" v-if="!showTextArea"  @tap="showTextArea = true" :class="RefundContent.length>0?'well_color1':'well_color2'">{{RefundContent || '请输入说明详情'}}</p>
-              <textarea name="" id="" cols="30" rows="10" class="sign font26" style="padding:10upx 3upx;" placeholder="请输入说明详情" auto-focus v-model="RefundContent" @blur="showTextArea = false" v-else></textarea>
+			  <p class="sign" v-show="!showTextArea"  @click="showTextArea = true" :class="RefundContent.length>0?'well_color1':'well_color2'">{{RefundContent || '请输入说明详情'}}</p>
+              <textarea class="sign" :focus="showTextArea" style="padding:10upx 3upx;" placeholder="请输入说明详情" v-model="RefundContent" @focus="showTextArea = true" @blur="showTextArea = true" v-show="showTextArea"></textarea>
           </view>
       </view>
       <view class="mt2 bg_fff pp3" v-if="false">
@@ -62,7 +62,7 @@ export default {
       type:1,//1:申请换货;2:申请退货退款;3:仅退款（无需退货）
       OrderNumber:"",
       info:{},
-	  showTextArea:false,
+	  showTextArea:true,
       RefundContent:"",//退款说明
       RefundReasonId:0,//退原因id
       showEdit:false,
@@ -169,7 +169,7 @@ export default {
     padding:25rpx 0;
   }
   .sign{
-    height:150rpx;width:100%;margin-top:20rpx;
+    height:150rpx;width:100%;margin-top:20rpx;font-size: 26upx;
   }
   .picbox{
     width:25%;

@@ -19,7 +19,7 @@
 		  	          <p v-for="(item,oll) in plist" :key="oll" class="pp_item" :class="{'active':oll==1}">{{item.name}}</p>
 		  	      </div>
 		  	  </div> -->
-				<textarea cols="30" rows="10" maxlength="299" @input="limitInput" class="com_text" v-model="text" placeholder="填写您对商品的评价~"></textarea>
+				<textarea cols="30" rows="10" maxlength="299" class="com_text" v-model="text" placeholder="填写您对商品的评价~"></textarea>
 				<view class="counter"><text class="num">{{inputTxtLength}}</text>/300</view>
 				<div class="p3" style="padding-bottom: 30upx;">
 					<!-- <div>上传图片（不超过5张）</div> -->
@@ -96,7 +96,7 @@
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
-				countIndex: 5,
+				countIndex:4,
 				imgs:[],
 				isShowBtnUpload:true,
 				count: [1, 2, 3, 4, 5],
@@ -120,24 +120,27 @@
 			this.sourceType = ['拍照', '相册', '拍照或相册'];
 			this.sizeTypeIndex = 2;
 			this.sizeType = ['压缩', '原图', '压缩或原图'];
-			this.countIndex = 5;
+			this.countIndex = 4;
 			// #ifndef APP-PLUS
 			this.OrderNo = this.$mp.query.id,
 			this.OrderDetailId  = this.$mp.query.detailId
 			// #endif
-			console.log(this.$mp.query)
 			this.getDetail()
 			
 		},
 		watch: {
 			imgList(e) {
 				console.log(e,";;;;;;;;;;;;")
+			},
+			text(e) {console.log(e)
+				this.inputTxtLength=e.length
 			}
 		},
 		methods: {
 			async pub() {
 				if (this.text) {
 					let imgList = await this.base64Img(this.imageList);
+					// console.log(imgList)
 					post('Order/CommentProduct', {
 						"UserId": uni.getStorageSync("userId"),
 						"Token": uni.getStorageSync("token"),
@@ -222,9 +225,6 @@
 						}
 					})
 				})
-			},
-			limitInput() {
-				this.inputTxtLength = this.text.length;
 			},
 			//设置评价等级
 			onChange(e) {

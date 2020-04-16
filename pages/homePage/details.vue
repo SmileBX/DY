@@ -994,9 +994,10 @@
 	}
 	page{ background-color: #fff;}
 	.shop_pic{
-		width:160upx;height:160upx;
+		width:220upx;height:220upx;
+		border-radius: 12upx;
 		margin-right:14upx;
-		&:nth-child(4n){
+		&:nth-child(3n){
 			margin-right:0
 		}
 	}

@@ -75,9 +75,9 @@ export default {
   methods: {
     getDetail(){
       post('Order/OrderDetails',{
-        UserId:wx.getStorageSync("userId"),
-        Token:wx.getStorageSync("token"),
-        OrderNo:this.$mp.query.id
+        UserId:uni.getStorageSync("userId"),
+        Token:uni.getStorageSync("token"),
+        OrderNo:this.OrderNumber
       }).then(res=>{
         this.info = res.data.OrderDetails[this.indexId];
       })

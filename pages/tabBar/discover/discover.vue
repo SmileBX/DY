@@ -9,7 +9,7 @@
 			<view class="flex justifyContentBetween serch_box">
 				<view class="flex search flexAlignCenter pw2 flex1" @click="goUrl('/pages/homePage/proList?isOpen=1')">
 					<view class="iconfont icon-sousuo"></view>
-					<input type="text" placeholder="请输入关键字" class="flex1">
+					<input type="text" placeholder="请输入关键字" class="flex1" disabled="true">
 				</view>
 				<view class="head_r flex flexAlignCenter">
 					<view class="iconfont icon-caidan" @click="goUrl('/pages/classify/classify')"></view>

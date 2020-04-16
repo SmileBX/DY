@@ -2,38 +2,28 @@
 	<view>
 		<swiper :vertical="true" @change="changes">
 			<swiper-item >
-				<!-- <view class="content myCollectPage"> -->
-					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
-					<!-- #ifdef APP-PLUS -->
-					<video  @error="error" src="http://play.wtvxin.com/live/test.m3u8" :style="{height : height + 'px'}"
-					 :autoplay="true" controls ></video>
-					<!-- #endif -->
-					<!-- #ifdef H5 -->
-					<view class="H5video" id="H5video" :style="{height : height + 'px'}">
-						
-					</view>
-					<!-- #endif -->
-					<!-- #ifdef MP-WEIXIN -->
-					<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
-					<!-- #endif -->
-				<!-- </view> -->
+				<!-- #ifdef APP-PLUS -->
+				<video  @error="error" src="http://play.wtvxin.com/live/test.m3u8" :style="{height : height + 'px'}"
+				 :autoplay="true" controls ></video>
+				<!-- #endif -->
+				<!-- #ifdef H5 -->
+				<view class="H5video" id="H5video" :style="{height : height + 'px'}">
+					
+				</view>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
+				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
+				<!-- #endif -->
 			</swiper-item>
 			<swiper-item >
-				<!-- <view class="content myCollectPage"> -->
-					<!-- <image src="http://ddyp.wtvxin.com/static/of/live.png" mode="widthFix" @click="goUrl('/pages/livepush/livepush')"></image> -->
-					<!-- #ifndef MP-WEIXIN -->
-					<video  src="http://play.wtvxin.com/live/test.m3u8"  ></video>
-					<!-- #endif -->
-				<!-- </view> -->
-					<!-- #ifdef MP-WEIXIN -->
+				<!-- #ifndef MP-WEIXIN -->
+				<video  src="http://play.wtvxin.com/live/test.m3u8"  ></video>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
 				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
 				<!-- #endif -->
 			</swiper-item>
 		</swiper>
-		<!-- #ifndef APP-PLUS -->
-		<cover-view class="btn" @click.stop="tolink">开启直播</cover-view>
-		<!-- #endif -->
-		<!-- <button class="btn" @click.stop="tolink"></button> -->
 	</view>
 </template>
 
@@ -46,19 +36,6 @@
 				height:'',
 				mark:false
 			};
-		},
-		onUnload(){
-		           //在app端不支持cover-view嵌套
-				// #ifdef APP-PLUS
-					var icon = plus.nativeObj.View.getViewById("icon");
-					icon.hide();
-				// #endif
-			},
-		onHide(){
-				// #ifdef APP-PLUS
-					var icon = plus.nativeObj.View.getViewById("icon");
-					icon.hide();
-				// #endif
 		},
 		onShow() {
 			let res = uni.getSystemInfoSync()
@@ -91,11 +68,6 @@
 			},
 			changes(e){
 				// console.log(e)
-			},
-			tolink(){
-				uni.navigateTo({
-					url:"../../livepush/livepush"
-				})
 			},
 			error(e){
 				console.log(e)
