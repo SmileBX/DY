@@ -154,7 +154,6 @@
     height: 90upx;
     z-index: 1;
 	opacity: 1;
-    overflow: hidden;
 }
 .pay-password .surface-ipts .surface-ipt{
     height: 90upx;
@@ -166,9 +165,8 @@
     width: 100upx;
     height: 90upx;
     line-height: 90upx;
-    border:1upx solid #E5E5E5;
+    border:1px solid #E5E5E5;
 	margin-right:10upx;
-    /* border-right: 1upx solid #999999; */
     color: #333333;
     font-size: 40upx;
     text-align: center;
@@ -183,10 +181,8 @@
     width: 90upx;
     height: 90upx;
     line-height: 100upx;
-	border:1upx solid #E5E5E5;
+	border:1px solid #E5E5E5;
 	margin-right:10upx;
-	border: 0;
-    /* border-right: 1upx solid #ececec; */
     color: #333333;
     font-size: 40upx;
     text-align: center;

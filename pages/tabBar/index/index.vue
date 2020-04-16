@@ -234,13 +234,13 @@
 				inviteCode:'',
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			// #ifdef APP-PLUS
 			var height = plus.navigator.getStatusbarHeight();
 			this.barHeight = height;
 			if(e.inviteCode){
 			  this.inviteCode = e.inviteCode
-			  wx.setStorageSync('inviteCode',this.inviteCode);
+			  uni.setStorageSync('inviteCode',this.inviteCode);
 			  console.log("app:",this.inviteCode)
 			}
 			// #endif

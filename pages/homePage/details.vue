@@ -475,10 +475,10 @@
 				wx.setStorageSync('inviteCode',e.inviteCode);
 			}
 			// #endif
-			// #ifdef H5
+			// #ifndef APP-PLUS
 			if(this.$root.$mp.query.inviteCode){
 				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
-				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+				uni.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
 			}
 			// #endif
 		},
@@ -489,10 +489,9 @@
 			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
-			console.log(id,"id3333333")
 			if(this.$root.$mp.query.inviteCode){
 				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
-				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+				uni.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
 			}
 			// #endif
 			this.specList=[];
