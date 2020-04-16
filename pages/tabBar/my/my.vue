@@ -142,7 +142,7 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_fk.png" mode=""></image>
 						<view class="txt">常见问题</view>
 					</view>
-					<view class="item">
+					<view class="item" @click="golink('/pages/other/kefu/kefu')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
 						<view class="txt">官方客服</view>
 					</view>
