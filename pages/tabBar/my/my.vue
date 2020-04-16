@@ -149,7 +149,7 @@
 					</view>
 					<!-- #endif -->
 					<!-- #ifdef MP-WEIXIN -->
-					<button @contact="btnConcat" open-type="concat" class="btn-concat">
+					<button @error="error" @contact="btnConcat" open-type="contact" class="btn-concat">
 						<view class="item" >
 							<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
 							<view class="txt">官方客服</view>
@@ -211,7 +211,7 @@
 			}
 		},
 		methods: {
-			btnConcat(e){
+			error(e){
 				console.log(e)
 			},
 			golink(url){
