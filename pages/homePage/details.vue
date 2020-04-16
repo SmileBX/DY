@@ -472,7 +472,8 @@
 			this.isLimint=e.isLimint||0;
 			if(e.inviteCode){
 				console.log(e.inviteCode,"invitecode111111111111")
-				wx.setStorageSync('inviteCode',e.inviteCode);
+				uni.setStorageSync('inviteCode',e.inviteCode);
+				this.inviteCode = e.inviteCode
 			}
 			// #endif
 			// #ifndef APP-PLUS
@@ -492,6 +493,7 @@
 			if(this.$root.$mp.query.inviteCode){
 				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
 				uni.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+				this.inviteCode = this.$root.$mp.query.inviteCode
 			}
 			// #endif
 			this.specList=[];
@@ -684,7 +686,13 @@
 						}else{
 							gid=0;
 						}
-						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid;
+						let objUrl = ''
+						if(this.inviteCode){
+							 objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid+"&inCode="+this.inviteCode;
+						}else{
+							objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid;
+						}
+						 
 						uni.navigateTo({
 							url: objUrl
 						})
