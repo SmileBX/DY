@@ -90,8 +90,8 @@
       </div>
 	  <!-- #endif -->
 	  <!-- #ifdef MP-WEIXIN -->
-	  <button open-type="concat" class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi"
-	   style="border:0!important;padding:20upx 0;background: #ffffff;line-height:1.9" @click="goUrl('/pages/other/kefu/kefu?qqnum=996889692')">
+	  <button open-type="concat" @contact="btnConcat" class="bg_fff pp2 flex justifyContentCenter flexAlignCenter radius mt2 order_posi"
+	   style="border:0!important;padding:20upx 0;background: #ffffff;line-height:1.9" >
 	      <image src="http://jyy.wtvxin.com/static/images/icons/kcf.png" alt="" class="icon_ch" mode="aspectFit"></iamge>
 	      <span class="font26">联系客服</span>
 	  </button>
@@ -131,6 +131,9 @@ export default {
 	 // #endif
   },
   methods: {
+	  btnConcat(e){
+		  console.log(e)
+	  },
     getDetail(){
       post('Order/OrderDetails',{
         UserId:uni.getStorageSync("userId"),
