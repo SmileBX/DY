@@ -231,15 +231,26 @@
 				barHeight:0,
 				headheight:0,
 				showdots:false,
+				inviteCode:'',
 			}
 		},
 		onLoad() {
 			// #ifdef APP-PLUS
 			var height = plus.navigator.getStatusbarHeight();
 			this.barHeight = height;
+			if(e.inviteCode){
+			  this.inviteCode = e.inviteCode
+			  wx.setStorageSync('inviteCode',this.inviteCode);
+			  console.log("app:",this.inviteCode)
+			}
 			// #endif
 			// #ifdef H5
 			this.barHeight = 0;
+			if(this.$root.$mp.query.inviteCode){
+			  this.inviteCode = this.$root.$mp.query.inviteCode
+			  wx.setStorageSync('inviteCode',this.inviteCode);
+			  console.log("aaaaaaaaaa:",this.inviteCode)
+			}
 			// #endif
 			this.banner();
 			this.typelist();
@@ -262,7 +273,7 @@
 					// #ifdef MP-WEIXIN
 					_this.wxGetCity(res.longitude,res.latitude)
 					// #endif
-			        console.log(res);
+			        // console.log(res);
 			    }
 			});
 			// #endif
@@ -275,17 +286,26 @@
 					var cityname=res.name.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
 					_this.cityname=cityname
-				console.log(cityname)
+				// console.log(cityname,"ooooooooo")
 				})
 			})
 			// #endif
 			
 		},
 		onShow(){
+			// #ifndef APP-PLUS
+			if(this.$root.$mp.query.inviteCode){
+			  this.inviteCode = this.$root.$mp.query.inviteCode
+			  wx.setStorageSync('inviteCode',this.inviteCode);
+			  console.log("aaaaaaaaaa:",this.inviteCode)
+			}
+			// #endif
+			
 			if(uni.getStorageSync("userId")&&uni.getStorageSync("token")){
 				this.NewsCount();
 			}
-			this.cityname=uni.getStorageSync("cityname");console.log(this.cityname+'222222')
+			this.cityname=uni.getStorageSync("cityname");
+			// console.log(this.cityname+'222222')
 		},
 		components:{noData,uniLoadMore},
 		methods:{
@@ -300,7 +320,7 @@
 						'content-type': 'application/json' // 默认值
 					},
 					success (res) {
-					    console.log(res)
+					    // console.log(res)
 						var cityname=res.data.result.addressComponent.city.replace(/市/,'')
 						uni.setStorageSync('cityname',cityname)
 						_this.cityname=cityname
@@ -554,7 +574,7 @@
 			GetRTime(overTime) {
 			  let _this = this;
 			  var arr=overTime.split(":")
-			  var t=arr[0]*3600+arr[1]*60+arr[2]*1;console.log(t)
+			  var t=arr[0]*3600+arr[1]*60+arr[2]*1;	(t)
 			  var timer = setInterval(function() {
 			  t--
 			  if (t > 0) {

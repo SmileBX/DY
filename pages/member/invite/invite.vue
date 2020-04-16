@@ -118,7 +118,7 @@ export default {
 		    provider: "weixin",
 		    scene: "WXSceneSession",
 		    type: 0,
-		    href: "http://ddyp.wtvxin.com/#/pages/tabBar/index/index?shareid="+this.info.ReferralCode,
+		    href: "http://ddyp.wtvxin.com/#/pages/tabBar/index/index?inviteCode="+this.info.ReferralCode,
 		    title: "大单易拼等你来！",
 		    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 		    imageUrl: this.codeurl,
@@ -365,7 +365,6 @@ export default {
       }).then(res=>{
         this.info=res.data;
         var _this=this
-		console.log(this.info.InviteQRcode,"999999999999")
         uni.getImageInfo({
             src: this.info.InviteQRcode,//服务器返回的图片地址 
             success: function (res) {
@@ -398,9 +397,10 @@ export default {
 
   },
   onShareAppMessage: function() {
+	  console.log(this.info.ReferralCode,"this.info.ReferralCode")
     return {
       title: "大单易拼", //转发页面的标题
-      path: '/pages/tabBar/index/index?shareid='+this.info.ReferralCode
+      path: '/pages/tabBar/index/index?inviteCode='+this.info.ReferralCode
     }
   }
 }

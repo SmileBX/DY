@@ -403,7 +403,7 @@
 </template>
 
 <script>
-	import {post,get,toLogin} from '@/common/util.js';
+	import {post,get,toLogin,uncodeUtf16} from '@/common/util.js';
 	import uParse from '@/components/uParse/src/wxParse.vue';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import popupsku from '@/components/popupSku.vue';
@@ -462,6 +462,7 @@
 				inputSKU:"",//输入搜索的sku
 				showsearchres:false,//搜索结果
 				showsearchtext:"",
+				inviteCode:'',
 			}
 		},
 		onLoad(e) {
@@ -469,15 +470,30 @@
 			console.log(e.id)
 			this.proId=e.id
 			this.isLimint=e.isLimint||0;
+			if(e.inviteCode){
+				console.log(e.inviteCode,"invitecode111111111111")
+				wx.setStorageSync('inviteCode',e.inviteCode);
+			}
+			// #endif
+			// #ifdef H5
+			if(this.$root.$mp.query.inviteCode){
+				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
+				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+			}
 			// #endif
 		},
-		onShow(){
+		onShow(){ 
 			this.hasData = false
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
+			console.log(id,"id3333333")
+			if(this.$root.$mp.query.inviteCode){
+				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
+				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+			}
 			// #endif
 			this.specList=[];
 			this.SpecText="";
@@ -539,6 +555,7 @@
 					this.proInfo.ServiceKeys=this.proInfo.ServiceKeys.split(',')
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;
+					
 					if(result.data.IsAloneBuy==1){
 						this.reStock=result.data.Stock;
 						if(this.isLimint==0){
@@ -851,6 +868,8 @@
 						// console.log(arr)
 					  }
 					  _this.$set(item, "imgArr",arr);
+						let str = uncodeUtf16(item.ContentText)
+						 _this.$set(item,"ContentText",str)
 					})
 					_this.CommentList=res.data;
 				}else{
@@ -864,7 +883,7 @@
 				    provider: "weixin",
 				    scene: "WXSceneSession",
 				    type: 0,
-				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId,
+				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId+"&inviteCode="+ uni.getStorageSync('ReferralCode'),
 				    title: this.proInfo.Name,
 				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 				    imageUrl: this.proInfo.PicData[0].PicUrl,

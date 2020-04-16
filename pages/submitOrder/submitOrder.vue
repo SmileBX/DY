@@ -512,6 +512,7 @@
 					IsPayWallet:this.isPayWallet,
 					IsPayScore:this.isPayScore,
 					CouponId:this.couponId,
+					InviteCode:uni.getStorageSync('inviteCode'),
 					ShopData:this.shopDataArr
 				})
 				if (result.code == 0) {
@@ -634,6 +635,7 @@
 				Remark:this.remarkTxtArr[0],
 				ContactName:this.ContactName,
 				Tel:this.Tel,
+				InviteCode:uni.getStorageSync('inviteCode'),
 				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){
@@ -669,6 +671,7 @@
 				Remark:this.remarkTxtArr[0],
 				ContactName:this.ContactName,
 				Tel:this.Tel,
+				InviteCode:uni.getStorageSync('inviteCode'),
 				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){

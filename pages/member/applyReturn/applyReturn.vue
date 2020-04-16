@@ -66,7 +66,7 @@ export default {
       RefundContent:"",//退款说明
       RefundReasonId:0,//退原因id
       showEdit:false,
-      list:[],
+      list:[{code:0,message:'请选择'}],
       // type:"",
       typeTxt:"请选择",
     }
@@ -89,6 +89,7 @@ export default {
   },
   methods: {
     gettype(e){
+		console.log(e,"//")
       if(e.code){
         this.RefundReasonId=e.code;
         this.typeTxt=e.message;

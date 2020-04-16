@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       //临时改变的值
-      value: ""
+      value: "0"
     };
   },
   onLoad() {
