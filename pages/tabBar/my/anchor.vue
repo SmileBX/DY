@@ -33,16 +33,16 @@
 			<view class="list_zb" v-else>
 				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live')">
 					<view class="le_img">
-						<image src="../../../static/1.png" class="shop"></image>
-						<image src="../../../static/zb.png" class="tip"></image>
+						<image :src="item.BannerPicNo" class="shop"></image>
+						<image src="../../../static/zb.png" class="tip" v-if="item.Flag==1"></image>
 					</view>
 					<view class="flex flexColumn flex1">
 						<view class="title_anch">{{item.ShopNick}}</view>
 						<view class="flex mt2">
-							<image :src="item.Logo" class="ava"></image>
-							<view>
-								<view class=" color_gray">山大王家居</view>
-								<view class="font26 color_gray">佛山</view>
+							<image :src="item.Logo" class="ava" mode="aspectFill"></image>
+							<view class="flex1">
+								<view class=" color_gray">{{item.Theme}}</view>
+								<!-- <view class="font26 color_gray">佛山</view> -->
 							</view>
 						</view>
 					</view>
@@ -222,6 +222,7 @@
 			}
 			.shop{
 				width:100%;height:100%;
+				border-radius: 10upx;
 			}
 		}
 		.title_anch{
