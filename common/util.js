@@ -231,6 +231,21 @@ function navigate(url,params={}){
 		url:'/pages/'+url+(p&&('?'+p))
 	})
 }
+function uncodeUtf16(str){
+  　　var reg = /\&#.*?;/g;
+  　　var result = str.replace(reg,function(char){
+  　　	 var H,L,code;
+  　　　　if(char.length == 9 ){
+  　　　　　　code = parseInt(char.match(/[0-9]+/g));
+  　　　　　　H = Math.floor((code-0x10000) / 0x400)+0xD800;
+  　　　　　　L = (code - 0x10000) % 0x400 + 0xDC00;
+  　　　　　　return unescape("%u"+H.toString(16)+"%u"+L.toString(16));
+  　　　　}else{
+  　　　　　　return char;
+  　　　　}
+  　　});
+  　　return result;
+ }
 import {get,post,requestHideLoading} from './request.js'
 export {
 	formatTime,
@@ -247,5 +262,6 @@ export {
 	SEOTitle,
 	getUrlParam,
 	setRegular,
-	navigate
+	navigate,
+	uncodeUtf16
 }

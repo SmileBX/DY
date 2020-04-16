@@ -96,7 +96,7 @@
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
-				countIndex: 5,
+				countIndex: 1,
 				imgs:[],
 				isShowBtnUpload:true,
 				count: [1, 2, 3, 4, 5],
@@ -120,7 +120,7 @@
 			this.sourceType = ['拍照', '相册', '拍照或相册'];
 			this.sizeTypeIndex = 2;
 			this.sizeType = ['压缩', '原图', '压缩或原图'];
-			this.countIndex = 5;
+			this.countIndex = 1;
 			// #ifndef APP-PLUS
 			this.OrderNo = this.$mp.query.id,
 			this.OrderDetailId  = this.$mp.query.detailId

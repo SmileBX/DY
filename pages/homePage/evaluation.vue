@@ -61,7 +61,7 @@
 </template>
 
 <script>
-	import {post,get,dateUtils} from '@/common/util.js';
+	import {post,get,dateUtils,uncodeUtf16} from '@/common/util.js';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import uniLoadMore from '@/components/uni-load-more.vue';
 	export default{
@@ -117,6 +117,8 @@
 								arr.push(item.PicData[i].PicUrl)
 							 }
 							 _this.$set(item, "imgArr",arr);
+							 let str = uncodeUtf16(item.ContentText)
+							  _this.$set(item,"ContentText",str)
 						})
 					}
 					if (result.data.length == 0&&this.page==1) {

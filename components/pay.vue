@@ -1,8 +1,12 @@
 <template>
 		<view class="common-part">
         <view class="common-dialog pay-dialog">
-            <view class="dialog-title">请输入支付密码</view>
-            <view class="pay-money">￥{{allprice}}</view>
+            <view class="dialog-title">请输入支付密码
+				<text class="iconfont icon-close cancle" @click="hide"></text>
+			</view>
+            <view class="pay-money">
+				<text class="font26">￥</text>{{allprice}}
+			</view>
             <view class="pay-password">
 				<input type="number" maxlength="6" class="real-ipt" v-model="Password">
                 <view class="surface-ipts">
@@ -17,8 +21,7 @@
                 </view>
             </view>
             <view class="btns">
-                <button class="cancel-btn" @click="hide">取消</button>
-                <button class="confirm-btn" @click="paybtn">付款</button>
+                <button class="confirm-btn" @click="paybtn">确定</button>
             </view>
         </view>
     </view>
@@ -95,27 +98,35 @@
     width: 680upx;
     text-align: center;
     background: #ffffff;
-    border-radius: 12upx;
+    border-radius: 25upx;
     border: 1px solid #f2f2f2;
 }
 .dialog-title{
-    height: 120upx;
-    line-height: 120upx;
+    height: 100upx;
+    line-height: 100upx;
     color: #333333;
-    font-size: 40upx;
+	background: #f5f5f5;
+    font-size: 30upx;
+	border-radius: 25upx 25upx 0  0;
     border-bottom: 1px solid #f2f2f2;
+	position: relative;
+}
+.cancle{
+	position: absolute;
+	right:30upx;
+	top:0upx;
 }
 .pay-money{
     color: #333333;
     font-size: 50upx;
-    margin: 40upx 0;
+    margin: 25upx 0;
     font-weight: bold;
 }
 .pay-password{
-    width: 600upx;
-    height: 102upx;
-    border: 1upx solid #999999;
-		border-right: none;
+    width: 552upx;
+    height: 90upx;
+    /* border: 1upx solid #999999; */
+		/* border-right: none; */
     margin: 0 auto;
     position: relative;
 }
@@ -125,7 +136,7 @@
     top: 0;
     right: 0;
     width: 150%;
-    height: 100upx;
+    height: 90upx;
     opacity: 0;
     z-index: 3;
 	background-color: rgba(0,0,0,0);
@@ -140,36 +151,42 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100upx;
+    height: 90upx;
     z-index: 1;
 	opacity: 1;
     overflow: hidden;
 }
 .pay-password .surface-ipts .surface-ipt{
-    height: 100upx;
-    line-height: 100upx;
+    height: 90upx;
+    line-height: 90upx;
     display: flex;
     justify-content: space-between;
 }
 .pay-password .surface-ipts .surface-ipt input{
     width: 100upx;
-    height: 100upx;
-    line-height: 100upx;
-    border: 0;
-    border-right: 1upx solid #999999;
+    height: 90upx;
+    line-height: 90upx;
+    border:1upx solid #E5E5E5;
+	margin-right:10upx;
+    /* border-right: 1upx solid #999999; */
     color: #333333;
     font-size: 40upx;
     text-align: center;
     padding: 0;
 }
-.pay-password .surface-ipts /deep/ .uni-input-input{font-size: 80upx; height: 100upx;}
+..pay-password .surface-ipts .surface-ipt input:last-child{
+	margin-right:0;
+}
+.pay-password .surface-ipts /deep/ .uni-input-input{font-size: 80upx; height: 90upx;}
 /* #ifdef MP-WEIXIN */
 .pay-password .surface-ipts .surface-ipt input{
-    width: 100upx;
-    height: 100upx;
+    width: 90upx;
+    height: 90upx;
     line-height: 100upx;
-    border: 0;
-    border-right: 1upx solid #999999;
+	border:1upx solid #E5E5E5;
+	margin-right:10upx;
+	border: 0;
+    /* border-right: 1upx solid #ececec; */
     color: #333333;
     font-size: 40upx;
     text-align: center;
@@ -177,8 +194,8 @@
 }
 /* #endif */
 .btns{
-	margin-top: 60upx;
-	margin-bottom: 80upx;
+	margin-top: 50upx;
+	margin-bottom: 70upx;
   display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -193,12 +210,12 @@
 		border: #fff;
 }
 .confirm-btn{
-    width: 240upx;
-    height: 100upx;
-    line-height: 100upx;
+    width: 552upx;
+    height: 90upx;
+    line-height: 90upx;
     background-size: 100%;
     color: #ffffff;
-    font-size: 40upx;
+    font-size: 32upx;
 		background-color: #ff3333;
 }
 </style>
