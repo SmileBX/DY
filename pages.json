@@ -34,7 +34,7 @@
 		{
 			"path": "pages/tabBar/live/live",
 			"style": {
-				"navigationBarTitleText": "收藏",
+				"navigationBarTitleText": "直播",
 				"enablePullDownRefresh" : false,
 				"app-plus": {
 					"titleNView": false, //首页去除原生导航
@@ -403,6 +403,13 @@
 				},
 				{
 					"path":"kefu/kefu",
+					"style": {
+						"navigationBarTitleText": "在线客服",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path":"kefuDeatil/kefuDeatil",
 					"style": {
 						"navigationBarTitleText": "在线客服",
 						"navigationBarBackgroundColor": "#ffffff"

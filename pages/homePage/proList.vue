@@ -52,7 +52,7 @@
 			<block v-for="(item,index) in datalist" :key="index" v-show="hasData">
 				<view class="listbox" @click="navigate('homePage/details',{id:item.Id})">
 					<view class="listimg">
-						<image :src="item.PicNo" mode="aspectFit"></image>
+						<image :src="item.PicNo" mode="aspectFill"></image>
 					</view>
 					<view class="listpt">
 						<view>
@@ -76,8 +76,8 @@
 									<view class="cashm">¥{{item.DistributionIncome}}</view>
 								</view>
 							</view>
-							<view class="listplace lp" v-if="item.ServiceKeys">
-								<view class="listkey" v-for="(e,i) in item.ServiceKeys.split(',')" :key="i">{{e}}</view>
+							<view class="listplace lp" v-if="item.newServiceKeys">
+								<view class="listkey" v-for="(e,i) in item.newServiceKeys" :key="i">{{e}}</view>
 							</view>
 						</view>
 					</view>
@@ -217,6 +217,14 @@
 					if (result.data.length > 0) {
 						this.hasData = true;
 						this.noDataIsShow = false;
+						result.data.map(item =>{console.log(item)
+							if(item.ServiceKeys!=""){
+								var arr=item.ServiceKeys.split(',')
+							}else{
+								var arr=[]
+							}
+							this.$set(item,'newServiceKeys',arr)
+						})
 					}
 					if (result.data.length == 0&&this.page==1) {
 						this.noDataIsShow = true;

@@ -142,10 +142,20 @@
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_fk.png" mode=""></image>
 						<view class="txt">常见问题</view>
 					</view>
-					<view class="item">
+					<!-- #ifndef MP-WEIXIN -->
+					<view class="item" @click="golink('/pages/other/kefu/kefu')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
 						<view class="txt">官方客服</view>
 					</view>
+					<!-- #endif -->
+					<!-- #ifdef MP-WEIXIN -->
+					<button @error="error" @contact="btnConcat" open-type="contact" class="btn-concat">
+						<view class="item" >
+							<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_kf.png" mode=""></image>
+							<view class="txt">官方客服</view>
+						</view>
+					</button>
+					<!-- #endif -->
 					<view class="item" @click="golink('/pages/other/set/set')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/u_set.png" mode=""></image>
 						<view class="txt">设置</view>
@@ -164,13 +174,15 @@
 			</view>
 		</view>
 		<!-- 我的服务  end-->
-		
+		<notlogin :showtype="1" v-if="false"></notlogin>
 	</view>
 </template>
 
 <script>
 	import {host,post,get,toLogin} from '@/common/util.js';
+	import notlogin from '@/components/notlogin.vue'; 
 	export default {
+		components: {notlogin},
 		data() {
 			return {
 				barHeight:0,//app端增加状态栏高度
@@ -199,6 +211,9 @@
 			}
 		},
 		methods: {
+			error(e){
+				console.log(e)
+			},
 			golink(url){
 				if(toLogin()){
 					uni.navigateTo({
@@ -288,4 +303,19 @@
 	.b_radius{ margin-left: 30upx; margin-right: 30upx; border-radius: 14upx; overflow: hidden;}
 	.vip-section{ padding: 0 30upx; position: relative;}
 	.vip-section image{ display: block;}
+	.btn-concat{
+		border: none;
+		padding: 0;
+		background-color: none;
+		width: 25%;
+		background: #fff;
+		display: inline-block;
+		color: #5e5e5e;
+	}
+	button::after {
+		border: none;
+	}
+	.btn-concat .item{
+		width: 100%;
+	}
 </style>
