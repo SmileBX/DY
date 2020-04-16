@@ -184,7 +184,6 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		
 	</view>
 </template>
 
