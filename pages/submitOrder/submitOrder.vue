@@ -310,6 +310,7 @@
 				Tel:"",//业主电话
 				IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
 				shopDataArr:[],//购物车默认选择店铺优惠券
+				inCode:0,//立即购买得邀请码分享好友得佣金
 			};
 		},
 		onLoad: function(e) {
@@ -321,6 +322,9 @@
 			this.GroupId=e.GroupId||0
 			this.Total=e.number
 			this.SpecText=e.SpecText
+			if(e.inCode){
+				this.inCode = e.inCode
+			}
 			// #endif
 		},
 		onShow() {
@@ -336,6 +340,9 @@
 			this.GroupId=this.$root.$mp.query.GroupId||0;
 			this.Total=this.$root.$mp.query.number;
 			this.SpecText=this.$root.$mp.query.SpecText;
+			if(this.$root.$mp.query.inCode){
+				this.inCode = this.$root.$mp.query.inCode
+			}
 			// #endif
 			if(uni.getStorageSync("addressinfo")){
 			  this.addrInfo=uni.getStorageSync("addressinfo");
@@ -512,7 +519,7 @@
 					IsPayWallet:this.isPayWallet,
 					IsPayScore:this.isPayScore,
 					CouponId:this.couponId,
-					InviteCode:uni.getStorageSync('inviteCode'),
+					InviteCode:this.inCode,
 					ShopData:this.shopDataArr
 				})
 				if (result.code == 0) {
@@ -635,7 +642,7 @@
 				Remark:this.remarkTxtArr[0],
 				ContactName:this.ContactName,
 				Tel:this.Tel,
-				InviteCode:uni.getStorageSync('inviteCode'),
+				InviteCode:this.inCode,
 				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){
@@ -671,7 +678,7 @@
 				Remark:this.remarkTxtArr[0],
 				ContactName:this.ContactName,
 				Tel:this.Tel,
-				InviteCode:uni.getStorageSync('inviteCode'),
+				InviteCode:this.inCode,
 				IsSalesOffice:this.IsSalesOffice
 			  })
 			  if(result.code==0){

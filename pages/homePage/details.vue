@@ -473,14 +473,10 @@
 			if(e.inviteCode){
 				console.log(e.inviteCode,"invitecode111111111111")
 				wx.setStorageSync('inviteCode',e.inviteCode);
+				this.inviteCode = e.inviteCode
 			}
 			// #endif
-			// #ifdef H5
-			if(this.$root.$mp.query.inviteCode){
-				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
-				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
-			}
-			// #endif
+			
 		},
 		onShow(){ 
 			this.hasData = false
@@ -489,10 +485,10 @@
 			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
-			console.log(id,"id3333333")
 			if(this.$root.$mp.query.inviteCode){
 				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
 				wx.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+				this.inviteCode = this.$root.$mp.query.inviteCode
 			}
 			// #endif
 			this.specList=[];
@@ -685,7 +681,13 @@
 						}else{
 							gid=0;
 						}
-						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid;
+						let objUrl = ''
+						if(this.inviteCode){
+							 objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid+"&inCode="+this.inviteCode;
+						}else{
+							objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid;
+						}
+						 
 						uni.navigateTo({
 							url: objUrl
 						})
