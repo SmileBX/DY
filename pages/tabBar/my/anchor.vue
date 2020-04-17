@@ -31,7 +31,7 @@
 			</view>
 			<!--直播列表-->
 			<view class="list_zb" v-else>
-				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live',item.ShopId)">
+				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live',item.ShopId,item.Flag)">
 					<view class="le_img">
 						<image :src="item.BannerPicNo" class="shop"></image>
 						<image src="../../../static/zb.png" class="tip" v-if="item.Flag==1"></image>
@@ -89,16 +89,24 @@
 			tapTab(index) { //点击tab-bar
 				this.tabIndex = index;
 			},
-			goUrl(url,ShopId){
-				if(ShopId){
+			goUrl(url,ShopId,Flag){
+				//判断是否正在直播
+				if(Flag==1){
 					uni.navigateTo({
 						url:url+"?ShopId="+ShopId
 					})
-				}else {
-					uni.navigateTo({
-						url:url
+				}else if(Flag==0){
+					uni.showToast({
+						title:'直播未开始',
+						icon:'none'
+					})
+				}else if(Flag==2){
+					uni.showToast({
+						title:'直播已结束',
+						icon:'none'
 					})
 				}
+				
 				
 			},
 			async getShopList() {
@@ -107,6 +115,7 @@
 					Token: this.token,
 				});
 				this.ShopList=res.data
+				console.log(this.ShopList)
 			},
 			async collectionsList() {
 				let result = await post("User/MemberCollections", {

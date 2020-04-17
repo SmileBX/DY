@@ -25,6 +25,7 @@
 	// #ifdef H5
 	import {MP} from '@/common/map.js';//h5百度定位
 	// #endif
+
 	import {post,get,toLogin} from '@/common/util.js';
 	import cityData from '@/common/cityname.js';
 	export default {
@@ -35,12 +36,21 @@
 				toitem:'A',
 				cityname:"",
 				here:"定位中",//当前城市
+				// #ifdef APP-PLUS
+				//检测是否授权
+				isIos: true,
+				items: ['iOS', 'Android'],
+				current: 0
+				// #endif
+				
+				
 			}
 		},
 		onLoad() {
 			let res = uni.getSystemInfoSync()
 			this.height = res.windowHeight-uni.upx2px(100);
 			var _this=this
+			
 			// #ifdef APP-PLUS||MP-WEIXIN
 			uni.getLocation({
 			    type: 'wgs84',
@@ -63,6 +73,7 @@
 			// #endif
 		},
 		methods: {
+			
 			H5getcity(){
 				var _this=this
 				MP(1).then(BMap => {
