@@ -59,7 +59,7 @@
 						<!--拼品牌馆-->
 						<view class="index_pin">
 							<image src="http://ddyp.wtvxin.com/static/of/f1.png" mode="widthFix"></image>
-							<view class="pin_list flex">
+							<!-- <view class="pin_list flex">
 								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="flex flexColumn flexAlignStart pp_left flex1">
 										<view class="item_logo">
@@ -67,13 +67,31 @@
 										</view>
 										<view class="flex justifyContentBetween item_info">
 											<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
-												<!-- <view class="item_info_title">{{item.Name}}</view> -->
+												
 												<view class="text_flow item_sige">{{item.Intro}}</view>
 											</view>
 										</view>
 									</view>
 									<view class="right_img">
 										<image :src="item.Pic" mode="aspectFill"></image>
+									</view>
+								</view>
+							</view> -->
+							<view class="pin_list flex">
+								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
+									<!-- <view class="flex flexColumn flexAlignStart pp_left flex1">
+										<view class="item_logo">
+											<image :src="item.Logo"></image>
+										</view>
+										<view class="flex justifyContentBetween item_info">
+											<view :class="{'color1':key==0,'color2':key==1,'color3':key==2,'color4':key==3}">
+												
+												<view class="text_flow item_sige">{{item.Intro}}</view>
+											</view>
+										</view>
+									</view> -->
+									<view class="right_img">
+										<image :src="item.Pic" ></image>
 									</view>
 								</view>
 							</view>
@@ -113,9 +131,15 @@
 												<view class="txtbox">
 													<view class="txt uni-ellipsis">{{item.Name}}</view>
 													<view class="uni-product-price">
-														<text class="uni-product-price-original">￥{{item.Price}}</text>
+														<text class="uni-product-price-original">￥{{item.Price}}</text><!-- <text class="">补贴￥</text> -->
 														<text class="uni-product-price-favour" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</text>
+														<!-- <text style="font-size: 10upx;margin-left: 2upx;padding: 0 8upx;text-decoration:none;width: 40%;height: 15upx;background: #f0370b;color: #fff;border-radius: 15upx;" -->
+														<!-- >补贴￥{{item.DistributionIncome}}</text> -->
 													</view>
+												</view>
+												<view class=""style="display: flex;justify-content: space-between;padding-top: 10upx;">
+													<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
+														补贴￥{{item.DistributionIncome}}</view>
 												</view>
 											</view>
 										</view>
@@ -150,9 +174,15 @@
 												<span class="item_price">￥{{item.Price}}</span>
 												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
+										</view>
+										<view class=""style="display: flex;justify-content: space-between;padding-top: 10upx;">
+											<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f00000;color: #fff;line-height: 36upx;padding: 0 12upx;">
+												补贴￥{{item.DistributionIncome}}</view>
 											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
+										
 									</view>
+									
 								</view>
 							</view>
 							<view class="uni-tab-bar-loading"><uni-load-more :loadingType="loadingType"></uni-load-more></view>
@@ -442,6 +472,7 @@
 					}
 					if (this.page === 1) {
 						this.handlist = result.data;
+						console.log(typeof(this.handlist[5].DistributionIncome),111)
 					}
 					if (this.page > 1) {
 						this.handlist = this.handlist.concat(

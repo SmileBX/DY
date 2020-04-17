@@ -20,7 +20,7 @@
           
           <view class="menu_item flex justifyContentBetween flexAlignCenter">
               <view>{{type==1?'换货':'退款'}}原因</view>
-              <view class="flex flex1 flexAlignCenter"  @click="showEdit=true">
+              <view class="flex flex1 flexAlignCenter"  @click="showReason">
                   <input type="text" placeholder="请选择" disabled class="flex1 text_right font26" v-model="typeTxt">
                   <text class="iconfont icon-arrow_r"></text>
               </view>
@@ -66,8 +66,8 @@ export default {
       RefundContent:"",//退款说明
       RefundReasonId:0,//退原因id
       showEdit:false,
-      list:[{code:0,message:'请选择'}],
-      // type:"",
+      // list:[{code:0,message:'请选择'}],
+	   list:[],
       typeTxt:"请选择",
     }
   },
@@ -84,8 +84,14 @@ export default {
 	this.OrderNumber=this.$mp.query.id
 	this.type=this.$mp.query.type
 	// #endif
+	// if(this.type == 1){
+	// 	this.list = []
+	// }else{
+	// 	this.list = [{code:0,message:'请选择'}]
+	// }
+	this.list = []
     this.getDetail();
-    this.getCancelReason()
+
   },
   methods: {
     gettype(e){
@@ -95,11 +101,27 @@ export default {
         this.typeTxt=e.message;
       }
     },
+	showReason(){
+		// if(this.type == 1){
+		// 	this.GetRefundReason()
+		// }else{
+		// 	this.getCancelReason()
+		// }
+		this.GetRefundReason()
+		this.showEdit = true
+	},
+	//退货原因
     getCancelReason(){
-      get('Order/CancelReason',{}).then(res=>{
+      get('Order/GetRefundReason',{}).then(res=>{
         this.list.push(...res.data)
       })
     },
+	//换货原因
+	GetRefundReason(){
+		get('Order/GetRefundReason',{}).then(res=>{
+		  this.list.push(...res.data)
+		})
+	},
     getDetail(){
       post('Order/OrderDetails',{
         UserId:uni.getStorageSync("userId"),

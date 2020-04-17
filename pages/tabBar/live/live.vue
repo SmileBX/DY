@@ -63,7 +63,10 @@
 					ShopId:this.ShopId
 				})
 				this.data=res.data;console.log(res.data)
-				this.playH5()
+		
+					this.playH5()
+				
+				
 			},
 			playH5(){
 				var player = new TcPlayer('H5video', {
