@@ -30,7 +30,9 @@
 
 <script>
 	import {host,post,get,toLogin,} from '@/common/util.js';
+
 	import {TPlay} from '@/common/TcPlayer.js';
+
 	export default {
 		data() {
 			return {
