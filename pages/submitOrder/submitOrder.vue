@@ -1,7 +1,7 @@
 <template>
 	<view class="wrap">
 		<view class="uni-pd10 p_re">
-			<view class="addrbox uni-bg-white b_radius uni-mb10" v-if="info.IsAloneBuy==0&&info.IsSalesOffice==0">
+			<view class="addrbox uni-bg-white b_radius uni-mb10" v-if="info.IsAloneBuy==0&&info.IsSalesOffice==0&&orderSType==0">
 				<view class="address flex flex-between" v-if="isAddress" @click="golink('/pages/member/address/address?pagetype=confirm&checkId='+addrInfo.Id)">
 					<view class="local">
 						<view class="iconfont icon-dizhi"></view>
@@ -342,6 +342,7 @@
 			this.SpecText=this.$root.$mp.query.SpecText;
 			if(this.$root.$mp.query.inCode){
 				this.inCode = this.$root.$mp.query.inCode
+				console.log(this.inCode,"///////")
 			}
 			// #endif
 			if(uni.getStorageSync("addressinfo")){

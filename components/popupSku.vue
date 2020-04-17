@@ -94,6 +94,10 @@
 				default: 0
 			},
 			couponid: String,
+			inviteCode:{
+				type:Number,
+				default: 0
+			}
 		},
 		created: function(option) {console.log(this.showbtntype)
 			this.userId = uni.getStorageSync("userId");
@@ -370,7 +374,7 @@
 								}else{
 									money=this.price;
 								}
-								let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&GroupId='+this.proInfo.GroupId;
+								let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&GroupId='+this.proInfo.GroupId+"&inCode="+this.inviteCode;
 								uni.navigateTo({
 									url: objUrl
 								})

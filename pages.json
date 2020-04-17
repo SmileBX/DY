@@ -176,13 +176,13 @@
 								"fontSize": "22px",
 								"color": "#333"
 							},
-							//#endif
 							{
 								"text": "\ue66e",
 								"fontSrc": "/static/iconfont.ttf",
 								"fontSize": "22px",
 								"color": "#333"
-							}
+							},
+							//#endif
 						]
 					}
 				}
@@ -602,8 +602,8 @@
 					"path":"invite/invite",
 					"style": {
 						"navigationBarTitleText": "邀请好友",
-						"navigationBarBackgroundColor": "#ffffff"
-						// "enablePullDownRefresh" : true
+						"navigationBarBackgroundColor": "#ffffff",
+						"enablePullDownRefresh": false
 					}
 				},{
 					"path" : "editinfo/editinfo",

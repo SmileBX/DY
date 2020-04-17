@@ -22,6 +22,14 @@
 		<view class="ftbtn" style="padding:20upx;">
 		    <view :class="['btn',disable?'disabled':'']" @click="submitBtn">立即支付</view>
 		</view>
+		<view class="mask" v-if="showMask"></view>
+		<view v-if="showMask" class="toastMask">
+			<view class="toast_title">您还未设置支付密码，无法使用余额支付，是否马上设置？</view>
+			<view class="flex taost_btn">
+				<view class=" btn_tt btn_no1" @click="showMask=false">取消</view>
+				<view class=" btn_tt btn_no2" @click="tolink('/pages/other/setpwd/setpwd')">确认</view>
+			</view>
+		</view>
 		<pay v-on:hidePay="hidePay" v-on:getPassword="getPassword" v-if="showPay" :allprice="allprice"></pay>
 	</view>
 </template>
@@ -68,6 +76,7 @@
 				WxOpenid:"",
 				WxCode:"",
 				GroupId:0,//大于0 是拼团产品
+				showMask:false,
 			}
 		},
 		// #ifdef APP-PLUS
@@ -91,6 +100,7 @@
 			// #ifdef  MP-WEIXIN
 			this.getcode();
 			// #endif
+			this.showMask = false
 		},
 		methods: {
 			//跳转
@@ -385,18 +395,19 @@
 								this.showPay=true;
 							}
 						}else{
-							uni.showModal({
-								content:'您还未设置支付密码，无法使用余额支付，是否马上设置？',
-								success: function (res) {
-									if (res.confirm) {
-										uni.navigateTo({
-											url:"/pages/other/setpwd/setpwd"
-										})
-									} else if (res.cancel) {
-										console.log('用户点击取消');
-									}
-								}
-							})
+							this.showMask = true
+							// uni.showModal({
+							// 	content:'您还未设置支付密码，无法使用余额支付，是否马上设置？',
+							// 	success: function (res) {
+							// 		if (res.confirm) {
+							// 			uni.navigateTo({
+							// 				url:"/pages/other/setpwd/setpwd"
+							// 			})
+							// 		} else if (res.cancel) {
+							// 			console.log('用户点击取消');
+							// 		}
+							// 	}
+							// })
 						}
 					}
 				}
@@ -405,8 +416,36 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	page{ background: #fff;}
+	.toastMask{
+		position: fixed;background: #ffffff;
+		z-index:200;
+		top:50%;left:50%;
+		width:600upx;
+		height:300upx;
+		border-radius: 25upx;
+		transform: translate(-50%,-50%);
+		.toast_title{
+			height:200upx;
+			text-align: center;
+			display: flex;justify-content: center;align-items: center;
+			padding:0 30upx;
+			font-size:30upx;
+			fong-weight:600;
+			border-bottom: 1upx solid #f5f5f5;
+		}
+		.taost_btn{
+			.btn_tt{
+				width:50%;text-align: center;
+				height:100upx;line-height: 100upx;
+			}
+			.btn_no2{
+				color:#ff3333;
+				border-left: 1upx solid #f5f5f5;
+			}
+		}
+	}
   .ftbtn{
     position: fixed;
 	width: 100%;

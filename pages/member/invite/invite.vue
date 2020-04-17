@@ -1,5 +1,5 @@
 <template>
-  <view class="invite bg_fff" style="padding-bottom: 30upx;">
+  <view class="invite bg_fff" style="padding-bottom: 30upx;overflow:hidden;position: fixed;">
 		<view id="bb_canvas">
 			  <view class="inn_bg ">
 				  <image src="http://ddyp.wtvxin.com/static/icons/inn.png" alt="" class="invite"></image>
@@ -21,9 +21,9 @@
 				  <image :src="info.InviteQRcode" alt="" class="code_img"></image>
 			  </view>
 		</view>
-		  <view class="yy_scan font30 " @click="showShare">点击分享</view>
+		  <view class="yy_scan font30 " @click="showShare" >点击分享</view>
 		  <!--分享-->
-		  <view class="mask" v-if="isShowShare" @click="cancelShare"></view>
+		  <view class="mask" v-if="isShowShare" @click="cancelShare" @catchtouchmove="true"></view>
 		  <view class="modal_mask flex justifyContentAround pp3" v-if="isShowShare">
 			  <!-- #ifdef MP-WEIXIN-->
 			  <button open-type="share" class="flex flexColumn flexAlignCenter">
@@ -45,11 +45,11 @@
 			 
 		  </view>
 		  <!-- 保存海报 -->
-		  <view class="mask" v-if="showImg"></view>
+		  <view class="mask" v-if="showImg" @catchtouchmove="true"></view>
 		  <!-- #ifndef H5-->
 		  <view class="imgbox" v-if="showImg">
-			<canvas canvas-id="myCanvas" class="share-canvas" style="width:100%;height:100%" v-if="!hasimg"></canvas>
-			<image :src="saveImgurl" alt="" v-else></image>
+			<canvas canvas-id="myCanvas" disable-scroll="true" @touchmove="touchMove" class="share-canvas" style="width:100%;height:100%;" v-if="!hasimg"></canvas>
+			<image :src="saveImgurl" alt="" v-else style="width:100%;height:100%;"></image>
 		  </view>
 		  <!-- #endif -->
 		 <!-- #ifdef H5-->
@@ -88,7 +88,9 @@ export default {
       hasimg:false,
       saveImgurl:"",
 	  shareImgUrl:'',//h5分享好友图片
-	  disabled: false
+	  disabled: false,
+	  canvasWidthPx:300,
+	  canvasHeightPx:500,
     }
   },
 
@@ -106,6 +108,9 @@ export default {
   },
 
   methods: {
+	  touchMove(){
+		  console.log("jinzhi")
+	  },
     showShare(){
       this.isShowShare=true;
     },
@@ -244,6 +249,7 @@ export default {
 	// 		 })
 	// 	},
 	drawCanvas() {
+		let _this = this
       if(!this.hasimg){
         const ctx = uni.createCanvasContext('myCanvas');
         //背景图片
@@ -255,11 +261,12 @@ export default {
 		console.log(codeurl)
         //画布背景填色
         ctx.setFillStyle('#ffffff')
-        ctx.fillRect(0, 0, 300, 500);
-        ctx.setFillStyle('#5A4ABA')
-        ctx.fillRect(0, 0, 300, 32);
+		ctx.fillRect(0, 350, 300, 500);
+        // ctx.setFillStyle('#5A4ABA')
+        // ctx.fillRect(0, 0, 300, 32);
         //图片
-        ctx.drawImage(bgurl, 0, 32, 300,348);
+		// ctx.setFillStyle('#5A4ABA')
+        ctx.drawImage(bgurl, 0, 0, 300,370);
         ctx.drawImage(avaurl, 12, 410, 50,50); //头像没有路径
 		
         //说明文字
@@ -276,38 +283,39 @@ export default {
 		ctx.stroke()
 		ctx.drawImage(codeurl, 200, 400, 64,64);
 		
-        ctx.draw()
+        ctx.draw(false,function(){
+			uni.canvasToTempFilePath({
+				canvasId: 'myCanvas',
+				x: 0,
+				y: 0,
+				width: parseInt(_this.canvasHeightPx)-10, //截取canvas的宽度 -10解决白边问题
+				height: parseInt(_this.canvasHeightPx), //截取canvas的高度
+				destWidth: parseInt(_this.canvasWidthPx),    //输出图片宽度
+				destHeight: parseInt(_this.canvasHeightPx),
+				quality:1,
+				fileType:'jpg',
+				success: function (res){
+					_this.hasimg=true
+					_this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl)
+				}
+			})
+		})
       }
     },
     Wxshare(){
       var _this=this
-      uni.canvasToTempFilePath({     //将canvas生成图片
-        canvasId: 'myCanvas',
-        x: 0,
-        y: 0,
-        width: 300, //截取canvas的宽度
-        height: 500, //截取canvas的高度
-        destWidth: 300,    
-        destHeight: 500,
-		quality:1,
-		fileType:'jpg',
-        success: function (res) {console.log(res)
-          _this.hasimg=true
-          _this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl)
-          uni.saveImageToPhotosAlbum({  //保存图片到相册
-            filePath: res.tempFilePath,
-            success: function () {
-              uni.showToast({
-                title: "图片保存成功！",
-                duration: 2000
-              })
-              setTimeout(() => {
-                uni.navigateBack({})
-              }, 2000);
-            }
-          })
-        },
-      })
+	  uni.saveImageToPhotosAlbum({  //保存图片到相册
+	    filePath: this.saveImgurl,
+	    success: function () {
+	      uni.showToast({
+	        title: "图片保存成功！",
+	        duration: 2000
+	      })
+	      setTimeout(() => {
+	        uni.navigateBack({})
+	      }, 2000);
+	    }
+	  })
     },
     roundedRect(ctx,x,y,width,height,radius){
         if(width <= 0 || height <= 0){
@@ -408,7 +416,8 @@ export default {
 
 <style scoped lang='scss'>
   .inn_bg{
-    width:750upx;height:940upx;
+    width:750upx;
+	height:900upx;
     background-image: linear-gradient(#5645b7, #7364ca);
     position: relative;
     .invite{
@@ -485,8 +494,8 @@ export default {
   width: 600upx;
   height:1000upx;
   position: fixed;
-  top: 50%;
-  left: 50%;border-radius: 15upx;
+  top: 46%;
+  left: 50%;
   transform: translate(-50%,-50%);
   z-index: 10;
   background: #fff;

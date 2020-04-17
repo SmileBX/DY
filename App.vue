@@ -2,6 +2,12 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			//#ifdef H5
+			const s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = "//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js";
+			document.body.appendChild(s);
+			//#endif
 		},
 		onShow: function() {
 			console.log('App Show')
