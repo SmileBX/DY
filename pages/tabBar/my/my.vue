@@ -174,7 +174,7 @@
 			</view>
 		</view>
 		<!-- 我的服务  end-->
-		<notlogin :showtype="1" v-if="false"></notlogin>
+		<notlogin v-if="!gologin"></notlogin>
 	</view>
 </template>
 
@@ -191,6 +191,7 @@
 				memberInfo:{},
 				OrderInfo:{},
 				newscount:0,
+				gologin:false,
 			}
 		},
 		onLoad() {
@@ -205,9 +206,12 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			if (toLogin()) {
+			if (this.userId&&this.token) {console.log(11)
+				this.gologin=true
 				this.NewsCount();
 			    this.getMemberInfo();
+			}else{console.log(22)
+				this.gologin=false
 			}
 		},
 		methods: {
@@ -242,17 +246,18 @@
 					});  
 				} else if (result.code === 2) {
 					let _this = this;
-					uni.showModal({
-						content: "您还没有登录，是否重新登录？",
-						success(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-								  url: "/pages/login/login"
-								});
-							} else if (res.cancel) {
-							}
-						}
-					});
+					this.gologin=false
+					// uni.showModal({
+					// 	content: "您还没有登录，是否重新登录？",
+					// 	success(res) {
+					// 		if (res.confirm) {
+					// 			uni.navigateTo({
+					// 			  url: "/pages/login/login"
+					// 			});
+					// 		} else if (res.cancel) {
+					// 		}
+					// 	}
+					// });
 				}
 			},
 			async NewsCount() {
