@@ -179,10 +179,12 @@
 			width:100%;
 			font-size:30upx;font-weight: bold;
 			height:180upx;line-height: 180upx;
-			border-bottom: 1upx solid #f1f1f1;
+			border-bottom: 1upx solid #e2e2e2;
 			text-align: center;
 		}
 		.btn_pay_cc{
+			width: 100%;
+			text-align: center;
 			height:90upx;
 			font-size:28upx;
 			line-height: 90upx;color:#ff3333;
