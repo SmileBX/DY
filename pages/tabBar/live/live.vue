@@ -7,10 +7,10 @@
 				 :autoplay="true" controls ></video>
 				<!-- #endif -->
 				<!-- #ifdef H5 -->
-				<view class="H5video" id="H5video" v-if="data.Flag==1" :style="{height : height + 'px'}">
+				<div class="H5video" id="H5video"  :style="{height : height + 'px'}">
 					
-				</view>
-				<video :src="data.HLS" @error="error" controls="false" poster="http://ddyp.wtvxin.com/static/logo.png" :style="{height : height + 'px',width:'480px'}" v-if="data.Flag==0||data.Flag==2" mode="widthFix"></video>
+				</div>
+				<!-- <video :src="data.HLS" @error="error" controls="false" poster="http://ddyp.wtvxin.com/static/logo.png" :style="{height : height + 'px',width:'480px'}" v-if="data.Flag==0||data.Flag==2" mode="widthFix"></video> -->
 				<!-- #endif -->
 				<!-- #ifdef MP-WEIXIN -->
 				<live-player style="width:100%;height:100%;" :src="data.HLS" ></live-player>
@@ -30,7 +30,6 @@
 
 <script>
 	import {host,post,get,toLogin,} from '@/common/util.js';
-	import {TPlay} from '@/common/TcPlayer.js';
 	export default {
 		data() {
 			return {
@@ -43,9 +42,8 @@
 			// #ifdef APP-PLUS
 			this.ShopId=e.ShopId
 			// #endif
-
 		},
-		async onShow() {
+		onShow() {
 			let res = uni.getSystemInfoSync()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -54,21 +52,7 @@
 			this.ShopId = this.$mp.query.ShopId
 			// #endif
 			console.log(this.ShopId)
-			// this.play()
-			let r = await post('TencentCloud/PlayURL',{
-				UserId: this.userId,
-				Token: this.token,
-				ShopId:this.ShopId
-			})
-			this.data=r.data
-			// #ifdef H5
-			this.playH5()
-			// #endif
-			
-			
-			// console.log(this.$mp.query.ShopId)
-		},
-		components:{
+			this.play()
 			
 		},
 		methods: {
@@ -78,25 +62,17 @@
 					Token: this.token,
 					ShopId:this.ShopId
 				})
-				this.data=res.data
-				console.log(this.data)
+				this.data=res.data;console.log(res.data)
+				this.playH5()
 			},
 			playH5(){
-				console.log(this.data)
-				TPlay().then(TcPlayer => {
-					  var player = new TcPlayer('H5video', {
-					  "m3u8": this.data.HLS, //请替换成实际可用的播放地址
-					  "autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
-					  "poster" : "http://ddyp.wtvxin.com/static/logo.png",
-					  "width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
-					  "height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
-					  });
-				  })
-			},
-			goUrl(url){
-				uni.navigateTo({
-					url:url
-				})
+				var player = new TcPlayer('H5video', {
+					"m3u8": this.data.HLS, //请替换成实际可用的播放地址
+					"flv":this.data.FLV,
+					"autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+					"width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
+					"height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
+				});
 			},
 			changes(e){
 				// console.log(e)
