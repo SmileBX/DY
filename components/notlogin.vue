@@ -7,15 +7,17 @@
 			</view>
 			<view class="btnbox">
 				<!-- #ifdef MP-WEIXIN -->
-				<view class="btnitem" v-if="showtype==1||showtype==2">
+				<view class="btnitem" @click="goUrl('/pages/login/login')">
 					<image src="http://ddyp.wtvxin.com/static/my/wx.png" mode=""></image>
 					<text>微信登录</text>
 				</view>
 				<!-- #endif -->
-				<view class="btnitem btnitem2" v-if="showtype==0||showtype==2" @click="goUrl('/pages/login/login')">
+				<!-- #ifndef MP-WEIXIN -->
+				<view class="btnitem btnitem2" @click="goUrl('/pages/login/login')">
 					<image src="http://ddyp.wtvxin.com/static/mobile.png" mode="widthFix"></image>
 					<text>手机登录</text>
 				</view>
+				<!-- #endif -->
 			</view>
 		</view>
 	</view>
