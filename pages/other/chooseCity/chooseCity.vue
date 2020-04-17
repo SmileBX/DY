@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<view class="content">
+			<view class="herebox">
+				<text class="tit">定位到当前城市：</text><text class="here" @click="choosecity(here)">{{here}}</text>
+			</view>
 			<scroll-view scroll-y="true" class="scr0llbox" :scroll-into-view="toitem" scroll-with-animation=true :style="{'height':height+'px'}">
 				<view class="item" v-for="(item,index) in citylist" :key="index">
 					<view class="citytitle" :id="item.initial">{{item.initial}}</view>
@@ -19,6 +22,10 @@
 </template>
 
 <script>
+	// #ifdef H5
+	import {MP} from '@/common/map.js';//h5百度定位
+	// #endif
+	import {post,get,toLogin} from '@/common/util.js';
 	import cityData from '@/common/cityname.js';
 	export default {
 		data() {
@@ -26,14 +33,64 @@
 				citylist:cityData,
 				height:"",
 				toitem:'A',
-				cityname:""
+				cityname:"",
+				here:"定位中",//当前城市
 			}
 		},
-		onShow() {
+		onLoad() {
 			let res = uni.getSystemInfoSync()
-			this.height = res.windowHeight;
+			this.height = res.windowHeight-uni.upx2px(100);
+			var _this=this
+			// #ifdef APP-PLUS||MP-WEIXIN
+			uni.getLocation({
+			    type: 'wgs84',
+				geocode: true,
+			    success: function (res) {
+					// #ifdef APP-PLUS
+					var cityname=res.address.city.replace(/市/,'')
+					_this.here=cityname
+					// #endif
+					// #ifdef MP-WEIXIN
+					_this.wxGetCity(res.longitude,res.latitude)
+					// #endif
+			        // console.log(res);
+			    }
+			});
+			// #endif
+			//百度定位
+			// #ifdef H5
+			this.H5getcity()
+			// #endif
 		},
 		methods: {
+			H5getcity(){
+				var _this=this
+				MP(1).then(BMap => {
+					let myCity = new BMap.LocalCity()
+					myCity.get(function (res) {
+						var cityname=res.name.replace(/市/,'')
+						_this.here=cityname;console.log(res,"$$$$$$$")
+					})
+				})
+			},
+			//小程序解析经纬度获取城市
+			// #ifdef MP-WEIXIN
+			wxGetCity(lon,lat){
+				var _this=this
+				wx.request({
+					url:'https://api.map.baidu.com/reverse_geocoding/v3/?ak=3wwDKCk09o6hU0PK1605QUXOCBqGVHGx&location=' + lat + ',' + lon + '&output=json&coordtype=wgs84ll',
+					data: {},
+					header: {
+						'content-type': 'application/json' // 默认值
+					},
+					success (res) {
+					    // console.log(res)
+						var cityname=res.data.result.addressComponent.city.replace(/市/,'')
+						_this.here=cityname
+					}
+				})
+			},
+			// #endif
 			chooseZM(zm){
 				this.toitem=zm
 			},
@@ -97,5 +154,24 @@
 .citybox .active{
 	background: #55aaff;
 	color: #fff;
+}
+.here{
+	width: 180upx;
+	margin-right: 46upx;
+	background: #eee;
+	text-align: center;
+	padding: 6upx 10upx;
+	border-radius: 4upx;
+}
+.herebox{
+	display: flex;
+	align-items: center;
+	height: 100upx;
+}
+.tit{
+	color: #000000;
+	font-weight: 600;
+	font-size: 28upx;
+	width: 226upx;
 }
 </style>

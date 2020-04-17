@@ -31,7 +31,7 @@
 			</view>
 			<!--直播列表-->
 			<view class="list_zb" v-else>
-				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live')">
+				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live',item.ShopId)">
 					<view class="le_img">
 						<image :src="item.BannerPicNo" class="shop"></image>
 						<image src="../../../static/zb.png" class="tip" v-if="item.Flag==1"></image>
@@ -89,10 +89,17 @@
 			tapTab(index) { //点击tab-bar
 				this.tabIndex = index;
 			},
-			goUrl(url){
-				uni.navigateTo({
-					url:url
-				})
+			goUrl(url,ShopId){
+				if(ShopId){
+					uni.navigateTo({
+						url:url+"?ShopId="+ShopId
+					})
+				}else {
+					uni.navigateTo({
+						url:url
+					})
+				}
+				
 			},
 			async getShopList() {
 				let res = await post("Shop/ShopList", {

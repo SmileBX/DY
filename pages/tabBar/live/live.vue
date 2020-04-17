@@ -3,24 +3,25 @@
 		<swiper :vertical="true" @change="changes">
 			<swiper-item >
 				<!-- #ifdef APP-PLUS -->
-				<video  @error="error" src="http://play.wtvxin.com/live/test.m3u8" :style="{height : height + 'px'}"
+				<video  @error="error" :src="data.HLS" :style="{height : height + 'px'}"
 				 :autoplay="true" controls ></video>
 				<!-- #endif -->
 				<!-- #ifdef H5 -->
-				<view class="H5video" id="H5video" :style="{height : height + 'px'}">
+				<div class="H5video" id="H5video"  :style="{height : height + 'px'}">
 					
-				</view>
+				</div>
+				<!-- <video :src="data.HLS" @error="error" controls="false" poster="http://ddyp.wtvxin.com/static/logo.png" :style="{height : height + 'px',width:'480px'}" v-if="data.Flag==0||data.Flag==2" mode="widthFix"></video> -->
 				<!-- #endif -->
 				<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
+				<live-player style="width:100%;height:100%;" :src="data.HLS" ></live-player>
 				<!-- #endif -->
 			</swiper-item>
 			<swiper-item >
-				<!-- #ifndef MP-WEIXIN -->
-				<video  src="http://play.wtvxin.com/live/test.m3u8"  ></video>
+				<!-- #ifndef MP-WEIXIN  -->
+				<video  :src="data.HLS"  ></video>
 				<!-- #endif -->
 				<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" src="http://play.wtvxin.com/live/test.m3u8" ></live-player>
+				<live-player style="width:100%;height:100%;" :src="data.HLS" ></live-player>
 				<!-- #endif -->
 			</swiper-item>
 		</swiper>
@@ -29,42 +30,49 @@
 
 <script>
 	import {host,post,get,toLogin,} from '@/common/util.js';
-	import {TPlay} from '@/common/TcPlayer.js';
 	export default {
 		data() {
 			return {
 				height:'',
-				mark:false
+				mark:false,
+				data:{}
 			};
+		},
+		onLoad(e){
+			// #ifdef APP-PLUS
+			this.ShopId=e.ShopId
+			// #endif
 		},
 		onShow() {
 			let res = uni.getSystemInfoSync()
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.height=res.windowHeight
-			// #ifdef H5
-			this.playH5()
+			// #ifndef APP-PLUS
+			this.ShopId = this.$mp.query.ShopId
 			// #endif
-		},
-		components:{
+			console.log(this.ShopId)
+			this.play()
 			
 		},
 		methods: {
-			playH5(){
-				TPlay().then(TcPlayer => {
-					  var player = new TcPlayer('H5video', {
-					  "m3u8": "http://play.wtvxin.com/live/test.m3u8", //请替换成实际可用的播放地址
-					  "autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
-					  "poster" : "http://ddyp.wtvxin.com/static/logo.png",
-					  "width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
-					  "height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
-					  });
-				  })
-			},
-			goUrl(url){
-				uni.navigateTo({
-					url:url
+			async play(){
+				let res = await post('TencentCloud/PlayURL',{
+					UserId: this.userId,
+					Token: this.token,
+					ShopId:this.ShopId
 				})
+				this.data=res.data;console.log(res.data)
+				this.playH5()
+			},
+			playH5(){
+				var player = new TcPlayer('H5video', {
+					"m3u8": this.data.HLS, //请替换成实际可用的播放地址
+					"flv":this.data.FLV,
+					"autoplay" : true,      //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+					"width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
+					"height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
+				});
 			},
 			changes(e){
 				// console.log(e)

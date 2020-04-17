@@ -279,14 +279,14 @@
 			// #endif
 			//百度定位
 			// #ifdef H5
-			MP().then(BMap => {
+			MP(0).then(BMap => {
 				var _this=this
 				let myCity = new BMap.LocalCity()
 				myCity.get(function (res) {
 					var cityname=res.name.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
 					_this.cityname=cityname
-				// console.log(cityname,"ooooooooo")
+				console.log(cityname,"ooooooooo")
 				})
 			})
 			// #endif
