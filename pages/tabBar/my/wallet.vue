@@ -28,8 +28,8 @@
 			</view>
 		</view>
 		<view class="present">
-			<view class="recharge" style="width: 100%;"  @click="golink('/pages/tabBar/my/topup')">充值</view>
-			<!-- <view class="recharge" @click="golink('/pages/other/withdraw/withdraw')">提现</view> -->
+			<view class="recharge"   @click="golink('/pages/tabBar/my/topup')">充值</view>
+			<view class="recharge" @click="golink('/pages/other/withdraw/withdraw')">提现</view>
 		</view>
 		
 	</view>

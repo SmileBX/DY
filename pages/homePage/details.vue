@@ -381,7 +381,7 @@
 		</view>
 		<!-- 详情底部 end -->
 		<view class="topbtn" @click="Top" v-if="isTop"></view>
-		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" :fromPinTuan="fromPinTuan" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1"></popupsku>
+		<popupsku :proInfo="proInfo"  v-if="isProData" :show="showPopupSku" :showbtntype="showbtntype" :fromPinTuan="fromPinTuan" v-on:hidePopup="hidePopup" v-on:getsku="getsku(arguments)" :isLimint="isLimint*1" :inviteCode="inviteCode"></popupsku>
 		<!-- 弹出产品参数 -->
 		<uni-popup position="bottom" mode="fixed" :show="showPopupinfo" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-Attr">
@@ -462,7 +462,8 @@
 				inputSKU:"",//输入搜索的sku
 				showsearchres:false,//搜索结果
 				showsearchtext:"",
-				inviteCode:'',
+				ReferralCode:'',//自己的邀请码
+				inviteCode:'',//他人的邀请码
 			}
 		},
 		onLoad(e) {
@@ -470,16 +471,9 @@
 			console.log(e.id)
 			this.proId=e.id
 			this.isLimint=e.isLimint||0;
-			if(e.inviteCode){
-				console.log(e.inviteCode,"invitecode111111111111")
-				uni.setStorageSync('inviteCode',e.inviteCode);
-				this.inviteCode = e.inviteCode
-			}
-			// #endif
-			// #ifndef APP-PLUS
-			if(this.$root.$mp.query.inviteCode){
-				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
-				uni.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
+			if(e.inCode){
+				console.log(e.inCode,"invitecode111111111111")
+				this.inviteCode = e.inCode
 			}
 			// #endif
 		},
@@ -487,13 +481,13 @@
 			this.hasData = false
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
+			this.ReferralCode = uni.getStorageSync("ReferralCode");//自己的邀请码
 			// #ifndef APP-PLUS
 			this.proId=this.$root.$mp.query.id;
 			this.isLimint=this.$root.$mp.query.isLimint||0;
-			if(this.$root.$mp.query.inviteCode){
-				console.log(this.$root.$mp.query.inviteCode,"invitecode2222222")
-				uni.setStorageSync('inviteCode',this.$root.$mp.query.inviteCode);
-				this.inviteCode = this.$root.$mp.query.inviteCode
+			if(this.$root.$mp.query.inCode){
+				console.log(this.$root.$mp.query.inCode,"invitecode2222222")
+				this.inviteCode = this.$root.$mp.query.inCode
 			}
 			// #endif
 			this.specList=[];
@@ -687,6 +681,7 @@
 							gid=0;
 						}
 						let objUrl = ''
+						console.log(this.inviteCode,"提交拉啊啦啦啦")
 						if(this.inviteCode){
 							 objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+'&GroupId='+gid+"&inCode="+this.inviteCode;
 						}else{
@@ -890,7 +885,7 @@
 				    provider: "weixin",
 				    scene: "WXSceneSession",
 				    type: 0,
-				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId+"&inviteCode="+ uni.getStorageSync('ReferralCode'),
+				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId+"&inCode="+ this.ReferralCode,//分享好友产品带上邀请码
 				    title: this.proInfo.Name,
 				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 				    imageUrl: this.proInfo.PicData[0].PicUrl,
@@ -930,7 +925,7 @@
 		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
 		　　var shareObj = {
 		　　　　title: this.proInfo.Name,        // 默认是小程序的名称(可以写slogan等)
-		　　　　path: "/pages/homePage/details?id="+this.proId,        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　path: "/pages/homePage/details?id="+this.proId+"&inCode="+ this.ReferralCode,        // 默认是当前页面，必须是以‘/’开头的完整路径
 		　　　　imageUrl:  this.proInfo.PicData[0].PicUrl,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 		　　　　success: function(res){
 		　　　　　　// 转发成功之后的回调
