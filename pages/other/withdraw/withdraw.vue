@@ -34,11 +34,16 @@
 import { post} from "@/common/util.js";
 export default {
   onLoad(e) {
+	  // #ifdef APP-PLUS
 	  this.wType=e.type||0;
+	  // #endif
+	  
   },
   onShow() {
     this.Wallet = this.$store.state.Wallet;
+	// #ifndef APP-PLUS
 	this.wType=this.$root.$mp.query.type||0;
+	// #endif
 	if(this.wType==1){
 		uni.setNavigationBarTitle({
 		  title: "佣金提现"
@@ -110,7 +115,7 @@ export default {
       this.hasDefaultCard = false;
 	  console.log(this.hasDefaultCard,"shiftCardList")
       this.$store.commit("setSelectMyCard", {
-        url: "/pages/other/withdraw/withdraw?type=1",
+        url: "/pages/other/withdraw/withdraw?type="+this.type,
         status: true
       });
       uni.redirectTo({ url: "/pages/Wallet/bankCard/bankCard" });
@@ -201,7 +206,7 @@ export default {
 	   if(this.wType==1){
 		   objUrl = 'DrawMoney/memberDrawMoneyApply'
 	   }else{
-		   objUrl = 'memberDrawMoneyApply123'
+		   objUrl = 'DrawMoney/memberDrawMoneyApply123'
 	   }
       post(
         objUrl,
@@ -222,7 +227,7 @@ export default {
             success: function() {
               setTimeout(function() {
                 uni.redirectTo({
-                  url: "/pages/myson2/mywallet/main"
+                  url: "/pages/tabBar/my/wallet"
                 });
               }, 1500);
             }
