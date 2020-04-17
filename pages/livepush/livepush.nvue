@@ -61,8 +61,8 @@
 				type:"",
 				width: '',
 				height: '',
-				// url: 'rtmp://push.wtvxin.com/live/test?txSecret=b5b718b7ca4d4863fdcf354b6592c379&txTime=5E972F7F',//这是推流地址
-				url:"rtmp://push.wtvxin.com/live/shop_7qi?txSecret=2929449e8ef493a47615e6c2e6cf9bc1&txTime=5E99FC49",
+				url: '',//这是推流地址
+				// url:"rtmp://push.wtvxin.com/live/shop_7qi?txSecret=2929449e8ef493a47615e6c2e6cf9bc1&txTime=5E99FC49",
 				enableCamera: false,
 				context: null,
 				markact: true,
@@ -142,7 +142,7 @@
 			this.width = res.windowWidth;
 			this.height = res.windowHeight;
 			uni.hideTabBar()
-			// this.getPlay()
+			this.getPlay()
 		},
 		onReady() {
 			this.context = uni.createLivePusherContext('livePusher', this);
