@@ -119,7 +119,7 @@ export default {
       let price = Number(this.amount);
 	  if(price == ''){
 		  uni.showToast({
-		  	tile:'请输入提现金额！',
+		  	title:"请输入提现金额！",
 			icon: "none",
 			duration: 1500
 		  })
@@ -162,11 +162,7 @@ export default {
     submitWithdraw() {
       //提现
       if (this.valOther()) {
-		  console.log("55555555555")
-		  if(this.wType==1){
-			  console.log("66666666")
-			  this.DrawMoneyApply();
-		  }
+		this.DrawMoneyApply();//佣金提现
       }
     },
    
@@ -201,8 +197,14 @@ export default {
 	//佣金提现
     DrawMoneyApply() {
       let that = this;
+	  let objUrl = ''
+	   if(this.wType==1){
+		   objUrl = 'DrawMoney/memberDrawMoneyApply'
+	   }else{
+		   objUrl = 'memberDrawMoneyApply123'
+	   }
       post(
-        "DrawMoney/memberDrawMoneyApply",
+        objUrl,
         {
           UserId: that.userId,
           Token: that.token,
