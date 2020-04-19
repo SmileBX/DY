@@ -21,7 +21,7 @@
           <input v-model="amount" type="digit" class="inputPrice flex1">
         </p>
       </div>
-      <div class="tips" style="padding:20upx 0;border-top:1px solid #f2f2f2;">可提现余额：{{Wallet}}
+      <div class="tips" style="padding:20upx 0;border-top:1px solid #f2f2f2;">可提现金额：{{Wallet}}
         <span class="red" v-if="Wallet>0" @click="Allwithdraw">全部提现</span>
       </div>
     </div>

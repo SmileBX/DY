@@ -95,8 +95,8 @@
 			},
 			couponid: String,
 			inviteCode:{
-				type:Number,
-				default: 0
+				type:String,
+				default: ""
 			}
 		},
 		created: function(option) {console.log(this.showbtntype)
@@ -442,7 +442,7 @@
 						}else{
 							money=this.price;
 						}
-						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint;
+						let objUrl = '/pages/submitOrder/submitOrder?id='+this.proId+'&SpecText='+this.SpecText+'&number='+this.number+'&orderSType=0'+'&isLimint='+this.isLimint+"&inCode="+this.inviteCode;
 						uni.navigateTo({
 							url: objUrl
 						})

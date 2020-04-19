@@ -4,7 +4,7 @@
 			<view class="logo">
 				<view class="img">
 					<image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
-					<view class="Title">大单易拼</view>
+					<view class="livetitle">商家直播登录</view>
 				</view>
 			</view>
 			<view class="from pd10">
@@ -28,38 +28,12 @@
 				<view class="ftbtn" style="padding:40upx 0 20upx 0;">
 					<button type="primary" @click="btnSubmit" class="btn">登录</button>
 				</view>
-				<view class="form-line aLine" style="margin:0 30upx;">
+				<view class="form-line aLine" style="margin:0 30upx;display: none;">
 					<view @click="register" class="inline-block aline">没有账号？注册账号</view>
 					<view v-if="logintype" @click="getPassword" class="inline-block aline fr">忘记密码?</view>
 				</view>
 			</view>
-			<!-- 其他登录方式 -->
-			<view class="Otherway center" v-if="false">
-				<view class="title"><text class="txt">其他登录方式</text></view>
-				<view class="waylist flex">
-					<view class="flex-item" @click="changeWay(1)">
-						<view class="iconfont icon-weixin1" style="background: #09BB07;"></view>
-						<view class="name">微信</view>	
-					</view>
-					<view class="flex-item" @click="changeWay(2)">
-						<view :class="['iconfont',logintype?'icon-shouji':'icon-zh1']"></view>
-						<view class="name">{{logintype?'手机':'账号'}}</view>	
-					</view>
-				</view>	
-			</view>
 		</view>
-		<!-- #ifdef MP-WEIXIN -->  
-		<view class="MP-login" v-if="isShowminiApp">
-		    <view class="logo">
-				<view class="logoimg">
-					<image class="img_bb" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
-				</view>
-				<view class="Title">大单易拼</view>
-		    </view> 
-		    <button class="login-btn btn_gree" open-type="getUserInfo" @click="oauth">微信登录</button>
-		    <view class="c_blue uni-center" @click="loginTel">手机号登录/注册</view>
-		</view>
-		<!-- #endif -->  
 	</view>
 </template>
 
@@ -67,14 +41,6 @@
 	import {host,post,get,valPhone,setRegular} from '@/common/util.js';
 	export default {
 		onLoad(e){
-			// #ifdef APP-PLUS
-			if((e.askUrl!=undefined )&& (e.askUrl!="")&& (e.askUrl!=null)){
-				this.askUrl=e.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&')
-			}
-			if(e.isResgister){
-				this.isRegister = e.isResgister
-			}
-			// #endif
 			// #ifndef MP-WEIXIN
 			console.log(e.askUrl,"99999999999999")
 			this.isShowMolie=false;
@@ -92,14 +58,6 @@
 			console.log("7777777777777")
 			this.isShowMolie=true;
 			this.isShowminiApp = false;
-			// #endif
-			// #ifndef APP-PLUS
-			if(this.$root.$mp.query.askUrl){
-				this.askUrl = this.$root.$mp.query.askUrl.toString().replace(/\%3F/g, '?').replace(/\%3D/g, '=').replace(/\%26/g, '&');
-			}
-			if(this.$root.$mp.query.isResgister){
-				this.isRegister = this.$root.$mp.query.isResgister
-			}
 			// #endif
 			console.log(this.isRegister,"8888888888")
 		},
@@ -220,7 +178,7 @@
 			async login(){
 				let result;
 				if(this.logintype){
-					result = await post("Login/LoginByMobile",{
+					result = await post("TencentCloud/ShopLiveByMobile",{
 						"mobile": this.tel,
 					    "password": this.pwd
 					})
@@ -230,9 +188,9 @@
 					    "VerifyCode": this.code
 					})
 				}
-				if(result.code===0){
-					uni.setStorageSync('token', result.data.Token);
-					uni.setStorageSync('userId', result.data.UserId);
+				if(result.code===0){console.log(result.data)
+					uni.setStorageSync('liveToken', result.data.Token);
+					uni.setStorageSync('liveUserId', result.data.UserId);
 					let _this = this;
 					uni.showToast({
 					     title: "登录成功!",
@@ -241,52 +199,12 @@
 						 success:function(){
 							 console.log(_this.isRegister,"////////_this.isRegister")
 							setTimeout(function() {
-								if(_this.isRegister){
-									uni.switchTab({
-										url: "/pages/tabBar/my/my"
-									  });	
-								}else{
-									uni.navigateBack();
-								}
-								
-								// if(_this.askUrl){
-								//   if(_this.askUrl.indexOf("undefined")>-1){
-								// 	uni.switchTab({
-								// 	  url: "/pages/tabBar/my/my"
-								// 	});
-								//   }
-								//   else if(_this.askUrl.indexOf("cart")>-1){
-								// 	uni.switchTab({
-								// 	  url: "/pages/tabBar/cart/cart"
-								// 	});
-								//   }
-								//   else if(_this.askUrl.indexOf("/my/my")>-1){
-								// 	uni.switchTab({
-								// 	  url: "/pages/tabBar/my/my"
-								// 	});
-								//   }
-								//   else if(_this.askUrl.indexOf("/discover/discover")>-1){
-								// 	uni.switchTab({
-								// 	  url: "/pages/tabBar/discover/discover"
-								// 	});
-								//   }
-								//   else{
-								// 	  uni.redirectTo({
-								// 		url: _this.askUrl
-								// 	  });
-								//   }
-								// }else{
-								//   uni.switchTab({
-								// 	url: "/pages/tabBar/my/my"
-								//   });
-								// }
+								uni.redirectTo({
+									url: "/pages/livepush/livepush"
+								  });
 							 }, 2000);
 						 }
 					});
-					console.log(result.data);
-// 					uni.switchTab({
-// 						url:"/pages/tabBar/my/my"
-// 					})
 				}else{
 					uni.showToast({
 					  title: result.msg,
@@ -453,5 +371,11 @@
   .from-line{
 	  background: #fff;
 	  border-radius: 40rpx;
+  }
+  .livetitle{
+	  font-size: 32upx;
+	  line-height: 80upx;
+	  text-align: center;
+	  font-weight: 600;
   }
 </style>

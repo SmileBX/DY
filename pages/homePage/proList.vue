@@ -71,8 +71,8 @@
 									<view class="selling"><span>¥</span>{{item.Price}}</view>
 									<view class="original" v-if="item.MarketPrice>item.Price">¥{{item.MarketPrice}}</view>
 								</view>
-								<view class="listm rt" v-if="item.DistributionIncome>0">
-									<view class="cash">返</view>
+								<view class="listm rt" v-if="item.DistributionIncome!='0'">
+									<view class="cash">补贴</view>
 									<view class="cashm">¥{{item.DistributionIncome}}</view>
 								</view>
 							</view>
@@ -530,7 +530,8 @@
 		border-radius:4upx;
 	}
 	.cash{
-		width:38upx;
+		/* width:38upx; */
+		padding: 0 6upx;
 		height:42upx;
 		line-height:42upx;
 		background:rgba(255,51,51,1);

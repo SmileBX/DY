@@ -78,8 +78,8 @@
 	z-index: 9999;
 }
 .img{
-	width: 290upx;
-	height: 120upx;
+	width: 380upx;
+	/* height: 120upx; */
 	position: absolute;
 	top: 20%;
 	left: 50%;

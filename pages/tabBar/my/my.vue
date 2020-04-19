@@ -161,7 +161,7 @@
 						<view class="txt">设置</view>
 					</view>
 					<!-- #ifdef APP-PLUS||MP-WEIXIN -->
-					<view class="item" @click="golink('/pages/livepush/livepush')">
+					<view class="item" @click="golive('/pages/livepush/livepush')">
 						<image class="iconImg" src="http://ddyp.wtvxin.com/static/icons/livepush.png" mode=""></image>
 						<view class="txt">开启直播</view>
 					</view>
@@ -174,7 +174,7 @@
 			</view>
 		</view>
 		<!-- 我的服务  end-->
-		<notlogin v-if="!gologin"></notlogin>
+		<!-- <notlogin v-if="!gologin"></notlogin> -->
 	</view>
 </template>
 
@@ -191,7 +191,7 @@
 				memberInfo:{},
 				OrderInfo:{},
 				newscount:0,
-				gologin:false,
+				gologin:true,
 			}
 		},
 		onLoad() {
@@ -206,12 +206,11 @@
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
-			if (this.userId&&this.token) {console.log(11)
-				this.gologin=true
+			this.liveUserId = uni.getStorageSync("liveUserId");
+			this.liveToken = uni.getStorageSync("liveToken");
+			if (toLogin()) {
 				this.NewsCount();
 			    this.getMemberInfo();
-			}else{console.log(22)
-				this.gologin=false
 			}
 		},
 		methods: {
@@ -222,6 +221,17 @@
 				if(toLogin()){
 					uni.navigateTo({
 						url:url
+					})
+				}
+			},
+			golive(url){
+				if(this.liveToken&&this.liveUserId){
+					uni.navigateTo({
+						url:url
+					})
+				}else{
+					uni.navigateTo({
+						url:"/pages/login/livelogin"
 					})
 				}
 			},
@@ -246,18 +256,17 @@
 					});  
 				} else if (result.code === 2) {
 					let _this = this;
-					this.gologin=false
-					// uni.showModal({
-					// 	content: "您还没有登录，是否重新登录？",
-					// 	success(res) {
-					// 		if (res.confirm) {
-					// 			uni.navigateTo({
-					// 			  url: "/pages/login/login"
-					// 			});
-					// 		} else if (res.cancel) {
-					// 		}
-					// 	}
-					// });
+					uni.showModal({
+						content: "您还没有登录，是否重新登录？",
+						success(res) {
+							if (res.confirm) {
+								uni.navigateTo({
+								  url: "/pages/login/login"
+								});
+							} else if (res.cancel) {
+							}
+						}
+					});
 				}
 			},
 			async NewsCount() {

@@ -131,6 +131,7 @@
 				<view class="bottom-btn" @click="hidePopup">完成</view>
 			</view>
 		</uni-popup>
+		<!-- <notlogin v-if="!gologin"></notlogin> -->
 	</view>
 </template>
 
@@ -140,15 +141,18 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	import noData from '@/components/noData.vue'; //暂无数据
 	import popupsku from '@/components/popupSku.vue';
+	import notlogin from '@/components/notlogin.vue'; 
+	
 	export default {
 		components: {
-			uniNumberBox,uniPopup,popupsku,noData
+			uniNumberBox,uniPopup,popupsku,noData,notlogin
 		},
 		data() {
 			return {
 				userId:"",
 				barHeight:0,
 				token:"",
+				gologin:true,
 				memberInfo:{},//会员信息
 				isPLUS:0,//会员是否是plus
 				proInfo:{},      //单个商品信息
@@ -300,6 +304,7 @@
 					Token: this.token
 				});
 				if(result.code==0){
+					this.gologin=true
 					this.cartinfo=result.data;
 					this.cartlist=result.data.CartList;
 					this.selectlen=0;
@@ -334,6 +339,7 @@
 				}else if(result.code==2){
 					this.noDataIsShow=true;
 					this.hascartlist=false;
+					this.gologin=false
 					uni.showModal({
 						content: "您还没有登录，是否重新登录？",
 						success(e) {

@@ -61,7 +61,7 @@
 							<view class="item" v-for="(item,index) in Hitslist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 								<view class="brand">{{index+1}}</view>
 								<image :src="item.PicNo" mode="aspectFill"></image>
-								<view class="item_title">{{item.Name}}</view>
+								<view class="item_title uni-ellipsis">{{item.Name}}</view>
 							</view>
 						</view>
 					</view>
@@ -106,7 +106,7 @@
 						<view class="item" v-for="(item,index) in datalist" :key="index" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 							<image :src="item.PicNo" class="item_img" mode="aspectFill"></image>
 							<view class="item_info">
-								<view class="item_title">{{item.Name}}</view>
+								<view class="item_title text_flow">{{item.Name}}</view>
 								<view class="flex flexAlignEnd justifyContentBetween item_total">
 									<view class="flex flexAlignEnd">
 										<span class="item_price">￥{{item.Price}}</span>

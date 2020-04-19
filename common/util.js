@@ -165,7 +165,7 @@ function getCurrentPageUrlWithArgs() {
 // }
 //验证手机号
 function valPhone(tel) {
-	var r_phone = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+	var r_phone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
 	// var phoneNumber = $.trim($('#phoneNumber').val());
 	if(tel == "") {
 		uni.showToast({

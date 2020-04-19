@@ -233,7 +233,7 @@
 			<view class="pole"></view>
 		</view>
 		<!-- 地理位置 -->
-		<view class="Position" v-if="proInfo.IsAloneBuy==1&&proInfo.Lat&&proInfo.Lng">
+		<view class="Position" v-if="proInfo.Lat!='0'&&proInfo.Lng!='0'">
 			<view class="comment_hd">
 			  <view class="tit_l">地理位置</view>
 			</view>
@@ -546,8 +546,16 @@
 				if(result.code==0){
 					this.hasData = true
 					this.proInfo=result.data;
-					this.proInfo.KeywordName=this.proInfo.KeywordName.split(',')
-					this.proInfo.ServiceKeys=this.proInfo.ServiceKeys.split(',')
+					if(this.proInfo.KeywordName==""){
+						this.proInfo.KeywordName=[]
+					}else{
+						this.proInfo.KeywordName=this.proInfo.KeywordName.split(',')
+					}
+					if(this.proInfo.ServiceKeys==""){
+						this.proInfo.ServiceKeys=[]
+					}else{
+						this.proInfo.ServiceKeys=this.proInfo.ServiceKeys.split(',')
+					}
 					this.ProSku=result.data.Sku;
 					this.GroupId=this.proInfo.GroupId;
 					

@@ -122,8 +122,8 @@
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10">
-									<scroll-view class="scroll-view_H Hotsell-list" scroll-x="true" scroll-left="0">
-										<view class="scroll-view-item_H" v-for="(item,index) in recProductlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
+									<scroll-view class="scroll-view_H Hotsell-list" scroll-x>
+										<view class="scroll-view-item_H" v-for="(item,index1) in recProductlist" :key="index1" @click="tolink('/pages/homePage/details?id='+item.Id)">
 											<view class="itembox">
 												<view class="image-view">
 													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
@@ -131,15 +131,14 @@
 												<view class="txtbox">
 													<view class="txt uni-ellipsis">{{item.Name}}</view>
 													<view class="uni-product-price">
-														<text class="uni-product-price-original">￥{{item.Price}}</text><!-- <text class="">补贴￥</text> -->
+														<text class="uni-product-price-original">￥{{item.Price}}</text>
 														<text class="uni-product-price-favour" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</text>
-														<!-- <text style="font-size: 10upx;margin-left: 2upx;padding: 0 8upx;text-decoration:none;width: 40%;height: 15upx;background: #f0370b;color: #fff;border-radius: 15upx;" -->
-														<!-- >补贴￥{{item.DistributionIncome}}</text> -->
 													</view>
 												</view>
-												<view class=""style="display: flex;justify-content: space-between;padding-top: 10upx;">
-													<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
-														补贴￥{{item.DistributionIncome}}</view>
+												<view style="display: flex;justify-content: space-between;padding-top: 10upx;">
+													<view v-if="item.DistributionIncome!= '0'" style="height: 36upx;border-radius: 20upx;background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
+														补贴￥{{item.DistributionIncome}}
+													</view>
 												</view>
 											</view>
 										</view>
@@ -168,14 +167,14 @@
 								<view class="item" v-for="(item,index) in handlist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" class="item_img" mode="aspectFill"></image>
 									<view class="item_info">
-										<view class="item_title">{{item.Name}}</view>
+										<view class="item_title text_flow">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
 												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
 										</view>
-										<view class=""style="display: flex;justify-content: space-between;padding-top: 10upx;">
+										<view class="" style="display: flex;justify-content: space-between;padding-top: 10upx;">
 											<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f00000;color: #fff;line-height: 36upx;padding: 0 12upx;">
 												补贴￥{{item.DistributionIncome}}</view>
 											<view class="item_market">{{item.SalesVolume}}人付款</view>
@@ -196,12 +195,16 @@
 								<view class="item" v-for="(item,index) in datalist" :key="index" @click="tolink('/pages/homePage/details?id='+item.Id)">
 									<image :src="item.PicNo" mode="aspectFill" class="item_img"></image>
 									<view class="item_info">
-										<view class="item_title">{{item.Name}}</view>
+										<view class="item_title text_flow">{{item.Name}}</view>
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
 												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 											</view>
+										</view>
+										<view class="" style="display: flex;justify-content: space-between;padding-top: 10upx;">
+											<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f00000;color: #fff;line-height: 36upx;padding: 0 12upx;">
+												补贴￥{{item.DistributionIncome}}</view>
 											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
 									</view>

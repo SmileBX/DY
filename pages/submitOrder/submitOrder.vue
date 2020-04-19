@@ -520,7 +520,6 @@
 					IsPayWallet:this.isPayWallet,
 					IsPayScore:this.isPayScore,
 					CouponId:this.couponId,
-					InviteCode:this.inCode,
 					ShopData:this.shopDataArr
 				})
 				if (result.code == 0) {

@@ -15,6 +15,7 @@ function request(url, method, data) {
           'content-type': 'application/json;charset=utf-8' // 默认值
         },
         success: function (res) {
+		  uni.hideLoading();
           const ret = res.data;
           if(ret.code===0){
              resolve(ret)
@@ -44,6 +45,7 @@ function request(url, method, data) {
 		 }
         },
         fail: function (error) {
+		  uni.hideLoading();
           uni.showToast({
               title:'服务器繁忙，请稍后重试',
               icon:'none'

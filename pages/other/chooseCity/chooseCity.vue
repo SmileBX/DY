@@ -2,7 +2,7 @@
 	<view>
 		<view class="content">
 			<view class="herebox">
-				<text class="tit">定位到当前城市：</text><text class="here" @click="choosecity(here)">{{here}}</text>
+				<text class="tit">定位到当前城市：</text><text class="here" @click="choosecity2(here)">{{here}}</text>
 			</view>
 			<scroll-view scroll-y="true" class="scr0llbox" :scroll-into-view="toitem" scroll-with-animation=true :style="{'height':height+'px'}">
 				<view class="item" v-for="(item,index) in citylist" :key="index">
@@ -46,11 +46,13 @@
 				
 			}
 		},
-		onLoad() {
+		onShow() {
 			let res = uni.getSystemInfoSync()
 			this.height = res.windowHeight-uni.upx2px(100);
 			var _this=this
-			
+			// #ifdef MP-WEIXIN
+			this.hasgps()
+			// #endif
 			// #ifdef APP-PLUS||MP-WEIXIN
 			uni.getLocation({
 			    type: 'wgs84',
@@ -64,7 +66,21 @@
 					_this.wxGetCity(res.longitude,res.latitude)
 					// #endif
 			        // console.log(res);
-			    }
+			    },
+				fail:function(){
+					_this.here="定位失败"
+					// #ifdef APP-PLUS
+					uni.showModal({
+					    content: '定位失败，请在设置中打开大单易拼的位置权限',
+						showCancel: false,
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+					        }
+					    }
+					});
+					// #endif
+				}
 			});
 			// #endif
 			//百度定位
@@ -101,11 +117,61 @@
 					}
 				})
 			},
+			hasgps(){
+				uni.getSetting({
+				  success: (res) => {
+					if (!res.authSetting['scope.userLocation'])
+					  wx.showModal({
+						content: '检测到您没打开大单易拼的定位权限，是否去设置打开？',
+						confirmText: "确认",
+						cancelText: "取消",
+						success: function (res) {
+						  console.log(res);
+						  //点击“确认”时打开设置页面
+						  if (res.confirm) {
+							console.log('用户点击确认')
+							wx.openSetting({
+							  success: (res) => { }
+							})
+						  } else {
+							console.log('用户点击取消')
+						  }
+						}
+					  });
+				  }
+				})
+			},
 			// #endif
 			chooseZM(zm){
 				this.toitem=zm
 			},
 			choosecity(name){
+				this.cityname=name;
+				uni.setStorageSync('cityname',name)
+				uni.showToast({
+				  title: '已重新定位城市',
+				  success(){
+					setTimeout(res=>{
+						uni.navigateBack({})
+					},1500)
+				  }
+				})
+			},
+			choosecity2(name){
+				if(name=="定位中"){
+					uni.showToast({
+					  title: '城市定位中，请稍候再试！',
+					  icon:"none"
+					})
+					return
+				}
+				if(name=="定位失败"){
+					uni.showToast({
+					  title: '定位失败，请在设置中打开大单易拼的位置权限',
+					  icon:"none"
+					})
+					return
+				}
 				this.cityname=name;
 				uni.setStorageSync('cityname',name)
 				uni.showToast({

@@ -10,15 +10,14 @@
 			<view class="arrow-boxs">
 				<image class="user-img" src="http://ddyp.wtvxin.com/static/logo.png"></image>
 				<view>
-					<text class="id">ID:1</text>
-					<text class="text-box">8 关注|热度 0</text>
+					<text class="text-box">8 关注</text>
 				</view>
 			</view>
 
 			<live-pusher :beauty="beauty" :style="{width: width + 'px',height:height + 'px'}" id="livePusher" :url="url" mode="FHD"></live-pusher>
 
 			<!-- 这是聊天室 -->
-			<view class="chat">
+			<view class="chat" v-if="false">
 				<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
 				 @scroll="scroll">
 					<view class="chat-list" v-for="(it,i) in chatList" :key='i'>
@@ -61,6 +60,8 @@
 				type:"",
 				width: '',
 				height: '',
+				liveUserId:"",
+				liveToken:"",
 				url: '',//这是推流地址
 				// url:"rtmp://push.wtvxin.com/live/shop_7qi?txSecret=2929449e8ef493a47615e6c2e6cf9bc1&txTime=5E99FC49",
 				enableCamera: false,
@@ -141,6 +142,8 @@
 			let res = uni.getSystemInfoSync()
 			this.width = res.windowWidth;
 			this.height = res.windowHeight;
+			this.liveUserId = uni.getStorageSync("liveUserId");console.log(this.liveUserId)
+			this.liveToken = uni.getStorageSync("liveToken");console.log(this.liveToken)
 			uni.hideTabBar()
 			this.getPlay()
 		},
@@ -153,9 +156,27 @@
 		methods: {
 			async getPlay(){
 				let res = await post('TencentCloud/PushURL',{
-					push:'woyzv_1IOYX3U'
+					push:'',
+					UserId: this.liveUserId,
+					Token: this.liveToken
 				})
-				this.url=res.data.RTMP
+				if(res.code==0){
+					this.url=res.data.RTMP
+				}else{
+					uni.setStorageSync('liveToken', "");
+					uni.setStorageSync('liveUserId', "");
+					uni.showToast({
+					     title: "请重新登录商家直播账号!",
+					     icon: "none",
+					     duration: 2000,
+						 success:function(){
+							 console.log(_this.isRegister,"////////_this.isRegister")
+							setTimeout(function() {
+								uni.navigateBack({});
+							 }, 2000);
+						 }
+					});
+				}
 				console.log(res)
 			},
 			add(){
@@ -281,11 +302,11 @@
 		flex-direction: row;
 	}
 	.chat-username{
-		font-size: 18px;
+		font-size: 28upx;
 		color: white;
 	}
 	.chat-usertext{
-		font-size: 16px;
+		font-size: 28upx;
 		color: white;
 	}
 	.chat-list{
@@ -329,20 +350,15 @@
 		color: white;
 	}
 
-	.id {
-		font-size: 14px;
-		color: white;
-	}
-
 	.text-box {
 		font-size: 12px;
 		color: white;
 	}
 
 	.user-img {
-		margin-right: 5px;
-		width: 30px;
-		height: 30px;
+		margin-right: 16upx;
+		width: 50upx;
+		height: 50upx;
 		border-radius: 50%;
 	}
 
@@ -368,7 +384,7 @@
 		display: flex;
 		align-items: center;
 		flex-direction: row;
-		/* padding-bottom: 20px; */
+		border: none;
 	}
 
 	.tui {
@@ -379,30 +395,30 @@
 
 	.arrow-box {
 		position: fixed;
-		top: 60px;
-		left: 20px;
+		top: 60upx;
+		left: 40upx;
 		z-index: 10;
 		border-radius: 20px;
 		background-color: rgba(0, 0, 0, .4);
 	}
 
 	.arrow-boxs {
-		padding: 10px 20px 10px 20px;
+		padding: 10upx 20upx;
 		display: flex;
 		align-items: center;
 		flex-direction: row;
 		position: fixed;
-		top: 60px;
-		left: 140px;
+		top: 60upx;
+		right: 40upx;
 		z-index: 10;
 		border-radius: 30px;
 		background-color: rgba(0, 0, 0, .4);
 	}
 
 	.jiesu {
-		padding: 10px 20px 10px 20px;
+		padding:20upx;
 		color: white;
-		font-size: 16px;
+		font-size: 28upx;
 	}
 
 	.arrow {

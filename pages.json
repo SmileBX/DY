@@ -264,6 +264,12 @@
 			}
 		}
 		,{
+			"path":"pages/login/livelogin",
+			"style":{
+				"navigationBarTitleText":"登录"
+			}
+		}
+		,{
 			"path":"pages/register/register",
 			"style":{
 				"navigationBarTitleText":"注册"
@@ -273,6 +279,7 @@
             "path" : "pages/brand/brandIndex/brandIndex",
             "style" : {
 				"navigationBarTitleText": "品牌馆",
+				"navigationBarTextStyle": "white",
 				// "enablePullDownRefresh" : true,
 				"app-plus": {
 					"titleNView": {
@@ -375,7 +382,14 @@
         }
         ,{
             "path" : "pages/livepush/livepush",
-            "style" : {}
+            "style": {
+            	"navigationBarTitleText": "直播",
+            	"navigationBarBackgroundColor":"#ff4e4f",
+            	"navigationBarTextStyle": "white",
+            	"app-plus": {
+            		"titleNView": false //首页去除原生导航
+            	}
+            }
         }
         ,{
             "path" : "pages/pintuanOrder/pintuanOrder",
