@@ -1,5 +1,5 @@
 <template>
-  <view class="invite bg_fff" style="padding-bottom: 30upx;overflow:hidden;position: fixed;">
+  <view class="invite bg_fff" style="padding-bottom: 30upx;overflow:hidden;position: fixed;min-height:100vh">
 		<view id="bb_canvas">
 			  <view class="inn_bg ">
 				  <image src="http://ddyp.wtvxin.com/static/icons/inn.png" alt="" class="invite"></image>
@@ -69,6 +69,10 @@
 
 <script>
 import {post} from '@/common/util.js'
+import {
+		pathToBase64,
+		base64ToPath
+	} from '@/common/image-tools.js';
  //#ifdef H5
 import html2canvas from 'html2canvas';
 //#endif
@@ -253,11 +257,12 @@ export default {
       if(!this.hasimg){
         const ctx = uni.createCanvasContext('myCanvas');
         //背景图片
-        var codeurl = this.codeurl
+        var codeurl = this.info.InviteQRcode
         var bgurl = this.bgurl
         var avaurl = this.avaurl
-        var tel=this.tel
+        var tel=this.tel 
         var code="邀请码："+this.info.ReferralCode
+		console.log(bgurl,"bgurl")
 		console.log(codeurl)
         //画布背景填色
         ctx.setFillStyle('#ffffff')
@@ -281,23 +286,23 @@ export default {
 		
 		ctx.rect(200, 400, 64,64)
 		ctx.stroke()
-		// ctx.drawImage(codeurl, 200, 400, 64,64);
+		ctx.drawImage(codeurl, 200, 400, 64,64);
 		
         ctx.draw(true,function(){
 			uni.canvasToTempFilePath({
 				canvasId: 'myCanvas',
 				x: 0,
 				y: 0,
-				width: 300-5, //截取canvas的宽度 -10解决白边问题
+				width: 300-1, //截取canvas的宽度 -10解决白边问题
 				height: 500, //截取canvas的高度
 				destWidth: 300,    //输出图片宽度
 				destHeight: 500,
 				quality:1,
-				fileType:'jpg',
 				success: function (res){
 					console.log(res,"pppppppppppppp")
 					_this.hasimg=true
-					_this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl,"画布画图。。。")
+					_this.saveImgurl=res.tempFilePath;
+					console.log( _this.saveImgurl,"画布画图。。。")
 				}
 			})
 		})
@@ -307,14 +312,31 @@ export default {
 		var _this=this
 		uni.saveImageToPhotosAlbum({  //保存图片到相册
 		  filePath: _this.saveImgurl,
-		  success: function () {
+		  success: function (result) {
 			uni.showToast({
 			  title: "图片保存成功！",
 			  duration: 2000
 			})
+			console.log(result,"llllllllllllllll")
+			// #ifdef MP-WEIXIN
 			setTimeout(() => {
 			  uni.navigateBack({})
 			}, 2000);
+			// #endif
+			// #ifdef APP-PLUS
+			uni.share({
+			    provider: "weixin",
+			    scene: "WXSenceTimeline",
+			    type: 2,
+			    imageUrl: _this.saveImgurl,
+			    success: function (res) {
+			        console.log("success:" + JSON.stringify(res));
+			    },
+			    fail: function (err) {
+			        console.log("fail:" + JSON.stringify(err));
+			    }
+			});
+			// #endif
 		  }
 		})
     },
@@ -378,7 +400,7 @@ export default {
             src: this.info.InviteQRcode,//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
-			// console.log(res.path,"/////////////")
+			console.log(res.path,"邀请好友")
             _this.codeurl = res.path;
             },
             fail: function (err) {
