@@ -498,6 +498,7 @@
 				this.tid= this.Typelist[index].Id;
 				this.cid='';
 				this.tabIndex = index;
+				this.setScrollLeft(index)
 				this.getprolist()
 			},
 			//顶部导航点击跳转
