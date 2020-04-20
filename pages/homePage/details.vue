@@ -313,7 +313,7 @@
 					></a> -->
 					<!-- #endif -->
 					<!-- #ifdef MP-WEIXIN --> 
-					<button class="bd" open-type="concat" style="border:0!important;padding:0;background: #ffffff;line-height:1.9">
+					<button class="bd" open-type="contact" style="border:0!important;padding:0;background: #ffffff;line-height:1.9">
 						<view class="iconfont icon-kefu"></view>
 					客服</button>
 					<!-- <button open-type="contact" class="WEIXIN_btn"></button> -->

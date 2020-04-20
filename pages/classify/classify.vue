@@ -42,7 +42,7 @@
 						<view class="level__product-list uni-mt10" style="padding-left: 20upx;">
 							<view class="item flex" v-for="(item,index) in prolist" :key="index" @click="goDetail(item.Id)">
 								<image :src="item.PicNo" class="item_img" mode=""></image>
-								<view class="item_info">
+								<view class="item_info" style="padding: 0;padding-bottom: 10upx;">
 									<view class="item_title twoline">{{item.Name}}</view>
 									<view class="flex flex-between">
 										<view class="flex">
@@ -50,6 +50,10 @@
 											<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
 										</view>
 										<view class="fz12 c_999">已售{{item.SalesVolume}}</view>
+									</view>
+									<view class="flex" v-if="item.DistributionIncome!= '0'" style="padding-top: 5px;"> 
+										<view style="width: 70upx;height: 40upx;color: #fff;background: #FF3333;line-height: 40upx;text-align: center;">补贴</view>
+										<view style="height: 40upx;color: #FF3333;line-height: 40upx;text-align: center;border: 1upx solid pink;padding: 0 10upx;">¥{{item.DistributionIncome}}</view>
 									</view>
 								</view>
 							</view>

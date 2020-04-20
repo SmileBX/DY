@@ -71,4 +71,9 @@
 		transform: translate(-50%, -50%) scale(1)!important;
 		-webkit-transform: translate(-50%, -50%) scale(1)!important;
 	}
+	
+	.uni-scroll-view::-webkit-scrollbar {
+		/* 隐藏滚动条，但依旧具备可以滚动的功能 */
+		display: none
+	}
 </style>

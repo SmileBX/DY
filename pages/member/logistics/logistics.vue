@@ -116,6 +116,18 @@
 						}
 					});
 					// #endif
+					// #ifdef APP-PLUS
+					uni.setClipboardData({
+						data: this.logistics.nu,
+						success: function () {
+							uni.showToast({
+								icon:"none",
+								title:"复制成功"
+							})
+						}
+					});
+					console.log(this.logistics.nu)
+					// #endif
 				}else{
 					uni.showToast({
 						icon:"none",

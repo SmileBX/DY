@@ -53,6 +53,7 @@
 			// #endif
 			console.log(this.ShopId)
 			this.play()
+			navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(105, 0, 0, 0);
 			
 		},
 		methods: {
