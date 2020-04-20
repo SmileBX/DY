@@ -3,7 +3,7 @@
 		<!-- #ifndef MP-WEIXIN -->
 		<view class="nav" :style="{'padding-top':barHeight+'px'}">
 			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
-			<view class="mine">我的足迹</view>
+			<view class="mine">登录</view>
 			<view></view>
 		</view> 
 		<!-- #endif -->

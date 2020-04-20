@@ -169,13 +169,10 @@
 					     title: "请重新登录商家直播账号!",
 					     icon: "none",
 					     duration: 2000,
-						 success:function(){
-							 console.log(_this.isRegister,"////////_this.isRegister")
-							setTimeout(function() {
-								uni.navigateBack({});
-							 }, 2000);
-						 }
 					});
+					setTimeout(function() {
+						uni.navigateBack({});
+					 }, 2000);
 				}
 				console.log(res)
 			},

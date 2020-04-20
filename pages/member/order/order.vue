@@ -20,8 +20,7 @@
 					</view>
 					<view class="color_red font26">{{item.StatusName}}</view>
 				</view>
-				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind" 
-				@click.stop="goUrl('/pages/homePage/details?id='+ite.ProductId)">
+				<view class="flex justifyContentBetween mt2" v-for="(ite, ind) in item.OrderDetails" :key="ind">
 					<image :src="ite.PicNo" mode="aspectFit" class="img mr2"></image>
 					<view class="flex1 order_info">
 						<view>{{ite.ProductName}}</view> 

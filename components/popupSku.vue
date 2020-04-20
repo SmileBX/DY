@@ -49,11 +49,11 @@
 			</view>
 			<view class="popup-ft" v-if="showbtntype==0||showbtntype==2">
 				<view class="bottom-btns">
-					<view class="btn addcart" @click="toAddcart" v-if="showbtntype==0">
-						加入购物车
-					</view>
 					<view class="btn buynow" @click="gouBuy">
 						立即购买
+					</view>
+					<view class="btn addcart" @click="toAddcart" v-if="showbtntype==0">
+						加入购物车
 					</view>
 				</view>
 			</view>
@@ -513,7 +513,7 @@
 
 	.bottom-btns {
 		height: 80upx;
-		background: #f63517;
+		background: #fda33a;
 		font-size: 32upx;
 		color: #fff;
 		border-radius: 40upx;
@@ -537,7 +537,7 @@
 	}
 
 	.bottom-btns .btn.addcart {
-		background: #fda33a;
+		background: #f63517;
 	}
 
 	.pop-product {
