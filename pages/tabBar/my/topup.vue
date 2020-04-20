@@ -5,9 +5,9 @@
 		<view class="walletbox">
 			<view class="across">
 				<view class="withdraw">充值金额</view>
-				<view class="drawing">
+				<view class="drawing" >
 					<view class="sign">¥</view>
-					<input class="sign signs" type="digit" v-model="money" placeholder="请输入要充值的金额" placeholder-class="sign2"/>
+					<input class="signs" type="digit" v-model="money" placeholder="请输入要充值的金额" placeholder-class="sign2"/>
 				</view>
 			</view>
 			<view class="carry">该卡本次最多可充值¥20000</view>
@@ -232,7 +232,7 @@
 		line-height:120rpx;
 	}
 	.sign{
-		font-size:50rpx;
+		font-size:35upx;
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(51,51,51,1);
@@ -245,8 +245,9 @@
 	}
 	.signs{
 		display: flex;
-		padding: 20upx;
+		padding: 0 20upx;
 		height: 80upx;
+		font-size:50upx;
 	}
 	.carry{
 		font-size:24rpx;

@@ -697,7 +697,7 @@
 				"pagePath": "pages/tabBar/my/collect",
 				"iconPath": "static/foot/live.png",
 				"selectedIconPath": "static/foot/live.png",
-				"text": ""
+				"iconWidth": "26px"
 			},
 			{
 				"pagePath": "pages/tabBar/index/index",

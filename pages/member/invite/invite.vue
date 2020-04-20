@@ -281,41 +281,42 @@ export default {
 		
 		ctx.rect(200, 400, 64,64)
 		ctx.stroke()
-		ctx.drawImage(codeurl, 200, 400, 64,64);
+		// ctx.drawImage(codeurl, 200, 400, 64,64);
 		
-        ctx.draw(false,function(){
+        ctx.draw(true,function(){
 			uni.canvasToTempFilePath({
 				canvasId: 'myCanvas',
 				x: 0,
 				y: 0,
-				width: parseInt(_this.canvasHeightPx)-10, //截取canvas的宽度 -10解决白边问题
-				height: parseInt(_this.canvasHeightPx), //截取canvas的高度
-				destWidth: parseInt(_this.canvasWidthPx),    //输出图片宽度
-				destHeight: parseInt(_this.canvasHeightPx),
+				width: 300-5, //截取canvas的宽度 -10解决白边问题
+				height: 500, //截取canvas的高度
+				destWidth: 300,    //输出图片宽度
+				destHeight: 500,
 				quality:1,
 				fileType:'jpg',
 				success: function (res){
+					console.log(res,"pppppppppppppp")
 					_this.hasimg=true
-					_this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl)
+					_this.saveImgurl=res.tempFilePath;console.log( _this.saveImgurl,"画布画图。。。")
 				}
 			})
 		})
       }
     },
     Wxshare(){
-      var _this=this
-	  uni.saveImageToPhotosAlbum({  //保存图片到相册
-	    filePath: this.saveImgurl,
-	    success: function () {
-	      uni.showToast({
-	        title: "图片保存成功！",
-	        duration: 2000
-	      })
-	      setTimeout(() => {
-	        uni.navigateBack({})
-	      }, 2000);
-	    }
-	  })
+		var _this=this
+		uni.saveImageToPhotosAlbum({  //保存图片到相册
+		  filePath: _this.saveImgurl,
+		  success: function () {
+			uni.showToast({
+			  title: "图片保存成功！",
+			  duration: 2000
+			})
+			setTimeout(() => {
+			  uni.navigateBack({})
+			}, 2000);
+		  }
+		})
     },
     roundedRect(ctx,x,y,width,height,radius){
         if(width <= 0 || height <= 0){
@@ -377,7 +378,7 @@ export default {
             src: this.info.InviteQRcode,//服务器返回的图片地址 
             success: function (res) {
             //res.path是网络图片的本地地址
-			console.log(res.path,"/////////////")
+			// console.log(res.path,"/////////////")
             _this.codeurl = res.path;
             },
             fail: function (err) {

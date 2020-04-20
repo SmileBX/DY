@@ -18,7 +18,7 @@
 					<view class="iconfont icon-caidan" @click="tolink('/pages/classify/classify')"></view>
 				</view>
 			</view>
-			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :scroll-left="scrollLeft" style="display: flex;">
+			<scroll-view id="tab-bar" class="scroll-tab mt2" scroll-x :show-scrollbar="false" :scroll-left="scrollLeft" style="display: flex;">
 				<view v-for="(tab,index) in Typelist" :key="index" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="'tabNum'+index"
 				 :data-current="index" @click="tapTab(index,tab.Id)">
 					<view class="s"> {{tab.Name}} </view>
@@ -46,7 +46,8 @@
 							<view class="page-section-spacing">
 								<swiper class="swiper" style="height: 400upx;" :indicator-dots="showdots" :autoplay="false" :interval="5000" :duration="500" indicator-color="#fff" indicator-active-color="#ff3333">
 									<swiper-item v-for="(val,index) in menubarlist" :key="index" class="tab_list" scroll-x :scroll-left="scrollLeft2">
-										<view  class="tab_item" v-for="(tab, index) in val" :key="index" @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
+										<view  class="tab_item" v-for="(tab, index) in val" :key="index"
+										 @click="tolink('/pages/homePage/proList?typeId='+tab.Id)">
 											<view>
 												<image :src="tab.Pic" class="tab_img" mode="aspectFill"></image> 
 											</view>
@@ -111,7 +112,8 @@
 								</view>
 							</view>
 							<view class="list flex justifyContentBetween">
-								<view v-for="(item,index) in PPbannerlist" :key="index" class="item_img" @click="tolink('/pages/brand/brandproLsit/brandproLsit')">
+								<view v-for="(item,index) in PPbannerlist" :key="index" class="item_img" 
+								@click="tolink('/pages/brand/brandproLsit/brandproLsit')">
 									<image :src="item.Pic" mode="aspectFill" v-if="index<3"></image>
 								</view>
 							</view>
@@ -121,11 +123,37 @@
 							<image src="http://ddyp.wtvxin.com/static/of/f3.png" mode="aspectFill" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
-								<view class="uni-bd uni-mt10">
-									<scroll-view class="scroll-view_H Hotsell-list" scroll-x>
-										<view class="scroll-view-item_H" v-for="(item,index1) in recProductlist" :key="index1" @click="tolink('/pages/homePage/details?id='+item.Id)">
-											<view class="itembox">
-												<view class="image-view">
+								<view class="uni-bd uni-mt10" >
+									<swiper class="scroll-view_H Hotsell-list" style="height: 350upx;" :indicator-dots="showdots" 
+									:autoplay="false" :interval="5000" :duration="500" indicator-color="#fff" indicator-active-color="#ff3333">
+										<swiper-item v-for="(val,index) in recProductlist" :key="index" class="scroll-view-item_H flex" 
+										scroll-x :scroll-left="scrollLeft2" style='display: flex;'>
+											<view class="itembox" v-for="(item, index) in val" :key="index">
+												<view class="itembox" @click="tolink('/pages/homePage/details?id='+item.Id)">
+													<view class="image-view"> 
+														<image class="img" :src="item.PicNo" mode="aspectFill"></image>
+													</view>
+													<view class="txtbox">
+														<view class="txt uni-ellipsis">{{item.Name}}</view>
+														<view class="uni-product-price">
+															<text class="uni-product-price-original">￥{{item.Price}}</text>
+															<text class="uni-product-price-favour" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</text>
+														</view>
+													</view>
+													<view style="display: flex;justify-content: space-between;padding-top: 10upx;">
+														<view v-if="item.DistributionIncome!= '0'" style="height: 36upx;border-radius: 20upx;
+														background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
+															补贴￥{{item.DistributionIncome}}
+														</view>
+													</view>
+												</view>
+											</view>
+										</swiper-item>
+									</swiper>
+									<!-- <scroll-view class="scroll-view_H Hotsell-list" scroll-x style="width:100%;border:1px solid red" >
+										<view class="scroll-view-item_H" v-for="(item,index1) in recProductlist" :key="index1" >
+											<view class="itembox" @click="tolink('/pages/homePage/details?id='+item.Id)">
+												<view class="image-view"> 
 													<image class="img" :src="item.PicNo" mode="aspectFill"></image>
 												</view>
 												<view class="txtbox">
@@ -136,13 +164,14 @@
 													</view>
 												</view>
 												<view style="display: flex;justify-content: space-between;padding-top: 10upx;">
-													<view v-if="item.DistributionIncome!= '0'" style="height: 36upx;border-radius: 20upx;background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
+													<view v-if="item.DistributionIncome!= '0'" style="height: 36upx;border-radius: 20upx;
+													background: #f0370b;color: #fff;line-height: 36upx;padding: 0 12upx;">
 														补贴￥{{item.DistributionIncome}}
 													</view>
 												</view>
 											</view>
 										</view>
-									</scroll-view>
+									</scroll-view> -->
 								</view>
 							</view>
 						</view>
@@ -203,7 +232,8 @@
 											</view>
 										</view>
 										<view class="" style="display: flex;justify-content: space-between;padding-top: 10upx;">
-											<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;border-radius: 20upx;background: #f00000;color: #fff;line-height: 36upx;padding: 0 12upx;">
+											<view v-if="item.DistributionIncome !== '0'" style="height: 36upx;
+											border-radius: 20upx;background: #f00000;color: #fff;line-height: 36upx;padding: 0 12upx;">
 												补贴￥{{item.DistributionIncome}}</view>
 											<view class="item_market">{{item.SalesVolume}}人付款</view>
 										</view>
@@ -342,6 +372,7 @@
 		},
 		components:{noData,uniLoadMore},
 		methods:{
+
 			//小程序解析经纬度获取城市
 			// #ifdef MP-WEIXIN
 			wxGetCity(lon,lat){
@@ -414,16 +445,26 @@
 			
 			//获取精选推荐产品
 			async Recprolist(){
-				let res = await post('Goods/GoodsList',{
+				let result = await post('Goods/GoodsList',{
 					Page: 1,
 					PageSize: 10,
 					IsRecommend: 1,
 					IsHot:1
 				})
-				if(res.code==0){ //首页精选推荐
-					if(res.data.length){
+				if(result.code==0){ //首页精选推荐
+					if(result.data.length){
 						this.hasrec=true;
-						this.recProductlist = res.data
+						let unm = result.data
+						unm.forEach((val,index) => {
+							let page = Math.floor(index / 3)
+							if(!this.recProductlist[page]){
+								this.recProductlist[page] = []
+							}
+							this.recProductlist[page].push(val)
+						})
+						console.log(this.recProductlist,"this.recProductlist//////////////")
+						
+						
 					}else{
 						this.hasrec=false;
 					}
@@ -493,6 +534,7 @@
 			},
 			//顶部导航滑动切换
 			async changeTab(e) {
+				console.log("6666666666666666666666666666666666666666666")
 				this.page=1;
 				let index = e.detail.current;
 				this.tid= this.Typelist[index].Id;
@@ -667,4 +709,5 @@
 
 <style scoped lang="scss">
 	@import './style';
+	    
 </style>
