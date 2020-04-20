@@ -1,7 +1,7 @@
 <template>
 	<!-- 关注主播 -->
 	<view class="anchor">
-		<view class="head_anch">
+		<view class="head_anch" v-show="false">
 			<view class="sear_head" v-if="false">
 				<view class="flex search flexAlignCenter">
 					<text class="iconfont icon-sousuo1"></text>
@@ -13,7 +13,7 @@
 			</view>
 			<view class="slider"></view>
 		</view>
-		<view class="anch_view">
+		<!-- <view class="anch_view"> -->
 			<!--关注-->
 			<view class="list" v-if="tabIndex==0">
 				<view class="anchorbox" v-for="(item,index) in 5" :key="index">
@@ -53,7 +53,7 @@
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
 			</view>
 			<noData :isShow="noDataIsShow"></noData>
-		</view>
+		<!-- </view> -->
 		
 	</view>
 </template>
