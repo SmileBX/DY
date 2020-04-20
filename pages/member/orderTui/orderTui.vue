@@ -8,7 +8,7 @@
 						<text class="uni-bold shop_name">{{item.ShopName}}</text>
 						<text class="iconfont icon-arrow_r font18"></text>
 					</view>
-					<view class="color_red font18">{{item.OrderStatusName}}</view>
+					<view class="color_red">{{item.OrderStatusName}}</view>
 				</view>
 				<view class="flex justifyContentBetween mt2">
 					<image :src="item.ProductImg" class="img mr2"></image>

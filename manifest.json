@@ -21,7 +21,8 @@
             "LivePusher" : {},
             "VideoPlayer" : {},
             "Speech" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Share" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
