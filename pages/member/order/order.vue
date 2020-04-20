@@ -192,6 +192,7 @@
 						icon:'none',
 						title:res.msg
 					  })
+					  console.log( _this.list)
 					})
 				  } else if (res.cancel) {
 					console.log('用户点击取消')
