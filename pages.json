@@ -260,7 +260,10 @@
 		,{
 			"path":"pages/login/login",
 			"style":{
-				"navigationBarTitleText":"登录"
+				"navigationBarTitleText":"登录",
+				"app-plus": {
+					"titleNView": false //首页去除原生导航
+				}
 			}
 		}
 		,{
@@ -696,8 +699,7 @@
 		"list": [{
 				"pagePath": "pages/tabBar/my/collect",
 				"iconPath": "static/foot/live.png",
-				"selectedIconPath": "static/foot/live.png",
-				"text": ""
+				"selectedIconPath": "static/foot/live.png"
 			},
 			{
 				"pagePath": "pages/tabBar/index/index",

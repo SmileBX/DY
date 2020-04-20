@@ -340,17 +340,17 @@
 					this.noDataIsShow=true;
 					this.hascartlist=false;
 					this.gologin=false
-					uni.showModal({
-						content: "您还没有登录，是否重新登录？",
-						success(e) {
-							if (e.confirm) {
-								uni.navigateTo({
-								  url: "/pages/login/login"
-								});
-							} else if (e.cancel) {
-							}
-						}
-					});
+					// uni.showModal({
+					// 	content: "您还没有登录，是否重新登录？",
+					// 	success(e) {
+					// 		if (e.confirm) {
+					// 			uni.navigateTo({
+					// 			  url: "/pages/login/login"
+					// 			});
+					// 		} else if (e.cancel) {
+					// 		}
+					// 	}
+					// });
 				}
 			},
 			//合计 金额、数量

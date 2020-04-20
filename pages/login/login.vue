@@ -1,5 +1,12 @@
 <template>
 	<view class="content">
+		<!-- #ifndef MP-WEIXIN -->
+		<view class="nav" :style="{'padding-top':barHeight+'px'}">
+			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
+			<view class="mine">我的足迹</view>
+			<view></view>
+		</view> 
+		<!-- #endif -->
 		<view class="regLoginBox" v-if="isShowMolie">
 			<view class="logo">
 				<view class="img">
@@ -74,11 +81,19 @@
 			if(e.isResgister){
 				this.isRegister = e.isResgister
 			}
+			if(e.isIndex){
+				this.isIndex = e.isIndex
+			}
+			var height = plus.navigator.getStatusbarHeight();
+			this.barHeight = height;
 			// #endif
 			// #ifndef MP-WEIXIN
 			console.log(e.askUrl,"99999999999999")
 			this.isShowMolie=false;
 			this.isShowminiApp = true;
+			// #endif
+			// #ifdef H5
+			this.barHeight = 0;
 			// #endif
 		},
 		onShow(){ 
@@ -100,11 +115,15 @@
 			if(this.$root.$mp.query.isResgister){
 				this.isRegister = this.$root.$mp.query.isResgister
 			}
+			if(this.$root.$mp.query.isIndex){
+				this.isIndex = this.$root.$mp.query.isIndex
+			}
 			// #endif
 			console.log(this.isRegister,"8888888888")
 		},
 		data() {
 			return {
+				barHeight:0,//app端增加状态栏高度
 				tel:"",
 				pwd:"",
 				askUrl: "",
@@ -114,6 +133,7 @@
 				count:"",
 				has_click: false,
 				isRegister:false,
+				isIndex:false,
 				logintype:true,//true表示密码登录，false手机验证码登录
 				isShowMolie:true,//是否显示号登录界面
 				isShowminiApp:false//是否显示小程序登录
@@ -239,7 +259,6 @@
 					     icon: "none",
 					     duration: 2000,
 						 success:function(){
-							 console.log(_this.isRegister,"////////_this.isRegister")
 							setTimeout(function() {
 								if(_this.isRegister){
 									uni.switchTab({
@@ -312,12 +331,17 @@
 					uni.showToast({
 					  title: "登录成功!",
 					  icon: "none",
-					  duration: 2000,
+					  duration: 1500,
 					  success:function(){
 						setTimeout(function() {
-							uni.switchTab({
-							  url: "/pages/tabBar/my/my"
-							});
+							if(_this.isRegister){
+								uni.switchTab({
+									url: "/pages/tabBar/my/my"
+								  });	
+							}else{
+								uni.navigateBack();
+							}
+							
 							// uni.navigateBack();
 							// if(_this.askUrl){
 							//   if(_this.askUrl.indexOf("undefined")>-1){
@@ -348,7 +372,7 @@
 							// 	url: "/pages/tabBar/my/my"
 							//   });
 							// }
-						 }, 2000);
+						 }, 1500);
 					  }
 					});
 				}else if (result.code === 2) {
@@ -411,6 +435,19 @@
 				uni.navigateTo({
 					url: '/pages/getPassword/getPassword'
 				})
+			},
+			toback(){
+				if(this.isIndex){
+					uni.switchTab({
+						url:"/pages/tabBar/index/index"
+					})
+				}else if(this.isRegister){
+					uni.switchTab({
+						url: "/pages/tabBar/my/my"
+					});
+				}else{
+					uni.navigateBack();
+				}
 			}
 		}
 	}
@@ -453,5 +490,28 @@
   .from-line{
 	  background: #fff;
 	  border-radius: 40rpx;
+  }
+  .nav {
+  	height: 88upx;
+  	width: 710upx;
+  	padding: 0 20upx;
+  	display: flex;
+  	justify-content: space-between;
+  	align-items: center;
+  	position: fixed;
+  	top: 0;
+  	z-index: 12;
+  	box-sizing: content-box;
+  	background: #ffffff!important;
+  }
+  .back {
+  	width: 35rpx;
+  	height: 50rpx;
+  }
+  .mine {
+  	font-size: 32rpx;
+  	font-family: PingFang;
+  	font-weight: 700;
+  	color: #000;
   }
 </style>

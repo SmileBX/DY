@@ -208,21 +208,44 @@
 			this.token = uni.getStorageSync("token");
 			this.liveUserId = uni.getStorageSync("liveUserId");
 			this.liveToken = uni.getStorageSync("liveToken");
-			if (toLogin()) {
+			// #ifndef MP-WEIXIN
+			if (this.userId&&this.token) {
 				this.NewsCount();
 			    this.getMemberInfo();
+			}else{
+				uni.navigateTo({
+					url:"/pages/login/login?isIndex=true"
+				})
 			}
+			// #endif
+			// #ifdef MP-WEIXIN
+			this.NewsCount();
+			this.getMemberInfo();
+			// #endif
 		},
 		methods: {
 			error(e){
 				console.log(e)
 			},
 			golink(url){
+				// #ifndef MP-WEIXIN
 				if(toLogin()){
 					uni.navigateTo({
 						url:url
 					})
 				}
+				// #endif
+				// #ifdef MP-WEIXIN
+				if(this.userId&&this.token){
+					uni.navigateTo({
+						url:url
+					})
+				}else{
+					uni.navigateTo({
+						url:"/pages/login/login"
+					})
+				}
+				// #endif
 			},
 			golive(url){
 				if(this.liveToken&&this.liveUserId){
@@ -256,6 +279,7 @@
 					});  
 				} else if (result.code === 2) {
 					let _this = this;
+					// #ifndef MP-WEIXIN
 					uni.showModal({
 						content: "您还没有登录，是否重新登录？",
 						success(res) {
@@ -267,6 +291,7 @@
 							}
 						}
 					});
+					// #endif
 				}
 			},
 			async NewsCount() {
