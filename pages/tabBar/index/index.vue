@@ -534,7 +534,6 @@
 			},
 			//顶部导航滑动切换
 			async changeTab(e) {
-				console.log("6666666666666666666666666666666666666666666")
 				this.page=1;
 				let index = e.detail.current;
 				this.tid= this.Typelist[index].Id;
