@@ -199,7 +199,12 @@ export default {
             }).then(res=>{
               uni.showToast({
                 icon:'none',
-                title:res.msg
+                title:res.msg,
+				success() {
+					uni.navigateBack({
+						
+					})
+				}
               })
             })
           } else if (res.cancel) {
@@ -223,9 +228,11 @@ export default {
 		// #endif
 		// #ifdef  MP-WEIXIN
 		let _this = this;
+		// console.log( _this.info.OrderNumber)
 		uni.setClipboardData({
-			data: _this.info.ReferralCode,
+			data: _this.info.OrderNumber,
 			success: function() {
+				// console.log(123)
 				uni.showToast({
 					icon: 'none',
 					title: "复制成功"
@@ -233,12 +240,12 @@ export default {
 			}
 		});
 		// #endif
-        uni.showToast({
-          icon:'none',
-          title: '复制成功',
-        })
+        // uni.showToast({
+        //   icon:'none',
+        //   title: '复制成功',
+        // })
         uni.setClipboardData({
-          data: dataNo,
+          data: this.info.OrderNumber,
           success: function (res) {
             uni.getClipboardData({ 
               success: function (res) {

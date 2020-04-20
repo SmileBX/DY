@@ -302,6 +302,7 @@
 					code:code,
 					encryptedData:encryptedData
 				})
+				console.log(result)
 				uni.setStorageSync("unionid", result.data.unionid);
 				uni.setStorageSync("token", result.data.Token);
 				uni.setStorageSync("userId", result.data.UserId);

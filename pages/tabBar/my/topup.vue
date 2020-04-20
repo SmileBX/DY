@@ -7,7 +7,12 @@
 				<view class="withdraw">充值金额</view>
 				<view class="drawing">
 					<view class="sign">¥</view>
+					<!-- #ifdef MP-WEIXIN -->
+					<input class="sign signs" type="digit" v-model="money" placeholder="请输入要充值的金额" placeholder-style="font-size:30rpx;font-family:PingFang;font-weight:normal;" />
+					<!-- #endif -->
+					<!-- #ifndef MP-WEIXIN -->
 					<input class="sign signs" type="digit" v-model="money" placeholder="请输入要充值的金额" placeholder-class="sign2"/>
+					<!-- #endif -->
 				</view>
 			</view>
 			<view class="carry">该卡本次最多可充值¥20000</view>
@@ -242,11 +247,13 @@
 		font-family:PingFang;
 		font-weight:normal;
 		color:#999;
+
 	}
 	.signs{
 		display: flex;
 		padding: 20upx;
 		height: 80upx;
+		/* font-size: 30upx; */
 	}
 	.carry{
 		font-size:24rpx;
