@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="regLoginBox" v-if="isShowMolie">
+		<view class="regLoginBox" >
 			<view class="logo">
 				<view class="img">
 					<image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
@@ -43,7 +43,7 @@
 		onLoad(e){
 			// #ifndef MP-WEIXIN
 			console.log(e.askUrl,"99999999999999")
-			this.isShowMolie=false;
+			// this.isShowMolie=false;
 			this.isShowminiApp = true;
 			// #endif
 		},
@@ -51,12 +51,12 @@
 			// console.log(this.$root.$mp,111) 
 			
 			// #ifdef MP-WEIXIN
-			this.isShowMolie=false;
+			// this.isShowMolie=false;
 			this.isShowminiApp = true;
 			// #endif
 			// #ifndef MP-WEIXIN
 			console.log("7777777777777")
-			this.isShowMolie=true;
+			// this.isShowMolie=true;
 			this.isShowminiApp = false;
 			// #endif
 			console.log(this.isRegister,"8888888888")
@@ -81,7 +81,7 @@
 			changeWay(e){
 				if(e==1){
 					// #ifdef MP-WEIXIN
-					this.isShowMolie=false;
+					// this.isShowMolie=false;
 					this.isShowminiApp=true;
 					// #endif
 					// #ifdef H5
