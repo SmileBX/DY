@@ -216,6 +216,14 @@
 					let _this=this;
 					// console.log(this.AreaType)
 					this.AreaType=0
+					
+					// console.log(this.areaDefault)
+					if(this.areaDefault[2]==="不限" ){
+						console.log(this.areaDefault,5555)
+						this.AreaType=1
+					}else{
+						this.AreaType=0
+					}
 					if (result.data.length > 0) {
 						this.hasData = true;
 						this.noDataIsShow = false;
@@ -310,11 +318,13 @@
 			},
 			areaOk(e){
 				this.areaDefault=e.checkArr;
-				console.log(e.checkArr.length)
+				// console.log(this.areaDefault)
 				if(e.checkArr.length===2){
 					this.AreaType=1
 				}else if(e.checkArr[2]=="不限" ){
 					this.AreaType=1
+				}else{
+					this.AreaType=0
 				}
 				this.AreaCode=e.checkValue[e.checkValue.length-1];
 				this.init();
