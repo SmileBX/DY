@@ -257,7 +257,12 @@ export default {
       if(!this.hasimg){
         const ctx = uni.createCanvasContext('myCanvas');
         //背景图片
+        // #ifndef MP-WEIXIN
         var codeurl = this.info.InviteQRcode
+        // #endif
+		// #ifdef MP-WEIXIN
+		 var codeurl = this.codeurl
+		// #endif
         var bgurl = this.bgurl
         var avaurl = this.avaurl
         var tel=this.tel 
