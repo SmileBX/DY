@@ -274,11 +274,12 @@
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
+					  orderInfo:payData.prepayId,
 					  timeStamp: payData.timeStamp,
 					  nonceStr: payData.nonceStr,
 					  package: payData.package,
 					  signType: payData.signType,
-					  paySign: payData.paySign,
+					  paySign: payData.sign,
 					  success(res) {
 						  _this.type = "";
 							_this.showPay=false;
