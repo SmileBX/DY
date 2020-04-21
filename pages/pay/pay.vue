@@ -90,6 +90,7 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.WxOpenid=uni.getStorageSync("openId");
+			console.log(this.WxOpenid)
 			// #ifndef APP-PLUS
 			this.orderNo=this.$root.$mp.query.orderNo;
 			this.source=this.$root.$mp.query.source||0;
@@ -253,7 +254,9 @@
 				if (result.code == 201) {
 					window.location.href=result.data;
 				}else if(result.code == 0){
+					// #ifdef H5
 					this.callpay(result.data.JsParam);
+					// #endif
 				}else {
 					uni.showToast({
 						title: result.msg,
@@ -269,13 +272,21 @@
 					Token: this.token,
 					orderNo:this.orderNo,
 				})
+<<<<<<< HEAD
+				console.log(result.data)
+				if(result.code==0){
+					var payData=JSON.parse(result.data.JsParam)
+					console.log(payData)
+=======
 				if(result.code==0){console.log(result.data)
 					// var payData=JSON.parse(result.data.JsParam)
+>>>>>>> 41b7a55545bb571be971c809d9422fccb176233a
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
 					  orderInfo:result.data.JsParam,
 					  success(res) {
+						  console.log(res)
 						  _this.type = "";
 							_this.showPay=false;
 							uni.redirectTo({
