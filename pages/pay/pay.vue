@@ -272,15 +272,9 @@
 					Token: this.token,
 					orderNo:this.orderNo,
 				})
-<<<<<<< HEAD
-				console.log(result.data)
-				if(result.code==0){
-					var payData=JSON.parse(result.data.JsParam)
-					console.log(payData)
-=======
 				if(result.code==0){console.log(result.data)
 					// var payData=JSON.parse(result.data.JsParam)
->>>>>>> 41b7a55545bb571be971c809d9422fccb176233a
+
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
