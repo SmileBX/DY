@@ -262,6 +262,42 @@
 					});
 				}
 			},
+			//微信app支付
+			async wxapppay() {
+				let result = await post("Order/AppWechatPay", {
+					UserId: this.userId,
+					Token: this.token,
+					orderNo:this.orderNo,
+				})
+				if(result.code==0){console.log(result.data)
+					// var payData=JSON.parse(result.data.JsParam)
+					let _this=this;
+					uni.requestPayment({
+					  provider:"wxpay",
+					  orderInfo:result.data.JsParam,
+					  success(res) {
+						  _this.type = "";
+							_this.showPay=false;
+							uni.redirectTo({
+								url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+							})
+						},
+					  fail(err) {console.log(err)
+						  uni.showToast({
+						  	title:JSON.stringify(err),
+							icon:"none",
+							duration:4000
+						  })
+					  }
+					})
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
 			//非微信环境 使用微信支付H5
 			async H5payweixin() {
 				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
@@ -370,6 +406,9 @@
 						// #endif
 						// #ifdef  MP-WEIXIN
 						this.ConfirmWeiXinSmallPay()
+						// #endif
+						// #ifdef APP-PLUS
+						this.wxapppay()
 						// #endif
 					}else if(this.payType==1){
 						uni.showToast({
