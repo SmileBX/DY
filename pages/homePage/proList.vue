@@ -217,8 +217,10 @@
 					// console.log(this.AreaType)
 					this.AreaType=0
 					
-					// console.log(this.areaDefault)
-					if(this.areaDefault[2]==="不限" ){
+					console.log(this.areaDefault)
+					if(this.areaDefault.length==2){
+						this.AreaType=1
+					}else if(this.areaDefault[2]==="不限" ){
 						console.log(this.areaDefault,5555)
 						this.AreaType=1
 					}else{
