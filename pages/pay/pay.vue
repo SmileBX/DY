@@ -287,11 +287,11 @@
 							})
 						},
 					  fail(err) {console.log(err)
-						  uni.showToast({
-						  	title:JSON.stringify(err),
-							icon:"none",
-							duration:4000
-						  })
+						 //  uni.showToast({
+						 //  	title:JSON.stringify(err),
+							// icon:"none",
+							// duration:4000
+						 //  })
 					  }
 					})
 				}else {

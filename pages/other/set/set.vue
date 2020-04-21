@@ -69,6 +69,8 @@
 						if(res.confirm){
 							uni.setStorageSync('token', '');
 							uni.setStorageSync('userId', '');
+							uni.setStorageSync('liveUserId', '');//清除商家直播账号
+							uni.setStorageSync('liveToken', '');//清除商家直播账号
 							uni.setStorageSync("unionid", ""); 
 							uni.setStorageSync("openId", ""); 
 							uni.setStorageSync("userInfo", "");

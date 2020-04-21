@@ -893,7 +893,7 @@
 				    provider: "weixin",
 				    scene: "WXSceneSession",
 				    type: 0,
-				    href: "http://ddyp.wtvxin.com/#/pages/homePage/details?id="+this.proId+"&inCode="+ this.ReferralCode,//分享好友产品带上邀请码
+				    href: "http://shop.dadanyipin.com/#/pages/homePage/details?id="+this.proId+"&inCode="+ this.ReferralCode,//分享好友产品带上邀请码
 				    title: this.proInfo.Name,
 				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 				    imageUrl: this.proInfo.PicData[0].PicUrl,

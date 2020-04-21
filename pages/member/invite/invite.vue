@@ -127,7 +127,7 @@ export default {
 		    provider: "weixin",
 		    scene: "WXSceneSession",
 		    type: 0,
-		    href: "http://ddyp.wtvxin.com/#/pages/tabBar/index/index?inviteCode="+this.info.ReferralCode,
+		    href: "http://shop.dadanyipin.com/#/pages/tabBar/index/index?inviteCode="+this.info.ReferralCode,
 		    title: "大单易拼等你来！",
 		    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 		    imageUrl: this.codeurl,

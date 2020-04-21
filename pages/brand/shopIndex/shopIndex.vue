@@ -202,7 +202,7 @@
 				    provider: "weixin",
 				    scene: "WXSceneSession",
 				    type: 0,
-				    href: "http://ddyp.wtvxin.com/#/pages/brand/shopIndex/shopIndex?ShopId="+this.ShopId,
+				    href: "http://shop.dadanyipin.com/#/pages/brand/shopIndex/shopIndex?ShopId="+this.ShopId,
 				    title: "大单易拼等你来！",
 				    summary: "我正在使用大单易拼，赶紧跟我一起来体验！",
 				    imageUrl: this.shopLogo,
