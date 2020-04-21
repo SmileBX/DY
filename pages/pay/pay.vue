@@ -270,16 +270,11 @@
 					orderNo:this.orderNo,
 				})
 				if(result.code==0){console.log(result.data)
-					var payData=JSON.parse(result.data.JsParam)
+					// var payData=JSON.parse(result.data.JsParam)
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
-					  orderInfo:payData.prepayId,
-					  timeStamp: payData.timeStamp,
-					  nonceStr: payData.nonceStr,
-					  package: payData.package,
-					  signType: payData.signType,
-					  paySign: payData.sign,
+					  orderInfo:result.data.JsParam,
 					  success(res) {
 						  _this.type = "";
 							_this.showPay=false;
@@ -287,7 +282,13 @@
 								url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
 							})
 						},
-					  fail(res) {console.log(res)}
+					  fail(err) {console.log(err)
+						  uni.showToast({
+						  	title:JSON.stringify(err),
+							icon:"none",
+							duration:4000
+						  })
+					  }
 					})
 				}else {
 					uni.showToast({
