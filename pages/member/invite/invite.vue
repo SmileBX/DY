@@ -293,7 +293,7 @@ export default {
 				canvasId: 'myCanvas',
 				x: 0,
 				y: 0,
-				width: 300-1, //截取canvas的宽度 -10解决白边问题
+				width: 300-12, //截取canvas的宽度 -10解决白边问题
 				height: 500, //截取canvas的高度
 				destWidth: 300,    //输出图片宽度
 				destHeight: 500,
@@ -433,6 +433,14 @@ export default {
       title: "大单易拼", //转发页面的标题
       path: '/pages/tabBar/index/index?inviteCode='+this.info.ReferralCode
     }
+  },
+  onPullDownRefresh(){
+	  this.hasimg=false;
+	  this.showImg=false;
+	  this.isShowShare=false;
+	  this.InviteFriends();
+	  this.GetCenterInfo();
+	  uni.stopPullDownRefresh()
   }
 }
 </script>

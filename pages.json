@@ -620,7 +620,7 @@
 					"style": {
 						"navigationBarTitleText": "邀请好友",
 						"navigationBarBackgroundColor": "#ffffff",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": true
 					}
 				},{
 					"path" : "editinfo/editinfo",
