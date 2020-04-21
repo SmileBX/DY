@@ -4,7 +4,7 @@
 			<view class="order_item bg_fff mt2" v-for="(item,index) in list" :key="index" @click="goUrl('/pages/member/orderDetail/orderDetail?id='+item.OrderNo)">
 				<view class="flex justifyContentBetween flexAlignCenter">
 					<view>
-						<image src="http://ddyp.wtvxin.com/static/my/shop.png" class="logo"></image>
+						<image src="http://shop.dadanyipin.com/static/my/shop.png" class="logo"></image>
 						<text class="uni-bold shop_name">{{item.ShopName}}</text>
 						<text class="iconfont icon-arrow_r font18"></text>
 					</view>

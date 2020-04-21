@@ -25,7 +25,7 @@
 						<!-- <view class="item_list flex mt2">
 							<view class="flex flexColumn flexAlignCenter item_list_fill" v-for="(item,index) in 3" :key="index">
 								<view class="img flex flexAlignCenter justifyContentCenter">
-									<image src="http://ddyp.wtvxin.com/static/of/car.png"></image>
+									<image src="http://shop.dadanyipin.com/static/of/car.png"></image>
 								</view>
 								<view>¥33万</view>
 							</view>

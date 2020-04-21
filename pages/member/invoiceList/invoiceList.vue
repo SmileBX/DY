@@ -30,7 +30,7 @@
 			<view class="noConPage table bg_fff" v-else>
 				<view class="table-cell">
 					<view class="noDataImg">
-						<image src="http://www.sc-mall.nethttp://ddyp.wtvxin.com/static/noCart.png" mode="widthFix"></image>
+						<image src="http://www.sc-mall.nethttp://shop.dadanyipin.com/static/noCart.png" mode="widthFix"></image>
 					</view>
 					<view class="tips">抱歉，您还没有添加发票哦~</view>
 				</view>

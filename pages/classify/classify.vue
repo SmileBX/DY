@@ -34,7 +34,7 @@
 					<view class="nav-rightList" v-if="hasData">
 						<view :id="index===0?'first':''" class="nav-right-item" v-for="(item,index) in subCategoryList" :key="index"
 						 @click="gotoProductList(1,item.Id)">
-							<image :src="item.PicUrl||'http://ddyp.wtvxin.com/static/noPicmin.png'" mode="" /></image>
+							<image :src="item.PicUrl||'http://shop.dadanyipin.com/static/noPicmin.png'" mode="" /></image>
 							<view class="txt">{{item.ClassName}}</view>
 						</view>
 					</view>

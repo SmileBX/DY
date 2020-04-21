@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<view class="times">
-			<view class="dates">2019-08<image class="uta" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg" mode=""></image></view>
+			<view class="dates">2019-08<image class="uta" src="http://shop.dadanyipin.com/static/hpicons/uta.svg" mode=""></image></view>
 		</view>
 		<view class="rechargebox">
 			<view class="recharge">

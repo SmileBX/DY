@@ -17,19 +17,19 @@
 			</view> 
 			<view class="flex b_tab_list">
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="http://ddyp.wtvxin.com/static/icons/t1.png"></image>
+					<image src="http://shop.dadanyipin.com/static/icons/t1.png"></image>
 					<view class="flex1">品牌授权</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="http://ddyp.wtvxin.com/static/icons/t2.png"></image>
+					<image src="http://shop.dadanyipin.com/static/icons/t2.png"></image>
 					<view class="flex1">退货无忧</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="http://ddyp.wtvxin.com/static/icons/t3.png"></image>
+					<image src="http://shop.dadanyipin.com/static/icons/t3.png"></image>
 					<view class="flex1">买手精选</view>
 				</view>
 				<view class="flex flexAlignCenter b_tab_item">
-					<image src="http://ddyp.wtvxin.com/static/icons/t4.png"></image>
+					<image src="http://shop.dadanyipin.com/static/icons/t4.png"></image>
 					<view class="flex1">天天平价</view>
 				</view>
 			</view>

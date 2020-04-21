@@ -1,20 +1,20 @@
 <template>
 	<view class="bg">
 		<view class="msk">
-			<image src="http://ddyp.wtvxin.com/static/x.png" mode="widthFix" class="close" @click="close"></image>
+			<image src="http://shop.dadanyipin.com/static/x.png" mode="widthFix" class="close" @click="close"></image>
 			<view class="img">
-				<image src="http://ddyp.wtvxin.com/static/logo2.png" mode="widthFix"></image>
+				<image src="http://shop.dadanyipin.com/static/logo2.png" mode="widthFix"></image>
 			</view>
 			<view class="btnbox">
 				<!-- #ifdef MP-WEIXIN -->
 				<view class="btnitem" @click="goUrl('/pages/login/login')">
-					<image src="http://ddyp.wtvxin.com/static/my/wx.png" mode=""></image>
+					<image src="http://shop.dadanyipin.com/static/my/wx.png" mode=""></image>
 					<text>微信登录</text>
 				</view>
 				<!-- #endif -->
 				<!-- #ifndef MP-WEIXIN -->
 				<view class="btnitem btnitem2" @click="goUrl('/pages/login/login')">
-					<image src="http://ddyp.wtvxin.com/static/mobile.png" mode="widthFix"></image>
+					<image src="http://shop.dadanyipin.com/static/mobile.png" mode="widthFix"></image>
 					<text>手机登录</text>
 				</view>
 				<!-- #endif -->
@@ -53,7 +53,7 @@
 
 <style>
 .bg{
-	background: url("http://ddyp.wtvxin.com/static/bg.png");
+	background: url("http://shop.dadanyipin.com/static/bg.png");
 	background-size: cover;
 	width: 100%;
 	height: 100vh;

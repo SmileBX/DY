@@ -272,15 +272,8 @@
 					Token: this.token,
 					orderNo:this.orderNo,
 				})
-<<<<<<< HEAD
-				console.log(result.data)
-				if(result.code==0){
-					var payData=JSON.parse(result.data.JsParam)
-					console.log(payData)
-=======
 				if(result.code==0){console.log(result.data)
 					// var payData=JSON.parse(result.data.JsParam)
->>>>>>> 41b7a55545bb571be971c809d9422fccb176233a
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
@@ -516,19 +509,19 @@
   }
   .pay-bd .line-item .lab{ padding-left: 20upx; font-size: 30upx}
   .icon_alipay {
-      background: url(http://ddyp.wtvxin.com/static/icons/pay_alipay.png) center center no-repeat;
+      background: url(http://shop.dadanyipin.com/static/icons/pay_alipay.png) center center no-repeat;
       background-size: cover;
   }
   .icon_weixin {
-      background: url(http://ddyp.wtvxin.com/static/icons/pay_weixin.png) center center no-repeat;
+      background: url(http://shop.dadanyipin.com/static/icons/pay_weixin.png) center center no-repeat;
       background-size: cover;
   }
   .icon_yinlian {
-      background: url(http://ddyp.wtvxin.com/static/icons/pay_yinlian.png) center center no-repeat;
+      background: url(http://shop.dadanyipin.com/static/icons/pay_yinlian.png) center center no-repeat;
       background-size: cover;
   }
   .icon_yue {
-      background: url(http://ddyp.wtvxin.com/static/icons/pay_yue.png) center center no-repeat;
+      background: url(http://shop.dadanyipin.com/static/icons/pay_yue.png) center center no-repeat;
       background-size: cover;
   }
   .real-ipt{ width: 400upx; margin: 0 auto; font-size: 36upx;border: 1px solid #ddd; padding: .1rem;}

@@ -7,11 +7,11 @@
 				<view class="searchbox">
 					<view class="searchation" @click="onClassify">
 						<view class="searchboxl">{{classifyDefault}}</view>
-						<view class="searchboxr"><image class="uta" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg" mode=""></image></view>
+						<view class="searchboxr"><image class="uta" src="http://shop.dadanyipin.com/static/hpicons/uta.svg" mode=""></image></view>
 					</view>
 					<view class="searchico">
 						<view class="searchpole"></view>
-						<view class="searchimg"><image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image></view>
+						<view class="searchimg"><image class="saarch" src="http://shop.dadanyipin.com/static/hpicons/search.svg"></image></view>
 						<input class="input" type="text" value="" v-model.trim="Keywords" placeholder="输入名称"  :focus="isOpen==1"/>
 					</view>
 				</view>
@@ -22,25 +22,25 @@
 				<view class="area" @click="showArea">
 					<view :class="{'sort_active':AreaCode}">区域</view>
 					<view class="areaimg">
-						<image class="utas" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
+						<image class="utas" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(0)">
 					<view :class="{'sort_active':Sort===0}">默认</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===0&&Order===0}" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(1)">
 					<view :class="{'sort_active':Sort===1}">人气</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===1&&Order===0}" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 				<view class="area" @click="onSort(2)">
 					<view :class="{'sort_active':Sort===2}">价格</view>
 					<view class="areaimg">
-						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image>
+						<image class="utas" :class="{'rotate180':Sort===2&&Order===0}" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image>
 					</view>
 				</view>
 			</view>

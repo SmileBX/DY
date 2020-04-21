@@ -3,7 +3,7 @@
 		<view class="regLoginBox">
 			<view class="logo">
 				<view class="img">
-					<image src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+					<image src="http://shop.dadanyipin.com/static/logo.png" mode="widthFix"></image>
 					<view class="Title">大单易拼</view>
 				</view>
 			</view>
@@ -264,7 +264,7 @@
 <style>
 	@import '../../common/login.css';
 	.content{
-		  background:#fff/* url('http://wht.wtvxin.comhttp://ddyp.wtvxin.com/static/lz/logingif.gif') no-repeat */;
+		  background:#fff/* url('http://wht.wtvxin.comhttp://shop.dadanyipin.com/static/lz/logingif.gif') no-repeat */;
 		  background-size: 100% 100%;
 		  min-height: 100%;
 		  position: relative;

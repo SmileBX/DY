@@ -2,7 +2,7 @@
 	<view class="content pw3">
 		<view class="postmas">
 			<!-- <view class="bg_fff flex flexAlignCenter info">
-				<image src="http://ddyp.wtvxin.com/static/of/yd.png"></image>
+				<image src="http://shop.dadanyipin.com/static/of/yd.png"></image>
 				<view class="flex1">
 					<view class="uni-bold">{{logistics.companyName}}</view>
 					<view class="font18">官方电话 95546 ></view>

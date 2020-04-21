@@ -9,7 +9,7 @@
 						</view>
 						<view class="txtbox">
 							<view class="brandlogo">
-								<!-- <image class="img" src="http://ddyp.wtvxin.com/static/of/2.png" mode="aspectFit"></image> -->
+								<!-- <image class="img" src="http://shop.dadanyipin.com/static/of/2.png" mode="aspectFit"></image> -->
 								<view class="name uni-ellipsis">剩余<label style="color: #f11;">{{item.overTime}}</label></view>
 							</view>
 							<view class="txt_1 uni-ellipsis">￥{{item.TimePrice}}</view>
@@ -31,7 +31,7 @@
 					<view class="item" v-for="(item,index) in 3" :key="index">
 						<view class="itembox">
 							<view class="image-view">
-								<image class="img" src="http://ddyp.wtvxin.com/static/of/3.png" mode="aspectFill"></image>
+								<image class="img" src="http://shop.dadanyipin.com/static/of/3.png" mode="aspectFill"></image>
 							</view>
 							<view class="txtbox">
 								<view class="txt uni-ellipsis">珍视明眼药水</view>

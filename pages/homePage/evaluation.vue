@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view class="below">
-				<image class="belowimg" src="http://ddyp.wtvxin.com/static/hpicons/arrows2.svg" mode=""></image>
+				<image class="belowimg" src="http://shop.dadanyipin.com/static/hpicons/arrows2.svg" mode=""></image>
 			</view>
 		</view>
 		<!-- 商品评价详情 -->
@@ -30,7 +30,7 @@
 				<view class="given flex flex-between">
 					<view class="flex flex-start">
 						<view class="tx">
-							<image :src="item.Avatar||'http://ddyp.wtvxin.com/static/default.png'" mode="aspectFill"></image>
+							<image :src="item.Avatar||'http://shop.dadanyipin.com/static/default.png'" mode="aspectFill"></image>
 						</view>
 						<view class="name uni-ellipsis">{{item.NickName}}</view>
 						<view class="flex">

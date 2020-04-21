@@ -3,7 +3,7 @@
 	<view class="browsing">
 		<view class="nav" :style="{'padding-top':barHeight+'px'}">
 			<!-- #ifndef MP-WEIXIN -->
-			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
+			<view class="" @click="toback()"><image class="back" src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">我的足迹</view>
 			<!-- #endif -->
 			<!-- #ifdef MP-WEIXIN -->
@@ -18,7 +18,7 @@
 		<view class="bb_pt">
 <!-- 			<view class="minbox">
 				<view class="min">今天</view>
-				<view class="arrowss"><image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows2.svg" mode=""></image></view>
+				<view class="arrowss"><image class="arrows" src="http://shop.dadanyipin.com/static/hpicons/arrows2.svg" mode=""></image></view>
 			</view> -->
 			<view class="listbox" v-for="(val, key) in footprintlist" :key="key">
 				<view class="choose" v-if="isShowDel" @click.stop="shiftChecked(key)"><view class="IconsCK IconsCK-radio" :class="{ checked: val.checked }"></view></view>

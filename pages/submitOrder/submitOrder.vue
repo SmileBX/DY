@@ -20,7 +20,7 @@
 					</view>
 				</view>
 				<view class="noaddr" v-else @click="golink('/pages/member/address/address?pagetype=confirm')">
-					<view class="icon icon_addr"><image src="http://ddyp.wtvxin.com/static/icons/no_addr2.png" mode="widthFix"></image></view>
+					<view class="icon icon_addr"><image src="http://shop.dadanyipin.com/static/icons/no_addr2.png" mode="widthFix"></image></view>
 					<view class="addtxt center">暂无收货地址，点击添加</view>
 				</view>
 			</view>
