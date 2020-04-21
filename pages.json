@@ -59,7 +59,7 @@
 			"path": "pages/tabBar/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
-				"navigationBarBackgroundColor":"#ff4e4f",
+				"navigationBarBackgroundColor":"#FF3333",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false //首页去除原生导航

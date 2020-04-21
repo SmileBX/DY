@@ -272,19 +272,19 @@
 					Token: this.token,
 					orderNo:this.orderNo,
 				})
+<<<<<<< HEAD
 				console.log(result.data)
 				if(result.code==0){
 					var payData=JSON.parse(result.data.JsParam)
 					console.log(payData)
+=======
+				if(result.code==0){console.log(result.data)
+					// var payData=JSON.parse(result.data.JsParam)
+>>>>>>> 41b7a55545bb571be971c809d9422fccb176233a
 					let _this=this;
 					uni.requestPayment({
 					  provider:"wxpay",
-					  orderInfo:payData.prepayId,
-					  timeStamp: payData.timeStamp,
-					  nonceStr: payData.nonceStr,
-					  package: payData.package,
-					  signType: payData.signType,
-					  paySign: payData.sign,
+					  orderInfo:result.data.JsParam,
 					  success(res) {
 						  console.log(res)
 						  _this.type = "";
@@ -293,7 +293,13 @@
 								url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
 							})
 						},
-					  fail(res) {console.log(res)}
+					  fail(err) {console.log(err)
+						  uni.showToast({
+						  	title:JSON.stringify(err),
+							icon:"none",
+							duration:4000
+						  })
+					  }
 					})
 				}else {
 					uni.showToast({

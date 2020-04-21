@@ -591,12 +591,12 @@ button.fill {
 .memberTop:before{
 	display: block;
 	content: '';
-	background: #ff3737;
-	background: linear-gradient(left,#ff5a5b,#ff3737);
-	background: -moz-linear-gradient(left,#ff5a5b,#ff3737);
-	background: -ms-linear-gradient(left,#ff5a5b,#ff3737);
-	background: -webkit-linear-gradient(left,#ff5a5b,#ff3737);
-	background: -o-linear-gradient(left,#ff5a5b,#ff3737);
+	background: #ff3333;
+	/* background: linear-gradient(left,#ff5a5b,#ff3737); */
+	/* background: -moz-linear-gradient(left,#ff5a5b,#ff3737); */
+	/* background: -ms-linear-gradient(left,#ff5a5b,#ff3737); */
+	/* background: -webkit-linear-gradient(left,#ff5a5b,#ff3737); */
+	/* background: -o-linear-gradient(left,#ff5a5b,#ff3737); */
 	width: 150vw;
 	height: 720upx;
 	position: absolute;

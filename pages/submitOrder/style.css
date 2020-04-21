@@ -7,7 +7,7 @@
 .wrap::before{
 	display: block;
 	content: '';
-	background: #ff3737;
+	background: #ff3333;
 	width: 150vw;
 	height: 360upx;
 	position: absolute;

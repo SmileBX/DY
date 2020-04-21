@@ -52,7 +52,7 @@
 			<view class="uni-tab-bar-loading" v-if="hasData">
 				<uni-load-more :loadingType="loadingType"></uni-load-more>
 			</view>
-			<noData :isShow="noDataIsShow"></noData>
+			<noData :isShow="noDataIsShow" style="background: #F6F6F6;"></noData>
 		<!-- </view> -->
 		
 	</view>
@@ -114,8 +114,32 @@
 					UserId: this.userId,
 					Token: this.token,
 				});
-				this.ShopList=res.data
-				console.log(this.ShopList)
+				if (res.code === 0) {
+					let _this = this;
+					if (res.data.length > 0) {
+						this.hasData = true;
+						this.noDataIsShow = false;
+					}
+					if (res.data.length == 0 && this.page == 1) {
+						this.noDataIsShow = true;
+						this.hasData = false;
+					}
+					if (this.page === 1) {
+						this.ShopList = res.data;
+					}
+					if (this.page > 1) {
+						this.ShopList = this.ShopList.concat(
+							res.data
+						);
+					}
+					if (res.data.length < this.pageSize) {
+						this.isLoad = false;
+						this.loadingType = 2;
+					} else {
+						this.isLoad = true;
+						this.loadingType = 0
+					}
+				}
 			},
 			async collectionsList() {
 				let result = await post("User/MemberCollections", {
