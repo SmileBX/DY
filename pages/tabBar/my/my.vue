@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view style="width: 100%;background:#ff4e4f;" :style="{'height':barHeight+'px'}"></view>
+		<view style="width: 100%;background:#ff3333;" :style="{'height':barHeight+'px'}"></view>
 		<view class="top-box"> 
 			<view class="memberTop">
 				<view class="iconBtnBox">
