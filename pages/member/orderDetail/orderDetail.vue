@@ -141,6 +141,7 @@ export default {
         OrderNo:this.OrderNo
       }).then(res=>{
         this.info = res.data;
+		console.log(this.info)
       })
     },
     //微信支付需参数

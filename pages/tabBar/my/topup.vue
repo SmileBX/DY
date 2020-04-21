@@ -69,6 +69,7 @@
 			// #ifdef  MP-WEIXIN
 			this.WxOpenid = uni.getStorageSync("openId");
 			this.WxCode = uni.getStorageSync('code')
+			console.log(this.WxCode)
 			// #endif
 			console.log(this.WxOpenid,"///////")
 		},
