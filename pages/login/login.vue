@@ -2,7 +2,7 @@
 	<view class="content">
 		<!-- #ifndef MP-WEIXIN -->
 		<view class="nav" :style="{'padding-top':barHeight+'px'}">
-			<view class="" @click="toback()"><image class="back" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image></view>
+			<view class="" @click="toback()"><image class="back" src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image></view>
 			<view class="mine">登录</view>
 			<view></view>
 		</view> 
@@ -10,7 +10,7 @@
 		<view class="regLoginBox" v-if="isShowMolie">
 			<view class="logo">
 				<view class="img">
-					<image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+					<image class="logoimg" src="http://shop.dadanyipin.com/static/logo.png" mode="widthFix"></image>
 					<view class="Title">大单易拼</view>
 				</view>
 			</view>
@@ -59,7 +59,7 @@
 		<view class="MP-login" v-if="isShowminiApp">
 		    <view class="logo">
 				<view class="logoimg">
-					<image class="img_bb" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+					<image class="img_bb" src="http://shop.dadanyipin.com/static/logo.png" mode="widthFix"></image>
 				</view>
 				<view class="Title">大单易拼</view>
 		    </view> 

@@ -10,20 +10,20 @@
 		<view class="walletbox">
 			<view class="drawing across">
 				<view class="folds">
-					<image class="fold" src="http://ddyp.wtvxin.com/static/icons/wallet1.png" mode=""></image>
+					<image class="fold" src="http://shop.dadanyipin.com/static/icons/wallet1.png" mode=""></image>
 				</view>
 				<view class="detail" @click="golink('/pages/other/money/money')">交易明细</view>
 				<view class="">
-					<image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image>
+					<image class="arrows" src="http://shop.dadanyipin.com/static/hpicons/arrows.svg" mode=""></image>
 				</view>
 			</view>
 			<view class="drawing" style="padding-top: 20upx;">
 				<view class="folds">
-					<image class="fold" src="http://ddyp.wtvxin.com/static/icons/wallet3.png" mode=""></image>
+					<image class="fold" src="http://shop.dadanyipin.com/static/icons/wallet3.png" mode=""></image>
 				</view>
 				<view class="detail" style="padding-right: 66%;" @click="golink('/pages/Wallet/bankCard/bankCard')">银行卡管理</view>
 				<view class="">
-					<image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image>
+					<image class="arrows" src="http://shop.dadanyipin.com/static/hpicons/arrows.svg" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -76,7 +76,7 @@
 		width: 100%;
 		height: 300upx;
 		border-radius:30upx;
-		background:url(http://ddyp.wtvxin.com/static/icons/wallet2.png);
+		background:url(http://shop.dadanyipin.com/static/icons/wallet2.png);
 		font-family:PingFang;
 		font-weight:bold;
 		color:rgba(252,252,252,1);

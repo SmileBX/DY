@@ -23,7 +23,7 @@
         </div>
 		<div v-else class="right flexc">
 		  <div>
-		   <image class="iconimg" src="http://ddyp.wtvxin.com/static/my/ylq.png" mode="widthFix"></image>
+		   <image class="iconimg" src="http://shop.dadanyipin.com/static/my/ylq.png" mode="widthFix"></image>
 		  </div>
 		</div>
       </div>

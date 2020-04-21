@@ -6,23 +6,23 @@
 			<image src="" mode=""></image>
 			<view class="signboard">
 				<view class="back" @click="toindex()">
-					<image class="backimg" src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image>
+					<image class="backimg" src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image>
 				</view>
 				<view class="back" style="margin-left: 450rpx;">
-					<image class="cartimg" src="http://ddyp.wtvxin.com/static/hpicons/cart.svg" mode=""></image>
+					<image class="cartimg" src="http://shop.dadanyipin.com/static/hpicons/cart.svg" mode=""></image>
 				</view>
 				<view class="back" style="margin-left: 40rpx;">
-					<image class="shareimg" src="http://ddyp.wtvxin.com/static/hpicons/share.svg" mode=""></image>
+					<image class="shareimg" src="http://shop.dadanyipin.com/static/hpicons/share.svg" mode=""></image>
 				</view>
 			</view>
 			<view class="streaming">
 				<image class="figure" src="" mode=""></image>
 				<view class="closes">
-					<image class="close" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
+					<image class="close" src="http://shop.dadanyipin.com/static/hpicons/close.svg" mode=""></image>
 				</view>
 				
 				<view class="broadcast">
-					<image class="litre" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
+					<image class="litre" src="http://shop.dadanyipin.com/static/hpicons/close.svg" mode=""></image>
 					<view class="">直播中</view>
 				</view>
 			</view>
@@ -57,13 +57,13 @@
 			<view class="purchase">
 				<view class="picture">
 					<view class="portrait">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 				</view>
 				<view class="screen">心善若水</view>
@@ -78,7 +78,7 @@
 			<view class="need">
 				<view class="choice">选择所需汽车型号</view>
 				<view class="parking">
-					<image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image>
+					<image class="saarch" src="http://shop.dadanyipin.com/static/hpicons/search.svg"></image>
 					<input class="input" type="text" value="" placeholder="请输入车位编号">
 				</view>
 			</view>
@@ -103,22 +103,22 @@
 				<view class="Plate">A01</view>
 				<view class="Plate">A01</view>
 			</view>
-			<view class="complete">查看全部<image class="double" src="http://ddyp.wtvxin.com/static/hpicons/double.svg"></image></view>
+			<view class="complete">查看全部<image class="double" src="http://shop.dadanyipin.com/static/hpicons/double.svg"></image></view>
 		</view>
 		<!-- 品牌介绍 -->
 		<view class="needknow">
 			<view class="pole"></view>
 			<view class="" style="padding: 20rpx 0 30rpx 30rpx;">
 				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>大单易拼自营</view>
-					<view class="drawinfo"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>产权签约</view>
+					<view class="drawinfo"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>大单易拼自营</view>
+					<view class="drawinfo"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>产权签约</view>
 				</view>
 				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>退货无忧</view>
-					<view class="drawinfo"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>品牌授权</view>
+					<view class="drawinfo"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>退货无忧</view>
+					<view class="drawinfo"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>品牌授权</view>
 				</view>
 				<view class="draws">
-					<view class="drawinfo"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>7天可退(签约后不可退)</view>
+					<view class="drawinfo"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>7天可退(签约后不可退)</view>
 				</view>
 			</view>
 			<view class="pole"></view>
@@ -128,7 +128,7 @@
 			<view class="evaluate">
 				<view class="">商品评价<span>(3)</span></view>
 				<view class="whole" @click="toevaluation('/pages/homePage/evaluation')">查看全部
-					<image class="arrows" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image>
+					<image class="arrows" src="http://shop.dadanyipin.com/static/hpicons/arrows.svg" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -139,16 +139,16 @@
 			<view class="given">
 				<view class="picture">
 					<view class="portrait">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 				</view>
 				<view class="screen">筱风月忆</view>
 				<view class="stars">
-					<image class="star" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
-					<image class="star" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
+					<image class="star" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
 					</view>
 				<view class="min">2019-09-08</view>
 			</view>
@@ -159,7 +159,7 @@
 				<image class="carportimgs" src="" mode=""></image>
 			</view>
 <!-- 			<view class="pledge">
-				<image class="safety" src="http://ddyp.wtvxin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
+				<image class="safety" src="http://shop.dadanyipin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
 				<span>100%正品 品牌直采</span>
 			</view> -->
 		</view>
@@ -204,7 +204,7 @@
 		<view class="pole"></view>
 		
 		<view class="pledge" style="padding: 30rpx;">
-			<image class="safety" src="http://ddyp.wtvxin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
+			<image class="safety" src="http://shop.dadanyipin.com/static/hpicons/safety.svg" mode=""></image>正品保证 
 			<span>100%正品 品牌直采</span>
 		</view>
 		<view class="poles"></view>
@@ -280,15 +280,15 @@
 		<!-- 购物价格详细 -->
 		<view class="base" style="border-top: 1rpx solid rgba(237,237,237,1);">
 			<view class="bases">
-				<image class="customer" src="http://ddyp.wtvxin.com/static/hpicons/customer.svg" mode=""></image>
+				<image class="customer" src="http://shop.dadanyipin.com/static/hpicons/customer.svg" mode=""></image>
 				<view class="">客服</view>
 			</view>
 			<view class="bases">
-				<image class="store" src="http://ddyp.wtvxin.com/static/hpicons/store.svg" mode=""></image>
+				<image class="store" src="http://shop.dadanyipin.com/static/hpicons/store.svg" mode=""></image>
 				<view class="">店铺</view>
 			</view>
 			<view class="bases">
-				<image class="collect" src="http://ddyp.wtvxin.com/static/hpicons/collect.svg" mode=""></image>
+				<image class="collect" src="http://shop.dadanyipin.com/static/hpicons/collect.svg" mode=""></image>
 				<view class="">收藏</view>
 			</view>
 			<view class="alone">

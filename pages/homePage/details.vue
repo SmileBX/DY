@@ -18,11 +18,11 @@
 			<view class="streaming" v-if="false">
 				<image class="figure" src="" mode=""></image>
 				<view class="closes">
-					<image class="close" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
+					<image class="close" src="http://shop.dadanyipin.com/static/hpicons/close.svg" mode=""></image>
 				</view>
 				
 				<view class="broadcast">
-					<image class="litre" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
+					<image class="litre" src="http://shop.dadanyipin.com/static/hpicons/close.svg" mode=""></image>
 					<view class="">直播中</view>
 				</view>
 			</view>
@@ -98,13 +98,13 @@
 			<view class="purchase" style="display: none;">
 				<view class="picture">
 					<view class="portrait">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 					<view class="portrait left">
-						<!-- <image src="http://ddyp.wtvxin.com/static/hpicons/back.svg" mode=""></image> -->
+						<!-- <image src="http://shop.dadanyipin.com/static/hpicons/back.svg" mode=""></image> -->
 					</view>
 				</view>
 				<view class="screen">心善若水</view>
@@ -120,7 +120,7 @@
 					<view class="">快递</view>
 					<!-- <input class="province" type="text" placeholder="广东 广州" disabled> -->
 					<view class="">{{proInfo.Freight==0?'包邮':proInfo.Freight}}</view>
-					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="http://ddyp.wtvxin.com/static/hpicons/arrows.svg" mode=""></image> -->
+					<!-- <image class="exemption" style="width: 20rpx; height: 20rpx;" src="http://shop.dadanyipin.com/static/hpicons/arrows.svg" mode=""></image> -->
 				</view>
 			</view>
 			<view class="pick" @click="showSku(0)">
@@ -176,7 +176,7 @@
 		</view>
 		<!-- 服务介绍 -->
 		<view class="needknow" v-if="isServiceInfo">
-			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="http://ddyp.wtvxin.com/static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
+			<view class="drawinfo" v-for="(item,index) in proInfo.ServiceInfo" :key="index"><image class="drawimg" src="http://shop.dadanyipin.com/static/hpicons/draw.svg" mode=""></image>{{item.Name}}</view>
 		</view>
 		<view class="pole"></view>
 		<!-- 商品评价 -->
@@ -192,7 +192,7 @@
 				<view class="comment-item" v-for="(item,index) in CommentList" :key="index">
 				  <view class="name ali-c jus-b">
 					<view class="ali-c">
-					  <img class="tx" :src="item.Avatar||'http://ddyp.wtvxin.com/static/default.png'" alt="">
+					  <img class="tx" :src="item.Avatar||'http://shop.dadanyipin.com/static/default.png'" alt="">
 					  <view>{{item.NickName}}</view>
 					</view>
 					<view class="flex">
@@ -251,7 +251,7 @@
 		<!-- 拼单流程 -->
 		
 		<!-- <view class="flow">
-			<image src="http://ddyp.wtvxin.com/static/of/ptrules.jpg" mode="widthFix"></image> -->
+			<image src="http://shop.dadanyipin.com/static/of/ptrules.jpg" mode="widthFix"></image> -->
 			<!-- <view class="joint">
 				<view class="stream"></view>
 				<view class="process">拼单流程</view>

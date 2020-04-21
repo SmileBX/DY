@@ -3,7 +3,7 @@
 		<view class="regLoginBox" >
 			<view class="logo">
 				<view class="img">
-					<image class="logoimg" src="http://ddyp.wtvxin.com/static/logo.png" mode="widthFix"></image>
+					<image class="logoimg" src="http://shop.dadanyipin.com/static/logo.png" mode="widthFix"></image>
 					<view class="livetitle">商家直播登录</view>
 				</view>
 			</view>

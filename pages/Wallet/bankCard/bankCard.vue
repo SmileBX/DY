@@ -24,11 +24,11 @@
       </div>
     </scroll-view>
 	<div v-else class="no_cardList flex flexColumn flexAlignCenter">
-	    <img src="http://ddyp.wtvxin.com/static/icons/nocr.png" alt="" class="no_c">
+	    <img src="http://shop.dadanyipin.com/static/icons/nocr.png" alt="" class="no_c">
 	    <p class="mt2 cg">您还未添加过银行卡</p>
 	</div>
 	<div class="bb_btn" style="height:100upx" @click="addBankCard">
-		<img src="http://ddyp.wtvxin.com/static/icons/add.png" class="icon-add" alt>添加银行卡
+		<img src="http://shop.dadanyipin.com/static/icons/add.png" class="icon-add" alt>添加银行卡
 	</div>
   </div>
 </template>

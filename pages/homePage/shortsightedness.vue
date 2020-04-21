@@ -7,11 +7,11 @@
 				<view class="searchbox">
 					<view class="searchation">
 						<view class="searchboxl">近视</view>
-						<view class="searchboxr"><image class="uta" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg" mode=""></image></view>
+						<view class="searchboxr"><image class="uta" src="http://shop.dadanyipin.com/static/hpicons/uta.svg" mode=""></image></view>
 					</view>
 					<view class="searchico">
 						<view class="searchpole"></view>
-						<view class="searchimg"><image class="saarch" src="http://ddyp.wtvxin.com/static/hpicons/search.svg"></image></view>
+						<view class="searchimg"><image class="saarch" src="http://shop.dadanyipin.com/static/hpicons/search.svg"></image></view>
 						<input class="input" type="text" value="" placeholder="输入名称"/>
 					</view>
 				</view>
@@ -21,15 +21,15 @@
 			<view class="areabox">
 				<view class="area">
 					<view class="">区域</view>
-					<view class="areaimg"><image class="utas" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image></view>
+					<view class="areaimg"><image class="utas" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image></view>
 				</view>
 				<view class="area">
 					<view class="">销量</view>
-					<view class="areaimg"><image class="utas" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image></view>
+					<view class="areaimg"><image class="utas" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image></view>
 				</view>
 				<view class="area">
 					<view class="">价格</view>
-					<view class="areaimg"><image class="utas" src="http://ddyp.wtvxin.com/static/hpicons/uta.svg"></image></view>
+					<view class="areaimg"><image class="utas" src="http://shop.dadanyipin.com/static/hpicons/uta.svg"></image></view>
 				</view>
 			</view>
 		</view>
@@ -42,7 +42,7 @@
 					<view class="listimg" @click="toshortsightednessdetails('/pages/homePage/shortsightednessdetails')">
 						<!-- <image src="" mode=""></image> -->
 						<view class="directly">
-							<image class="broadcast" src="http://ddyp.wtvxin.com/static/hpicons/close.svg" mode=""></image>
+							<image class="broadcast" src="http://shop.dadanyipin.com/static/hpicons/close.svg" mode=""></image>
 							<view class="broadcasts">直播中</view>
 						</view>
 					</view>

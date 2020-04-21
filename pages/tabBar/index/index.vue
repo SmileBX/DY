@@ -59,7 +59,7 @@
 						</view>
 						<!--拼品牌馆-->
 						<view class="index_pin">
-							<image src="http://ddyp.wtvxin.com/static/of/f1.png" mode="widthFix"></image>
+							<image src="http://shop.dadanyipin.com/static/of/f1.png" mode="widthFix"></image>
 							<!-- <view class="pin_list flex">
 								<view class="pin_item flex justifyContentBetween flexAlignEnd" v-for="(item,key) in brandList" :key="key" :class="{'bg1':key==0,'bg2':key==1,'bg3':key==2,'bg4':key==3}" @click="tolink('/pages/brand/brandIndex/brandIndex?BrandId='+item.Id)">
 									<view class="flex flexColumn flexAlignStart pp_left flex1">
@@ -99,7 +99,7 @@
 						</view>
 						<!--特惠-->
 						<view class="hui mt2">
-							<image src="http://ddyp.wtvxin.com/static/of/f2.png" mode="aspectFill" class="hui_bg"></image>
+							<image src="http://shop.dadanyipin.com/static/of/f2.png" mode="aspectFill" class="hui_bg"></image>
 							<view class="flex hui_title">
 								<view class="mr2">{{system.Pp_Desc}}</view>
 								<view class="flex tile_time" v-if="timeStr.length>0">
@@ -120,7 +120,7 @@
 						</view>
 						<!--推荐推荐-->
 						<view class="jian mt2" v-if="hasrec">
-							<image src="http://ddyp.wtvxin.com/static/of/f3.png" mode="aspectFill" class="jian_bg"></image>
+							<image src="http://shop.dadanyipin.com/static/of/f3.png" mode="aspectFill" class="jian_bg"></image>
 							<view class="jian_sign">美 好 生 活 抢 先 到</view>
 							<view class="page-section HotsellList uni-bg-white uni-pd10 uni-mb10">
 								<view class="uni-bd uni-mt10" >

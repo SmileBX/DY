@@ -1,7 +1,7 @@
 <template>
   <div class="wallet">
       <div class="wa_bg">
-          <img src="http://ddyp.wtvxin.com/static/my/gao.png" alt="" class="qiao">
+          <img src="http://shop.dadanyipin.com/static/my/gao.png" alt="" class="qiao">
           <div class="wa_mon flex flexColumn flexAlignCenter">
               <p>当前可提收益（元）</p>
               <p class="total_wa">{{info.KTAmount}}</p>

@@ -41,13 +41,13 @@
 				noDataIsShow: false,
 				
 				TypeList:[{
-					TypeImg:'http://ddyp.wtvxin.com/static/icons/notice0.png',
+					TypeImg:'http://shop.dadanyipin.com/static/icons/notice0.png',
 					MsgName:'收益通知',
 					NoticeTitle:'您的客户在03/26/ 10:00购物',
 					PubTime:'03/26/ 10:00',
 					unCount:0
 				},{
-					TypeImg:'http://ddyp.wtvxin.com/static/icons/notice1.png',
+					TypeImg:'http://shop.dadanyipin.com/static/icons/notice1.png',
 					MsgName:'系统通知',
 					NoticeTitle:'欢迎注册会员,快开启省钱模式吧！',
 					PubTime:'03/26/ 10:00',
