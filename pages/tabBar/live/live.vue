@@ -10,18 +10,9 @@
 				<div class="H5video" id="H5video"  :style="{height : height + 'px'}">
 					
 				</div>
-				<!-- <video :src="data.HLS" @error="error" controls="false" poster="http://ddyp.wtvxin.com/static/logo.png" :style="{height : height + 'px',width:'480px'}" v-if="data.Flag==0||data.Flag==2" mode="widthFix"></video> -->
 				<!-- #endif -->
 				<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" :src="data.HLS" ></live-player>
-				<!-- #endif -->
-			</swiper-item>
-			<swiper-item >
-				<!-- #ifndef MP-WEIXIN  -->
-				<video  :src="data.HLS"  ></video>
-				<!-- #endif -->
-				<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" :src="data.HLS" ></live-player>
+				<live-player style="width:100%;height:100%;" :src="data.HLS" autoplay=true mode="live"></live-player>
 				<!-- #endif -->
 			</swiper-item>
 		</swiper>
@@ -63,11 +54,12 @@
 					Token: this.token,
 					ShopId:this.ShopId
 				})
-				this.data=res.data;console.log(res.data)
-		
+				if(res.code==0){
+					this.data=res.data;console.log(res.data)
+					// #ifdef H5
 					this.playH5()
-				
-				
+					// #endif
+				}
 			},
 			playH5(){
 				var player = new TcPlayer('H5video', {
