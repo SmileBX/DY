@@ -119,8 +119,11 @@
 						duration: 2000,
 						success: function() {
 							setTimeout(function() {
+								uni.removeStorageSync('userId')
+								uni.removeStorageSync('token')
+								
 								uni.navigateTo({
-									url:'/pages/login/login'
+									url:'/pages/login/login?isResgister=1'
 								})
 							}, 2000);
 						}
