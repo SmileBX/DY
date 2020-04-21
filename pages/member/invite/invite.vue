@@ -295,8 +295,8 @@ export default {
 				y: 0,
 				width: 300-12, //截取canvas的宽度 -10解决白边问题
 				height: 500, //截取canvas的高度
-				destWidth: 300,    //输出图片宽度
-				destHeight: 500,
+				destWidth: 600,    //输出图片宽度
+				destHeight: 1000,
 				quality:1,
 				success: function (res){
 					console.log(res,"pppppppppppppp")
