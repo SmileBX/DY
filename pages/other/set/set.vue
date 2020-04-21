@@ -31,7 +31,10 @@
 		<view class="" style="text-align: center;padding-top: 80px;color: #ccc;">
 			<view class="">Copyright© 2020</view>
 			<view class="">成都弘觅科技有限责任公司 版本所有</view>
+			
+			
 		</view>
+		
 		<view class="btn_fix" @click="logOut">退出登录</view>
 	</view>
 </template>
