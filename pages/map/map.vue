@@ -23,9 +23,17 @@
 				markers: []
 			}
 		},
+		onLoad(e) {
+			// #ifdef APP-PLUS
+			this.Lat=e.Lat;
+			this.Lng=e.Lng;
+			// #endif
+		},
 		onShow(){
+			// #ifndef APP-PLUS
 			this.Lat=this.$root.$mp.query.Lat;
 			this.Lng=this.$root.$mp.query.Lng;
+			// #endif
 			this.markers=[{
             id: 0,
             latitude: this.Lat,

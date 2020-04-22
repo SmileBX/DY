@@ -35,12 +35,10 @@
 </template>
 
 <script>
-	import {post,get} from '@/common/util.js';
+	import {post,get,getUrlParam} from '@/common/util.js';
 	import pay from '@/components/pay.vue';
 	export default {
-		components: {
-			pay
-		},
+		components: {pay},
 		data() {
 			return {
 				userId: "",
@@ -100,6 +98,10 @@
 			this.GetMemInfo();
 			// #ifdef  MP-WEIXIN
 			this.getcode();
+			// #endif
+			// #ifdef H5
+			this.WxCode=getUrlParam("code");
+			this.WxOpenid = uni.getStorageSync("openId");
 			// #endif
 			this.showMask = false
 		},
@@ -243,20 +245,22 @@
 			//微信支付
 			async payweixin() {
 				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
+				if(this.WxOpenid!=""&&this.WxOpenid!="undefined"){
+					this.WxCode="";//每次获取的code只能使用一次，有openid时用openid调起支付数据
+				}
 				let result = await post("Order/ConfirmWeiXinPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
-					NewUrl:NewUrl,
+					NewUrl:NewUrl,//支付后的回调地址
 					WxCode:this.WxCode,
 					WxOpenid:this.WxOpenid,
 				})
 				if (result.code == 201) {
 					window.location.href=result.data;
 				}else if(result.code == 0){
-					// #ifdef H5
+					uni.setStorageSync('openId', result.data.openid);
 					this.callpay(result.data.JsParam);
-					// #endif
 				}else {
 					uni.showToast({
 						title: result.msg,
