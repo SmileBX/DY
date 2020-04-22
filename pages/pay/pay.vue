@@ -240,18 +240,18 @@
 					}
 				});
 			},
-			//微信支付
+			//微信支付  微信自带浏览器的h5支付
 			async payweixin() {
 				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
 				let result = await post("Order/ConfirmWeiXinPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
-					NewUrl:NewUrl,
+					// NewUrl:NewUrl,
 					WxCode:this.WxCode,
 					WxOpenid:this.WxOpenid,
 				})
-				if (result.code == 201) {
+				if (result.code == 201) { //检测不到openid需要进行微信授权
 					window.location.href=result.data;
 				}else if(result.code == 0){
 					// #ifdef H5
@@ -311,10 +311,11 @@
 					orderNo:this.orderNo,
 					NewUrl:NewUrl
 				})
-				if (result.code == 201) {
-					window.location.href=result.data;
-					console.log(result.data)
-				}else if(result.code == 0){
+				// if (result.code == 201) {
+				// 	window.location.href=result.data;
+				// 	console.log(result.data)
+				// }else 
+				if(result.code == 0){
 					window.location.href = result.data.mweb_url;
 				}else {
 					uni.showToast({
