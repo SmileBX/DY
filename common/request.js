@@ -32,11 +32,13 @@ function request(url, method, data) {
        uni.setStorageSync("userId",'')
        uni.setStorageSync("token",'')
 			 uni.showToast({
-			     title:ret.msg,
+			     title:"您未登录，请重新登录！",
 			     icon:'none'
 			 });
 			 resolve(ret)
-         }else{
+         }else if(ret.code==201){//微信支付的返回code地址
+			 resolve(ret)
+		 }else{
 			uni.showToast({
 			    title:ret.msg,
 			    icon:'none'

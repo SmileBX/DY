@@ -160,7 +160,7 @@
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_set.png" mode=""></image>
 						<view class="txt">设置</view>
 					</view>
-					<!-- #ifdef APP-PLUS||MP-WEIXIN -->
+					<!-- #ifdef APP-PLUS -->
 					<view class="item" @click="golive('/pages/livepush/livepush')">
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/livepush.png" mode=""></image>
 						<view class="txt">开启直播</view>
@@ -168,7 +168,7 @@
 					<!-- #endif -->
 					<view class="item" @click="golink('/pages/tabBar/my/anchor')">
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/livepush.png" mode=""></image>
-						<view class="txt">直播</view>
+						<view class="txt">直播间</view>
 					</view>
 				</view>
 			</view>

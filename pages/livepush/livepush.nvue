@@ -4,15 +4,10 @@
 		<view>
 			<view @click="returns" class="arrow-box"><text class="jiesu">结束直播</text></view>
 			<view class="arrow-boxs">
-<!-- 
-				<image class="user-img" src="http://ddyp.wtvxin.com/static/logo.png"></image>
-				<view><text class="text-box">8 关注</text></view>
- -->
 				<image class="user-img" src="http://shop.dadanyipin.com/static/logo.png"></image>
 				<view>
 					<text class="text-box">8 关注</text>
 				</view>
-
 			</view>
 
 			<live-pusher :beauty="beauty" :style="{ width: width + 'px', height: height + 'px' }" id="livePusher" :url="url" mode="FHD"></live-pusher>
@@ -69,67 +64,7 @@ export default {
 			markact: true,
 			arr: [],
 			scrollTop: '',
-			shopArr: [
-				{
-					// img:'../../static/logo.png',
-					title: '测试商品',
-					price: '111',
-					num: '20'
-				},
-				{
-					// img:'../../static/logo.png',
-					title: '测试商品',
-					price: '111',
-					num: '20'
-				},
-				{
-					// img:'../../static/logo.png',
-					title: '测试商品',
-					price: '111',
-					num: '20'
-				},
-				{
-					// img:'../../static/logo.png',
-					title: '测试商品',
-					price: '111',
-					num: '20'
-				},
-				{
-					// img:'../../static/logo.png',
-					title: '测试商品',
-					price: '111',
-					num: '20'
-				}
-			],
 			chatList: [
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
-				{
-					name: '用户01',
-					text: '哈哈哈哈哈'
-				},
 				{
 					name: '用户01',
 					text: '哈哈哈哈哈'
@@ -139,25 +74,13 @@ export default {
 		};
 	},
 	onShow() {
-	},
-	onLoad() {
-		//权限设置
+		//权限设置,获取权限后开启直播
 		this.quanxian();
 		let res = uni.getSystemInfoSync();
 		this.width = res.windowWidth;
 		this.height = res.windowHeight;
 		this.liveUserId = uni.getStorageSync('liveUserId');
-		console.log(this.liveUserId);
 		this.liveToken = uni.getStorageSync('liveToken');
-		console.log(this.liveToken);
-		uni.hideTabBar();
-		this.getPlay();
-	},
-	onReady() {
-		this.context = uni.createLivePusherContext('livePusher', this);
-		setTimeout(() => {
-			this.startLive();
-		}, 1000);
 	},
 	methods: {
 		async quanxian() {
@@ -167,21 +90,23 @@ export default {
 					var res = await permision.requestAndroidPermission('android.permission.RECORD_AUDIO');
 					console.log(res, 123456);
 					var strStatus;
-					if (result == 1 && res !== 1) {
+					if(result == 1 && res == 1){//已经获取授权开始直播
+						console.log("开始直播")
+						this.getPlay();
+					}else if (result == 1 && res !== 1) {
 						uni.showToast({
 							title: '麦克风未授权',
 							icon: 'none',
 							success() {
-								permision.gotoAppPermissionSetting();
+								// permision.gotoAppPermissionSetting();
 							}
 						});
 					} else if (result == 0) {
 						uni.showToast({
-							title: '摄像机未授权',
+							title: '摄像头未授权',
 							icon: 'none',
-
 							success() {
-								permision.gotoAppPermissionSetting();
+								// permision.gotoAppPermissionSetting();
 							}
 						});
 					} else if (result == -1) {
@@ -206,30 +131,23 @@ export default {
 					var iosres = await permision.judgeIosPermission('record');
 					console.log('运行iOS上');
 					var strStatus;
-					if (iosresult == 1 && iosres !== 1) {
+					if(iosresult&& iosres){//已经获取授权开始直播
+						console.log("开始直播")
+						this.getPlay();
+					}else if ((!iosres)&&iosresult) {
 						uni.showToast({
 							title: '麦克风未授权',
 							icon: 'none',
 							success() {
-								permision.gotoAppPermissionSetting();
+								// permision.gotoAppPermissionSetting();
 							}
 						});
-					} else if (iosresult == 0) {
+					} else if (!iosresult) {
 						uni.showToast({
 							title: '摄像机未授权',
 							icon: 'none',
 							success() {
-								permision.gotoAppPermissionSetting();
-							}
-						});
-					} else if (iosresult == -1 ) {
-						uni.showToast({
-							title: '被永久拒绝权限',
-							icon: 'none',
-							success() {
-								uni.switchTab ({
-									url:'../tabBar/my/my'
-								})
+								// permision.gotoAppPermissionSetting();
 							}
 						});
 					}
@@ -244,6 +162,10 @@ export default {
 			});
 			if (res.code == 0) {
 				this.url = res.data.RTMP;
+				this.context = uni.createLivePusherContext('livePusher', this);
+				setTimeout(() => {
+					this.startLive();
+				}, 1000);
 			} else {
 				uni.setStorageSync('liveToken', '');
 				uni.setStorageSync('liveUserId', '');
@@ -267,7 +189,6 @@ export default {
 			this.$refs.popup.open();
 		},
 		openmeiyan() {
-			// this.$refs.popup.open()
 			if (this.beauty == 0) {
 				this.beauty = 9;
 			} else {
@@ -284,11 +205,11 @@ export default {
 			this.enableCamera = true;
 		},
 		startLive() {
-			let self = this;
+			let _this = this;
 			console.log(this);
 			this.context.start({
 				success: a => {
-					self.markact = false;
+					_this.markact = false;
 					console.log('livePusher.start:' + JSON.stringify(a));
 				}
 			});

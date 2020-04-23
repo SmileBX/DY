@@ -240,7 +240,7 @@
 			<view class="box_bd flex flex-between" @click="lookmap(proInfo.Lat,proInfo.Lng)">
 				<view class="txtbox">
 					<view class="addr">
-						{{proInfo.Address}}
+						{{proInfo.AreaSite+proInfo.Address}}
 					</view>
 				</view>
 				<view class="iconfont icon-shouhuodizhi"></view>

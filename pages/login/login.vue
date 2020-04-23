@@ -255,9 +255,8 @@
 					uni.setStorageSync('userId', result.data.UserId);
 					let _this = this;
 					uni.showToast({
-					     title: "登录成功!",
-					     icon: "none",
-					     duration: 2000,
+					     title: "登录成功",
+					     duration: 1800,
 						 success:function(){
 							setTimeout(function() {
 								if(_this.isRegister){
@@ -299,7 +298,7 @@
 								// 	url: "/pages/tabBar/my/my"
 								//   });
 								// }
-							 }, 2000);
+							 }, 1800);
 						 }
 					});
 					console.log(result.data);
