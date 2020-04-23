@@ -76,7 +76,8 @@
                     "weixin" : {
                         "appid" : "wx58f7ac0c8d939494",
                         "UniversalLinks" : "https://ddypapi.wtvxin.com/apps/"
-                    }
+                    },
+                    "alipay" : {}
                 },
                 "ad" : {},
                 "maps" : {

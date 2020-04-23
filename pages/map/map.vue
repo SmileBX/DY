@@ -38,19 +38,18 @@
             id: 0,
             latitude: this.Lat,
             longitude: this.Lng,
-            width: 24,
-            height: 24
+            width: 104,
+            height: 104
           }];
 		 
 		},
-		regionchange(e) {
-		    console.log(e.type)
-		  },
-		  markertap(e) {
-		    console.log(e.markerId)
-		  },
 		methods: {
-			
+			regionchange(e) {
+			    console.log(e.type)
+			  },
+			  markertap(e) {
+			    console.log(e.markerId)
+			  },
 		}
 	}
 </script>
