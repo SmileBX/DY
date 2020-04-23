@@ -182,6 +182,7 @@
 	  right:0!important;
 	  top:0!important;
 	  font-size:18px!important;
+	  background:#ebeaf1;
   }
   .livetitle{
 	  color:#ffffff;
