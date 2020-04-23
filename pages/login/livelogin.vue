@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<image src="../../static/video_bg.png" class="bg_video"></image>
 		<view class="regLoginBox" >
 			<view class="logo">
 				<view class="img">
@@ -353,11 +354,16 @@
 		/* border-radius: 25upx; */
 	}
   .content{
-	  background:#fff;
 	  background-size: 100% 100%;
 	  min-height: 100%;
 	  position: relative;
 	  box-sizing: border-box;
+	  
+  }
+  .bg_video{
+	  position: absolute;
+	  top:0;left:0;
+	  width:100%;height:100%;
   }
   .regLoginBox{
 	  width: 90%;
