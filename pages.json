@@ -269,7 +269,9 @@
 		,{
 			"path":"pages/login/livelogin",
 			"style":{
-				"navigationBarTitleText":"直播登录"
+				"navigationBarTitleText":"直播登录",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor":"#605aa4"
 			}
 		}
 		,{
