@@ -41,106 +41,19 @@
 <script>
 	import {host,post,get,valPhone,setRegular} from '@/common/util.js';
 	export default {
-		onLoad(e){
-			// #ifndef MP-WEIXIN
-			console.log(e.askUrl,"99999999999999")
-			// this.isShowMolie=false;
-			this.isShowminiApp = true;
-			// #endif
-		},
-		onShow(){ 
-			// console.log(this.$root.$mp,111) 
-			
-			// #ifdef MP-WEIXIN
-			// this.isShowMolie=false;
-			this.isShowminiApp = true;
-			// #endif
-			// #ifndef MP-WEIXIN
-			console.log("7777777777777")
-			// this.isShowMolie=true;
-			this.isShowminiApp = false;
-			// #endif
-			console.log(this.isRegister,"8888888888")
-		},
 		data() {
 			return {
 				tel:"",
 				pwd:"",
-				askUrl: "",
 				code:"",
-				codeMsg: "获取验证码",
-				timer : null,
 				count:"",
-				has_click: false,
-				isRegister:false,
 				logintype:true,//true表示密码登录，false手机验证码登录
-				isShowMolie:true,//是否显示号登录界面
-				isShowminiApp:false//是否显示小程序登录
 			};
 		},
-		methods: { 
-			changeWay(e){
-				if(e==1){
-					// #ifdef MP-WEIXIN
-					// this.isShowMolie=false;
-					this.isShowminiApp=true;
-					// #endif
-					// #ifdef H5
-					uni.showToast({
-						title: "暂不支持该方式",
-						icon: "none",
-						duration: 2000
-					});
-					// #endif
-				}else{
-					this.logintype=!this.logintype;
-					if(!this.logintype){
-						this.pwd=""
-					}
-				}
-			},
-			//获取验证码
-			getCode() {
-				if (valPhone(this.tel)) {
-					if (!this.has_click) {
-						this.sendCode();
-					}
-				}
-			},
-			async sendCode() {
-				let result = await post("Login/GetUserSms", {
-					"Mobile": this.tel,
-					"VerifyType": 1
-				});
-				if (result.code === 0) {
-					this.has_click = true;
-					const TIME_COUNT = 90; // 90s后重新获取验证码
-					this.count = TIME_COUNT;
-					uni.showToast({
-						title: "发送成功，请注意查收!",
-						icon: "none",
-						duration: 2000
-					});
-					this.timer = setInterval(() => {
-						if (this.count > 0 && this.count <= TIME_COUNT) {
-							this.count--;
-							this.codeMsg = this.count + "s后重新获取";
-						} else {
-							clearInterval(this.timer);
-							this.timer = null;
-							this.codeMsg = "获取验证码";
-						}
-					}, 1000);
+		onShow(){
 			
-				} else {
-					this.has_click = false;
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 2000
-					});
-				}
-			},
+		},
+		methods: {
 			valOther(){
 				if(this.logintype){
 					if(this.pwd==""){
@@ -177,18 +90,10 @@
 				}
 			},
 			async login(){
-				let result;
-				if(this.logintype){
-					result = await post("TencentCloud/ShopLiveByMobile",{
+				var	result = await post("TencentCloud/ShopLiveByMobile",{
 						"mobile": this.tel,
 					    "password": this.pwd
 					})
-				}else{
-					result = await post("Login/MemberLoginByCode",{
-						"Mobile": this.tel,
-					    "VerifyCode": this.code
-					})
-				}
 				if(result.code===0){console.log(result.data)
 					uni.setStorageSync('liveToken', result.data.Token);
 					uni.setStorageSync('liveUserId', result.data.UserId);
@@ -198,7 +103,6 @@
 					     icon: "none",
 					     duration: 2000,
 						 success:function(){
-							 console.log(_this.isRegister,"////////_this.isRegister")
 							setTimeout(function() {
 								uni.redirectTo({
 									url: "/pages/livepush/livepush"
@@ -214,123 +118,6 @@
 					});
 				}
 			},
-			// 小程序登录
-			async MPlogin(code, iv, encryptedData){
-				let result=await post("Login/SignIn_New",{
-					iv:iv,
-					code:code,
-					encryptedData:encryptedData
-				})
-				uni.setStorageSync("unionid", result.data.unionid);
-				uni.setStorageSync("token", result.data.Token);
-				uni.setStorageSync("userId", result.data.UserId);
-				uni.setStorageSync("openId", result.data.openId);
-				console.log(result.data,"mmmmmmmmmmmm")
-				if(result.code===0){
-					let _this = this;
-					uni.showToast({
-					  title: "登录成功!",
-					  icon: "none",
-					  duration: 2000,
-					  success:function(){
-						setTimeout(function() {
-							uni.switchTab({
-							  url: "/pages/tabBar/my/my"
-							});
-							// uni.navigateBack();
-							// if(_this.askUrl){
-							//   if(_this.askUrl.indexOf("undefined")>-1){
-							// 	uni.switchTab({
-							// 	  url: "/pages/tabBar/my/my"
-							// 	});
-							//   }
-							//   if(_this.askUrl.indexOf("cart")>-1){
-							// 	uni.switchTab({
-							// 	  url: "/pages/tabBar/cart/cart"
-							// 	});
-							//   }
-							//   if(_this.askUrl.indexOf("/my/my")>-1){
-							// 	uni.switchTab({
-							// 	  url: "/pages/tabBar/my/my"
-							// 	});
-							//   }
-							//   if(_this.askUrl.indexOf("/discover/discover")>-1){
-							// 	uni.switchTab({
-							// 	  url: "/pages/tabBar/discover/discover"
-							// 	});
-							//   }
-							//   uni.redirectTo({
-							// 	url: _this.askUrl
-							//   });
-							// }else{
-							//   uni.switchTab({
-							// 	url: "/pages/tabBar/my/my"
-							//   });
-							// }
-						 }, 2000);
-					  }
-					});
-				}else if (result.code === 2) {
-					uni.showToast({
-						title: result.msg,
-						icon: 'none',
-						duration: 1500,
-						success: function() {
-							setTimeout(function() {
-								wx.redirectTo({
-									url: '/pages/register/register?type=1'
-								})
-							}, 1500);
-						}
-					})
-				}
-				else{
-					uni.showToast({
-					  title: result.msg,
-					  icon: "none",
-					  duration: 2000
-					});
-				}
-			},
-			oauth(){
-				uni.login({
-					success:(res)=>{
-						 uni.getUserInfo({
-						    success: (infoRes) => {
-						        /**
-						         * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-						         * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-						         */
-								uni.setStorageSync("userInfo", infoRes.userInfo);
-								this.MPlogin(res.code, infoRes.iv, infoRes.encryptedData);
-						    }
-						});
-					},
-					fail: (err) => {
-					    console.error('授权登录失败：' + JSON.stringify(err));
-					}
-				})
-			},
-			//微信跳转登录
-			loginTel(){
-				this.isShowminiApp=false;
-				// setTimeout(()=>{
-				this.isShowMolie=true;
-				// },5)
-				
-			},
-			//注册
-			register(){
-				uni.navigateTo({
-					url: '/pages/register/register'
-				})
-			},
-			//忘记密码
-			getPassword(){
-				uni.navigateTo({
-					url: '/pages/getPassword/getPassword'
-				})
-			}
 		}
 	}
 </script>

@@ -269,7 +269,7 @@
 		,{
 			"path":"pages/login/livelogin",
 			"style":{
-				"navigationBarTitleText":"登录"
+				"navigationBarTitleText":"直播登录"
 			}
 		}
 		,{

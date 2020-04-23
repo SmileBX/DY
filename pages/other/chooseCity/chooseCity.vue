@@ -46,7 +46,7 @@
 				
 			}
 		},
-		onShow() {
+		onLoad() {
 			let res = uni.getSystemInfoSync()
 			this.height = res.windowHeight-uni.upx2px(100);
 			var _this=this

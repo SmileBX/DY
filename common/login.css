@@ -43,7 +43,7 @@
 	width: inherit;
 	height: 100%;
 	margin:0 auto;
-	/* border-radius: 25upx; */
+	border-radius: 46upx;
 }
 .logo .Title{ font-size: 32upx; font-weight: bold; text-align: center; display: none;}
 .from .from-line {
@@ -140,6 +140,7 @@
     width: 200upx;
     height: 200upx;
 	margin:0 auto;
+	border-radius: 46upx;
 }
 .MP-login .logoimg .img_bb{
 	width:100%;height:100%

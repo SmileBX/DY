@@ -2,8 +2,8 @@
     "name" : "大单易拼",
     "appid" : "__UNI__1EAACDF",
     "description" : "大单易拼",
-    "versionName" : "1.0.2",
-    "versionCode" : 102,
+    "versionName" : "1.0.3",
+    "versionCode" : 103,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -126,9 +126,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/480x762.9.png",
-                    "xhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/720x1242.9.png",
-                    "xxhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1080x1882.9.png"
+                    "hdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/480x762.png",
+                    "xhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/720x1242.png",
+                    "xxhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1080x1882.png"
                 },
                 "ios" : {
                     "iphone" : {

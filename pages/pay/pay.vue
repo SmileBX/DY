@@ -14,7 +14,7 @@
 					<view class="lab">{{item.typeName}}</view>
 				  </view>
 				  <view class="item-r">
-					<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==index?'checked':'']"></view>
+					<view style="margin: 0;" :class="['IconsCK IconsCK-radio',payType==item.type?'checked':'']"></view>
 				  </view>
 				</view>
 			</block>
@@ -53,11 +53,13 @@
 					type:1,
 					typeName:"支付宝",
 					className:"icon_alipay"
-				},{
-					type:2,
-					typeName:"银联支付",
-					className:"icon_yinlian"
-				},{
+				},
+				// {
+				// 	type:2,
+				// 	typeName:"银联支付",
+				// 	className:"icon_yinlian"
+				// },
+				{
 					type:3,
 					typeName:"余额支付",
 					className:"icon_yue"
@@ -77,13 +79,22 @@
 				showMask:false,
 			}
 		},
-		// #ifdef APP-PLUS
+		
 		onLoad(e) {
+			// #ifdef APP-PLUS
 			this.orderNo=e.orderNo;
 			this.source=e.source||0;
 			this.GroupId=e.GroupId||0;
+			// #endif
+			// #ifdef H5
+			this.WxCode=getUrlParam("code");
+			this.WxOpenid = uni.getStorageSync("openId");
+			if(this.WxCode){//首次跳转获取code地址都直接调起支付
+				this.payweixin()
+			}
+			// #endif
 		},
-		// #endif
+		
 		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
@@ -100,7 +111,6 @@
 			this.getcode();
 			// #endif
 			// #ifdef H5
-			this.WxCode=getUrlParam("code");
 			this.WxOpenid = uni.getStorageSync("openId");
 			// #endif
 			this.showMask = false
@@ -242,12 +252,9 @@
 					}
 				});
 			},
-			//微信支付  微信自带浏览器的h5支付
+			//微信公众号支付  微信自带浏览器的h5支付
 			async payweixin() {
-				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
-				if(this.WxOpenid!=""&&this.WxOpenid!="undefined"){
-					this.WxCode="";//每次获取的code只能使用一次，有openid时用openid调起支付数据
-				}
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/pay/pay?orderNo='+this.orderNo;
 				let result = await post("Order/ConfirmWeiXinPay", {
 					UserId: this.userId,
 					Token: this.token,
@@ -258,8 +265,12 @@
 				})
 				if (result.code == 201) { //检测不到openid需要进行微信授权
 					window.location.href=result.data;
-				}else if(result.code == 0){
+				}else if(result.code == 0){console.log(result.data)
 					uni.setStorageSync('openId', result.data.openid);
+					this.WxOpenid = uni.getStorageSync("openId");
+					if(this.WxOpenid!=""&&this.WxOpenid!="undefined"){
+						this.WxCode="";//每次获取的code只能使用一次，有openid时用openid调起支付数据
+					}
 					this.callpay(result.data.JsParam);
 				}else {
 					uni.showToast({
@@ -291,11 +302,11 @@
 							})
 						},
 					  fail(err) {console.log(err)
-						 //  uni.showToast({
-						 //  	title:JSON.stringify(err),
-							// icon:"none",
-							// duration:4000
-						 //  })
+						  uni.showToast({
+						  	title:"支付失败",
+							icon:"none",
+							duration:4000
+						  })
 					  }
 					})
 				}else {
@@ -349,11 +360,9 @@
 					if(res.err_msg == "get_brand_wcpay_request:ok" ){
 					// 使用以上方式判断前端返回,微信团队郑重提示：
 					//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-					  uni.showToast({
-					  	title: "支付成功",
-					  	icon: "none",
-					  	duration: 1500
-					  });
+					  uni.redirectTo({
+					  	url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+					  })
 					}else{
 						uni.showToast({
 							title: "支付失败",
@@ -363,15 +372,43 @@
 					} 
 			  }); 
 			},
-			GetUrlRelativePath() {
-				var urlStr = '';　　　　
-				var url = document.location.toString();　　　　
-				var arrUrl = url.split("//");　　　　
-				var start = arrUrl[1].split("/");
-				urlStr = arrUrl[0] + '//' + start[0];　　　　
-				return urlStr;　　
-			},	
-			
+			//支付宝app支付
+			async zfbapppay() {
+				let result = await post("Order/AliPay_AppPay", {
+					UserId: this.userId,
+					Token: this.token,
+					orderNo:this.orderNo,
+				});console.log(result)
+				if(result.code==0){console.log(result.data)
+					// var payData=JSON.parse(result.data.JsParam)
+					let _this=this;
+					uni.requestPayment({
+					  provider:"alipay",
+					  orderInfo:result.data.JsParam,
+					  success(res) {
+						  console.log(res)
+						  _this.type = "";
+							_this.showPay=false;
+							uni.redirectTo({
+								url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+							})
+						},
+					  fail(err) {console.log(err)
+						  uni.showToast({
+						  	title:"支付失败",
+							icon:"none",
+							duration:4000
+						  })
+					  }
+					})
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+						duration: 1500
+					});
+				}
+			},
 			//小程序支付
 			async ConfirmWeiXinSmallPay(){
 				  let result= await post("Order/ConfirmWeiXinSmallPay",{
@@ -401,7 +438,6 @@
 					})
 				  }
 			},
-			
 			//立即支付
 			submitBtn(){
 				if(!this.disable){
@@ -420,11 +456,9 @@
 						this.wxapppay()
 						// #endif
 					}else if(this.payType==1){
-						uni.showToast({
-							title: "暂未开通！",
-							icon: "none",
-							duration: 2000
-						});
+						// #ifdef APP-PLUS
+						this.zfbapppay()
+						// #endif
 					}else if(this.payType==2){
 						uni.showToast({
 							title: "暂未开通！",
@@ -460,6 +494,14 @@
 					}
 				}
 			},
+			GetUrlRelativePath() {
+				var urlStr = '';　　　　
+				var url = document.location.toString();　　　　
+				var arrUrl = url.split("//");　　　　
+				var start = arrUrl[1].split("/");
+				urlStr = arrUrl[0] + '//' + start[0];　　　　
+				return urlStr;　　
+			},	
 		}
 	}
 </script>
