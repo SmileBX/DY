@@ -130,6 +130,7 @@ export default {
 					var iosresult = await permision.judgeIosPermission('camera');
 					var iosres = await permision.judgeIosPermission('record');
 					console.log('运行iOS上');
+					console.log(iosresult,iosres);
 					var strStatus;
 					if(iosresult&& iosres){//已经获取授权开始直播
 						console.log("开始直播")
@@ -145,9 +146,9 @@ export default {
 					} else if (!iosresult) {
 						uni.showToast({
 							title: '摄像机未授权',
-							icon: 'none',
+							icon: 'none', 
 							success() {
-								// permision.gotoAppPermissionSetting();
+								permision.gotoAppPermissionSetting();
 							}
 						});
 					}
