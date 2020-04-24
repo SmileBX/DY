@@ -75,6 +75,7 @@ export default {
 	},
 	onShow() {
 		//权限设置,获取权限后开启直播
+		this.getPlay();
 		this.quanxian();
 		let res = uni.getSystemInfoSync();
 		this.width = res.windowWidth;
@@ -101,6 +102,7 @@ export default {
 								// permision.gotoAppPermissionSetting();
 							}
 						});
+						this.stopLive();
 					} else if (result == 0) {
 						uni.showToast({
 							title: '摄像头未授权',
@@ -109,7 +111,9 @@ export default {
 								// permision.gotoAppPermissionSetting();
 							}
 						});
+						this.stopLive();
 					} else if (result == -1) {
+						this.stopLive();
 						uni.showToast({
 							title: '被永久拒绝权限',
 							icon: 'none',
@@ -130,19 +134,19 @@ export default {
 					var iosresult = await permision.judgeIosPermission('camera');
 					var iosres = await permision.judgeIosPermission('record');
 					console.log('运行iOS上');
-					console.log(iosresult,iosres);
 					var strStatus;
 					if(iosresult&& iosres){//已经获取授权开始直播
 						console.log("开始直播")
 						this.getPlay();
-					}else if ((!iosres)&&iosresult) {
+					}else if ((!iosres)&&(!iosresult)) {
 						uni.showToast({
-							title: '麦克风未授权',
+							title: '请先开启摄像头和麦克风权限后再开启直播！',
 							icon: 'none',
 							success() {
-								// permision.gotoAppPermissionSetting();
+								permision.gotoAppPermissionSetting();
 							}
 						});
+						this.stopLive();
 					} else if (!iosresult) {
 						uni.showToast({
 							title: '摄像机未授权',
@@ -151,6 +155,7 @@ export default {
 								permision.gotoAppPermissionSetting();
 							}
 						});
+						this.stopLive();
 					}
 					break;
 			}

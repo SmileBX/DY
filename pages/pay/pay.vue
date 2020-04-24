@@ -49,11 +49,14 @@
 					type:0,
 					typeName:"微信支付",
 					className:"icon_weixin"
-				},{
+				},
+				// #ifndef MP-WEIXIN
+				{
 					type:1,
 					typeName:"支付宝",
 					className:"icon_alipay"
 				},
+				// #endif
 				// {
 				// 	type:2,
 				// 	typeName:"银联支付",

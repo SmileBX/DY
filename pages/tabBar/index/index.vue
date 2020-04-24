@@ -327,7 +327,7 @@
 			uni.getLocation({
 			    type: 'wgs84',
 				geocode: true,
-			    success: function (res) {
+			    success: function (res) {console.log(res)
 					// #ifdef APP-PLUS
 					var cityname=res.address.city.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
