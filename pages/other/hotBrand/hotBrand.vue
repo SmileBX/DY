@@ -15,10 +15,10 @@
 					<image :src="item.PicNo" class="img" mode="aspectFit"></image>
 					<image :src="'http://shop.dadanyipin.com/static/icons/b'+[index+1]+'.png'" class="tip" v-if="index<3"></image>
 				</view>
-				<view class="item_content flex1" @click="tolink('/pages/homePage/details?id='+item.Id)">
-					<view class="uni-bold">{{item.Name}}</view>
-					<view class="color_red mt1">￥{{item.Price}}<span class="line-thon" v-if="item.MarketPrice>item.Price">指导价¥{{item.MarketPrice}}</span></view>
-					<view class="flex mt1 item_bt flex-between">
+				<view class="item_content flex1 flex flexColumn justifyContentBetween" @click="tolink('/pages/homePage/details?id='+item.Id)">
+					<view class="uni-bold twoline">{{item.Name}}</view>
+					<view class="color_red ">￥{{item.Price}}<span class="line-thon" v-if="item.MarketPrice>item.Price">指导价¥{{item.MarketPrice}}</span></view>
+					<view class="flex  item_bt flex-between">
 						<view class="flex flag">
 							<block v-if="item.DistributionIncome">
 								<span class="flag_pill">返</span>
