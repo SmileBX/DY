@@ -283,6 +283,8 @@
 				IsNew:1,//新品
 				tid:"",//类型id
 				cid:"",//分类id
+				AreaCode:"",//区域国家码
+				AreaType:0,//1不限市，区
 				hasData: false,
 				noDataIsShow: false,
 				loadingType: 0, //0加载前，1加载中，2没有更多了
@@ -332,6 +334,7 @@
 					var cityname=res.address.city.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
 					_this.cityname=cityname
+					_this.getAreaCode(cityname)
 					// #endif
 					// #ifdef MP-WEIXIN
 					_this.wxGetCity(res.longitude,res.latitude)
@@ -349,6 +352,7 @@
 					var cityname=res.name.replace(/市/,'')
 					uni.setStorageSync('cityname',cityname)
 					_this.cityname=cityname
+					_this.getAreaCode(cityname)
 				console.log(cityname,"ooooooooo")
 				})
 			})
@@ -368,6 +372,7 @@
 				this.NewsCount();
 			}
 			this.cityname=uni.getStorageSync("cityname");
+			this.getAreaCode(this.cityname)
 			// console.log(this.cityname+'222222')
 		},
 		components:{noData,uniLoadMore},
@@ -388,6 +393,7 @@
 						var cityname=res.data.result.addressComponent.city.replace(/市/,'')
 						uni.setStorageSync('cityname',cityname)
 						_this.cityname=cityname
+						_this.getAreaCode(cityname)
 					}
 				})
 			},
@@ -413,7 +419,9 @@
 					Page: this.page,
 					PageSize: this.pageSize,
 					TypeId:this.tid,
-					ClassId:this.cid
+					ClassId:this.cid,
+					AreaCode:this.AreaCode,//区域国家码
+					AreaType:this.AreaType,//1不限市，区
 				}); 
 				if (result.code === 0) {
 					let _this=this;
@@ -440,6 +448,7 @@
 						this.isLoad = true;
 						this.loadingType = 0
 					}
+					console.log(this.isLoad)
 				}
 			},
 			
@@ -449,11 +458,14 @@
 					Page: 1,
 					PageSize: 10,
 					IsRecommend: 1,
-					IsHot:1
+					IsHot:1,
+					AreaCode:this.AreaCode,//区域国家码
+					AreaType:this.AreaType,//1不限市，区
 				})
 				if(result.code==0){ //首页精选推荐
 					if(result.data.length){
 						this.hasrec=true;
+						this.recProductlist=[];
 						let unm = result.data
 						unm.forEach((val,index) => {
 							let page = Math.floor(index / 3)
@@ -488,6 +500,8 @@
 						Page: this.page,
 						PageSize: this.pageSize,
 						IsHot: 1, //推荐
+						AreaCode:this.AreaCode,//区域国家码
+						AreaType:this.AreaType,//1不限市，区
 					}
 				}else if(this.indexs==1){
 					datajson={
@@ -495,12 +509,16 @@
 						PageSize: this.pageSize,
 						IsSubsidy:1,//有补贴
 						//IsUseCoupons:1//有券
+						AreaCode:this.AreaCode,//区域国家码
+						AreaType:this.AreaType,//1不限市，区
 					}
 				}else{
 					datajson={
 						Page: this.page,
 						PageSize: this.pageSize,
 						TypeId:this.indextid,
+						AreaCode:this.AreaCode,//区域国家码
+						AreaType:this.AreaType,//1不限市，区
 					}
 				}
 				let result = await post("Goods/GoodsList",datajson);
@@ -516,7 +534,6 @@
 					}
 					if (this.page === 1) {
 						this.handlist = result.data;
-						console.log(typeof(this.handlist[5].DistributionIncome),111)
 					}
 					if (this.page > 1) {
 						this.handlist = this.handlist.concat(
@@ -674,6 +691,24 @@
 				clearInterval(timer);
 			  }
 			  }, 1000);
+			},
+			// 城市名获取国家码
+			async getAreaCode(name) {
+				if(name){
+					let result = await post("Area/GetCityCode", {
+						Name:name
+					});
+					if (result.code === 0) {
+						this.AreaCode = result.data.Code;
+						this.AreaType = 1;
+						this.Recprolist();//精选推荐
+						this.hand();//获取精选等分类列表
+					}
+				}else{
+					this.AreaCode = "";
+					this.AreaType = 0;
+				}
+				uni.setStorageSync('AreaCode',this.AreaCode);
 			},
 			loadMore(e) {
 				if (this.isLoad) {

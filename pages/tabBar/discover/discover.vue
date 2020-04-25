@@ -168,13 +168,11 @@
 			// #ifdef H5
 			this.barHeight = 0;
 			// #endif
-		},
-		onShow(){
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.banner();
-			this.getHitslist()
-			this.shopProductlist();
+			this.getHitslist();//热销榜
+			this.shopProductlist();//商家力荐
 			this.getprolist();
 		},
 		methods: {
@@ -224,6 +222,7 @@
 			tapTab(index) {
 				this.page=1;
 				this.indexs = index;
+				this.datalist=[];
 				this.getprolist()
 			},
 			async getprolist() {
@@ -244,7 +243,7 @@
 				let result = await post("Goods/GoodsList", datajson);
 				if (result.code === 0) {
 					let _this=this;
-					if (result.data.length > 0) {
+					if (result.count > 0) {
 						this.hasData = true;
 						this.noDataIsShow = false;
 					}

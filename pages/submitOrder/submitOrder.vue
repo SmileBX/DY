@@ -520,7 +520,8 @@
 					IsPayWallet:this.isPayWallet,
 					IsPayScore:this.isPayScore,
 					CouponId:this.couponId,
-					ShopData:this.shopDataArr
+					ShopData:this.shopDataArr,
+					AreaCode:uni.getStorageSync("AreaCode")
 				})
 				if (result.code == 0) {
 					uni.showToast({
@@ -643,7 +644,8 @@
 				ContactName:this.ContactName,
 				Tel:this.Tel,
 				InviteCode:this.inCode,
-				IsSalesOffice:this.IsSalesOffice
+				IsSalesOffice:this.IsSalesOffice,
+				AreaCode:uni.getStorageSync("AreaCode")
 			  })
 			  if(result.code==0){
 				uni.showToast({
@@ -679,7 +681,8 @@
 				ContactName:this.ContactName,
 				Tel:this.Tel,
 				InviteCode:this.inCode,
-				IsSalesOffice:this.IsSalesOffice
+				IsSalesOffice:this.IsSalesOffice,
+				AreaCode:uni.getStorageSync("AreaCode")
 			  })
 			  if(result.code==0){
 				  var _this=this

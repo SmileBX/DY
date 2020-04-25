@@ -88,6 +88,39 @@
 			this.H5getcity()
 			// #endif
 		},
+		onShow() {
+			// #ifdef MP-WEIXIN
+			var _this=this
+			uni.getLocation({
+			    type: 'wgs84',
+				geocode: true,
+			    success: function (res) {
+					// #ifdef APP-PLUS
+					var cityname=res.address.city.replace(/市/,'')
+					_this.here=cityname
+					// #endif
+					// #ifdef MP-WEIXIN
+					_this.wxGetCity(res.longitude,res.latitude)
+					// #endif
+			        // console.log(res);
+			    },
+				fail:function(){
+					_this.here="定位失败"
+					// #ifdef APP-PLUS
+					uni.showModal({
+					    content: '定位失败，请在设置中打开大单易拼的位置权限',
+						showCancel: false,
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+					        }
+					    }
+					});
+					// #endif
+				}
+			});
+			// #endif
+		},
 		methods: {
 			
 			H5getcity(){

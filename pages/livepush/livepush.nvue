@@ -74,14 +74,14 @@ export default {
 		};
 	},
 	onShow() {
-		//权限设置,获取权限后开启直播
-		this.getPlay();
-		this.quanxian();
 		let res = uni.getSystemInfoSync();
 		this.width = res.windowWidth;
 		this.height = res.windowHeight;
 		this.liveUserId = uni.getStorageSync('liveUserId');
 		this.liveToken = uni.getStorageSync('liveToken');
+		//权限设置,获取权限后开启直播
+		this.getPlay();
+		this.quanxian();
 	},
 	methods: {
 		async quanxian() {
@@ -144,7 +144,7 @@ export default {
 							title: '请先开启摄像头和麦克风权限后再开启直播！',
 							icon: 'none',
 							success() {
-								permision.gotoAppPermissionSetting();
+								// permision.gotoAppPermissionSetting();
 							}
 						});
 						this.stopLive();
@@ -153,7 +153,16 @@ export default {
 							title: '摄像机未授权',
 							icon: 'none',
 							success() {
-								permision.gotoAppPermissionSetting();
+								// permision.gotoAppPermissionSetting();
+							}
+						});
+						this.stopLive();
+					}else{
+						uni.showToast({
+							title: '麦克风未授权',
+							icon: 'none',
+							success() {
+								// permision.gotoAppPermissionSetting();
 							}
 						});
 						this.stopLive();

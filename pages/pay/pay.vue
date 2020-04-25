@@ -397,11 +397,11 @@
 							})
 						},
 					  fail(err) {console.log(err)
-						  uni.showToast({
-						  	title:"支付失败",
-							icon:"none",
-							duration:4000
-						  })
+						 //  uni.showToast({
+						 //  	title:"支付失败",
+							// icon:"none",
+							// duration:4000
+						 //  })
 					  }
 					})
 				}else {
