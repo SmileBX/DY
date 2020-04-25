@@ -38,8 +38,8 @@
             id: 0,
             latitude: this.Lat,
             longitude: this.Lng,
-            width: 104,
-            height: 104
+            width: 20,
+            height: 20
           }];
 		 
 		},

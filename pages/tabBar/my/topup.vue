@@ -15,7 +15,7 @@
 					<!-- #endif -->
 				</view>
 			</view>
-			<view class="carry">该卡本次最多可充值¥20000</view>
+			<!-- <view class="carry">该卡本次最多可充值¥20000</view> -->
 			<view class="pay-hd uni-mb10">选择支付方式</view>
 			<view class="pay-bd line-list">
 				<block v-for="(item,index) in payway" :key="index"> 
@@ -91,13 +91,14 @@
 				if(this.money>0){
 					// #ifdef  H5
 					if(this.isWeixin()){
-						//this.AddRecharge();
+						this.AddRecharge();
 					}else{
-						//this.H5AddRecharge();
+						this.H5AddRecharge();
 					}
 					// #endif
+					// #ifdef MP-WEIXIN
 					this.ConfirmWeiXinSmallPay()
-					
+					// #endif
 				}else{
 					uni.showToast({
 						title: "请输入充值金额",
@@ -117,11 +118,11 @@
 			},
 			//微信付款
 			async AddRecharge(){
-				let NewUrl=this.GetUrlRelativePath() +'/#/pages/member/Recharge/Recharge';
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/tabBar/my/topup';
 				let result= await post("Recharge/AddRecharge",{
 					UserId: this.userId,
 					Token: this.token,
-					RechargeId: this.RechargeId,
+					RechargeAmount:this.money,
 					WxOpenid: this.WxOpenid,
 					WxCode: this.WxCode,
 					NewUrl: NewUrl
@@ -141,11 +142,11 @@
 			},
 			//非微信环境 使用微信支付H5
 			async H5AddRecharge(){
-				let NewUrl=this.GetUrlRelativePath() +'/#/pages/member/Recharge/Recharge';
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/tabBar/my/topup';
 				let result= await post("Recharge/AddRechargeWapPay",{
 					UserId: this.userId,
 					Token: this.token,
-					RechargeId: this.RechargeId,
+					RechargeAmount:this.money,
 					NewUrl: NewUrl
 				});
 				if (result.code == 201) {
