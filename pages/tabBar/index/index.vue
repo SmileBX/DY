@@ -694,7 +694,7 @@
 			},
 			// 城市名获取国家码
 			async getAreaCode(name) {
-				if(name){
+				if(name&&name!='全国'){
 					let result = await post("Area/GetCityCode", {
 						Name:name
 					});
@@ -704,6 +704,11 @@
 						this.Recprolist();//精选推荐
 						this.hand();//获取精选等分类列表
 					}
+				}else if(name=='全国'){
+					this.AreaCode = "";
+					this.AreaType = 0;
+					this.Recprolist();//精选推荐
+					this.hand();//获取精选等分类列表
 				}else{
 					this.AreaCode = "";
 					this.AreaType = 0;
