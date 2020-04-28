@@ -106,11 +106,11 @@
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_qb.png" mode=""></image>
 						<view class="txt">我的钱包</view>
 					</view>
-					<view class="item" @click="golink('/pages/other/myAcount/myAcount')">
+					<view v-if="KTAmount != 0" class="item" @click="golink('/pages/other/myAcount/myAcount')" >
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_sy.png" mode=""></image>
 						<view class="txt">我的收益</view>
 					</view>
-					<view class="item" @click="golink('/pages/other/myguest/myguest')">
+					<view v-if="TeamNum != 0" class="item" @click="golink('/pages/other/myguest/myguest')">
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_team.png" mode=""></image>
 						<view class="txt">我的团队</view>
 					</view>
@@ -192,6 +192,8 @@
 				OrderInfo:{},
 				newscount:0,
 				gologin:true,
+				KTAmount:'',  //总收益  
+				TeamNum:'',   //总人数
 			}
 		},
 		onLoad() {
@@ -202,12 +204,15 @@
 			// #ifdef H5
 			this.barHeight = 0;
 			// #endif
+			
 		},
 		onShow() {
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.liveUserId = uni.getStorageSync("liveUserId");
 			this.liveToken = uni.getStorageSync("liveToken");
+			this.IncomeDetailsTZ()
+			this.MyCustom()
 			// #ifndef MP-WEIXIN
 			if (this.userId&&this.token) {
 				this.NewsCount();
@@ -266,6 +271,25 @@
 					})
 				}
 			},
+			//收益统计
+			IncomeDetailsTZ(){
+			  post('Recharge/IncomeDetailsTZ',{
+			    UserId:this.userId,
+			    Token:this.token
+			  }).then(res=>{
+			    this.KTAmount = res.data.KTAmount; 
+				console.log(this.KTAmount,'this.KTAmount') 
+			  })
+			},
+			MyCustom(){
+			    post('User/MyCustom',{
+			        UserId:this.userId,
+			        Token:this.token
+			    }).then(res=>{
+			    this.TeamNum = res.data.TeamNum; 
+				console.log(this.TeamNum,'this.TeamNum') 
+			  })
+			},
 			async getMemberInfo() {
 				let result = await post("User/GetCenterInfo", {
 					"UserId": this.userId,
@@ -294,6 +318,7 @@
 					// #endif
 				}
 			},
+			
 			async NewsCount() {
 				let result = await post("News/NewsCount", {
 					"UserId": this.userId,
@@ -303,6 +328,7 @@
 					this.newscount = result.count;
 				} 
 			},
+			
 			// #ifndef MP
 			QQSevice(){
 				this.golink('/pages/home/kefu/kefu')
