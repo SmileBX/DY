@@ -74,7 +74,7 @@
 				tabList:[{id:0,name:'全部'},{id:1,name:'待付款'},{id:6,name:'待审核'},{id:2,name:'待发货'},{id:3,name:'待收货'},{id:4,name:'待评价'}],
 				tabIndex:0,
 				page:1,
-				pagesize:3,
+				pagesize:8,
 				list:[],
 				loadingType: 0, //0加载前，1加载中，2没有更多了
 				hasData: false,

@@ -41,10 +41,15 @@
 		data(){
 			return{
 				wallet:0,//余额
+				userId: "",
+				token: "",
 			}
 		},
 		onShow() {
+			this.userId = uni.getStorageSync("userId");
+			this.token = uni.getStorageSync("token");
 			this.wallet=this.$store.state.Wallet;
+			this.getMemberInfo()
 			//this.wallet=Number(this.wallet).toFixed(2)
 		},
 		methods:{
@@ -55,7 +60,19 @@
 					})
 				}
 			},
-			
+			async getMemberInfo() {
+				let result = await post("User/GetCenterInfo", {
+					"UserId": this.userId,
+					"Token": this.token
+				})
+				if (result.code === 0) {
+					this.wallet = result.data.Wallet;
+					uni.setStorageSync('ReferralCode',result.data.ReferralCode)
+					this.$store.commit("update", {
+					  Wallet:result.data.Wallet
+					});  
+				}
+			},
 		}
 	
 	}
