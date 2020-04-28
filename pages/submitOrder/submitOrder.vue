@@ -541,6 +541,13 @@
 						duration: 1500
 					});
 				}
+				//初始化业主参数
+				// let peopleInfo={ //业主信息
+				// 	ContactName:"",//业主姓名
+				// 	Tel:"",//业主电话
+				// 	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+				// }
+				// this.$store.commit("update", { peopleInfo });
 			},
 			//立即购买订单渲染
 			async BuyNowGoods(){
@@ -665,6 +672,13 @@
 				  duration: 1000
 				});
 			  }
+			  //初始化业主参数
+			  let peopleInfo={ //业主信息
+			  	ContactName:"",//业主姓名
+			  	Tel:"",//业主电话
+			  	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+			  }
+			  this.$store.commit("update", { peopleInfo });
 			},
 			//确认拼团
 			async CreateGroupOrder(){
