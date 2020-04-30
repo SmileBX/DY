@@ -373,6 +373,15 @@
 				}
 			}
 		},
+		onUnload() {
+			//初始化业主参数
+			let peopleInfo={ //业主信息
+				ContactName:"",//业主姓名
+				Tel:"",//业主电话
+				IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+			}
+			this.$store.commit("update", { peopleInfo });
+		},
 		methods: {
 			golink(url){
 				uni.navigateTo({
@@ -665,6 +674,13 @@
 				  duration: 1000
 				});
 			  }
+			  //初始化业主参数
+			  let peopleInfo={ //业主信息
+			  	ContactName:"",//业主姓名
+			  	Tel:"",//业主电话
+			  	IsSalesOffice:null,//去过或咨询售楼处 1-有 0-没有
+			  }
+			  this.$store.commit("update", { peopleInfo });
 			},
 			//确认拼团
 			async CreateGroupOrder(){

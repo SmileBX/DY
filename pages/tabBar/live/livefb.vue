@@ -1,21 +1,17 @@
 <template>
 	<view>
-		<swiper :vertical="true" @change="changes">
-			<swiper-item >
-				<!-- #ifdef APP-PLUS -->
-				<video  @error="error" :src="data.HLS" :style="{height : height + 'px'}"
-				 :autoplay="true" controls ></video>
-				<!-- #endif -->
-				<!-- #ifdef H5 -->
-				<div class="H5video" id="H5video"  :style="{height : height + 'px'}">
-					
-				</div>
-				<!-- #endif -->
-				<!-- #ifdef MP-WEIXIN -->
-				<live-player style="width:100%;height:100%;" :src="data.HLS" autoplay=true mode="live"></live-player>
-				<!-- #endif -->
-			</swiper-item>
-		</swiper>
+		<!-- #ifdef APP-PLUS -->
+		<video  @error="error" :src="data.HLS" :style="{height : height + 'px'}"
+		 :autoplay="true" controls ></video>
+		<!-- #endif -->
+		<!-- #ifdef H5 -->
+		<div class="H5video" id="H5video"  :style="{height : height + 'px'}">
+			
+		</div>
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		<live-player style="width:100%;height:100%;" :src="data.HLS" autoplay=true mode="live"></live-player>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -69,9 +65,6 @@
 					"width" :  '480',//视频的显示宽度，请尽量使用视频分辨率宽度
 					"height" : this.height//视频的显示高度，请尽量使用视频分辨率高度
 				});
-			},
-			changes(e){
-				// console.log(e)
 			},
 			error(e){
 				console.log(e)

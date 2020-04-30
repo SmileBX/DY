@@ -2,7 +2,7 @@
 	<view>
 		<view class="content">
 			<view class="herebox">
-				<text class="tit">定位到当前城市：</text><text class="here" @click="choosecity2(here)">{{here}}</text>
+				<text class="tit">定位到当前城市:</text><text class="here" @click="choosecity2(here)">{{here}}</text><text class="here" @click="choosecity2('全国')">全国</text>
 			</view>
 			<scroll-view scroll-y="true" class="scr0llbox" :scroll-into-view="toitem" scroll-with-animation=true :style="{'height':height+'px'}">
 				<view class="item" v-for="(item,index) in citylist" :key="index">

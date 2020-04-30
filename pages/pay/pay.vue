@@ -31,6 +31,10 @@
 			</view>
 		</view>
 		<pay v-on:hidePay="hidePay" v-on:getPassword="getPassword" v-if="showPay" :allprice="allprice"></pay>
+		<!-- 支付宝H5表单 -->
+		<view class="alipayfram" v-if="isshowalipay">
+			<view id="alipayfram" v-html="alipayCon"></view>
+		</view>
 	</view>
 </template>
 
@@ -80,6 +84,8 @@
 				WxCode:"",
 				GroupId:0,//大于0 是拼团产品
 				showMask:false,
+				isshowalipay:false,
+				alipayCon:"",
 			}
 		},
 		
@@ -102,7 +108,6 @@
 			this.userId = uni.getStorageSync("userId");
 			this.token = uni.getStorageSync("token");
 			this.WxOpenid=uni.getStorageSync("openId");
-			console.log(this.WxOpenid)
 			// #ifndef APP-PLUS
 			this.orderNo=this.$root.$mp.query.orderNo;
 			this.source=this.$root.$mp.query.source||0;
@@ -154,16 +159,12 @@
 					OrderNo:this.orderNo
 				})
 				if (result.code == 0) {
-					this.orderInfo=result.data;
-					this.allprice=this.orderInfo.TotalPrice.toString();
-					this.Countdown=this.orderInfo.Hours+':'+this.orderInfo.Minutes+':'+this.orderInfo.Seconds;
-					this.downTiem(this.orderInfo.Hours,this.orderInfo.Minutes,this.orderInfo.Seconds);
-				}else{
-					uni.showToast({
-						title: result.msg,
-						icon: "none",
-						duration: 1500
-					});
+					if(result.data){
+						this.orderInfo=result.data;
+						this.allprice=this.orderInfo.TotalPrice.toString();
+						this.Countdown=this.orderInfo.Hours+':'+this.orderInfo.Minutes+':'+this.orderInfo.Seconds;
+						this.downTiem(this.orderInfo.Hours,this.orderInfo.Minutes,this.orderInfo.Seconds);
+					}
 				}
 			},
 			//支付倒计时
@@ -258,13 +259,14 @@
 			//微信公众号支付  微信自带浏览器的h5支付
 			async payweixin() {
 				let NewUrl=this.GetUrlRelativePath() +'/#/pages/pay/pay?orderNo='+this.orderNo;
-				let result = await post("Order/ConfirmWeiXinPay", {
+				let result = await post("Order/WechatPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
 					NewUrl:NewUrl,//支付后的回调地址
 					WxCode:this.WxCode,
 					WxOpenid:this.WxOpenid,
+					paytype:0
 				})
 				if (result.code == 201) { //检测不到openid需要进行微信授权
 					window.location.href=result.data;
@@ -285,10 +287,11 @@
 			},
 			//微信app支付
 			async wxapppay() {
-				let result = await post("Order/AppWechatPay", {
+				let result = await post("Order/WechatPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
+					paytype:2
 				})
 				if(result.code==0){console.log(result.data)
 					// var payData=JSON.parse(result.data.JsParam)
@@ -322,17 +325,14 @@
 			},
 			//非微信环境 使用微信支付H5
 			async H5payweixin() {
-				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
-				let result = await post("Order/ConfirmWeiXinWapPay", {
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/member/orderDetail/orderDetail?id='+this.orderNo
+				let result = await post("Order/WechatPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
-					NewUrl:NewUrl
+					NewUrl:NewUrl,
+					paytype:3
 				})
-				// if (result.code == 201) {
-				// 	window.location.href=result.data;
-				// 	console.log(result.data)
-				// }else 
 				if(result.code == 0){
 					window.location.href = result.data.mweb_url;
 				}else {
@@ -356,6 +356,7 @@
 				}
 			},
 			onBridgeReady(param){
+				var _this=this;
 				var parameter = JSON.parse(param);
 				WeixinJSBridge.invoke(
 					'getBrandWCPayRequest', parameter,
@@ -364,7 +365,7 @@
 					// 使用以上方式判断前端返回,微信团队郑重提示：
 					//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
 					  uni.redirectTo({
-					  	url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
+						url: "/pages/payresult/payresult?allprice="+_this.orderInfo.TotalPrice+"&orderNo="+_this.orderNo
 					  })
 					}else{
 						uni.showToast({
@@ -373,21 +374,22 @@
 							duration: 1500
 						});
 					} 
-			  }); 
+				}); 
 			},
 			//支付宝app支付
 			async zfbapppay() {
-				let result = await post("Order/AliPay_AppPay", {
+				let result = await post("Order/AliPay", {
 					UserId: this.userId,
 					Token: this.token,
 					orderNo:this.orderNo,
+					paytype:2
 				});console.log(result)
 				if(result.code==0){console.log(result.data)
 					// var payData=JSON.parse(result.data.JsParam)
 					let _this=this;
 					uni.requestPayment({
 					  provider:"alipay",
-					  orderInfo:result.data.JsParam,
+					  orderInfo:result.data,
 					  success(res) {
 						  console.log(res)
 						  _this.type = "";
@@ -412,14 +414,40 @@
 					});
 				}
 			},
+			//支付宝支付H5
+			async zfbH5pay(){
+				let NewUrl=this.GetUrlRelativePath() +'/#/pages/payresult/payresult?allprice='+this.orderInfo.TotalPrice+"&orderNo="+this.orderNo;
+				let QuitUrl=this.GetUrlRelativePath() +'/#/pages/pay/pay?orderNo='+this.orderNo;
+				let result= await post("Order/AliPay",{
+					UserId: this.userId,
+					Token: this.token,
+					orderNo:this.orderNo,
+					NewUrl: NewUrl,
+					QuitUrl:QuitUrl,//放弃支付跳转
+					paytype:3
+				});
+				if(result.code == 0){
+					this.isshowalipay=true;
+					this.alipayCon=result.data;console.log(result.data)
+					this.$nextTick().then(() => {
+						 document.forms['alipaysubmit'].submit()
+					})
+				}else {
+					uni.showToast({
+						title: result.msg,
+						icon: "none",
+					});
+				}
+			},
 			//小程序支付
 			async ConfirmWeiXinSmallPay(){
-				  let result= await post("Order/ConfirmWeiXinSmallPay",{
+				  let result= await post("Order/WechatPay",{
 					WxCode: this.WxCode,
 					UserId: this.userId,
 					Token: this.token,
 					OrderNo: this.orderNo,
-					WxOpenid:this.WxOpenid 
+					WxOpenid:this.WxOpenid ,
+					paytype:4
 				  });
 				  var payData=JSON.parse(result.data.JsParam)
 				  if(result.code===0){
@@ -461,6 +489,17 @@
 					}else if(this.payType==1){
 						// #ifdef APP-PLUS
 						this.zfbapppay()
+						// #endif
+						// #ifdef H5
+						if(this.isWeixin()){
+							uni.showToast({
+								title:"微信暂不支持支付宝支付，请在浏览器中打开！",
+								icon:"none",
+								duration:2500
+							})
+						}else{
+							this.zfbH5pay()
+						}
 						// #endif
 					}else if(this.payType==2){
 						uni.showToast({
@@ -510,6 +549,14 @@
 </script>
 
 <style scoped lang="scss">
+	.alipayfram{
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: 0; top: 0;
+		background: #fff;
+		z-index: 999;
+	}
 	page{ background: #fff;}
 	.toastMask{
 		position: fixed;background: #ffffff;
