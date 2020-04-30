@@ -12,6 +12,22 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-goods:before {
+  content: "\e61e";
+}
+
+.icon-send:before {
+  content: "\e622";
+}
+
+.icon-bianji1:before {
+  content: "\e611";
+}
+
+.icon-biaoqing:before {
+  content: "\e615";
+}
+
 .icon-sousuo1:before {
   content: "\e60c";
 }
