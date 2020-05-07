@@ -110,7 +110,7 @@
 								<view class="flex flexAlignEnd justifyContentBetween item_total">
 									<view class="flex flexAlignEnd">
 										<span class="item_price">￥{{item.Price}}</span>
-										<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+										<span class="item_market line-through" v-if="item.MarketPrice!=0">￥{{item.MarketPrice}}</span>
 									</view>
 									<view class="item_market">{{item.SalesVolume}}人付款</view>
 								</view>
@@ -278,7 +278,15 @@
 			} else {
 				this.loadingType = 2;
 			}
+		},
+		// #ifdef  MP-WEIXIN
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				// 来自页面内转发按钮
+				
+			}
 		}
+		// #endif
 	}
 </script>
 

@@ -64,7 +64,7 @@
 				<view class="Title">大单易拼</view>
 		    </view> 
 		    <button class="login-btn btn_gree" open-type="getUserInfo" @click="oauth">微信登录</button>
-		    <view class="c_blue uni-center" @click="loginTel">手机号登录/注册</view>
+		    <!-- <view class="c_blue uni-center" @click="loginTel">手机号登录/注册</view> -->
 		</view>
 		<!-- #endif -->  
 	</view>

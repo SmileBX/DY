@@ -69,7 +69,7 @@
 							<view class="listprice">
 								<view class="listm">
 									<view class="selling"><span>¥</span>{{item.Price}}</view>
-									<view class="original" v-if="item.MarketPrice>item.Price">¥{{item.MarketPrice}}</view>
+									<view class="original" v-if="item.MarketPrice!=0">¥{{item.MarketPrice}}</view>
 								</view>
 								<view class="listm rt" v-if="item.DistributionIncome!='0'">
 									<view class="cash">补贴</view>

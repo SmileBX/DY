@@ -110,7 +110,7 @@
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_sy.png" mode=""></image>
 						<view class="txt">我的收益</view>
 					</view>
-					<view v-if="TeamNum != 0" class="item" @click="golink('/pages/other/myguest/myguest')">
+					<view v-if="TeamShow" class="item" @click="golink('/pages/other/myguest/myguest')">
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_team.png" mode=""></image>
 						<view class="txt">我的团队</view>
 					</view>
@@ -193,7 +193,7 @@
 				newscount:0,
 				gologin:true,
 				KTAmount:'',  //总收益  
-				TeamNum:'',   //总人数
+				TeamShow:'',   //团队
 			}
 		},
 		onLoad() {
@@ -286,8 +286,11 @@
 			        UserId:this.userId,
 			        Token:this.token
 			    }).then(res=>{
-			    this.TeamNum = res.data.TeamNum; 
-				console.log(this.TeamNum,'this.TeamNum') 
+				if(res.data.TeamNum==0&&res.data.FatherData.length==0&&res.data.TeamList.length==0){
+					this.TeamShow=false
+				}else{
+					this.TeamShow=true
+				}
 			  })
 			},
 			async getMemberInfo() {
@@ -337,7 +340,15 @@
 				// }
 			}
 			// #endif
+		},
+		// #ifdef  MP-WEIXIN
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				// 来自页面内转发按钮
+				
+			}
 		}
+		// #endif
 	}
 </script>
 
@@ -375,6 +386,7 @@
 		width: 25%;
 		background: #fff;
 		display: inline-block;
+		float: left;
 		color: #5e5e5e;
 	}
 	button::after {
