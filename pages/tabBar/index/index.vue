@@ -137,7 +137,7 @@
 														<view class="txt uni-ellipsis">{{item.Name}}</view>
 														<view class="uni-product-price">
 															<text class="uni-product-price-original">￥{{item.Price}}</text>
-															<text class="uni-product-price-favour" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</text>
+															<text class="uni-product-price-favour" v-if="item.MarketPrice!=0">￥{{item.MarketPrice}}</text>
 														</view>
 													</view>
 													<view style="display: flex;justify-content: space-between;padding-top: 10upx;">
@@ -200,7 +200,7 @@
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice!=0">￥{{item.MarketPrice}}</span>
 											</view>
 										</view>
 										<view class="" style="display: flex;justify-content: space-between;padding-top: 10upx;">
@@ -228,7 +228,7 @@
 										<view class="flex flexAlignEnd justifyContentBetween item_total">
 											<view class="flex flexAlignEnd">
 												<span class="item_price">￥{{item.Price}}</span>
-												<span class="item_market line-through" v-if="item.MarketPrice>item.Price">￥{{item.MarketPrice}}</span>
+												<span class="item_market line-through" v-if="item.MarketPrice!=0">￥{{item.MarketPrice}}</span>
 											</view>
 										</view>
 										<view class="" style="display: flex;justify-content: space-between;padding-top: 10upx;">
@@ -246,6 +246,13 @@
 					</scroll-view>
 				</swiper-item>
 			</swiper>
+		</view>
+		<!-- 广告弹框 -->
+		<view class="advbox" v-if="showAdv">
+			<view class="imgbox">
+				<image :src="advimg" mode="widthFix" class="advimg"></image>
+				<image src="http://shop.dadanyipin.com/static/close.png" mode="widthFix" class="close" @click="showAdv=false"></image>
+			</view>
 		</view>
 	</view>
 </template>
@@ -297,6 +304,8 @@
 				headheight:0,
 				showdots:false,
 				inviteCode:'',
+				showAdv:true,//
+				advimg:"",//广告图
 			}
 		},
 		onLoad(e) {
@@ -318,6 +327,7 @@
 			}
 			// #endif
 			this.banner();
+			this.getAdvimg()
 			this.typelist();
 			this.getsystem();//平台设置
 			this.getBrandList() //品牌馆
@@ -420,8 +430,8 @@
 					PageSize: this.pageSize,
 					TypeId:this.tid,
 					ClassId:this.cid,
-					AreaCode:this.AreaCode,//区域国家码
-					AreaType:this.AreaType,//1不限市，区
+					// AreaCode:this.AreaCode,//区域国家码
+					// AreaType:this.AreaType,//1不限市，区
 				}); 
 				if (result.code === 0) {
 					let _this=this;
@@ -459,8 +469,8 @@
 					PageSize: 10,
 					IsRecommend: 1,
 					IsHot:1,
-					AreaCode:this.AreaCode,//区域国家码
-					AreaType:this.AreaType,//1不限市，区
+					// AreaCode:this.AreaCode,//区域国家码
+					// AreaType:this.AreaType,//1不限市，区
 				})
 				if(result.code==0){ //首页精选推荐
 					if(result.data.length){
@@ -500,8 +510,8 @@
 						Page: this.page,
 						PageSize: this.pageSize,
 						IsHot: 1, //推荐
-						AreaCode:this.AreaCode,//区域国家码
-						AreaType:this.AreaType,//1不限市，区
+						// AreaCode:this.AreaCode,//区域国家码
+						// AreaType:this.AreaType,//1不限市，区
 					}
 				}else if(this.indexs==1){
 					datajson={
@@ -509,16 +519,16 @@
 						PageSize: this.pageSize,
 						IsSubsidy:1,//有补贴
 						//IsUseCoupons:1//有券
-						AreaCode:this.AreaCode,//区域国家码
-						AreaType:this.AreaType,//1不限市，区
+						// AreaCode:this.AreaCode,//区域国家码
+						// AreaType:this.AreaType,//1不限市，区
 					}
 				}else{
 					datajson={
 						Page: this.page,
 						PageSize: this.pageSize,
 						TypeId:this.indextid,
-						AreaCode:this.AreaCode,//区域国家码
-						AreaType:this.AreaType,//1不限市，区
+						// AreaCode:this.AreaCode,//区域国家码
+						// AreaType:this.AreaType,//1不限市，区
 					}
 				}
 				let result = await post("Goods/GoodsList",datajson);
@@ -618,6 +628,19 @@
 				}
 				if (res.code === 0) {
 					this.PPbannerlist = res.data.slice(0,3)
+				}
+			},
+			// 轮播图
+			async getAdvimg() {
+				let res = await post("Banner/HomePicList", {
+				});
+				if (res.code === 0) {
+					if(res.data.length>0){
+						this.advimg=res.data[0].Logo;
+						this.showAdv=true
+					}else{
+						this.showAdv=false
+					}
 				}
 			},
 			// 获取类型(商品)
@@ -741,7 +764,14 @@
 		// 		this.loadingType = 2;
 		// 	}
 		// }
-
+		// #ifdef  MP-WEIXIN
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				// 来自页面内转发按钮
+				
+			}
+		},
+		// #endif
 			
 		
 	}
@@ -749,5 +779,33 @@
 
 <style scoped lang="scss">
 	@import './style';
-	    
+	.advbox{
+		width: 100%;
+		height: 100vh;
+		position: fixed;
+		left: 0%;
+		top: 0;
+		background: rgba(0,0,0,.6);
+		z-index: 999;
+	}
+	.imgbox{
+		width: 70%;
+		position: fixed;
+		left: 15%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.advimg{
+		display: block;
+		width: 100%;
+		border-radius: 20upx;
+	}
+	.close{
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -80upx;
+		width: 50upx;
+		height: 50upx;
+	}
 </style>

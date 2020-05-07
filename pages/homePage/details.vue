@@ -54,7 +54,7 @@
 				<view class="listprice" v-if="isLimint==0">
 					<view class="listm">
 						<view class="selling"><span>¥</span>{{proInfo.Price}}</view>
-						<view class="original" v-if="proInfo.MarketPrice>proInfo.Price">¥{{proInfo.MarketPrice}}</view>
+						<view class="original" v-if="proInfo.MarketPrice!=0">¥{{proInfo.MarketPrice}}</view>
 					</view>
 					<view class="listm rt" v-if="proInfo.DistributionIncome!=0">
 						<view class="cash">补贴</view>
