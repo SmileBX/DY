@@ -21,13 +21,31 @@
 							<view class="nlv-msglist">
 								<view class="msg_bg"><text class="msg_name">小小酥</text> <text class="msg_text">太棒了</text></view>
 							</view>
+							<view class="nlv-msglist">
+								<view class="msg_bg"><text class="msg_name">xiao名试试哈哈哈</text> <text class="msg_text">太棒了太棒了太棒了太棒了太棒了太棒了太棒了太棒了太棒了</text></view>
+							</view>
 						</block>
 					</scroll-view>
+					<view class="goodsbox" v-if="showgoodsbox">
+						<view class="item">
+							<view class="imgbox">
+								<image src="../../../static/1.png" mode="aspectFill"></image>
+							</view>
+							<view class="txtBox">
+								<view class="title uni-ellipsis">
+									商品名称商品名称商品名称商品名称商品名称
+								</view>
+								<view class="price red">
+									￥9.9
+								</view>
+							</view>
+						</view>
+					</view>
 					<view class="nlv-infobox">
-						<view class="nlv_reply" @click="Repliy"><text class="iconfont icon-bianji1"></text><text class="nlv_reply_text">说点什么...</text></view>
 						<view class="nlv_btntool">
 							<view class="btn-toolitem" @click="showGoods"><text class="iconfont icon-goods"></text></view>
 						</view>
+						<view class="nlv_reply" @click="Repliy"><text class="iconfont icon-bianji1"></text><text class="nlv_reply_text">说点什么...</text></view>
 					</view>
 				</view>
 		<uni-popup position="bottom" mode="fixed" :show="showPopupGoods" :h5Top="true" @hidePopup="hidePopup">
@@ -75,9 +93,9 @@
 		      :cursor-spacing="10"
 		    />
 		    <view class="rightbtn">
-				<view class="iconfont icon-biaoqing">
+				<!-- <view class="iconfont icon-biaoqing">
 					
-				</view>
+				</view> -->
 				<view class="iconfont icon-send" @click="sendMessage()">
 					
 				</view>
@@ -105,6 +123,8 @@
 				sendInfo: "", //发送消息的内容
 				userId:"",
 				token:"",
+				showgoodsbox: true,
+				countNum:0,
 			}
 		},
 		onLoad(e){
@@ -122,10 +142,25 @@
 			// #endif
 			console.log(this.ShopId)
 			this.play()
+			this.showgoodsbox=true;
+			this.countTime();
 			navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(105, 0, 0, 0);
-			
 		},
 		methods: {
+			countTime(){
+				let TIME_COUNT = 10; 
+				this.countNum = TIME_COUNT;
+				let timer = setInterval(() => {
+					if (this.countNum > 0 && this.countNum <= TIME_COUNT) {
+						this.countNum--;
+						this.showgoodsbox=true;
+					} else {
+						clearInterval(timer);
+						timer = null;
+						this.showgoodsbox=false;
+					}
+				}, 1000);
+			},
 			async play(){
 				let res = await post('TencentCloud/PlayURL',{
 					UserId: this.userId,
@@ -236,6 +271,7 @@
 		right: 0;
 		padding: 20upx;
 		.nlv-rollMsgPanel{
+			height: 60vh;
 			.nlv-msglist{
 				margin-bottom: 20upx;
 				flex-direction: row;
@@ -243,10 +279,10 @@
 					flex-direction: row;
 					flex-wrap: wrap;
 					background: rgba(0,0,0,.4);
-					border-radius: 40upx;
+					border-radius: 12upx;
 					padding: 10upx 20upx;
 					line-height: 1.2;
-					max-width:80%;
+					max-width:64%;
 					text{
 						display: inline-block;
 					}
@@ -259,6 +295,23 @@
 					width: 100%;}
 			}
 		}
+		.goodsbox{
+			width: 420upx;
+			margin-top: 20upx;
+			.item{
+				background: #fff;
+				flex-direction: row;
+				justify-content: flex-start;
+				.imgbox{
+					width: 100upx; height:100upx;
+					margin-right: 20upx;
+				}
+				.txtBox{ width: 300upx;}
+				.title{
+					display: block;
+				}
+			}
+		}
 		.nlv-infobox{
 			flex-direction: row;
 			margin-top: 20upx;
@@ -266,7 +319,7 @@
 				flex-direction: row;
 				align-items: center;
 				justify-content: flex-start;
-				height: 88upx; width: 320upx; padding: 0 20upx; border-radius:44upx;background: rgba(0,0,0,.4); 
+				height: 80upx; width: 320upx; padding: 0 20upx; border-radius:40upx;background: rgba(0,0,0,.4); 
 				.iconfont{
 					color: #fff;
 					font-size: 40upx;
@@ -275,10 +328,10 @@
 				.nlv_reply_text{ color:#fff}
 			}
 			.btn-toolitem{
-				height: 88upx; width: 88upx; border-radius:50%;background: rgba(0,0,0,.4); margin-left: 20upx;
+				height: 80upx; width: 80upx; border-radius:50%;background: rgba(0,0,0,.4); margin-right: 20upx;
 				.iconfont{
 					color: #ff4e0e;
-					font-size: 52upx;
+					font-size: 48upx;
 					text-align: center;
 				}
 			}
@@ -357,6 +410,7 @@
 			  flex-direction: row;
 			  .iconfont{ 
 				  display: block;
+				  line-height: 1.2;
 				  font-size: 44upx;
 				  margin-left: 4upx;
 				  padding: 0 20upx;
