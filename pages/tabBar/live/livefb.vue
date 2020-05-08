@@ -22,7 +22,9 @@
 			return {
 				height:'',
 				mark:false,
-				data:{}
+				data:{},
+				userId:"",
+				token:"",
 			};
 		},
 		onLoad(e){

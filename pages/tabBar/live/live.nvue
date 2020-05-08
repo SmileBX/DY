@@ -1,7 +1,5 @@
 <template>
-	<view>
-		<swiper :vertical="true" @change="changes">
-			<swiper-item >
+	<view class="swiper">
 				<!-- #ifdef APP-PLUS -->
 				<video  @error="error" :src="data.HLS" :style="{height : height + 'px'}"
 				 :autoplay="true" controls ></video>
@@ -32,8 +30,6 @@
 						</view>
 					</view>
 				</view>
-			</swiper-item>
-		</swiper>
 		<uni-popup position="bottom" mode="fixed" :show="showPopupGoods" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-gooods">
 				<view class="bottom-title">共3件商品</view>
@@ -107,6 +103,8 @@
 				isshowInput:false,//弹出输入
 				inputFocusStatus: false, //input对焦状态
 				sendInfo: "", //发送消息的内容
+				userId:"",
+				token:"",
 			}
 		},
 		onLoad(e){
@@ -202,10 +200,10 @@
 </script>
 
 <style scoped lang="scss">
-	swiper{
+	.swiper{
 		height: 100vh;
 		width: 100vw;
-		swiper-item,video{
+		video{
 			width: 100%;
 			height: 100%;
 			/* #ifdef H5 */
@@ -309,6 +307,7 @@
 		.uni-list{
 			.item{
 				padding: 20upx;
+				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
 				align-items: center;
