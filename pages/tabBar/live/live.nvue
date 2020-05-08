@@ -78,7 +78,7 @@
 				</view>
 			</view>
 		</uni-popup>
-		<view class="bottomicon" v-if="isshowInput">
+		<view class="bottomicon" >
 		  <view class="inputbtn">
 		    <input
 		      type="text"
@@ -96,7 +96,7 @@
 				<!-- <view class="iconfont icon-biaoqing">
 					
 				</view> -->
-				<view class="iconfont icon-send" @click="sendMessage()">
+				<view class="iconfont icon-send" @click="sendMessage(sendInfo)">
 					
 				</view>
 		    </view>
@@ -125,6 +125,9 @@
 				token:"",
 				showgoodsbox: true,
 				countNum:0,
+				type:0,
+				SocketTask:null,
+				socketStatus:false
 			}
 		},
 		onLoad(e){
@@ -144,9 +147,86 @@
 			this.play()
 			this.showgoodsbox=true;
 			this.countTime();
-			navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(105, 0, 0, 0);
+			this.livemessage()
+			// navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(105, 0, 0, 0);
 		},
 		methods: {
+			// 获取WebSocketId 用于身份验证
+			async livemessage(){
+				let res =await post('User/GetWebSocketId',{
+					UserId: this.userId,
+					Token: this.token,
+					Type:0,
+					FriendId:this.ShopId
+				})
+				console.log(res)
+				this.Signature=res.data.Signature
+				this.TimeStamp=res.data.TimeStamp
+				this.SecretKey=res.data.SecretKey
+				this.connectSocket()
+			},
+			LoginData(MsgType, TimeStamp, SecretKey) {
+			      let data = {
+			          MsgType:MsgType, //咨询者还是回答者
+			          TimeStamp:TimeStamp,
+			          SecretKey:SecretKey
+			      }
+				  // console.log(data)
+				   return data;
+			},
+			MsgData(MsgType, Id, Info, Pic, AddTime, Lat, Lng) {
+			    var data = new Object();
+			    data.MsgType = MsgType;
+			    data.Id = Id;
+			    data.Info = Info == undefined ? "" : Info;
+			    data.Pic = Pic == undefined ? "" : Pic;
+			    var fixInt = function (num, n) { return (Array(n).join(0) + num).slice(-n); };
+			    var newdate = function () {
+			        var now = new Date();
+			        var yy = now.getFullYear();      //年
+			        var mm = now.getMonth() + 1;     //月
+			        var dd = now.getDate();          //日
+			        var hh = now.getHours();         //时
+			        var ii = now.getMinutes();       //分
+			        var ss = now.getSeconds();
+			        return yy + "-" + fixInt(mm, 2) + "-" + fixInt(dd, 2) + " " + fixInt(hh, 2) + ":" + fixInt(ii, 2) + ":" + fixInt(ss, 2)
+			    }
+			    data.AddTime = AddTime == undefined ? newdate() : AddTime;
+			    data.Lat = Lat == undefined ? 0 : Lat;
+			    data.Lng = Lng == undefined ? 0 : Lng;
+			    return data;
+			},
+			onMessage(){
+				this.SocketTask.onMessage(message => {
+					console.log(message)
+					console.log("收到数据");
+				})
+			},
+			// 打开webSocket链接登录验证
+			async connectSocket(){
+				let that =this
+				this.SocketTask=uni.connectSocket({
+				    // url:'wss://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature='+this.Signature,
+					url:'ws://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature=1000-20607-20028-1589003889-rBl0yJ',
+					success:()=>{}
+				})
+				this.SocketTask.onMessage(message => {
+					console.log(message)
+					console.log("收到数据");
+				})
+				this.SocketTask.onOpen(res => {
+					// console.log("open", res);
+					this.socketStatus = true;
+					let data=this.LoginData(1,this.TimeStamp,this.SecretKey)
+					this.SocketTask.send(JSON.stringify(data))
+					console.log("发送数据",res);
+					// console.log(that.SocketTask)
+				});
+				this.SocketTask.onError(function (res) {
+				  console.log('WebSocket连接打开失败，请检查！');
+				});
+
+			},
 			countTime(){
 				let TIME_COUNT = 10; 
 				this.countNum = TIME_COUNT;
@@ -210,8 +290,16 @@
 				this.hidePopup();
 				this.showPopupGoods = true;
 			},
-			async sendMessage(data){
-				
+			async sendMessage(e){
+				console.log(e)
+				let time=new Date()
+				let data = this.MsgData(3,0,e,'',time,0,0)
+				this.SocketTask.send(JSON.stringify(data))
+				this.SocketTask.onMessage(function(r){
+					console.log(r)
+				})
+				this.onMessage()
+				this.sendInfo=""
 			},
 			//弹出输入框获取焦点
 			Repliy(){
