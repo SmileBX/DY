@@ -351,25 +351,25 @@
 				let that=this
 				this.SocketTask.onMessage(r => {
 					msg=JSON.parse(r.data)
-					// console.log(msg,55555)
+					console.log(msg,55555)
 					if(msg.code==1){
 						// uni.showToast({
 						// 	title:'链接成功',
 						// 	icon:'none'
 						// })
-					}else if(msg.code==0){
+					}else if(msg.code==3||msg.code==0){
 						let obj=JSON.parse(msg.data.Id)
 						// 检测弹幕数组中是否已存在obj信息
-						var result = that.strArr.some(item=>{
-						   if(item.Id==obj.Id){
-						      return true 
-						  } 
-						})
+						// var result = that.strArr.some(item=>{
+						//    if(item.Id==obj.Id){
+						//       return true 
+						//   } 
+						// })
 						// 如果that.strArr数组对象中含有Id相同,就会返回true，否则返回false
-						if(!result){ // 如果不存在
+						// if(!result){ // 如果不存在
 						  that.strArr.push(obj)
 						  this.isshowInput=false;
-						 }
+						 // }
 					}else if(msg.code==2){
 						uni.showModal({
 						    title: '提示',
