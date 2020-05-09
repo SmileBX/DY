@@ -17,31 +17,28 @@
 				<view class="nlv-footToolbar">
 					<!-- 滚动msg信息 -->
 					<scroll-view class="nlv-rollMsgPanel" scroll-y show-scrollbar="false">
-						<block v-for="(msgitem, msgidx) in 8" :key="msgidx">
+						<block v-for="(msgitem, msgidx) in strArr" :key="msgidx">
 							<view class="nlv-msglist">
-								<view class="msg_bg"><text class="msg_name">小小酥</text> <text class="msg_text">太棒了</text></view>
-							</view>
-							<view class="nlv-msglist">
-								<view class="msg_bg"><text class="msg_name">xiao名试试哈哈哈</text> <text class="msg_text">太棒了太棒了太棒了太棒了太棒了太棒了太棒了太棒了太棒了</text></view>
+								<view class="msg_bg"><text class="msg_name">{{msgitem.name}}</text> <text class="msg_text">{{msgitem.Info}}</text></view>
 							</view>
 						</block>
 					</scroll-view>
 					<view class="goodsbox" v-if="showgoodsbox">
 						<view class="item">
 							<view class="imgbox">
-								<image src="../../../static/1.png" mode="aspectFill"></image>
+								<image :src="PicNo" mode="aspectFill"></image>
 							</view>
 							<view class="txtBox">
 								<view class="title uni-ellipsis">
-									商品名称商品名称商品名称商品名称商品名称
+									{{Name}}
 								</view>
 								<view class="price red">
-									￥9.9
+									￥{{Price}}
 								</view>
 							</view>
 						</view>
 					</view>
-					<view class="nlv-infobox">
+					<view class="nlv-infobox" >
 						<view class="nlv_btntool">
 							<view class="btn-toolitem" @click="showGoods"><text class="iconfont icon-goods"></text></view>
 						</view>
@@ -50,26 +47,26 @@
 				</view>
 		<uni-popup position="bottom" mode="fixed" :show="showPopupGoods" :h5Top="true" @hidePopup="hidePopup">
 			<view class="uni-modal-gooods">
-				<view class="bottom-title">共3件商品</view>
+				<view class="bottom-title">共{{GoodsList.length}}件商品</view>
 				<view class="uni-close-btn" @click="hidePopup">
 					<view class="iconfont icon-close"></view>
 				</view>
 				<view class="bottom-content">
 					<view class="uni-list">
-						<view class="uni-list-cell" v-for="(item,index) in 3" :key="index">
+						<view class="uni-list-cell" v-for="(item,index) in GoodsList" :key="index">
 							<view class="item">
 								<view class="imgbox">
-									<image src="../../../static/1.png" mode="aspectFill"></image>
+									<image :src="item.PicNo" mode="aspectFill"></image>
 								</view>
 								<view class="txtBox">
 									<view class="title">
-										商品名称
+										{{item.Name}}
 									</view>
 									<view class="price red">
-										￥9.9
+										￥{{item.Price}}
 									</view>
 								</view>
-								<view class="r_btn">
+								<view class="r_btn" @click="goUrl('/pages/homePage/details?id='+item.Id)">
 									去看看
 								</view>
 							</view>
@@ -78,7 +75,7 @@
 				</view>
 			</view>
 		</uni-popup>
-		<view class="bottomicon" >
+		<view class="bottomicon"  v-if="isshowInput">
 		  <view class="inputbtn">
 		    <input
 		      type="text"
@@ -106,7 +103,7 @@
 </template>
 
 <script>
-	import {host,post,get,toLogin,} from '@/common/util.js';
+	import {host,post,get,toLogin} from '@/common/util.js';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
 		components: {
@@ -127,7 +124,13 @@
 				countNum:0,
 				type:0,
 				SocketTask:null,
-				socketStatus:false
+				socketStatus:false,
+				strArr:[],
+				Id:0,
+				GoodsList:[],//商品列表
+				PicNo:'',
+				Price:'',
+				Name:''
 			}
 		},
 		onLoad(e){
@@ -148,9 +151,37 @@
 			this.showgoodsbox=true;
 			this.countTime();
 			this.livemessage()
+			this.goodsList()
 			// navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(105, 0, 0, 0);
 		},
+		onHide(){
+			this.SocketTask.close()
+		},
+		onUnload(){
+			this.SocketTask.close()
+		},
 		methods: {
+			//链接跳转
+			goUrl(url){
+			  uni.navigateTo({
+				url:url
+			  })
+			},
+			//获取商品列表
+			async goodsList(){
+				let res = await post('Goods/GoodsList',{
+					UserId: this.userId,
+					Token: this.token,
+					Page:this.page,
+					ShopId:this.ShopId,
+					IsLive:1
+				})
+				console.log(res)
+				this.GoodsList=res.data
+				this.Price=this.GoodsList[0].Price
+				this.PicNo=this.GoodsList[0].PicNo
+				this.Name=this.GoodsList[0].Name
+			},
 			// 获取WebSocketId 用于身份验证
 			async livemessage(){
 				let res =await post('User/GetWebSocketId',{
@@ -176,8 +207,16 @@
 			},
 			MsgData(MsgType, Id, Info, Pic, AddTime, Lat, Lng) {
 			    var data = new Object();
+				var msg =new Object()
 			    data.MsgType = MsgType;
-			    data.Id = Id;
+				
+				msg.name=uni.getStorageSync('name')
+				msg.Info=Info == undefined ? "" : Info
+				msg.Id=Id
+				msg=JSON.stringify(msg)
+				data.Id=msg
+				
+			//     data.Id = Id;
 			    data.Info = Info == undefined ? "" : Info;
 			    data.Pic = Pic == undefined ? "" : Pic;
 			    var fixInt = function (num, n) { return (Array(n).join(0) + num).slice(-n); };
@@ -196,12 +235,7 @@
 			    data.Lng = Lng == undefined ? 0 : Lng;
 			    return data;
 			},
-			onMessage(){
-				this.SocketTask.onMessage(message => {
-					console.log(message)
-					console.log("收到数据");
-				})
-			},
+			
 			// 打开webSocket链接登录验证
 			async connectSocket(){
 				let that =this
@@ -210,24 +244,34 @@
 					// url:'ws://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature=1000-20607-20028-1589003889-rBl0yJ',
 					success:()=>{}
 				})
-				this.SocketTask.onMessage(message => {
-					console.log(message)
-					console.log("收到数据");
-				})
+				
+				
 				this.SocketTask.onOpen(res => {
 					// console.log("open", res);
 					this.socketStatus = true;
 					let data=this.LoginData(1,this.TimeStamp,this.SecretKey)
-					this.SocketTask.send({data:JSON.stringify(data),
-					success:(res)=>{console.log(res)}
-					})
+					this.SocketTask.send({data:JSON.stringify(data)})
 					console.log("发送数据",res);
+					this.onMessage()
 					// console.log(that.SocketTask)
 				});
+				// this.onMessage()
 				this.SocketTask.onError(function (res) {
 				  console.log('WebSocket连接打开失败，请检查！');
 				});
-
+				this.SocketTask.onClose(close => {
+				        console.log("close", close);
+				        this.socketStatus = false;
+				        if(close.code!==1000){
+				          
+				          // uni.showToast({
+				          //   title:'链接失败，请重新尝试！',
+				          //   icon:'none'
+				          // })
+				          
+				        }
+				        // this.pageBack('连接已断开，请重试!');
+				      });
 			},
 			countTime(){
 				let TIME_COUNT = 10; 
@@ -293,14 +337,59 @@
 				this.showPopupGoods = true;
 			},
 			async sendMessage(e){
+				let that=this
 				let time=new Date()
-				let data = this.MsgData(3,"ede",e,'',time,0,0)
+				console.log(this.Id)
+				let data = this.MsgData(3,this.Id,e,'',time,0,0)
 				this.SocketTask.send({data:JSON.stringify(data)})
-				this.SocketTask.onMessage(function(r){
-					console.log(r)
-				})
+				this.Id++
 				this.onMessage()
 				this.sendInfo=""
+			},
+			onMessage(){
+				let msg
+				let that=this
+				this.SocketTask.onMessage(r => {
+					msg=JSON.parse(r.data)
+					// console.log(msg,55555)
+					if(msg.code==1){
+						// uni.showToast({
+						// 	title:'链接成功',
+						// 	icon:'none'
+						// })
+					}else if(msg.code==0){
+						let obj=JSON.parse(msg.data.Id)
+						// 检测弹幕数组中是否已存在obj信息
+						var result = that.strArr.some(item=>{
+						   if(item.Id==obj.Id){
+						      return true 
+						  } 
+						})
+						// 如果that.strArr数组对象中含有Id相同,就会返回true，否则返回false
+						if(!result){ // 如果不存在
+						  that.strArr.push(obj)
+						  this.isshowInput=false;
+						 }
+					}else if(msg.code==2){
+						uni.showModal({
+						    title: '提示',
+						    content: '当前断开链接是否重新登录',
+						    success: function (res) {
+						        if (res.confirm) {
+									let data=this.LoginData(1,this.TimeStamp,this.SecretKey)
+									this.SocketTask.send({data:JSON.stringify(data)})
+						            uni.showToast({
+										title:'正在重连请稍等',
+										icon:'none'
+									})
+						        } else if (res.cancel) {
+						            
+						        }
+						    }
+						});
+						
+					}
+				})
 			},
 			//弹出输入框获取焦点
 			Repliy(){
@@ -309,7 +398,7 @@
 			},
 			//失去焦点
 			blurFocus(){
-				this.isshowInput=false;
+				// this.isshowInput=false;
 				this.inputFocusStatus=false;
 			}
 			

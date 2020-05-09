@@ -300,6 +300,7 @@
 				})
 				if (result.code === 0) {
 					this.memberInfo = result.data;
+					uni.setStorageSync('name',this.memberInfo.NickName)
 					uni.setStorageSync('ReferralCode',result.data.ReferralCode)
 					this.$store.commit("update", {
 					  Wallet:result.data.Wallet
