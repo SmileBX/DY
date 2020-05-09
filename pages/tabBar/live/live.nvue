@@ -206,8 +206,8 @@
 			async connectSocket(){
 				let that =this
 				this.SocketTask=uni.connectSocket({
-				    // url:'wss://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature='+this.Signature,
-					url:'ws://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature=1000-20607-20028-1589003889-rBl0yJ',
+				    url:'ws://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature='+this.Signature,
+					// url:'ws://ddypapi.wtvxin.com/WebSocketServer.ashx?Signature=1000-20607-20028-1589003889-rBl0yJ',
 					success:()=>{}
 				})
 				this.SocketTask.onMessage(message => {
@@ -218,7 +218,9 @@
 					// console.log("open", res);
 					this.socketStatus = true;
 					let data=this.LoginData(1,this.TimeStamp,this.SecretKey)
-					this.SocketTask.send(JSON.stringify(data))
+					this.SocketTask.send({data:JSON.stringify(data),
+					success:(res)=>{console.log(res)}
+					})
 					console.log("发送数据",res);
 					// console.log(that.SocketTask)
 				});
@@ -291,10 +293,9 @@
 				this.showPopupGoods = true;
 			},
 			async sendMessage(e){
-				console.log(e)
 				let time=new Date()
-				let data = this.MsgData(3,0,e,'',time,0,0)
-				this.SocketTask.send(JSON.stringify(data))
+				let data = this.MsgData(3,"ede",e,'',time,0,0)
+				this.SocketTask.send({data:JSON.stringify(data)})
 				this.SocketTask.onMessage(function(r){
 					console.log(r)
 				})
