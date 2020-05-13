@@ -106,11 +106,11 @@
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_qb.png" mode=""></image>
 						<view class="txt">我的钱包</view>
 					</view>
-					<view v-if="KTAmount != 0" class="item" @click="golink('/pages/other/myAcount/myAcount')" >
+					<view class="item" @click="golink('/pages/other/myAcount/myAcount')" >
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_sy.png" mode=""></image>
 						<view class="txt">我的收益</view>
 					</view>
-					<view v-if="TeamShow" class="item" @click="golink('/pages/other/myguest/myguest')">
+					<view class="item" @click="golink('/pages/other/myguest/myguest')">
 						<image class="iconImg" src="http://shop.dadanyipin.com/static/icons/u_team.png" mode=""></image>
 						<view class="txt">我的团队</view>
 					</view>

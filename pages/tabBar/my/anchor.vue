@@ -31,7 +31,7 @@
 			</view>
 			<!--直播列表-->
 			<view class="list_zb" v-else>
-				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/live',item.ShopId,item.Flag)">
+				<view class="ach_item flex flexAlignCenter justifyContentBetween" v-for="(item,index) in ShopList" :key="index" @click="goUrl('/pages/tabBar/live/livefb',item.ShopId,item.Flag)">
 					<view class="le_img">
 						<image :src="item.BannerPicNo" class="shop"></image>
 						<image src="../../../static/zb.png" class="tip" v-if="item.Flag==1"></image>

@@ -28,7 +28,7 @@
 		<view class="index_Content uni-tab-bar" :style="{'height':headheight+'px'}">
 			<swiper :current="tabIndex" class="swiper-box" duration="300" @change="changeTab">
 				<swiper-item>
-					<scroll-view class="uni-index-wrap" scroll-y @scrolltolower="loadMore">
+					<scroll-view class="uni-index-wrap" scroll-y @scrolltolower="loadMore(-1)">
 						<!--轮播图-->
 						<view class="page-section swiper">
 							<view class="page-section-spacing">
@@ -350,7 +350,23 @@
 					_this.wxGetCity(res.longitude,res.latitude)
 					// #endif
 			        // console.log(res);
-			    }
+			    },
+				fail:function(){
+					// #ifdef MP-WEIXIN
+					_this.hasgps()
+					// #endif
+					// #ifdef APP-PLUS
+					uni.showModal({
+					    content: '定位失败，请在设置中打开大单易拼的位置权限',
+						showCancel: false,
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+					        }
+					    }
+					});
+					// #endif
+				}
 			});
 			// #endif
 			//百度定位
@@ -407,6 +423,30 @@
 					}
 				})
 			},
+			hasgps(){
+				uni.getSetting({
+				  success: (res) => {
+					if (!res.authSetting['scope.userLocation'])
+					  wx.showModal({
+						content: '检测到您没打开大单易拼的定位权限，是否去设置打开？',
+						confirmText: "确认",
+						cancelText: "取消",
+						success: function (res) {
+						  console.log(res);
+						  //点击“确认”时打开设置页面
+						  if (res.confirm) {
+							console.log('用户点击确认')
+							wx.openSetting({
+							  success: (res) => { }
+							})
+						  } else {
+							console.log('用户点击取消')
+						  }
+						}
+					  });
+				  }
+				})
+			},
 			// #endif
 			async getBrandList(){
 				let res = await post('Goods/BrandList',{})
@@ -430,7 +470,7 @@
 					PageSize: this.pageSize,
 					TypeId:this.tid,
 					ClassId:this.cid,
-					// AreaCode:this.AreaCode,//区域国家码
+					ShowCity:this.AreaCode,//区域国家码
 					// AreaType:this.AreaType,//1不限市，区
 				}); 
 				if (result.code === 0) {
@@ -458,7 +498,6 @@
 						this.isLoad = true;
 						this.loadingType = 0
 					}
-					console.log(this.isLoad)
 				}
 			},
 			
@@ -469,7 +508,7 @@
 					PageSize: 10,
 					IsRecommend: 1,
 					IsHot:1,
-					// AreaCode:this.AreaCode,//区域国家码
+					ShowCity:this.AreaCode,//区域国家码
 					// AreaType:this.AreaType,//1不限市，区
 				})
 				if(result.code==0){ //首页精选推荐
@@ -504,13 +543,13 @@
 			},
 			//精选列表获取分类列表
 			async hand() {
-				let datajson={};
+				let datajson={};console.log(this.indexs,"#########")
 				if(this.indexs==0){
 					datajson={
 						Page: this.page,
 						PageSize: this.pageSize,
 						IsHot: 1, //推荐
-						// AreaCode:this.AreaCode,//区域国家码
+						ShowCity:this.AreaCode,//区域国家码
 						// AreaType:this.AreaType,//1不限市，区
 					}
 				}else if(this.indexs==1){
@@ -519,7 +558,7 @@
 						PageSize: this.pageSize,
 						IsSubsidy:1,//有补贴
 						//IsUseCoupons:1//有券
-						// AreaCode:this.AreaCode,//区域国家码
+						ShowCity:this.AreaCode,//区域国家码
 						// AreaType:this.AreaType,//1不限市，区
 					}
 				}else{
@@ -527,7 +566,7 @@
 						Page: this.page,
 						PageSize: this.pageSize,
 						TypeId:this.indextid,
-						// AreaCode:this.AreaCode,//区域国家码
+						ShowCity:this.AreaCode,//区域国家码
 						// AreaType:this.AreaType,//1不限市，区
 					}
 				}
@@ -557,6 +596,7 @@
 						this.isLoad = true;
 						this.loadingType = 0
 					}
+					console.log(this.isLoad)
 				}
 			},
 			//顶部导航滑动切换
@@ -738,11 +778,11 @@
 				}
 				uni.setStorageSync('AreaCode',this.AreaCode);
 			},
-			loadMore(e) {
+			loadMore(e) {console.log(e)
 				if (this.isLoad) {
 					this.loadingType = 1;
 					this.page++;
-					if(e){
+					if(e>=0){
 						this.getprolist();
 					}else{
 						this.hand();

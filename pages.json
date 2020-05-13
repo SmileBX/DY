@@ -32,7 +32,7 @@
 			}
 		},
 		{
-			"path": "pages/tabBar/live/live",
+			"path": "pages/tabBar/live/livefb",
 			"style": {
 				"navigationBarTitleText": "直播",
 				"enablePullDownRefresh" : false,
@@ -284,7 +284,8 @@
             "path" : "pages/brand/brandIndex/brandIndex",
             "style" : {
 				"navigationBarTitleText": "品牌馆",
-				"navigationBarTextStyle": "white",
+				"navigationBarTextStyle": "black",
+				// "navigationStyle":"custom",
 				// "enablePullDownRefresh" : true,
 				"app-plus": {
 					"titleNView": {
