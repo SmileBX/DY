@@ -684,6 +684,12 @@
 						"style" : {
 							"navigationBarTitleText": "用户协议"
 						}
+					},
+					{
+						"path" : "agreementTwo/agreementTwo",
+						"style" : {
+							"navigationBarTitleText": "隐私协议"
+						}
 					}
 			]
 		}

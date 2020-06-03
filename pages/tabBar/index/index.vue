@@ -254,6 +254,25 @@
 				<image src="http://shop.dadanyipin.com/static/close.png" mode="widthFix" class="close" @click="showAdv=false"></image>
 			</view>
 		</view>
+		<!-- #ifdef APP-PLUS -->
+		<view class="advbox" v-if="showXY=='block'">
+			<view class="imgbox">
+				<view class="textbox">
+					<view class="title">服务协议和隐私政策</view>
+					<view class="main">
+						请你务必审慎阅读、充分理解“服务协议”和“隐私政策”各条款，包括但不限于：为了向你提供附近的商品筛选、实时视频等服务，我们需要获取您的定位信息、相机等权限。您可以在“设置”中查看、变更、删除个人信息并管理授权。
+					</view>
+					<view class="main">
+						您可阅读<text class="colorblue" @click="tolink('/pages/message/agreement/agreement')">《服务协议》</text>和<text class="colorblue" @click="tolink('/pages/message/agreementTwo/agreementTwo')">《隐私政策》</text>了解详细信息。如您同意，请点击“同意”开始接受我们的服务。
+					</view>
+					<view class="btnbox">
+						<view class="" @click="xytab(0)">暂不使用</view>
+						<view class="colorblue" @click="xytab(1)">同意</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -306,10 +325,17 @@
 				inviteCode:'',
 				showAdv:true,//
 				advimg:"",//广告图
+				showXY:"none",//"none":不显示 "block"显示
 			}
 		},
 		onLoad(e) {
 			// #ifdef APP-PLUS
+			var hasXY=uni.getStorageSync("showXY");console.log(hasXY,hasXY!="",hasXY!="undefined")
+			if(hasXY!=""&&hasXY!="undefined"){
+				this.showXY=hasXY;console.log(this.showXY,'++++++++++++++++++++++++')
+			}else{
+				this.showXY="block";
+			}
 			var height = plus.navigator.getStatusbarHeight();
 			this.barHeight = height;
 			if(e.inviteCode){
@@ -791,6 +817,14 @@
 					this.loadingType = 2;
 				}
 			},
+			xytab(id){
+				this.showXY=false;
+				if(id==0){
+					plus.runtime.quit();
+				}else{
+					uni.setStorageSync('showXY',"none");
+				}
+			}
 			
 		},
 		// 上拉加载
@@ -847,5 +881,34 @@
 		bottom: -80upx;
 		width: 50upx;
 		height: 50upx;
+	}
+	.textbox{
+		padding: 40upx 30upx 20upx;
+		border-radius: 16upx;
+		overflow: hidden;
+		background: #fff;
+	}
+	.textbox .title{
+		text-align: center;
+		color: #000;
+		font-size: 30upx;
+		font-weight: 600;
+	}
+	.textbox .main{
+		font-size: 26upx;
+	}
+	.textbox .btnbox{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 20upx;
+	}
+	.btnbox view{
+		flex: 1;
+		text-align: center;
+		line-height: 2.4;
+	}
+	.colorblue{
+		color:#0ea0ce
 	}
 </style>

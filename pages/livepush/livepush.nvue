@@ -170,6 +170,7 @@ export default {
 			}
 		},
 		async getPlay() {
+			console.log(this.liveUserId,this.liveToken)
 			let res = await post('TencentCloud/PushURL', {
 				push: '',
 				UserId: this.liveUserId,

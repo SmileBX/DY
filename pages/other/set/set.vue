@@ -18,10 +18,14 @@
 			<view>63.25M</view>
 		</view> -->
 		
-		<!-- <view class="flex flexAlignCenter justifyContentBetween item bg_fff">
-			<view>关于我们</view>
+		<view class="flex flexAlignCenter justifyContentBetween item bg_fff" @click="golink('/pages/message/agreement/agreement')">
+			<view>用户协议</view>
 			<view class="iconfont icon-arrow_r font26"></view>
-		</view> -->
+		</view>
+		<view class="flex flexAlignCenter justifyContentBetween item bg_fff" @click="golink('/pages/message/agreementTwo/agreementTwo')">
+			<view>隐私协议</view>
+			<view class="iconfont icon-arrow_r font26"></view>
+		</view>
 		<!-- #ifdef APP-PLUS -->
 		<view class="flex flexAlignCenter justifyContentBetween item bg_fff">
 			<view>软件版本</view>
