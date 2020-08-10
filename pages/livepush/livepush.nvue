@@ -80,7 +80,6 @@ export default {
 		this.liveUserId = uni.getStorageSync('liveUserId');
 		this.liveToken = uni.getStorageSync('liveToken');
 		//权限设置,获取权限后开启直播
-		this.getPlay();
 		this.quanxian();
 	},
 	methods: {

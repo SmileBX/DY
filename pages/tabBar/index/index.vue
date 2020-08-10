@@ -33,7 +33,7 @@
 						<view class="page-section swiper">
 							<view class="page-section-spacing">
 								<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="5000" :duration="500" indicator-color="#fff" indicator-active-color="#ff3333">
-									<swiper-item v-for="(banner,key) in bannerlist" :key="key">
+									<swiper-item v-for="(banner,key) in bannerlist" :key="key" @click="bannerchlik(banner)">
 										<view class="swiper-item">
 											<image class="img" :src="banner.Pic" mode="aspectFill"></image>
 										</view>
@@ -680,6 +680,34 @@
 						url: Url
 					})
 				}
+			},
+			bannerchlik(item){
+				// #ifdef APP-PLUS
+				if(item.AppUrl){
+					uni.navigateTo({
+						url:item.AppUrl
+					})
+				}
+				// #endif
+				// #ifdef MP-WEIXIN
+				if(item.WxUrl){
+					uni.navigateTo({
+						url:item.WxUrl
+					})
+				}
+				// #endif
+				// #ifdef H5
+				if(item.Url){
+					var hashttp=item.Url.indexOf("http")
+					if(hashttp==-1){
+						uni.navigateTo({
+							url:item.Url
+						})
+					}else{
+						window.location.href=item.Url
+					}
+				}
+				// #endif
 			},
 			// 轮播图
 			async banner() {

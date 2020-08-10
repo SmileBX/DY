@@ -191,67 +191,6 @@ export default {
 			title: "请长按保存图片"
 		})
 	},
-	// Wxshare() {
-	// 		let _this = this
-	// 		let aa = uni.getFileSystemManager();
-	// 		 aa.writeFile({
-	// 		   filePath:uni.env.USER_DATA_PATH+'/test.png',
-	// 		   data: _this.qrimg.slice(22),
-	// 		   encoding:'base64',
-	// 		   success: res => {
-	// 		     uni.saveImageToPhotosAlbum({
-	// 		       filePath: uni.env.USER_DATA_PATH + '/test.png',
-	// 		       success: function (res) {
-	// 		         uni.showToast({
-	// 		           title: '保存成功',
-	// 		         })
-	// 		       },
-	// 		       fail: function (err) {
-	// 		         //需要用户授权设置
-	// 				if (err.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
-	// 					console.log('用户一开始拒绝了，我们想再次发起授权')
-	// 					// 用户授权设置
-	// 					uni.showModal({
-	// 						title: '提示',
-	// 						content: '需要您授权保存相册',
-	// 						showCancel: false,
-	// 						success:modalSuccess=>{
-	// 						  uni.openSetting({
-	// 							success(settingdata) {
-	// 							  console.log("settingdata", settingdata)
-	// 							  if (settingdata.authSetting['scope.writePhotosAlbum']) {
-	// 								uni.showModal({
-	// 								  title: '提示',
-	// 								  content: '获取权限成功,再次点击图片即可保存',
-	// 								  showCancel: false,
-	// 								})
-	// 							  } else {
-	// 								uni.showModal({
-	// 								  title: '提示',
-	// 								  content: '获取权限失败，将无法保存到相册哦~',
-	// 								  showCancel: false,
-	// 								})
-	// 							  }
-	// 							},
-	// 							fail(failData) {
-	// 							  console.log("failData",failData)
-	// 							},
-	// 							complete(finishData) {
-	// 							  console.log("finishData", finishData)
-	// 							}
-	// 						  })
-	// 						}
-	// 					  })
-	// 		       }
-			     
-	// 			    }
-	// 			 })
-	// 		     console.log(res)
-	// 		   }, fail: err => {
-	// 		     console.log(err)
-	// 		   }
-	// 		 })
-	// 	},
 	drawCanvas() {
 		let _this = this
       if(!this.hasimg){
