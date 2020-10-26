@@ -95,51 +95,53 @@
             },
             "icons" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/安卓/72x72.png",
-                    "xhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/安卓/96x96.png",
-                    "xxhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/安卓/144x144.png",
-                    "xxxhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/安卓/192x192.png"
+                    "hdpi" : "E:/liu项目/A聚乐旅居/logo/android/72x72.png",
+                    "xhdpi" : "E:/liu项目/A聚乐旅居/logo/android/96x96.png",
+                    "xxhdpi" : "E:/liu项目/A聚乐旅居/logo/android/144x144.png",
+                    "xxxhdpi" : "E:/liu项目/A聚乐旅居/logo/android/192x192.png"
                 },
                 "ios" : {
-                    "appstore" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-1024x1024.png",
+                    "appstore" : "E:/liu项目/A壹舞/APP_logo配置/ios/1024.png",
                     "iphone" : {
-                        "app@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-60x60@2x.png",
-                        "app@3x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-60x60@3x.png",
-                        "spotlight@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@2x.png",
-                        "spotlight@3x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@3x.png",
-                        "settings@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-29x29@2x.png",
-                        "settings@3x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-29x29@3x.png",
-                        "notification@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@1x.png",
-                        "notification@3x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-20x20@3x.png"
+                        "app@2x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-120x120.png",
+                        "app@3x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-180x180.png",
+                        "spotlight@2x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-80x80.png",
+                        "spotlight@3x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-120x120.png",
+                        "settings@2x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-58x58.png",
+                        "settings@3x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-87x87.png",
+                        "notification@2x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-40x40.png",
+                        "notification@3x" : "E:/liu项目/A壹舞/APP_logo配置/ios/Icon-App-60x60.png"
                     },
                     "ipad" : {
-                        "app" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-76x76@1x.png",
-                        "app@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-76x76@2x.png",
-                        "proapp@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-83.5x83.5@2x.png",
-                        "spotlight" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@1x.png",
-                        "spotlight@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@2x.png",
-                        "settings" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-29x29@1x.png",
-                        "settings@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-29x29@2x.png",
-                        "notification" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-20x20@1x.png",
-                        "notification@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单logo尺寸/ios/Icon-App-40x40@1x.png"
+                        "app" : "",
+                        "app@2x" : "",
+                        "proapp@2x" : "",
+                        "spotlight" : "",
+                        "spotlight@2x" : "",
+                        "settings" : "",
+                        "settings@2x" : "",
+                        "notification" : "",
+                        "notification@2x" : ""
                     }
                 }
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/480x762.png",
-                    "xhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/720x1242.png",
-                    "xxhdpi" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1080x1882.png"
+                    "hdpi" : "",
+                    "xhdpi" : "",
+                    "xxhdpi" : ""
                 },
                 "ios" : {
                     "iphone" : {
-                        "portrait-896h@3x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1242x2688.png",
-                        "portrait-896h@2x" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/828x1792.png",
-                        "iphonex" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1125x2436.png",
-                        "retina55" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/1242x2208.png",
+                        "portrait-896h@3x" : "",
+                        "portrait-896h@2x" : "",
+                        "iphonex" : "",
+                        "retina55" : "",
                         "retina47" : "C:/Users/Administrator/Documents/WXWork/1688851334500903/Cache/File/2020-04/大单易拼APP启动页尺寸/750x1334.png"
                     }
-                }
+                },
+                "iosStyle" : "common",
+                "androidStyle" : "common"
             }
         },
         "uniStatistics" : {
